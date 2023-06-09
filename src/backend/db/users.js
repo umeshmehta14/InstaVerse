@@ -1,8 +1,5 @@
 import { formatDate } from "../utils/authUtils";
-/**
- * User Database can be added here.
- * You can add default users of your wish with different attributes
- * */
+
 
 export const users = [
   {
@@ -14,7 +11,7 @@ export const users = [
     password: "umesh mehta 14",
     createdAt: "2023-06-08T10:30:00Z",
     updatedAt: formatDate(),
-    avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+    avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     following: [
       {
         _id: "KJDjkdn54",
@@ -84,7 +81,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "ijhgsHJS53",
@@ -100,7 +97,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
     ],
     bookmarks: [],
@@ -128,7 +125,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "asdERTY45",
@@ -144,7 +141,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
     ],
     bookmarks: [],
@@ -163,7 +160,7 @@ export const users = [
     email: "janedoe@example.com",
     password: "janeDoe123",
     createdAt: "2023-06-04T08:20:00Z",
-    updatedAt: "2023-06-06T12:30:00Z",
+    updatedAt: formatDate(),
     avatarURL: "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
     following: [
       {
@@ -171,7 +168,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "FGNedrfgt1234",
@@ -187,7 +184,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
     ],
     bookmarks: [],
@@ -207,7 +204,7 @@ export const users = [
     email: "kaludon@example.com",
     password: "kaludon123",
     createdAt: "2023-06-02T15:40:00Z",
-    updatedAt: "2023-06-05T09:50:00Z",
+    updatedAt: formatDate(),
     avatarURL: "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
     following: [
       {
@@ -215,7 +212,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "sdfnjJN34",
@@ -231,7 +228,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "sdfSDFG123",
@@ -256,7 +253,7 @@ export const users = [
     email: "emilyjones@example.com",
     password: "emilyJones123",
     createdAt: "2023-06-01T11:10:00Z",
-    updatedAt: "2023-06-04T16:25:00Z",
+    updatedAt: formatDate(),
     avatarURL: "https://tse3.mm.bing.net/th?id=OIP.90k35a_1M3kSF7TRr8lBOAHaKt&pid=Api&P=0&h=180",
     following: [
       {
@@ -264,7 +261,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
     ],
     followers: [
@@ -273,7 +270,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "sdfDF345",
@@ -308,7 +305,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "sdfSDFG2134",
@@ -324,7 +321,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "sdfDFG324",
@@ -358,7 +355,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
     ],
     followers: [
@@ -367,7 +364,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "scdvfDSF12",
@@ -394,7 +391,7 @@ export const users = [
     email: "michaelclark@example.com",
     password: "michaelClark123",
     createdAt: "2023-05-26T09:45:00Z",
-    updatedAt: "2023-05-31T11:55:00Z",
+    updatedAt: formatDate(),
     avatarURL: "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
     following: [
       {
@@ -402,7 +399,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "SDVFewr455",
@@ -418,7 +415,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "sdfDFG234",
@@ -445,7 +442,7 @@ export const users = [
     email: "oliviadavis@example.com",
     password: "oliviaDavis123",
     createdAt: "2023-05-24T12:30:00Z",
-    updatedAt: "2023-05-29T16:45:00Z",
+    updatedAt: formatDate(),
     avatarURL: "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
     following: [
       {
@@ -453,7 +450,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "dfgDF456",
@@ -469,7 +466,7 @@ export const users = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181891/socmedia/pic1_jwkxzf.jpg",
+        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
       },
       {
         _id: "dgfDFG2345",
