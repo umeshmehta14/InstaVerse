@@ -1,11 +1,17 @@
-import React from 'react'
+import React from "react";
+import { Flex, VStack, Box, Text, IconButton, Icon } from "@chakra-ui/react";
 
-const Navbar = () => {
+import { MdHome, MdExplore, MdFavorite, MdPerson } from "../../utils/Icons";
+
+const NavBar = () => {
   return (
-    <div>
-      Navbar
-    </div>
-  )
-}
+    <Flex 
+    position={"fixed"}
+    display={{base:"flex"}}
+    >
 
-export default Navbar
+    </Flex>
+  );
+};
+
+export default NavBar;
