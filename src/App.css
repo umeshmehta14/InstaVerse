@@ -1,19 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@500&display=swap');
 
 *{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    line-height: 18px;
-}
-
-:root{
-    --primary-bg-color: #fafafa;
-    --primary-txt-color: black;
-    --primary-font: 'Lora', serif;
-}
-
-body{
-    background-color: var(--primary-bg-color);
-    font-family: var(--primary-font);
 }
