@@ -4,3 +4,14 @@
     margin: 0;
     padding: 0;
 }
+
+
+#md-search-nav{
+    display: none;
+}
+
+@media (min-width: 768px) {
+    #md-search-nav{
+        display: flex;
+    }
+}

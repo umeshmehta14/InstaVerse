@@ -19,7 +19,7 @@ const colors = {
     gray: {
       700: "#535353",
       600: "#8b8b8b",
-      100: "#fffffa5d",
+      100: "#878787b6",
     },
     white: {
       900: "#fafafa",
@@ -35,7 +35,7 @@ const colors = {
   const styles = {
     global: (props) => ({
       "html, body": {
-        bg: props.colorMode === "dark" ? "black.900" : "white.900",
+        bg: props.colorMode === "dark" ? "black.700" : "white.900",
         color: props.colorMode === "dark" ? "white.900" : "black.900",
       },
       Button: {
@@ -68,6 +68,7 @@ const colors = {
         minW: 5,
         fontSize: "xs",
         borderRadius: "none",
+        bg: 'transparent',
         color: "blue.900",
         _focus: {
           boxShadow: "transparent",
@@ -75,7 +76,7 @@ const colors = {
       },
       variants: {
         'link-button' : {
-          bg: 'transparent',
+        bg: 'transparent',
         color:"blue.900",
         fontSize: "xs",
         minW: 5,
