@@ -7,7 +7,12 @@ import {
   Button,
   useColorModeValue,
   Avatar,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Box,
 } from "@chakra-ui/react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import {
   MdHome,
@@ -17,8 +22,9 @@ import {
   MdSearch,
   BsFillSunFill,
   FaInstalod,
+  GiHamburgerMenu,
+  BsMoon,
 } from "../../utils/Icons";
-import { NavLink, useNavigate } from "react-router-dom";
 import SearchBox from "./navbar components/SearchBox";
 
 const NavBar = () => {
@@ -64,7 +70,7 @@ const NavBar = () => {
             color={colorMode === "light" ? "black" : "blue.900"}
             onClick={toggleColorMode}
           >
-            <BsFillSunFill />
+            {colorMode === "light" ? <BsMoon /> : <BsFillSunFill />}
           </Button>
         </HStack>
       </Flex>
@@ -77,46 +83,51 @@ const NavBar = () => {
         top={{ base: "auto", md: "0" }}
         py={"0.5rem"}
         pl={"1rem"}
-        borderTop={{base:"1px solid gray", md:"none"}}
-        borderRight={{base:"none", md:"1px solid gray"}}
+        borderTop={{ base: "1px solid gray", md: "none" }}
+        borderRight={{ base: "none", md: "1px solid gray" }}
         justifyContent={"space-between"}
         bg={useColorModeValue("white.900", "black.900")}
       >
         <Flex
           flexDirection={{ base: "row", md: "column" }}
-          h={{base:"auto",md:"70%"}}
-          w={{base:"100%", lg:"90%"}}
+          h={{ base: "auto", md: "70%" }}
+          w={{ base: "100%", lg: "90%" }}
           mx={"auto"}
           maxH={"520px"}
-          justifyContent={{base:"space-between", lg:"flex-start"}}
+          justifyContent={{ base: "space-between", lg: "flex-start" }}
         >
           <HStack
             cursor={"pointer"}
-            justifyContent={{base:"center",lg:"flex-start"}}
+            justifyContent={{ base: "center", lg: "flex-start" }}
             align={"center"}
             w={"100%"}
             py={"2rem"}
             fontSize={"2rem"}
-            display={{ base: "none",md:"flex"}}
+            display={{ base: "none", md: "flex" }}
           >
-            <Text display={{ base: "none",md:"flex", lg: "none" }}>
+            <Text display={{ base: "none", md: "flex", lg: "none" }}>
               <FaInstalod />
             </Text>
 
-            <Text  fontFamily={"Pacifico, cursive"} fontSize={"1.5rem"} display={{ base: "none", lg: "flex" }} onClick={()=> navigate("/")}>
-          InstaVerse
-        </Text>
+            <Text
+              fontFamily={"Pacifico, cursive"}
+              fontSize={"1.5rem"}
+              display={{ base: "none", lg: "flex" }}
+              onClick={() => navigate("/")}
+            >
+              InstaVerse
+            </Text>
           </HStack>
           <Flex
             gap={"1.5rem"}
             fontSize={"2rem"}
             flexDir={{ base: "row", md: "column" }}
             align={"center"}
-            w={{base:"100%", md:"auto"}}
-            p={{base:"1rem", md:"2rem", lg:"0rem"}}
-            py={{lg:"2rem"}}
-            alignItems={{base:"center", lg:"baseline"}}
-            justifyContent={{base:"space-between", md:"center"}}
+            w={{ base: "100%", md: "auto" }}
+            p={{ base: "1rem", md: "2rem", lg: "0rem" }}
+            py={{ lg: "2rem" }}
+            alignItems={{ base: "center", lg: "baseline" }}
+            justifyContent={{ base: "space-between", md: "center" }}
           >
             <NavLink to="/">
               <HStack columnGap={"0.8rem"}>
@@ -179,7 +190,7 @@ const NavBar = () => {
             </NavLink>
 
             <NavLink to="/">
-            <HStack columnGap={"0.8rem"}>
+              <HStack columnGap={"0.8rem"}>
                 <Avatar
                   size={"sm"}
                   name="Dan Abrahmov"
@@ -195,6 +206,41 @@ const NavBar = () => {
             </NavLink>
           </Flex>
         </Flex>
+
+        <Box display={{ base: "none", md: "block" }}>
+          <Popover>
+            <PopoverTrigger>
+              <HStack
+                columnGap={"0.8rem"}
+                cursor={"pointer"}
+                my={"4rem"}
+                ml={"1rem"}
+                fontSize={"2rem"}
+              >
+                <GiHamburgerMenu />
+                <Text
+                  display={{ base: "none", lg: "inline-block" }}
+                  fontSize={"1rem"}
+                >
+                  More
+                </Text>
+              </HStack>
+            </PopoverTrigger>
+            <PopoverContent
+              width={"13rem"}
+              bg={colorMode === "light" ? "white.500" : "gray.700"}
+            >
+              <Button
+                justifyContent={"space-between"}
+                onClick={toggleColorMode}
+              >
+                <span>Switch Apperrance</span>
+                <BsMoon />
+              </Button>
+              <Button>LogOut</Button>
+            </PopoverContent>
+          </Popover>
+        </Box>
       </Flex>
     </>
   );
