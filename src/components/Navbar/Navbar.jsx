@@ -14,6 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
 
+import SearchBox from "./navbar components/SearchBox";
+import {
+  mobileNavbarStyle,
+  sidebarStyle,
+  navRoutesStyle,
+  desktopLogoStyles,
+} from "../../styles/Styles";
 import {
   MdHome,
   MdOutlineExplore,
@@ -22,10 +29,9 @@ import {
   MdSearch,
   BsFillSunFill,
   FaInstalod,
-  GiHamburgerMenu,
+  RxHamburgerMenu,
   BsMoon,
 } from "../../utils/Icons";
-import SearchBox from "./navbar components/SearchBox";
 
 const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -35,17 +41,8 @@ const NavBar = () => {
   return (
     <>
       <Flex
-        display={{ base: "flex", md: "none" }}
-        position={"fixed"}
         bg={useColorModeValue("white.900", "black.900")}
-        top={"0"}
-        h={"3rem"}
-        align={"center"}
-        px={"1rem"}
-        columnGap={"0.5rem"}
-        borderBottom={"1px solid gray"}
-        w={"100%"}
-        justifyContent={"space-between"}
+        {...mobileNavbarStyle}
       >
         <Text fontFamily={"Pacifico, cursive"} fontSize={"1.2rem"}>
           InstaVerse
@@ -75,19 +72,7 @@ const NavBar = () => {
         </HStack>
       </Flex>
 
-      <Flex
-        position={"fixed"}
-        bottom={0}
-        flexDirection={{ base: "row", md: "column" }}
-        w={{ base: "100%", md: "4rem", lg: "14rem" }}
-        top={{ base: "auto", md: "0" }}
-        py={"0.5rem"}
-        pl={"1rem"}
-        borderTop={{ base: "1px solid gray", md: "none" }}
-        borderRight={{ base: "none", md: "1px solid gray" }}
-        justifyContent={"space-between"}
-        bg={useColorModeValue("white.900", "black.900")}
-      >
+      <Flex {...sidebarStyle} bg={useColorModeValue("white.900", "black.900")}>
         <Flex
           flexDirection={{ base: "row", md: "column" }}
           h={{ base: "auto", md: "70%" }}
@@ -96,15 +81,7 @@ const NavBar = () => {
           maxH={"520px"}
           justifyContent={{ base: "space-between", lg: "flex-start" }}
         >
-          <HStack
-            cursor={"pointer"}
-            justifyContent={{ base: "center", lg: "flex-start" }}
-            align={"center"}
-            w={"100%"}
-            py={"2rem"}
-            fontSize={"2rem"}
-            display={{ base: "none", md: "flex" }}
-          >
+          <HStack {...desktopLogoStyles}>
             <Text display={{ base: "none", md: "flex", lg: "none" }}>
               <FaInstalod />
             </Text>
@@ -118,17 +95,7 @@ const NavBar = () => {
               InstaVerse
             </Text>
           </HStack>
-          <Flex
-            gap={"1.5rem"}
-            fontSize={"2rem"}
-            flexDir={{ base: "row", md: "column" }}
-            align={"center"}
-            w={{ base: "100%", md: "auto" }}
-            p={{ base: "1rem", md: "2rem", lg: "0rem" }}
-            py={{ lg: "2rem" }}
-            alignItems={{ base: "center", lg: "baseline" }}
-            justifyContent={{ base: "space-between", md: "center" }}
-          >
+          <Flex {...navRoutesStyle}>
             <NavLink to="/">
               <HStack columnGap={"0.8rem"}>
                 <MdHome />
@@ -214,10 +181,10 @@ const NavBar = () => {
                 columnGap={"0.8rem"}
                 cursor={"pointer"}
                 my={"4rem"}
-                ml={"1rem"}
+                ml={"1.5rem"}
                 fontSize={"2rem"}
               >
-                <GiHamburgerMenu />
+                <RxHamburgerMenu />
                 <Text
                   display={{ base: "none", lg: "inline-block" }}
                   fontSize={"1rem"}
