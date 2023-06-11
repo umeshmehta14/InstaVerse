@@ -44,12 +44,12 @@ const NavBar = () => {
         bg={useColorModeValue("white.900", "black.900")}
         {...mobileNavbarStyle}
       >
-        <Text fontFamily={"Pacifico, cursive"} fontSize={"1.2rem"}>
+        <Text fontFamily={"Pacifico, cursive"} fontSize={"1.2rem"} title="InstaVerse">
           InstaVerse
         </Text>
         <HStack>
           {openSearch ? (
-            <SearchBox setOpenSearch={setOpenSearch} openSearch={openSearch} />
+            <SearchBox setOpenSearch={setOpenSearch} openSearch={openSearch}/>
           ) : (
             <Button
               variant={"link-button"}
@@ -66,6 +66,7 @@ const NavBar = () => {
             fontSize={"1.6rem"}
             color={colorMode === "light" ? "black" : "blue.900"}
             onClick={toggleColorMode}
+            title={colorMode === "light" ? "Dark Mode": "Light Mode"}
           >
             {colorMode === "light" ? <BsMoon /> : <BsFillSunFill />}
           </Button>

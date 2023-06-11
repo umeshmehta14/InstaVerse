@@ -201,7 +201,7 @@ export const posts = [
   {
     _id: uuid(),
     content: "InstaVerse Is very nice",
-    mediaUrl: "",
+    mediaUrl: "https://tse3.explicit.bing.net/th?id=OIP.F55RSZzK4rtGw9WaBFnM8gHaFt&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -544,7 +544,7 @@ export const posts = [
     _id: "LKJHoiuyt9876#$",
     content:
       "Attended a cooking class today and learned how to make delicious pasta from scratch. #CookingClass #Foodie",
-    mediaUrl: "",
+    mediaUrl: "https://tse4.mm.bing.net/th?id=OIP.HfKR_Le9hoRNve9BNTD_3AHaE7&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -600,7 +600,7 @@ export const posts = [
   {
     _id: "kjhbJHBB12",
     content: "Feeling grateful!",
-    mediaUrl: "",
+    mediaUrl: "https://tse4.mm.bing.net/th?id=OIP.lHI5Hi8f3ymUyq47SxYlHQEsEs&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -635,7 +635,7 @@ export const posts = [
   {
     _id: "KJHKJ2jhg",
     content: "Having a great time!",
-    mediaUrl: "",
+    mediaUrl: "https://tse2.mm.bing.net/th?id=OIP.C8iuOh4GCiQoMsYT-HfuFQHaFc&pid=Api&P=0&h=180",
     likes: {
       likeCount: 3,
       likedBy: [
@@ -689,7 +689,7 @@ export const posts = [
   {
     _id: "lkjhLKJH765",
     content: "Excited for the weekend!",
-    mediaUrl: "",
+    mediaUrl: "https://tse2.explicit.bing.net/th?id=OIP.Ndv5TyAyCEr8EF6Dv93sFQHaFQ&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -886,7 +886,7 @@ export const posts = [
     _id: "JHiuyt98765",
     content:
       "Attended a fascinating tech conference today. So many exciting innovations! #TechConference #Innovation",
-    mediaUrl: "",
+    mediaUrl: "https://tse3.mm.bing.net/th?id=OIP.8kmffC1mmWunMVp6YI8BYwHaEK&pid=Api&P=0&h=180",
     likes: {
       likeCount: 3,
       likedBy: [
@@ -1178,7 +1178,7 @@ export const posts = [
     _id: "jkhKJHG987",
     content:
       "Enjoying a relaxing Sunday afternoon with a good book. #SundayVibes #Bookworm",
-    mediaUrl: "",
+    mediaUrl: "https://tse1.mm.bing.net/th?id=OIP.JwyKjsZJrKKlje-NDjgr_wHaEK&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -1475,7 +1475,7 @@ export const posts = [
   {
     _id: "jhgIUY987nb",
     content: "Just finished reading a great book. Highly recommend it!",
-    mediaUrl: "",
+    mediaUrl: "https://tse1.mm.bing.net/th?id=OIP.mPNyl0t4UZw4jzZkhn_M1AHaEK&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -1531,7 +1531,7 @@ export const posts = [
   {
     _id: "jkhgoiuOIU89765",
     content: "Attended a fascinating conference today. Learned so much!",
-    mediaUrl: "",
+    mediaUrl: "https://tse1.mm.bing.net/th?id=OIP.hORRikbO-VZjPC8zZevtjgHaE8&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -1588,7 +1588,7 @@ export const posts = [
     _id: "JKHGiuy98765",
     content:
       "Exploring new coffee shops in the city. ☕️ #CoffeeLover #CityLife",
-    mediaUrl: "",
+    mediaUrl: "https://tse1.mm.bing.net/th?id=OIP.gNiGdodNdn2Bck61_x18dAHaFi&pid=Api&P=0&h=180",
     likes: {
       likeCount: 3,
       likedBy: [
@@ -1992,7 +1992,7 @@ export const posts = [
     _id: "JIHUG987jhg",
     content:
       "Spent the weekend hiking in the mountains. The views were breathtaking! #HikingAdventure #Nature",
-    mediaUrl: "",
+    mediaUrl: "https://tse2.mm.bing.net/th?id=OIP.4s3Boyd8qtDZpW-B4v78LAHaE8&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
