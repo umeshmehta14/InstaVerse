@@ -11,6 +11,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   Box,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -32,11 +33,13 @@ import {
   RxHamburgerMenu,
   BsMoon,
 } from "../../utils/Icons";
+import PostModal from "../post modal/PostModal";
 
 const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const [openSearch, setOpenSearch] = useState(false);
   const navigate = useNavigate();
+  const {onOpen, isOpen, onClose} = useDisclosure();
 
   return (
     <>
@@ -133,8 +136,7 @@ const NavBar = () => {
               </HStack>
             </NavLink>
 
-            <NavLink to="/explore">
-              <HStack columnGap={"0.8rem"}>
+              <HStack columnGap={"0.8rem"} onClick={onOpen} cursor={"pointer"}>
                 <TbSquareRoundedPlus />
                 <Text
                   display={{ base: "none", lg: "inline-block" }}
@@ -143,7 +145,6 @@ const NavBar = () => {
                   Create
                 </Text>
               </HStack>
-            </NavLink>
 
             <NavLink to="/likeposts">
               <HStack columnGap={"0.8rem"}>
@@ -209,6 +210,7 @@ const NavBar = () => {
             </PopoverContent>
           </Popover>
         </Box>
+        <PostModal onClose={onClose} isOpen={isOpen}/>
       </Flex>
     </>
   );

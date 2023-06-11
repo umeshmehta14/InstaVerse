@@ -1,61 +1,91 @@
-import { Avatar, Box, Button, Flex, Textarea } from '@chakra-ui/react'
-import React, { useRef, useState } from 'react'
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Image,
+  Text,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Textarea,
+  useDisclosure,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
+
+import { AiOutlineHeart, FaRegComment, IoPaperPlaneOutline } from "../../utils/Icons";
 
 export const Home = () => {
 
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const fileInputRef = useRef();
-
-  const handlePhotoChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedPhoto(file);
-  };
-  const handleAddPhotoClick = () => {
-    fileInputRef.current.click();
-  };
 
   return (
-    <Flex>
-      <Box p={4}>
-        <Flex align="center" mb={4}>
-          <Avatar size="md" name="Your Name" src="your-profile-picture-url" />
-          <Textarea
-            ml={4}
-            flex="1"
-            placeholder="What's on your mind?"
-            size="lg"
-            resize="none"
-            borderRadius="md"
-            focusBorderColor="teal.400"
-          />
-        </Flex>
+    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
+      {/* Header */}
+      <Flex p="3" align="center">
+        <Avatar size="sm" name="John Doe" src="https://bit.ly/dan-abramov" />
+        <Text ml="2" fontWeight="semibold">
+          John Doe
+        </Text>
+      </Flex>
 
-        
-        <Flex justify="flex-end">
-        <label htmlFor="photo-upload">
-          <Button /*leftIcon={<AiOutlinePicture />}*/ colorScheme="teal" size="sm" onClick={handleAddPhotoClick}>
-            Add Photo
-          </Button>
-          </label>
-          <Button ml={2} colorScheme="teal" size="sm">
-            Post
-          </Button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={handlePhotoChange}
-          />
-        </Flex>
-        {selectedPhoto && (
-          <Box mt={4}>
-            <img src={URL.createObjectURL(selectedPhoto)} alt="Selected" width="200" />
-          </Box>
-        )}
-      </Box>
-    </Flex>
-  )
-}
+      {/* Image */}
+      <Image src="https://placekitten.com/500/300" alt="Post Image" />
 
+      {/* Actions */}
+      <Flex p="3">
+        <IconButton
+          variant="ghost"
+          color="gray.500"
+          icon={<AiOutlineHeart />}
+          aria-label="Like"
+          size="md"
+        />
+        <IconButton
+          variant="ghost"
+          color="gray.500"
+          icon={<FaRegComment />}
+          aria-label="Comment"
+          size="md"
+        />
+        <IconButton
+          variant="ghost"
+          color="gray.500"
+          icon={<IoPaperPlaneOutline />}
+          aria-label="Share"
+          size="md"
+        />
+      </Flex>
 
+      {/* Likes */}
+      <Flex p="3">
+        <Text fontWeight="semibold">Liked by </Text>
+        <Text ml="1" fontWeight="semibold" color="blue.500">
+          Jane Doe
+        </Text>
+        <Text ml="1" fontWeight="semibold" color="blue.500">
+          and 15 others
+        </Text>
+      </Flex>
+
+      {/* Comments */}
+      <Flex p="3">
+        <Text fontWeight="semibold" mr="1">
+          John Doe:
+        </Text>
+        <Text>Beautiful picture!</Text>
+      </Flex>
+      <Flex p="3">
+        <Text fontWeight="semibold" mr="1">
+          Jane Doe:
+        </Text>
+        <Text>Nice shot!</Text>
+      </Flex>
+    </Box>
+  );
+};

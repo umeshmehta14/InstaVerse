@@ -35,6 +35,8 @@ export const getUserHandler = function (schema, request) {
   }
 };
 
+
+
 /**
  * This handler handles updating user details.
  * send POST Request at /api/users/edit
