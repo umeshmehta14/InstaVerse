@@ -10,11 +10,11 @@ function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.700");
   const { loading } = usePost();
+
   return (
     <Box
       color={color}
       bg={bg}
-      transition="background-color 1s, color 0.3s"
       className="App"
     >
       {loading ? (

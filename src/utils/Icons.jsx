@@ -3,9 +3,8 @@ import {
   MdOutlineExplore,
   MdFavorite,
   MdSearch,
-  MdBookmark,
 } from "react-icons/md";
-import { BsFillSunFill, BsMoon, BsEmojiSunglasses } from "react-icons/bs";
+import { BsFillSunFill, BsMoon, BsEmojiSunglasses, BsThreeDots } from "react-icons/bs";
 import {
   AiOutlineHeart,
   AiOutlineComment,
@@ -16,12 +15,14 @@ import { TbSquareRoundedPlus } from "react-icons/tb";
 import { FaInstalod, FaRegComment } from "react-icons/fa";
 import { FcAddImage } from "react-icons/fc";
 import { IoPaperPlaneOutline } from "react-icons/io5";
+import { FiBookmark } from "react-icons/fi";
 
 
 export {
   AiOutlineHeart,
   AiOutlineComment,
   AiOutlinePaperClip,
+  BsThreeDots,
   BsEmojiSunglasses,
   IoPaperPlaneOutline,
   FaRegComment,
@@ -36,5 +37,5 @@ export {
   TbSquareRoundedPlus,
   BsFillSunFill,
   RxCross2,
-  MdBookmark,
+  FiBookmark,
 };

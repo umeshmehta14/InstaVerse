@@ -14,10 +14,9 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import {FcAddImage, BsEmojiSunglasses} from "../../utils/Icons";
+import { FcAddImage, BsEmojiSunglasses } from "../../utils/Icons";
 
 const PostModal = ({ isOpen, onClose }) => {
-
   const { colorMode } = useColorMode();
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
@@ -26,10 +25,10 @@ const PostModal = ({ isOpen, onClose }) => {
     setSelectedPhoto(file);
   };
 
-  const handleModalClose = () =>{
+  const handleModalClose = () => {
     onClose();
     setSelectedPhoto(null);
-  }
+  };
 
   const handlePost = () => {
     onClose();
@@ -38,12 +37,21 @@ const PostModal = ({ isOpen, onClose }) => {
 
   return (
     <Box p={4}>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl"  bg={colorMode === "light"?"white.900":"black.700"}>
-        <ModalOverlay bg='blackAlpha.300'
-      backdropFilter='blur(10px) hue-rotate(90deg)'/>
-        <ModalContent border={"1px solid gray"}>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay
+          bg="blackAlpha.300"
+          backdropFilter="blur(10px) hue-rotate(90deg)"
+        />
+        <ModalContent
+          border={"1px solid gray"}
+          bg={colorMode === "light" ? "white.500" : "#535353"}
+        >
           <ModalHeader>Create Post</ModalHeader>
-          <ModalCloseButton color={colorMode === "light"?"black":"white"} _hover={{bg:"red"}} onClick={handleModalClose}/>
+          <ModalCloseButton
+            color={colorMode === "light" ? "black" : "white"}
+            _hover={{ bg: "red" }}
+            onClick={handleModalClose}
+          />
           <ModalBody>
             <Flex align="center" mb={4}>
               <Textarea
@@ -75,9 +83,17 @@ const PostModal = ({ isOpen, onClose }) => {
                   style={{ display: "none" }}
                   onChange={handlePhotoChange}
                 />
-                  <FcAddImage fontSize={"2rem"} cursor={"pointer"} title="Add Photo"/>
+                <FcAddImage
+                  fontSize={"2rem"}
+                  cursor={"pointer"}
+                  title="Add Photo"
+                />
               </label>
-            <BsEmojiSunglasses fontSize={"1.8rem"} cursor="pointer" title="Emoji"/>
+              <BsEmojiSunglasses
+                fontSize={"1.8rem"}
+                cursor="pointer"
+                title="Emoji"
+              />
             </Flex>
             <Button bg={"gray.100"} size="sm" onClick={handlePost} title="Post">
               Post
