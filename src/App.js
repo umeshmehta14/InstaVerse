@@ -12,29 +12,18 @@ function App() {
   const { loading } = usePost();
 
   return (
-    <Box
-      color={color}
-      bg={bg}
-      className="App"
-    >
+    <Box color={color} bg={bg} className="App">
       {loading ? (
         "Loading.."
       ) : (
-        <Flex>
+        <Flex flexDir={{base:"column",md:"row"}} gap={"1rem"}>
           <NavBar />
-          <Box
-            position={"relative"}
-            top={{ base: "5rem", md: "0" }}
-            bottom={{ base: "5rem", md: "0" }}
-            left={{ base: "0", md: "5rem", lg: "14rem" }}
-          >
             <Routes>
               <Route path={"/"} element={<Home />} />
               <Route path={"/bookmark"} element={<BookMark />} />
               <Route path={"/explore"} element={<Explore />} />
-              <Route path={"/login"} element={<Login/>} />
+              <Route path={"/login"} element={<Login />} />
             </Routes>
-          </Box>
         </Flex>
       )}
     </Box>

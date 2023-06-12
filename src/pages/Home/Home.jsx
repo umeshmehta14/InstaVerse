@@ -6,12 +6,14 @@ import {
   Flex,
   HStack,
   Image,
+  Input,
   Popover,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
   Text,
+  VStack,
   useColorMode,
 } from "@chakra-ui/react";
 
@@ -21,6 +23,7 @@ import {
   IoPaperPlaneOutline,
   BsThreeDots,
   FiBookmark,
+  BsEmojiSunglasses,
 } from "../../utils/Icons";
 import { usePost } from "../../contexts";
 
@@ -31,17 +34,24 @@ export const Home = () => {
   const { colorMode } = useColorMode();
 
   return (
-    <Flex gap={"1rem"} w="100%" flexDir={{ base: "column", lg: "row-reverse" }}>
+    <Flex
+      gap={"1rem"}
+      w="100%"
+      flexDir={{ base: "column", lg: "row-reverse" }}
+      justifyContent={"center"}
+      mt={"1rem"}
+    >
       <Box
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
         w={{ lg: "30%" }}
-        maxW={{ lg: "300px" }}
+        maxW={{ base: "468px", lg: "300px" }}
+        h={"fit-content"}
       >
         <Flex p="3" align="center">
           <Text fontWeight="semibold" mx={"auto"}>
-            Suggestions For You
+            Suggested For You
           </Text>
         </Flex>
 
@@ -84,103 +94,128 @@ export const Home = () => {
         </Flex>
       </Box>
 
-      <Box
-        maxW="468px"
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-        bg={colorMode === "light" ? "white.500" : "black.900"}
-        h={"fit-content"}
-      >
-        <Flex px="3" py="1" align="center" justifyContent={"space-between"}>
-          <Flex alignItems={"center"}>
-            <Avatar
-              size="sm"
-              name="John Doe"
-              src="https://bit.ly/dan-abramov"
-            />
-            <Text ml="2" fontWeight="semibold">
-              John Doe
+      <VStack alignItems={"flex-end"}>
+        <Box
+          maxW="468px"
+          borderWidth="1px"
+          borderRadius="lg"
+          bg={colorMode === "light" ? "white.500" : "black.900"}
+          h={"fit-content"}
+        >
+          <Flex px="3" py="1" align="center" justifyContent={"space-between"}>
+            <Flex alignItems={"center"}>
+              <Avatar
+                size="sm"
+                name="John Doe"
+                src="https://bit.ly/dan-abramov"
+              />
+              <Text ml="2" fontWeight="semibold">
+                John Doe
+              </Text>
+            </Flex>
+            <Popover>
+              <PopoverTrigger>
+                <Button
+                  fontSize={"1.5rem"}
+                  bg={"transparent"}
+                  borderRadius={"40%"}
+                >
+                  <BsThreeDots cursor={"pointer"} />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent w={"fit-content"}>
+                <PopoverArrow />
+                <PopoverBody>
+                  <Button>Edit</Button>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+          </Flex>
+
+          <Image src="https://placekitten.com/500/300" alt="Post Image" />
+
+          <Flex flexDir={"column"} rowGap={"0.5rem"} px={"3"} pb={"2"} pt={"2"}>
+            <Flex
+              fontSize={"1.7rem"}
+              color={colorMode === "light" ? "black" : "white"}
+              justifyContent={"space-between"}
+            >
+              <HStack justifyContent={"space-between"} w={"40%"}>
+                <Box
+                  as={AiOutlineHeart}
+                  cursor="pointer"
+                  _hover={{ color: "gray" }}
+                  title="Like"
+                />
+                <Box
+                  as={FaRegComment}
+                  cursor="pointer"
+                  _hover={{ color: "gray" }}
+                  title="Comment"
+                />
+                <Box
+                  as={IoPaperPlaneOutline}
+                  cursor="pointer"
+                  _hover={{ color: "gray" }}
+                  title="Share"
+                />
+              </HStack>
+              <HStack>
+                <Box
+                  as={FiBookmark}
+                  cursor="pointer"
+                  _hover={{ color: "gray" }}
+                  title="Save"
+                />
+              </HStack>
+            </Flex>
+
+            <Flex fontSize={"sm"}>
+              <Text fontWeight="semibold">Liked by </Text>
+              <Text ml="1" fontWeight="semibold" color="blue.500">
+                Jane Doe
+              </Text>
+              <Text ml="1" fontWeight="semibold" color="blue.500">
+                and 15 others
+              </Text>
+            </Flex>
+
+            <Text fontSize={"sm"}>
+              <strong>Profile Name</strong> Beautiful kittten man
+            </Text>
+
+            <Flex>
+              <Text fontSize={"sm"} color={"gray.400"} cursor={"pointer"}>
+                View All Comments
+              </Text>
+            </Flex>
+            <Text fontSize={"xs"} color={"gray.400"} cursor={"pointer"}>
+              1 Day Ago
             </Text>
           </Flex>
-          <Popover>
-            <PopoverTrigger>
-              <Button
-                fontSize={"1.5rem"}
-                bg={"transparent"}
-                borderRadius={"40%"}
-              >
-                <BsThreeDots cursor={"pointer"} />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent w={"fit-content"}>
-              <PopoverArrow />
-              <PopoverBody>
-                <Button>Edit</Button>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
-        </Flex>
 
-        <Image src="https://placekitten.com/500/300" alt="Post Image" />
-
-        <Flex
-          p="3"
-          fontSize={"1.7rem"}
-          color={colorMode === "light" ? "black" : "white"}
-          justifyContent={"space-between"}
-        >
-          <HStack justifyContent={"space-between"} w={"40%"}>
+          <Flex py="1" borderTop="1px solid gray" alignItems={"center"}>
             <Box
-              as={AiOutlineHeart}
+              as={BsEmojiSunglasses}
+              fontSize={"1.8rem"}
               cursor="pointer"
-              _hover={{ color: "gray" }}
-              title="Like"
+              title="Emoji"
+              ml="2"
             />
-            <Box
-              as={FaRegComment}
-              cursor="pointer"
-              _hover={{ color: "gray" }}
-              title="Comment"
-            />
-            <Box
-              as={IoPaperPlaneOutline}
-              cursor="pointer"
-              _hover={{ color: "gray" }}
-              title="Share"
-            />
-          </HStack>
-          <HStack>
-            <Box
-              as={FiBookmark}
-              cursor="pointer"
-              _hover={{ color: "gray" }}
-              title="Save"
-            />
-          </HStack>
-        </Flex>
 
-        <Text p="3">
-          <strong>Profile Name</strong> Beautiful kittten man
-        </Text>
-
-        <Flex px="3">
-          <Text fontWeight="semibold">Liked by </Text>
-          <Text ml="1" fontWeight="semibold" color="blue.500">
-            Jane Doe
-          </Text>
-          <Text ml="1" fontWeight="semibold" color="blue.500">
-            and 15 others
-          </Text>
-        </Flex>
-
-        <Flex p="3">
-          <Text fontWeight="semibold" mr="1">
-            John Doe:
-          </Text>
-          <Text>Beautiful picture!</Text>
-        </Flex>
-      </Box>
+            <Input
+              placeholder="Add a comment..."
+              border={"none"}
+              flex="1"
+              mr="2"
+              _focus={{ outline: "none", boxShadow: "none", border: "none" }}
+            />
+            <Button fontSize={"1rem"} variant={"link-button"} size="sm">
+              Post
+            </Button>
+          </Flex>
+        </Box>
+      </VStack>
     </Flex>
   );
 };

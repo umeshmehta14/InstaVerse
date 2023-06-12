@@ -1,4 +1,4 @@
-export {BookMark} from "./bookMark/BookMark.jsx";
-export {Home} from "./home/Home.jsx";
-export {Explore} from "./explore/Explore.jsx";
+export {BookMark} from "./BookMark/BookMark.jsx";
+export {Home} from "./Home/Home.jsx";
+export {Explore} from "./Explore/Explore.jsx";
 export {Login} from "./Authentication/Login.jsx";

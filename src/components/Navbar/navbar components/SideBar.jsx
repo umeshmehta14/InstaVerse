@@ -144,7 +144,7 @@ const SideBar = () => {
             <HStack
               columnGap={"0.8rem"}
               cursor={"pointer"}
-              my={"4rem"}
+              mt={"4rem"}
               ml={"1.5rem"}
               fontSize={"2rem"}
             >

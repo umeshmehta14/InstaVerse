@@ -22,6 +22,7 @@ const NavBar = () => {
       <Flex
         bg={useColorModeValue("white.900", "black.900")}
         {...mobileNavbarStyle}
+        // flexDir="column"
       >
         <Text
           fontFamily={"Pacifico, cursive"}

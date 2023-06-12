@@ -24,6 +24,7 @@ export const PostProvider = ({ children }) => {
         status,
         data: { posts },
       } = await getAllPosts();
+      console.log(posts)
       if (status === 200 || status === 201) {
         dispatch({ type: ALL_POSTS, payload: posts });
       }

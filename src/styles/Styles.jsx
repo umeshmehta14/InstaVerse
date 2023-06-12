@@ -1,6 +1,6 @@
 export const mobileNavbarStyle = {
   display: { base: "flex", md: "none" },
-  position: "fixed",
+  position: "sticky",
   top: "0",
   h: "3rem",
   align: "center",
@@ -12,8 +12,9 @@ export const mobileNavbarStyle = {
 };
 
 export const sidebarStyle = {
-  position: "fixed",
+  position: {base:"fixed",md:"sticky"},
   bottom: 0,
+  h:{base:"fit-content", md:"100vh"},
   flexDirection: { base: "row", md: "column" },
   w: { base: "100%", md: "5rem", lg: "14rem" },
   top: { base: "auto", md: "0" },
