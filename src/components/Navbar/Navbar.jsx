@@ -15,13 +15,14 @@ import {
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import SearchBox from "./navbar components/SearchBox";
+import SearchBox from "./Navbar Components/SearchBox";
 import {
   mobileNavbarStyle,
   sidebarStyle,
   navRoutesStyle,
   desktopLogoStyles,
 } from "../../styles/Styles";
+import PostModal from "../Post Modal/PostModal";
 import {
   MdHome,
   MdOutlineExplore,
@@ -33,7 +34,6 @@ import {
   RxHamburgerMenu,
   BsMoon,
 } from "../../utils/Icons";
-import PostModal from "../post modal/PostModal";
 
 const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
