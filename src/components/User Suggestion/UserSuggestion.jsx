@@ -1,21 +1,34 @@
-import React from 'react'
-import { usePost } from '../../contexts';
-import { Avatar, Box, Button, Flex, Text } from '@chakra-ui/react';
+import React from "react";
+import { usePost } from "../../contexts";
+import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 
 export const UserSuggestion = () => {
-    const {
-        state: { users },
-      } = usePost();
+  const {
+    state: { users },
+  } = usePost();
 
   return (
     <Box
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-        w={{ lg: "30%" }}
-        maxW={{ base: "468px", lg: "300px" }}
-        h={"fit-content"}
+      overflow="hidden"
+      w={{ lg: "30%" }}
+      maxW={{ base: "468px", lg: "300px" }}
+      h={"fit-content"}
+    >
+      <Flex
+        align={"center"}
+        columnGap={"1rem"}
+        p="3"
+        mt={"2rem"}
+        display={{ base: "none", lg: "flex" }}
       >
+        <Avatar
+          size="lg"
+          name="Christian Nwamba"
+          src="https://bit.ly/code-beast"
+        />
+        <Text fontWeight={"normal"}>Profile</Text>
+      </Flex>
+      <Box borderWidth="1px" borderRadius="lg">
         <Flex p="3" align="center">
           <Text fontWeight="semibold" mx={"auto"}>
             Suggested For You
@@ -60,6 +73,6 @@ export const UserSuggestion = () => {
           ))}
         </Flex>
       </Box>
-  )
-}
-
+    </Box>
+  );
+};
