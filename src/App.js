@@ -4,7 +4,7 @@ import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 import NavBar from "./components/Navbar/NavBar";
 import { usePost } from "./contexts";
 import { Route, Routes } from "react-router-dom";
-import { BookMark, Explore, Home } from "./pages";
+import { BookMark, Explore, Home, Login } from "./pages";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
@@ -32,6 +32,7 @@ function App() {
               <Route path={"/"} element={<Home />} />
               <Route path={"/bookmark"} element={<BookMark />} />
               <Route path={"/explore"} element={<Explore />} />
+              <Route path={"/login"} element={<Login/>} />
             </Routes>
           </Box>
         </Flex>
