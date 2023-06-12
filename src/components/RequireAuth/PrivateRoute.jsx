@@ -8,7 +8,7 @@ export const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   return token ? (
-     children 
+     children
   ) : (
     <Navigate to="/login" state={{ from: location }} />
   );

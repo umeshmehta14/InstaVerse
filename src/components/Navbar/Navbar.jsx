@@ -1,4 +1,5 @@
 import React, {  useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Flex,
   Text,
@@ -12,7 +13,6 @@ import SearchBox from "./Navbar Components/SearchBox";
 import { mobileNavbarStyle } from "../../styles/Styles";
 import SideBar from "./Navbar Components/SideBar";
 import { MdSearch, BsFillSunFill, BsMoon } from "../../utils/Icons";
-import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();

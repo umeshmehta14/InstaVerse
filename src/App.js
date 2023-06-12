@@ -48,9 +48,7 @@ function App() {
             <Route
               path={"/login"}
               element={
-                <PrivateRoute>
                   <Login />
-                </PrivateRoute>
               }
             />
           </Routes>

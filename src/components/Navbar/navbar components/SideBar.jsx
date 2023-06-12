@@ -31,11 +31,13 @@ import {
   RxHamburgerMenu,
   BsMoon,
 } from "../../../utils/Icons";
+import { useAuth } from "../../../contexts";
 
 const SideBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const { onOpen, isOpen, onClose } = useDisclosure();
+  const {logoutHandler} = useAuth();
 
   return (
     <Flex {...sidebarStyle} bg={useColorModeValue("white.900", "black.900")}>
@@ -165,7 +167,7 @@ const SideBar = () => {
               <span>Switch Apperrance</span>
               <BsMoon />
             </Button>
-            <Button>LogOut</Button>
+            <Button onClick={logoutHandler}>LogOut</Button>
           </PopoverContent>
         </Popover>
       </Box>

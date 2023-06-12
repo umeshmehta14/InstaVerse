@@ -13,13 +13,13 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts";
 
 export const Login = () => {
   const { colorMode } = useColorMode();
 
-  const { loginHandler, token, logoutHandler } = useAuth();
+  const { loginHandler, token } = useAuth();
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -37,7 +37,7 @@ export const Login = () => {
     if (token) {
       navigate( "/");
     }
-  }, []);
+  }, [token]);
 
   return (
     <Flex

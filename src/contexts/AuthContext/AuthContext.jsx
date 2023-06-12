@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getLoginInformation, createUser } from "./AuthApi";
 // import { toast } from "react-toastify";
 
@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const localStorageToken = JSON.parse(localStorage.getItem("loginDetails"));
   const [token, setToken] = useState(localStorageToken?.token);
   const [currentUser, setCurrentUser] = useState(localStorageToken?.user);
+
 
   const loginHandler = async (username, password) => {
     try {
