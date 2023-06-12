@@ -22,6 +22,8 @@ export const AuthProvider = ({ children }) => {
         );
         setCurrentUser(foundUser);
         setToken(encodedToken);
+        console.log(foundUser);
+        console.log(encodedToken);
         // toast.success(`Welcome Back ${foundUser.firstName} To TechBay`, { containerId: 'A', theme: "colored" });
       }
     } catch (err) {
@@ -45,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         // toast.success(`Welcome ${createdUser.firstName} To TechBay`, { containerId: 'A', theme: "colored" });
       }
     } catch (err) {
-        // toast.error(`Email Already Exist`, { containerId: 'A', theme: "colored" });
+      // toast.error(`Email Already Exist`, { containerId: 'A', theme: "colored" });
     }
   };
 

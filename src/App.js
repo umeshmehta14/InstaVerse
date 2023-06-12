@@ -5,6 +5,7 @@ import NavBar from "./components/Navbar/NavBar";
 import { usePost } from "./contexts";
 import { Route, Routes } from "react-router-dom";
 import { BookMark, Explore, Home, Login } from "./pages";
+import { PrivateRoute } from "./components";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
@@ -16,14 +17,43 @@ function App() {
       {loading ? (
         "Loading.."
       ) : (
-        <Flex flexDir={{base:"column",md:"row"}} gap={"1rem"}>
+        <Flex flexDir={{ base: "column", md: "row" }} gap={"1rem"}>
           <NavBar />
-            <Routes>
-              <Route path={"/"} element={<Home />} />
-              <Route path={"/bookmark"} element={<BookMark />} />
-              <Route path={"/explore"} element={<Explore />} />
-              <Route path={"/login"} element={<Login />} />
-            </Routes>
+          <Routes>
+            <Route
+              path={"/"}
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path={"/bookmark"}
+              element={
+                <PrivateRoute>
+                  <BookMark />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={"/explore"}
+              element={
+                <PrivateRoute>
+                  <Explore />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={"/login"}
+              element={
+                <PrivateRoute>
+                  <Login />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
         </Flex>
       )}
     </Box>

@@ -3,14 +3,14 @@ import { Navigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "../../contexts";
 
-const PrivateRoute = ({ children }) => {
+export const PrivateRoute = ({ children }) => {
   const { token } = useAuth();
   const location = useLocation();
+
   return token ? (
-    { children }
+     children 
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/login" state={{ from: location }} />
   );
 };
 
-export default PrivateRoute;
