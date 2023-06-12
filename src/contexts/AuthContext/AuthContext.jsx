@@ -9,12 +9,12 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorageToken?.token);
   const [currentUser, setCurrentUser] = useState(localStorageToken?.user);
 
-  const loginHandler = async (email, password) => {
+  const loginHandler = async (username, password) => {
     try {
       const {
         status,
         data: { foundUser, encodedToken },
-      } = await getLoginInformation(email, password);
+      } = await getLoginInformation(username, password);
       if (status === 200 || status === 201) {
         localStorage.setItem(
           "loginDetails",
@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
         status,
         data: { createdUser, encodedToken },
       } = await createUser(firstName, lastName, email, password);
-       
       if (status === 201 || status === 200) {
         localStorage.setItem(
           "loginDetails",
