@@ -75,8 +75,8 @@ export const Login = () => {
           InstaVerse
         </Heading>
         <form onSubmit={handleLogin}>
-          <FormControl id="email" mb={4}>
-            <FormLabel mb={"1"}>username:</FormLabel>
+          <FormControl id="username" mb={4}>
+            <FormLabel mb={"1"}>User Name:</FormLabel>
             <Input
               type="text"
               placeholder="Enter your username"

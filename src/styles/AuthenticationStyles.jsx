@@ -10,6 +10,7 @@ export const authBox = {
   p: 8,
   mx: "auto",
   maxW: "400px",
+  w:"50%",
   borderWidth: 1,
   borderRadius: "md",
   boxShadow: "lg",

@@ -24,6 +24,7 @@ export const SignUp = () => {
 
   const { signUpHandler, token } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [signupForm, setSignupForm] = useState({
     fistName: "",
@@ -32,7 +33,7 @@ export const SignUp = () => {
     password: "",
   });
 
-  const {firstName, lastName, username, password} = signupForm;
+  const { firstName, lastName, username, password } = signupForm;
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -46,13 +47,8 @@ export const SignUp = () => {
   }, [token]);
 
   return (
-    <Flex
-    {...mainAuthContainer}
-    >
-      <Box
-        {...authBox}
-        bg={colorMode === "light" ? "white.500" : "black.900"}
-      >
+    <Flex {...mainAuthContainer}>
+      <Box {...authBox} bg={colorMode === "light" ? "white.500" : "black.900"}>
         <Heading
           fontFamily={"Pacifico, cursive"}
           title="InstaVerse"
@@ -64,7 +60,7 @@ export const SignUp = () => {
         </Heading>
         <form onSubmit={handleSignup}>
           <FormControl id="firstname" mb={4}>
-            <FormLabel mb={"1"}>firstName:</FormLabel>
+            <FormLabel mb={"1"}>First Name:</FormLabel>
             <Input
               type="text"
               placeholder="Enter first name"
@@ -88,7 +84,7 @@ export const SignUp = () => {
             />
           </FormControl>
           <FormControl id="username" mb={4}>
-            <FormLabel mb={"1"}>username:</FormLabel>
+            <FormLabel mb={"1"}>User Name:</FormLabel>
             <Input
               type="text"
               placeholder="Enter your username"
@@ -103,7 +99,7 @@ export const SignUp = () => {
             <FormLabel>Password:</FormLabel>
             <InputGroup>
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 value={password}
                 required
@@ -111,7 +107,15 @@ export const SignUp = () => {
                   setSignupForm({ ...signupForm, password: event.target.value })
                 }
               />
-              <InputRightElement>show</InputRightElement>
+              {password && (
+                <InputRightElement
+                  cursor={"pointer"}
+                  fontSize={"sm"}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </InputRightElement>
+              )}
             </InputGroup>
           </FormControl>
           <VStack justifyContent={"space-between"}>
