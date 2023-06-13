@@ -20,6 +20,7 @@ import {
   sidebarStyle,
   navRoutesStyle,
   desktopLogoStyles,
+  sidebarLogoBoxStyles,
 } from "../../../styles/NavbarStyles";
 import {
   MdHome,
@@ -42,12 +43,7 @@ const SideBar = () => {
   return (
     <Flex {...sidebarStyle} bg={useColorModeValue("white.900", "black.900")}>
       <Flex
-        flexDirection={{ base: "row", md: "column" }}
-        h={{ base: "auto", md: "70%" }}
-        w={{ base: "100%", lg: "90%" }}
-        mx={"auto"}
-        maxH={"520px"}
-        justifyContent={{ base: "space-between", lg: "flex-start" }}
+        {...sidebarLogoBoxStyles}
       >
         <HStack {...desktopLogoStyles}>
           <Text display={{ base: "none", md: "flex", lg: "none" }}>

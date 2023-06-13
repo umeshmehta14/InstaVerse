@@ -1,26 +1,21 @@
 import React from "react";
-import {  useUser } from "../../contexts";
+import { useUser } from "../../contexts";
 import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
+import {
+  userSuggestionAllProfileBox,
+  userSuggestionContainer,
+  userSuggestionMainProfile,
+} from "../../styles/UserSuggestionStyles";
 
 export const UserSuggestion = () => {
+
   const {
     userState: { users },
   } = useUser();
 
   return (
-    <Box
-      overflow="hidden"
-      w={{ lg: "30%" }}
-      maxW={{ base: "468px", lg: "300px" }}
-      h={"fit-content"}
-    >
-      <Flex
-        align={"center"}
-        columnGap={"1rem"}
-        p="3"
-        mt={"2rem"}
-        display={{ base: "none", lg: "flex" }}
-      >
+    <Box {...userSuggestionContainer}>
+      <Flex {...userSuggestionMainProfile}>
         <Avatar
           size="lg"
           name="Christian Nwamba"
@@ -42,16 +37,7 @@ export const UserSuggestion = () => {
           overflowX={{ base: "auto", md: "hidden" }}
         >
           {users.map((user) => (
-            <Flex
-              p="3"
-              align="center"
-              key={user._id}
-              flexDir={{ base: "column", lg: "row" }}
-              minW={{ base: "130px", lg: "auto" }}
-              rowGap={"0.5rem"}
-              outline={{ base: "0.5px solid gray", lg: "none" }}
-              justifyContent={"space-between"}
-            >
+            <Flex key={user._id} {...userSuggestionAllProfileBox}>
               <Flex
                 flexDir={{ base: "column", lg: "row" }}
                 align={"center"}

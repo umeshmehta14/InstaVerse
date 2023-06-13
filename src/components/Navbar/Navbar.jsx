@@ -15,6 +15,7 @@ import SideBar from "./Navbar Components/SideBar";
 import { MdSearch, BsFillSunFill, BsMoon } from "../../utils/Icons";
 
 const NavBar = () => {
+
   const { toggleColorMode, colorMode } = useColorMode();
   const [openSearch, setOpenSearch] = useState(false);
   const location = useLocation();
@@ -28,7 +29,6 @@ const NavBar = () => {
       <Flex
         bg={useColorModeValue("white.900", "black.900")}
         {...mobileNavbarStyle}
-        // flexDir="column"
       >
         <Text
           fontFamily={"Pacifico, cursive"}

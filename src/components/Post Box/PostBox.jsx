@@ -24,6 +24,7 @@ import {
   FiBookmark,
   BsEmojiSunglasses,
 } from "../../utils/Icons";
+import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
 
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
@@ -32,12 +33,8 @@ export const PostBox = ({ post }) => {
 
   return (
     <Box
-      w={"100%"}
-      maxW="468px"
-      borderWidth="1px"
-      borderRadius="lg"
+      {...mainPostBoxStyles}
       bg={colorMode === "light" ? "white.500" : "black.900"}
-      h={"fit-content"}
     >
       <Flex px="3" py="1" align="center" justifyContent={"space-between"}>
         <Flex alignItems={"center"}>
@@ -63,7 +60,7 @@ export const PostBox = ({ post }) => {
 
       <Image src={mediaUrl} alt="Post Image" w={"100%"} />
 
-      <Flex flexDir={"column"} rowGap={"0.5rem"} px={"3"} pb={"2"} pt={"2"}>
+      <Flex {...iconPostStyles}>
         <Flex
           fontSize={"1.7rem"}
           color={colorMode === "light" ? "black" : "white"}

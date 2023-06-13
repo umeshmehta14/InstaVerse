@@ -44,7 +44,7 @@ const PostModal = ({ isOpen, onClose }) => {
         />
         <ModalContent
           border={"1px solid gray"}
-          bg={colorMode === "light" ? "white.500" : "#535353"}
+          bg={colorMode === "light" ? "white.500" : "black.900"}
         >
           <ModalHeader>Create Post</ModalHeader>
           <ModalCloseButton

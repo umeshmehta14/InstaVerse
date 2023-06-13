@@ -21,7 +21,7 @@ export const sidebarStyle = {
   top: { base: "auto", md: "0" },
   py: "0.5rem",
   pl: { lg: "1rem" },
-  zIndex:1,
+  zIndex: 1,
   borderTop: { base: "1px solid gray", md: "none" },
   borderRight: { base: "none", md: "1px solid gray" },
   justifyContent: "space-between",
@@ -47,4 +47,13 @@ export const desktopLogoStyles = {
   py: "2rem",
   fontSize: "2rem",
   display: { base: "none", md: "flex" },
+};
+
+export const sidebarLogoBoxStyles = {
+  flexDirection: { base: "row", md: "column" },
+  h: { base: "auto", md: "70%" },
+  w: { base: "100%", lg: "90%" },
+  mx: "auto",
+  maxH: "520px",
+  justifyContent: { base: "space-between", lg: "flex-start" },
 };
