@@ -143,7 +143,7 @@ export const Login = () => {
         </form>
         <Text mt={4} textAlign="center">
           Don't have an account?{" "}
-          <Link color="blue.500" onClick={() => console.log("Sign up")}>
+          <Link color="blue.500" onClick={() => navigate("/signup")}>
             Sign up
           </Link>
         </Text>

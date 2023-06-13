@@ -4,8 +4,8 @@ export const getLoginInformation = async (username,password) => await axios.post
     username,
     password
 });
-export const createUser = async (firstName, lastName, email,password) => await axios.post('/api/auth/signup', {
-    email,
+export const createUser = async (firstName, lastName, username,password) => await axios.post('/api/auth/signup', {
+    username,
     password,
     firstName,
     lastName

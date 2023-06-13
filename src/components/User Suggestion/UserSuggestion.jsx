@@ -23,14 +23,28 @@ export const UserSuggestion = () => {
 
   return (
     <Box {...userSuggestionContainer}>
-      <Flex {...userSuggestionMainProfile} title={currentUser.username} cursor={"pointer"}>
-        <Avatar
-          size="lg"
-          name={currentUser.username}
-          src={currentUser.avatarURL}
-        />
-        <Text fontWeight={"normal"}>{currentUser.username}</Text>
+      <Flex
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        display={{ base: "none", lg: "flex" }}
+      >
+        <Flex
+          {...userSuggestionMainProfile}
+          title={currentUser.username}
+          cursor={"pointer"}
+        >
+          <Avatar
+            size="lg"
+            name={currentUser.username}
+            src={currentUser.avatarURL}
+          />
+          <Text fontWeight={"normal"} justifySelf={"flex-end"}>
+            {currentUser.username}
+          </Text>
+        </Flex>
+        <Button variant={"link-button"}>Switch</Button>
       </Flex>
+
       <Box borderWidth="1px" borderRadius="lg">
         <Flex p="3" align="center">
           <Text fontWeight="semibold" mx={"auto"}>

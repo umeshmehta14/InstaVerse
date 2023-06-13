@@ -4,7 +4,7 @@ import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 import NavBar from "./components/Navbar/NavBar";
 import { usePost } from "./contexts";
 import { Route, Routes } from "react-router-dom";
-import { BookMark, Explore, Home, Login } from "./pages";
+import { BookMark, Explore, Home, Login, SignUp } from "./pages";
 import { PrivateRoute } from "./components";
 
 function App() {
@@ -45,12 +45,8 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route
-              path={"/login"}
-              element={
-                  <Login />
-              }
-            />
+            <Route path={"/login"} element={<Login />} />
+            <Route path={"/signup"} element={<SignUp />} />
           </Routes>
         </Flex>
       )}

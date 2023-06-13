@@ -20,7 +20,7 @@ const NavBar = () => {
   const [openSearch, setOpenSearch] = useState(false);
   const location = useLocation();
 
-  if(location.pathname === "/login"){
+  if(location.pathname === "/login" || location.pathname === "/signup"){
     return null;
   }
 

@@ -30,12 +30,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUpHandler = async (firstName, lastName, email, password) => {
+  const signUpHandler = async (firstName, lastName, username, password) => {
     try {
       const {
         status,
         data: { createdUser, encodedToken },
-      } = await createUser(firstName, lastName, email, password);
+      } = await createUser(firstName, lastName, username, password);
       if (status === 201 || status === 200) {
         localStorage.setItem(
           "loginDetails",
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
       // toast.error(`Email Already Exist`, { containerId: 'A', theme: "colored" });
     }
   };
-
+  
   const logoutHandler = () => {
     localStorage.removeItem("loginDetails");
     setToken(null);
