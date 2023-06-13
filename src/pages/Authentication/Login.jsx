@@ -133,7 +133,7 @@ export const Login = () => {
                     borderRadius={"12px"}
                     _hover={{bg:"gray.100"}}
                   >
-                    <Avatar size="sm" name={user?.firstName} src={user?.avatarURL} />
+                    <Avatar size="sm" name={user?.firstName} src={user?.avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"} />
                     {user?.username}
                   </Flex>
                 ))}

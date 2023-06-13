@@ -51,7 +51,7 @@ export const PostBox = ({ post }) => {
     >
       <Flex px="3" py="1" align="center" justifyContent={"space-between"} borderBottom={"0.5px solid #e0e0e0"}>
         <Flex alignItems={"center"} cursor={"pointer"} title={username}>
-          <Avatar size="sm" name={username} src={avatarURL} />
+          <Avatar size="sm" name={username} src={avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"} />
           <Text ml="2" fontWeight="semibold">
             {username}
           </Text>
@@ -115,7 +115,7 @@ export const PostBox = ({ post }) => {
               <Avatar
                 size="2xs"
                 name="Dan Abrahmov"
-                src={friendLike?.avatarURL}
+                src={friendLike?.avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"}
               />
               {friendLike?.username}
             </Flex>

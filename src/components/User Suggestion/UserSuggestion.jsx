@@ -36,7 +36,7 @@ export const UserSuggestion = () => {
           <Avatar
             size="lg"
             name={currentUser.username}
-            src={currentUser.avatarURL}
+            src={currentUser.avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"}
           />
           <Text fontWeight={"normal"} justifySelf={"flex-end"}>
             {currentUser.username}
@@ -69,7 +69,7 @@ export const UserSuggestion = () => {
                 <Avatar
                   size={{ base: "md", md: "sm" }}
                   name={user.firstName}
-                  src={user.avatarURL}
+                  src={user.avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"}
                 />
                 <Box>
                   <Text fontSize="sm">{user.username}</Text>

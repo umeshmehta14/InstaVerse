@@ -124,7 +124,7 @@ const SideBar = () => {
               <Avatar
                 size={"sm"}
                 name="Dan Abrahmov"
-                src={currentUser?.avatarURL}
+                src={currentUser?.avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"}
               />
               <Text
                 display={{ base: "none", lg: "inline-block" }}
