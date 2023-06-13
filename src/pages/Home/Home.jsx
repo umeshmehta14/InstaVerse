@@ -1,7 +1,7 @@
 import React from "react";
 
 import { PostBox, UserSuggestion } from "../../components";
-import { Flex, VStack } from "@chakra-ui/react";
+import { Flex, Heading, VStack } from "@chakra-ui/react";
 import { useAuth, usePost } from "../../contexts";
 
 export const Home = () => {
@@ -28,11 +28,27 @@ export const Home = () => {
       alignItems={{ base: "center", lg: "flex-start" }}
     >
       <UserSuggestion />
-      <VStack w={{base:"100%",lg:"auto"}} alignItems={"center"} minW={{md:"468px"}}>
-        {homePagePosts.map((post) => (
-          <PostBox key={post._id} post={post} />
-        ))}
-      </VStack>
+      {homePagePosts.length === 0 ? (
+        <Flex
+          justifyContent={"center"}
+          h="70%"
+          textAlign={"center"}
+          align={"center"}
+          fontSize={"2xl"}
+        >
+          No posts yet. You can go Explore Feed
+        </Flex>
+      ) : (
+        <VStack
+          w={{ base: "100%", lg: "auto" }}
+          alignItems={"center"}
+          minW={{ md: "468px" }}
+        >
+          {homePagePosts.map((post) => (
+            <PostBox key={post._id} post={post} />
+          ))}
+        </VStack>
+      )}
     </Flex>
   );
 };
