@@ -1,11 +1,11 @@
 import React from "react";
-import { usePost } from "../../contexts";
+import {  useUser } from "../../contexts";
 import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 
 export const UserSuggestion = () => {
   const {
-    state: { users },
-  } = usePost();
+    userState: { users },
+  } = useUser();
 
   return (
     <Box

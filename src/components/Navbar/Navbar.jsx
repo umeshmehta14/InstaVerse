@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import SearchBox from "./Navbar Components/SearchBox";
-import { mobileNavbarStyle } from "../../styles/Styles";
+import { mobileNavbarStyle } from "../../styles/NavbarStyles";
 import SideBar from "./Navbar Components/SideBar";
 import { MdSearch, BsFillSunFill, BsMoon } from "../../utils/Icons";
 

@@ -6,7 +6,7 @@ import { usePost } from "../../contexts";
 
 export const Home = () => {
 
-  const {state:{posts}} = usePost();
+  const {postState:{posts}} = usePost();
 
   return (
     <Flex

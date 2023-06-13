@@ -5,16 +5,15 @@ import {
   useReducer,
   useState,
 } from "react";
-import { InitialState } from "../../reducer/InitialState";
-import { DataReducer } from "../../reducer/DataReducer";
+import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
+import { PostReducer } from "../../reducer/PostReducer/PostReducer";
 import { getAllPosts } from "./PostApi";
 import { ALL_POSTS } from "../../utils/Constants";
 
 export const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
-
-  const [state, dispatch] = useReducer(DataReducer, InitialState);
+  const [postState, postDispatch] = useReducer(PostReducer, PostInitialState);
 
   const [loading, setLoading] = useState(true);
 
@@ -24,9 +23,9 @@ export const PostProvider = ({ children }) => {
         status,
         data: { posts },
       } = await getAllPosts();
-      console.log(posts)
+      console.log(posts);
       if (status === 200 || status === 201) {
-        dispatch({ type: ALL_POSTS, payload: posts });
+        postDispatch({ type: ALL_POSTS, payload: posts });
       }
     } catch (err) {
       console.error(err);
@@ -40,7 +39,7 @@ export const PostProvider = ({ children }) => {
   }, []);
 
   return (
-    <PostContext.Provider value={{ loading, dispatch, state }}>
+    <PostContext.Provider value={{ loading, postDispatch, postState }}>
       {children}
     </PostContext.Provider>
   );

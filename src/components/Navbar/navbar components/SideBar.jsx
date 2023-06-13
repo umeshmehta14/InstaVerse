@@ -20,7 +20,7 @@ import {
   sidebarStyle,
   navRoutesStyle,
   desktopLogoStyles,
-} from "../../../styles/Styles";
+} from "../../../styles/NavbarStyles";
 import {
   MdHome,
   MdOutlineExplore,
