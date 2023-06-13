@@ -21,6 +21,7 @@ import {
   navRoutesStyle,
   desktopLogoStyles,
   sidebarLogoBoxStyles,
+  navlinkStyle,
 } from "../../../styles/NavbarStyles";
 import {
   MdHome,
@@ -38,14 +39,13 @@ const SideBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const { onOpen, isOpen, onClose } = useDisclosure();
-  const {logoutHandler, currentUser} = useAuth();
+  const { logoutHandler, currentUser } = useAuth();
 
+  const getStyle = ({isActive}) => (isActive ? { fontWeight: "bold" } : {});
 
   return (
     <Flex {...sidebarStyle} bg={useColorModeValue("white.900", "black.900")}>
-      <Flex
-        {...sidebarLogoBoxStyles}
-      >
+      <Flex {...sidebarLogoBoxStyles}>
         <HStack {...desktopLogoStyles}>
           <Text display={{ base: "none", md: "flex", lg: "none" }}>
             <FaInstalod />
@@ -55,14 +55,23 @@ const SideBar = () => {
             fontFamily={"Pacifico, cursive"}
             fontSize={"1.5rem"}
             display={{ base: "none", lg: "flex" }}
+            pl="0.5rem"
             onClick={() => navigate("/")}
           >
             InstaVerse
           </Text>
         </HStack>
         <Flex {...navRoutesStyle}>
-          <NavLink to="/">
-            <HStack columnGap={"0.8rem"}>
+          <NavLink
+            style={getStyle}
+            className="nav-links"
+            to="/"
+          >
+            <HStack
+              {...navlinkStyle}
+              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
+              columnGap={"0.8rem"}
+            >
               <MdHome />
               <Text
                 display={{ base: "none", lg: "inline-block" }}
@@ -73,8 +82,13 @@ const SideBar = () => {
             </HStack>
           </NavLink>
 
-          <NavLink to="/" id="md-search-nav">
-            <HStack columnGap={"0.8rem"}>
+          {/* <NavLink style={getStyle} className="nav-links" to="/" > */}
+            <HStack
+            id="md-search-nav"
+              {...navlinkStyle}
+              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
+              columnGap={"0.8rem"}
+            >
               <MdSearch />
               <Text
                 display={{ base: "none", lg: "inline-block" }}
@@ -83,10 +97,14 @@ const SideBar = () => {
                 Search
               </Text>
             </HStack>
-          </NavLink>
+          {/* </NavLink> */}
 
-          <NavLink to="/explore">
-            <HStack columnGap={"0.8rem"}>
+          <NavLink style={getStyle} className="nav-links" to="/explore">
+            <HStack
+              {...navlinkStyle}
+              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
+              columnGap={"0.8rem"}
+            >
               <MdOutlineExplore />
               <Text
                 display={{ base: "none", lg: "inline-block" }}
@@ -97,7 +115,13 @@ const SideBar = () => {
             </HStack>
           </NavLink>
 
-          <HStack columnGap={"0.8rem"} onClick={onOpen} cursor={"pointer"}>
+          <HStack
+            {...navlinkStyle}
+            _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
+            columnGap={"0.8rem"}
+            onClick={onOpen}
+            cursor={"pointer"}
+          >
             <TbSquareRoundedPlus />
             <Text
               display={{ base: "none", lg: "inline-block" }}
@@ -107,8 +131,12 @@ const SideBar = () => {
             </Text>
           </HStack>
 
-          <NavLink to="/likeposts">
-            <HStack columnGap={"0.8rem"}>
+          <NavLink style={({isActive}) => getStyle(isActive)} className="nav-links" to="/likeposts">
+            <HStack
+              {...navlinkStyle}
+              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
+              columnGap={"0.8rem"}
+            >
               <AiOutlineHeart />
               <Text
                 display={{ base: "none", lg: "inline-block" }}
@@ -119,12 +147,19 @@ const SideBar = () => {
             </HStack>
           </NavLink>
 
-          <NavLink to="/profile">
-            <HStack columnGap={"0.8rem"}>
+          <NavLink style={getStyle} className="nav-links" to="/profile">
+            <HStack
+              {...navlinkStyle}
+              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
+              columnGap={"0.8rem"}
+            >
               <Avatar
                 size={"sm"}
                 name="Dan Abrahmov"
-                src={currentUser?.avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"}
+                src={
+                  currentUser?.avatarURL ||
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
+                }
               />
               <Text
                 display={{ base: "none", lg: "inline-block" }}

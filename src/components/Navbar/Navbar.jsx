@@ -57,6 +57,7 @@ const NavBar = () => {
             color={colorMode === "light" ? "black" : "blue.900"}
             onClick={toggleColorMode}
             title={colorMode === "light" ? "Dark Mode" : "Light Mode"}
+            p="0"
           >
             {colorMode === "light" ? <BsMoon /> : <BsFillSunFill />}
           </Button>
