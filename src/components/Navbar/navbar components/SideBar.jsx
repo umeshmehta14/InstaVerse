@@ -119,7 +119,7 @@ const SideBar = () => {
             </HStack>
           </NavLink>
 
-          <NavLink to="/">
+          <NavLink to="/profile">
             <HStack columnGap={"0.8rem"}>
               <Avatar
                 size={"sm"}

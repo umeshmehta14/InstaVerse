@@ -8,7 +8,6 @@ import {
   Image,
   Input,
   Popover,
-  PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
@@ -26,10 +25,12 @@ import {
 } from "../../utils/Icons";
 import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
 import { useAuth } from "../../contexts";
+import { useNavigate } from "react-router-dom";
 
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   const {
     username,
@@ -56,7 +57,7 @@ export const PostBox = ({ post }) => {
         justifyContent={"space-between"}
         borderBottom={"0.5px solid #e0e0e0"}
       >
-        <Flex alignItems={"center"} cursor={"pointer"} title={username}>
+        <Flex alignItems={"center"} cursor={"pointer"} title={username} onClick={()=> navigate("/profile")}>
           <Avatar
             size="sm"
             name={username}
@@ -82,7 +83,6 @@ export const PostBox = ({ post }) => {
             </Button>
           </PopoverTrigger>
           <PopoverContent w={"fit-content"}>
-            {/* <PopoverArrow /> */}
             <PopoverBody>
               <Button>Edit</Button>
             </PopoverBody>
@@ -130,7 +130,7 @@ export const PostBox = ({ post }) => {
         {friendLike ? (
           <Flex fontSize={"sm"} cursor={"pointer"} align={"center"}>
             <Text>Liked by </Text>
-            <Flex ml="1" fontWeight="semibold" align={"center"} gap={"1"}>
+            <Flex ml="1" fontWeight="semibold" align={"center"} gap={"1"} onClick={()=> navigate("/profile")}>
               <Avatar
                 size="2xs"
                 name="Dan Abrahmov"
@@ -149,7 +149,7 @@ export const PostBox = ({ post }) => {
         )}
 
         <Flex fontSize={"sm"} gap="0.5rem">
-          <Text fontWeight={"semibold"} cursor={"pointer"}>
+          <Text fontWeight={"semibold"} cursor={"pointer"} onClick={()=> navigate("/profile")}>
             {username}
           </Text>{" "}
           {content}

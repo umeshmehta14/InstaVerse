@@ -52,6 +52,7 @@ export const UserSuggestion = () => {
           {...userSuggestionMainProfile}
           title={currentUser.username}
           cursor={"pointer"}
+          onClick={()=> navigate("/profile")}
         >
           <Avatar
             size="lg"
@@ -143,6 +144,7 @@ export const UserSuggestion = () => {
                 align={"center"}
                 gap={"0.5rem"}
                 title={user.username}
+                onClick={()=> navigate("/profile")}
               >
                 <Avatar
                   size={{ base: "md", md: "sm" }}
