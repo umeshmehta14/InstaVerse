@@ -49,7 +49,7 @@ export const PostBox = ({ post }) => {
       bg={colorMode === "light" ? "white.500" : "black.900"}
       boxShadow={colorMode === "light" ? "1px 1px 8px #8080805e" : ""}
     >
-      <Flex px="3" py="1" align="center" justifyContent={"space-between"}>
+      <Flex px="3" py="1" align="center" justifyContent={"space-between"} borderBottom={"0.5px solid #e0e0e0"}>
         <Flex alignItems={"center"} cursor={"pointer"} title={username}>
           <Avatar size="sm" name={username} src={avatarURL} />
           <Text ml="2" fontWeight="semibold">
