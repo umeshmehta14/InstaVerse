@@ -1,4 +1,4 @@
-import { createContext, useContext,  useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { getLoginInformation, createUser } from "./AuthApi";
 // import { toast } from "react-toastify";
 
@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
   const localStorageToken = JSON.parse(localStorage.getItem("loginDetails"));
   const [token, setToken] = useState(localStorageToken?.token);
   const [currentUser, setCurrentUser] = useState(localStorageToken?.user);
-
 
   const loginHandler = async (username, password) => {
     try {
@@ -49,15 +48,19 @@ export const AuthProvider = ({ children }) => {
       // toast.error(`Email Already Exist`, { containerId: 'A', theme: "colored" });
     }
   };
-  
+
   const logoutHandler = () => {
     localStorage.removeItem("loginDetails");
     setToken(null);
     setCurrentUser(null);
   };
+
+  const handleGuestLogin = (user) =>
+    loginHandler(user?.username, user?.password);
+
   return (
     <AuthContext.Provider
-      value={{ loginHandler, logoutHandler, token, signUpHandler, currentUser }}
+      value={{ loginHandler, logoutHandler, token, signUpHandler, currentUser, handleGuestLogin }}
     >
       {children}
     </AuthContext.Provider>

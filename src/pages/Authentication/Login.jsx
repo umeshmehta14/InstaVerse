@@ -33,7 +33,7 @@ export const Login = () => {
   const {
     userState: { users },
   } = useUser();
-  const { loginHandler, token } = useAuth();
+  const { loginHandler, token, handleGuestLogin } = useAuth();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showPassword, setShowPassword] = useState(false);
@@ -43,9 +43,7 @@ export const Login = () => {
     password: "",
   });
 
-  const handleGuestLogin = (user) => {
-    loginHandler(user?.username, user?.password);
-  };
+
 
   const handleLogin = (e) => {
     e.preventDefault();

@@ -28,7 +28,7 @@ export const UserSuggestion = () => {
   const {
     userState: { users },
   } = useUser();
-  const { currentUser, logoutHandler } = useAuth();
+  const { currentUser, logoutHandler, handleGuestLogin } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
