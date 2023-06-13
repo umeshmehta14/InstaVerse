@@ -17,6 +17,7 @@ import { FcAddImage } from "react-icons/fc";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { FiBookmark } from "react-icons/fi";
 import { BiChevronDown } from "react-icons/bi";
+import { VscPassFilled } from "react-icons/vsc";
 
 
 export {
@@ -40,4 +41,5 @@ export {
   RxCross2,
   BiChevronDown,
   FiBookmark,
+  VscPassFilled
 };
