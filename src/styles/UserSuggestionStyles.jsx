@@ -1,5 +1,5 @@
 export const userSuggestionContainer = {
-  overflow: "auto",
+  overflow: "hidden",
   w: { lg: "30%" },
   maxW: { base: "468px", lg: "300px" },
   h: "fit-content",
@@ -9,7 +9,6 @@ export const userSuggestionMainProfile = {
   align: "center",
   columnGap: "1rem",
   p: "3",
-  mt: "2rem",
   display: { base: "none", lg: "flex" },
 };
 
@@ -21,4 +20,5 @@ export const userSuggestionAllProfileBox = {
   rowGap: "0.5rem",
   outline: { base: "0.5px solid gray", lg: "none" },
   justifyContent: "space-between",
+  cursor:"pointer",
 };

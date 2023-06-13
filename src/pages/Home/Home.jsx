@@ -2,11 +2,21 @@ import React from "react";
 
 import { PostBox, UserSuggestion } from "../../components";
 import { Flex, VStack } from "@chakra-ui/react";
-import { usePost } from "../../contexts";
+import { useAuth, usePost } from "../../contexts";
 
 export const Home = () => {
+  const {
+    postState: { posts },
+  } = usePost();
+  const { currentUser } = useAuth();
 
-  const {postState:{posts}} = usePost();
+  const homePagePosts = posts.filter(
+    ({ username }) =>
+      currentUser.username === username ||
+      currentUser.following.some(
+        (followingUser) => followingUser.username === username
+      )
+  );
 
   return (
     <Flex
@@ -15,13 +25,13 @@ export const Home = () => {
       flexDir={{ base: "column", lg: "row-reverse" }}
       justifyContent={"center"}
       mt={"1rem"}
-      alignItems={{base:"center",lg:"baseline"}}
+      alignItems={{ base: "center", lg: "flex-start" }}
     >
-      <UserSuggestion/>
-      <VStack alignItems={"flex-end"}>
-        {
-          posts.map((post)=><PostBox key={post._id} post={post}/>)
-        }
+      <UserSuggestion />
+      <VStack w={{base:"100%",lg:"auto"}} alignItems={"center"} minW={{md:"468px"}}>
+        {homePagePosts.map((post) => (
+          <PostBox key={post._id} post={post} />
+        ))}
       </VStack>
     </Flex>
   );

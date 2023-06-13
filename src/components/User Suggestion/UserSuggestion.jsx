@@ -1,5 +1,5 @@
 import React from "react";
-import { useUser } from "../../contexts";
+import { useAuth, useUser } from "../../contexts";
 import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import {
   userSuggestionAllProfileBox,
@@ -8,20 +8,28 @@ import {
 } from "../../styles/UserSuggestionStyles";
 
 export const UserSuggestion = () => {
-
   const {
     userState: { users },
   } = useUser();
+  const { currentUser } = useAuth();
+
+  const suggestedUser = users?.filter(
+    (user) =>
+      user._id !== currentUser?._id &&
+      !currentUser?.following?.some(
+        ({ username }) => username === user.username
+      )
+  );
 
   return (
     <Box {...userSuggestionContainer}>
-      <Flex {...userSuggestionMainProfile}>
+      <Flex {...userSuggestionMainProfile} title={currentUser.username} cursor={"pointer"}>
         <Avatar
           size="lg"
-          name="Christian Nwamba"
-          src="https://bit.ly/code-beast"
+          name={currentUser.username}
+          src={currentUser.avatarURL}
         />
-        <Text fontWeight={"normal"}>Profile</Text>
+        <Text fontWeight={"normal"}>{currentUser.username}</Text>
       </Flex>
       <Box borderWidth="1px" borderRadius="lg">
         <Flex p="3" align="center">
@@ -34,14 +42,15 @@ export const UserSuggestion = () => {
           flexDir={{ base: "row", lg: "column" }}
           w={{ base: "100vw", md: "auto" }}
           overflow={"auto"}
-          overflowX={{ base: "auto", md: "hidden" }}
+          maxW={"100%"}
         >
-          {users.map((user) => (
+          {suggestedUser?.map((user) => (
             <Flex key={user._id} {...userSuggestionAllProfileBox}>
               <Flex
                 flexDir={{ base: "column", lg: "row" }}
                 align={"center"}
                 gap={"0.5rem"}
+                title={user.username}
               >
                 <Avatar
                   size={{ base: "md", md: "sm" }}

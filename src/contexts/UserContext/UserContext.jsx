@@ -14,8 +14,8 @@ export const UserProvider = ({children}) =>{
     const getUsers = async () =>{
         try {
             const {status, data: {users}} = await getAllUser();
-            const data = await getSingleUser();
-            console.log(data);
+            // const data = await getSingleUser();
+            // console.log(data);
             if(status === 200 || status === 201){
                 userDispatch({type: ALL_USERS, payload: users});
             }

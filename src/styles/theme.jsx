@@ -82,6 +82,12 @@ const colors = {
         minW: 5,
         h:"1.5rem",
         },
+        'white-button' : {
+        bg: 'gray.300',
+        color:"gray.900",
+        fontSize: "md",
+        borderRadius:"12px"
+        },
     },
     IconButton: {
           as: "span",

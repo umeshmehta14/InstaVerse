@@ -38,7 +38,8 @@ const SideBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const { onOpen, isOpen, onClose } = useDisclosure();
-  const {logoutHandler} = useAuth();
+  const {logoutHandler, currentUser} = useAuth();
+
 
   return (
     <Flex {...sidebarStyle} bg={useColorModeValue("white.900", "black.900")}>
@@ -123,7 +124,7 @@ const SideBar = () => {
               <Avatar
                 size={"sm"}
                 name="Dan Abrahmov"
-                src="https://bit.ly/dan-abramov"
+                src={currentUser?.avatarURL}
               />
               <Text
                 display={{ base: "none", lg: "inline-block" }}

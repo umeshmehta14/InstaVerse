@@ -19,7 +19,7 @@ export const sidebarStyle = {
   flexDirection: { base: "row", md: "column" },
   w: { base: "100%", md: "5rem", lg: "15rem" },
   top: { base: "auto", md: "0" },
-  py: "0.5rem",
+  py: {base:"0",md: "0.5rem" },
   pl: { lg: "1rem" },
   zIndex: 1,
   borderTop: { base: "1px solid gray", md: "none" },

@@ -200,7 +200,7 @@ export const users = [
     _id: "zxc789",
     firstName: "Kalu",
     lastName: "Don",
-    username: "kaluDon",
+    username: "kaludon",
     email: "kaludon@example.com",
     password: "kaludon123",
     createdAt: "2023-06-02T15:40:00Z",

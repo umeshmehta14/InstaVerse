@@ -36,7 +36,7 @@ const PostModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Box p={4}>
+    <Box p={{base:"0", md:4}}>
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay
           bg="blackAlpha.300"

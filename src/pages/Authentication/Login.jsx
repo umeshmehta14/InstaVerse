@@ -12,30 +12,46 @@ import {
   Link,
   Text,
   useColorMode,
+  Avatar,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts";
+import { useAuth, useUser } from "../../contexts";
 
 export const Login = () => {
+  document.title = "InstaVerse | Login";
   const { colorMode } = useColorMode();
-
+  const {
+    userState: { users },
+  } = useUser();
   const { loginHandler, token } = useAuth();
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
-  document.title = "Login";
 
+  const handleGuestLogin = (user) => {
+    loginHandler(user?.username, user?.password);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    loginHandler(loginForm.username, loginForm.password);
+    loginHandler(loginForm?.username, loginForm?.password);
   };
 
   useEffect(() => {
     if (token) {
-      navigate( "/");
+      navigate("/");
     }
   }, [token]);
 
@@ -45,6 +61,7 @@ export const Login = () => {
       w={"100vw"}
       align="center"
       justify="center"
+      overflowY={"hidden"}
     >
       <Box
         p={8}
@@ -54,6 +71,7 @@ export const Login = () => {
         borderRadius="md"
         boxShadow="lg"
         bg={colorMode === "light" ? "white.500" : "black.900"}
+        overflow="hidden"
       >
         <Heading
           fontFamily={"Pacifico, cursive"}
@@ -89,14 +107,39 @@ export const Login = () => {
                   setLoginForm({ ...loginForm, password: event.target.value })
                 }
               />
-              <InputRightElement>
-                  show
-              </InputRightElement>
+              <InputRightElement>show</InputRightElement>
             </InputGroup>
           </FormControl>
-          <Button colorScheme="facebook" size="lg" type="submit" width="full">
+          <VStack justifyContent={"space-between"}>
+          <Button bg={"blue.500"} size="md" type="submit" w={"50%"}>
             Log In
           </Button>
+          <Button variant={"white-button"} onClick={onOpen}>Login As</Button>
+          </VStack>
+
+          <Modal onClose={onClose} size={"xs"} isOpen={isOpen}>
+            <ModalOverlay />
+            <ModalContent bg={colorMode === "light"? "white.500":"black.900"}>
+              <ModalHeader>Guest Users</ModalHeader>
+              <ModalCloseButton _hover={{bg:"red", color:"white"}}/>
+              <ModalBody >
+                {users.map((user) => (
+                  <Flex
+                    gap={"2"}
+                    cursor={"pointer"}
+                    align={"center"}
+                    p="2"
+                    onClick={() => handleGuestLogin(user)}
+                    borderRadius={"12px"}
+                    _hover={{bg:"gray.100"}}
+                  >
+                    <Avatar size="sm" name={user?.firstName} src={user?.avatarURL} />
+                    {user?.username}
+                  </Flex>
+                ))}
+              </ModalBody>
+            </ModalContent>
+          </Modal>
         </form>
         <Text mt={4} textAlign="center">
           Don't have an account?{" "}

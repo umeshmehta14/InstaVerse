@@ -16,6 +16,7 @@ import { FaInstalod, FaRegComment } from "react-icons/fa";
 import { FcAddImage } from "react-icons/fc";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { FiBookmark } from "react-icons/fi";
+import { BiChevronDown } from "react-icons/bi";
 
 
 export {
@@ -37,5 +38,6 @@ export {
   TbSquareRoundedPlus,
   BsFillSunFill,
   RxCross2,
+  BiChevronDown,
   FiBookmark,
 };

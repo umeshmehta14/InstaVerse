@@ -23,8 +23,6 @@ export const AuthProvider = ({ children }) => {
         );
         setCurrentUser(foundUser);
         setToken(encodedToken);
-        console.log(foundUser);
-        console.log(encodedToken);
         // toast.success(`Welcome Back ${foundUser.firstName} To TechBay`, { containerId: 'A', theme: "colored" });
       }
     } catch (err) {

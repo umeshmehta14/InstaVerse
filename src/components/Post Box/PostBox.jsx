@@ -25,19 +25,32 @@ import {
   BsEmojiSunglasses,
 } from "../../utils/Icons";
 import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
+import { useAuth } from "../../contexts";
 
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
+  const { currentUser } = useAuth();
 
-  const { username, mediaUrl, avatarURL, comments, content, createdAt } = post;
-
+  const {
+    username,
+    mediaUrl,
+    avatarURL,
+    comments,
+    content,
+    createdAt,
+    likes: { likedBy },
+  } = post;
+  const friendLike = currentUser.following.find(({ username }) =>
+    likedBy.some((likeUser) => likeUser.username === username)
+  );
   return (
     <Box
       {...mainPostBoxStyles}
       bg={colorMode === "light" ? "white.500" : "black.900"}
+      boxShadow={colorMode === "light" ? "1px 1px 8px #8080805e" : ""}
     >
       <Flex px="3" py="1" align="center" justifyContent={"space-between"}>
-        <Flex alignItems={"center"}>
+        <Flex alignItems={"center"} cursor={"pointer"} title={username}>
           <Avatar size="sm" name={username} src={avatarURL} />
           <Text ml="2" fontWeight="semibold">
             {username}
@@ -95,16 +108,23 @@ export const PostBox = ({ post }) => {
             />
           </HStack>
         </Flex>
-
-        <Flex fontSize={"sm"} cursor={"pointer"}>
-          <Text>Liked by </Text>
-          <Text ml="1" color="blue.500" fontWeight="semibold">
-            Jane Doe
-          </Text>
-          <Text ml="1" color="blue.500" fontWeight="semibold">
-            and 15 others
-          </Text>
-        </Flex>
+        {friendLike ? (
+          <Flex fontSize={"sm"} cursor={"pointer"} align={"center"}>
+            <Text>Liked by </Text>
+            <Flex ml="1" fontWeight="semibold" align={"center"} gap={"1"}>
+              <Avatar
+                size="2xs"
+                name="Dan Abrahmov"
+                src={friendLike?.avatarURL}
+              />
+              {friendLike?.username}
+            </Flex>
+            <Text mx={"1"}>and</Text>
+            <Text fontWeight="semibold">{likedBy.length - 1} others</Text>
+          </Flex>
+        ) : (
+          <Text>{likedBy.length} likes</Text>
+        )}
 
         <Flex fontSize={"sm"} gap="0.5rem">
           <Text fontWeight={"semibold"} cursor={"pointer"}>
