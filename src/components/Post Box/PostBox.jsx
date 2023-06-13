@@ -49,21 +49,40 @@ export const PostBox = ({ post }) => {
       bg={colorMode === "light" ? "white.500" : "black.900"}
       boxShadow={colorMode === "light" ? "1px 1px 8px #8080805e" : ""}
     >
-      <Flex px="3" py="1" align="center" justifyContent={"space-between"} borderBottom={"0.5px solid #e0e0e0"}>
+      <Flex
+        px="3"
+        py="1"
+        align="center"
+        justifyContent={"space-between"}
+        borderBottom={"0.5px solid #e0e0e0"}
+      >
         <Flex alignItems={"center"} cursor={"pointer"} title={username}>
-          <Avatar size="sm" name={username} src={avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"} />
+          <Avatar
+            size="sm"
+            name={username}
+            src={
+              avatarURL ||
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
+            }
+          />
           <Text ml="2" fontWeight="semibold">
             {username}
           </Text>
         </Flex>
         <Popover>
           <PopoverTrigger>
-            <Button fontSize={"1.5rem"} bg={"transparent"} borderRadius={"40%"}>
-              <BsThreeDots cursor={"pointer"} />
+            <Button
+              fontSize={"1.5rem"}
+              pr={0}
+              bg={"transparent"}
+              borderRadius={"40%"}
+              _hover={{ color: "gray", bg: "transparent" }}
+            >
+              <Box as={BsThreeDots} cursor={"pointer"} />
             </Button>
           </PopoverTrigger>
           <PopoverContent w={"fit-content"}>
-            <PopoverArrow />
+            {/* <PopoverArrow /> */}
             <PopoverBody>
               <Button>Edit</Button>
             </PopoverBody>
@@ -79,7 +98,7 @@ export const PostBox = ({ post }) => {
           color={colorMode === "light" ? "black" : "white"}
           justifyContent={"space-between"}
         >
-          <HStack justifyContent={"space-between"} w={"40%"}>
+          <HStack justifyContent={"space-between"} w={"30%"}>
             <Box
               as={AiOutlineHeart}
               cursor="pointer"
@@ -115,7 +134,10 @@ export const PostBox = ({ post }) => {
               <Avatar
                 size="2xs"
                 name="Dan Abrahmov"
-                src={friendLike?.avatarURL || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"}
+                src={
+                  friendLike?.avatarURL ||
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
+                }
               />
               {friendLike?.username}
             </Flex>
@@ -134,11 +156,11 @@ export const PostBox = ({ post }) => {
         </Flex>
 
         <Flex>
-          <Text fontSize={"sm"} color={"gray.400"} cursor={"pointer"}>
+          <Text fontSize={"sm"} color={"#717171e0"} cursor={"pointer"}>
             View All Comments
           </Text>
         </Flex>
-        <Text fontSize="xs" color={"gray.300"}>
+        <Text fontSize="xs" color={"#717171e0"}>
           {` ${new Date(createdAt)
             .toDateString()
             .split(" ")
