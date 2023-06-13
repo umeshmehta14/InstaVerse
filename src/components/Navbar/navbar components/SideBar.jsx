@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Flex,
@@ -13,6 +13,14 @@ import {
   Box,
   useDisclosure,
   useColorMode,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
+  Input,
 } from "@chakra-ui/react";
 
 import PostModal from "../../Post Modal/PostModal";
@@ -40,6 +48,8 @@ const SideBar = () => {
   const navigate = useNavigate();
   const { onOpen, isOpen, onClose } = useDisclosure();
   const { logoutHandler, currentUser } = useAuth();
+  const btnRef = useRef();
+
 
   const getStyle = ({isActive}) => (isActive ? { fontWeight: "bold" } : {});
 
@@ -82,12 +92,13 @@ const SideBar = () => {
             </HStack>
           </NavLink>
 
-          {/* <NavLink style={getStyle} className="nav-links" to="/" > */}
             <HStack
             id="md-search-nav"
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
               columnGap={"0.8rem"}
+              ref={btnRef} 
+              onClick={onOpen}
             >
               <MdSearch />
               <Text
@@ -97,7 +108,6 @@ const SideBar = () => {
                 Search
               </Text>
             </HStack>
-          {/* </NavLink> */}
 
           <NavLink style={getStyle} className="nav-links" to="/explore">
             <HStack
@@ -203,7 +213,36 @@ const SideBar = () => {
           </PopoverContent>
         </Popover>
       </Box>
+
       <PostModal onClose={onClose} isOpen={isOpen} />
+
+
+
+      <Drawer
+        isOpen={isOpen}
+        placement='left'
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Create your account</DrawerHeader>
+
+          <DrawerBody>
+            <Input placeholder='Type here...' />
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button variant='outline' mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button colorScheme='blue'>Save</Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+
+
     </Flex>
   );
 };
