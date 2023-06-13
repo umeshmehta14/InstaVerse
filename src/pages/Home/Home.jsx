@@ -1,7 +1,7 @@
 import React from "react";
+import { Flex, VStack } from "@chakra-ui/react";
 
 import { PostBox, UserSuggestion } from "../../components";
-import { Flex, Heading, VStack } from "@chakra-ui/react";
 import { useAuth, usePost } from "../../contexts";
 
 export const Home = () => {

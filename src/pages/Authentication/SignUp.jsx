@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts";
+import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 
 export const SignUp = () => {
   document.title = "InstaVerse | Login";
@@ -46,21 +47,11 @@ export const SignUp = () => {
 
   return (
     <Flex
-      minHeight="100vh"
-      w={"100vw"}
-      align="center"
-      justify="center"
-      overflowY={"hidden"}
+    {...mainAuthContainer}
     >
       <Box
-        p={8}
-        mx="auto"
-        maxW="400px"
-        borderWidth={1}
-        borderRadius="md"
-        boxShadow="lg"
+        {...authBox}
         bg={colorMode === "light" ? "white.500" : "black.900"}
-        overflow="hidden"
       >
         <Heading
           fontFamily={"Pacifico, cursive"}
