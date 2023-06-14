@@ -17,6 +17,7 @@ import {
 
 import {
   AiOutlineHeart,
+  AiFillHeart,
   FaRegComment,
   IoPaperPlaneOutline,
   BsThreeDots,
@@ -44,6 +45,11 @@ export const PostBox = ({ post }) => {
   const friendLike = currentUser.following.find(({ username }) =>
     likedBy.some((likeUser) => likeUser.username === username)
   );
+
+  const userLike = likedBy.find(
+    ({ username }) => username === currentUser.username
+  );
+
   return (
     <Box
       {...mainPostBoxStyles}
@@ -57,7 +63,12 @@ export const PostBox = ({ post }) => {
         justifyContent={"space-between"}
         borderBottom={"0.5px solid #e0e0e0"}
       >
-        <Flex alignItems={"center"} cursor={"pointer"} title={username} onClick={()=> navigate("/profile")}>
+        <Flex
+          alignItems={"center"}
+          cursor={"pointer"}
+          title={username}
+          onClick={() => navigate("/profile")}
+        >
           <Avatar
             size="sm"
             name={username}
@@ -99,12 +110,21 @@ export const PostBox = ({ post }) => {
           justifyContent={"space-between"}
         >
           <HStack justifyContent={"space-between"} w={"30%"}>
-            <Box
-              as={AiOutlineHeart}
-              cursor="pointer"
-              _hover={{ color: "gray" }}
-              title="Like"
-            />
+            {userLike ? (
+              <Box
+                as={AiFillHeart}
+                cursor="pointer"
+                color={"red"}
+                title="Like"
+              />
+            ) : (
+              <Box
+                as={AiOutlineHeart}
+                cursor="pointer"
+                _hover={{ color: "gray" }}
+                title="Like"
+              />
+            )}
             <Box
               as={FaRegComment}
               cursor="pointer"
@@ -130,7 +150,13 @@ export const PostBox = ({ post }) => {
         {friendLike ? (
           <Flex fontSize={"sm"} cursor={"pointer"} align={"center"}>
             <Text>Liked by </Text>
-            <Flex ml="1" fontWeight="semibold" align={"center"} gap={"1"} onClick={()=> navigate("/profile")}>
+            <Flex
+              ml="1"
+              fontWeight="semibold"
+              align={"center"}
+              gap={"1"}
+              onClick={() => navigate("/profile")}
+            >
               <Avatar
                 size="2xs"
                 name="Dan Abrahmov"
@@ -149,7 +175,11 @@ export const PostBox = ({ post }) => {
         )}
 
         <Flex fontSize={"sm"} gap="0.5rem">
-          <Text fontWeight={"semibold"} cursor={"pointer"} onClick={()=> navigate("/profile")}>
+          <Text
+            fontWeight={"semibold"}
+            cursor={"pointer"}
+            onClick={() => navigate("/profile")}
+          >
             {username}
           </Text>{" "}
           {content}

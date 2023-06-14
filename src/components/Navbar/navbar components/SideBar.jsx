@@ -50,8 +50,7 @@ const SideBar = () => {
   const { logoutHandler, currentUser } = useAuth();
   const btnRef = useRef();
 
-
-  const getStyle = ({isActive}) => (isActive ? { fontWeight: "bold" } : {});
+  const getStyle = ({ isActive }) => (isActive ? { fontWeight: "bold" } : {});
 
   return (
     <Flex {...sidebarStyle} bg={useColorModeValue("white.900", "black.900")}>
@@ -72,11 +71,7 @@ const SideBar = () => {
           </Text>
         </HStack>
         <Flex {...navRoutesStyle}>
-          <NavLink
-            style={getStyle}
-            className="nav-links"
-            to="/"
-          >
+          <NavLink style={getStyle} className="nav-links" to="/">
             <HStack
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
@@ -92,22 +87,22 @@ const SideBar = () => {
             </HStack>
           </NavLink>
 
-            <HStack
+          <HStack
             id="md-search-nav"
-              {...navlinkStyle}
-              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-              columnGap={"0.8rem"}
-              ref={btnRef} 
-              onClick={onOpen}
+            {...navlinkStyle}
+            _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
+            columnGap={"0.8rem"}
+            ref={btnRef}
+            onClick={onOpen}
+          >
+            <MdSearch />
+            <Text
+              display={{ base: "none", lg: "inline-block" }}
+              fontSize={"1rem"}
             >
-              <MdSearch />
-              <Text
-                display={{ base: "none", lg: "inline-block" }}
-                fontSize={"1rem"}
-              >
-                Search
-              </Text>
-            </HStack>
+              Search
+            </Text>
+          </HStack>
 
           <NavLink style={getStyle} className="nav-links" to="/explore">
             <HStack
@@ -141,7 +136,7 @@ const SideBar = () => {
             </Text>
           </HStack>
 
-          <NavLink style={({isActive}) => getStyle(isActive)} className="nav-links" to="/likeposts">
+          <NavLink style={getStyle} className="nav-links" to="/">
             <HStack
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
@@ -216,11 +211,9 @@ const SideBar = () => {
 
       <PostModal onClose={onClose} isOpen={isOpen} />
 
-
-
       <Drawer
         isOpen={isOpen}
-        placement='left'
+        placement="left"
         onClose={onClose}
         finalFocusRef={btnRef}
       >
@@ -230,19 +223,17 @@ const SideBar = () => {
           <DrawerHeader>Create your account</DrawerHeader>
 
           <DrawerBody>
-            <Input placeholder='Type here...' />
+            <Input placeholder="Type here..." />
           </DrawerBody>
 
           <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={onClose}>
+            <Button variant="outline" mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme='blue'>Save</Button>
+            <Button colorScheme="blue">Save</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-
-
     </Flex>
   );
 };

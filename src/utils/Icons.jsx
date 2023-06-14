@@ -7,6 +7,7 @@ import {
 import { BsFillSunFill, BsMoon, BsEmojiSunglasses, BsThreeDots } from "react-icons/bs";
 import {
   AiOutlineHeart,
+  AiFillHeart,
   AiOutlineComment,
   AiOutlinePaperClip,
 } from "react-icons/ai";
@@ -22,6 +23,7 @@ import { VscPassFilled } from "react-icons/vsc";
 
 export {
   AiOutlineHeart,
+  AiFillHeart,
   AiOutlineComment,
   AiOutlinePaperClip,
   BsThreeDots,
