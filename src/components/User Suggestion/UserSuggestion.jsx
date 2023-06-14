@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 export const UserSuggestion = () => {
   const {
     userState: { users },
+    handleFollow,
   } = useUser();
   const { currentUser, logoutHandler, handleGuestLogin } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -159,7 +160,7 @@ export const UserSuggestion = () => {
                   <Text fontSize="sm">{user.username}</Text>
                 </Box>
               </Flex>
-              <Button variant={"link-button"} size="sm" colorScheme="blue">
+              <Button variant={"link-button"} size="sm" colorScheme="blue" onClick={()=> handleFollow(user._id)}>
                 Follow
               </Button>
             </Flex>

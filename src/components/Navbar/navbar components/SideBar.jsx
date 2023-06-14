@@ -93,6 +93,7 @@ const SideBar = () => {
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             columnGap={"0.8rem"}
             ref={btnRef}
+            cursor={"pointer"}
             onClick={onOpen}
           >
             <MdSearch />

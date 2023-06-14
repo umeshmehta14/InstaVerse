@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Flex,
   Box,
@@ -8,6 +9,7 @@ import {
   Grid,
   GridItem,
   Divider,
+  Image,
 } from "@chakra-ui/react";
 
 export const Profile = () => {
@@ -41,18 +43,56 @@ export const Profile = () => {
       <Divider my={4} />
 
       <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-        {/* Placeholder for grid items */}
-        <GridItem colSpan={3}>
-          <Box w="full" h="200px" bg="gray.200"></Box>
+        <GridItem>
+          <Image
+            src="https://via.placeholder.com/300"
+            alt="Post"
+            boxSize="300px"
+            objectFit="cover"
+          />
         </GridItem>
         <GridItem>
-          <Box w="full" h="200px" bg="gray.200"></Box>
+          <Image
+            src="https://via.placeholder.com/300"
+            alt="Post"
+            boxSize="300px"
+            objectFit="cover"
+          />
         </GridItem>
         <GridItem>
-          <Box w="full" h="200px" bg="gray.200"></Box>
+          <Image
+            src="https://via.placeholder.com/300"
+            alt="Post"
+            boxSize="300px"
+            objectFit="cover"
+          />
         </GridItem>
-        {/* End of placeholder */}
+        <GridItem>
+          <Image
+            src="https://via.placeholder.com/300"
+            alt="Post"
+            boxSize="300px"
+            objectFit="cover"
+          />
+        </GridItem>
+        <GridItem>
+          <Image
+            src="https://via.placeholder.com/300"
+            alt="Post"
+            boxSize="300px"
+            objectFit="cover"
+          />
+        </GridItem>
+        <GridItem>
+          <Image
+            src="https://via.placeholder.com/300"
+            alt="Post"
+            boxSize="300px"
+            objectFit="cover"
+          />
+        </GridItem>
       </Grid>
     </Flex>
   );
 };
+
