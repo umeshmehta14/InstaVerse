@@ -34,6 +34,8 @@ export const UserSuggestion = () => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
 
+  console.log(currentUser);
+
   const suggestedUser = users?.filter(
     (user) =>
       user._id !== currentUser?._id &&

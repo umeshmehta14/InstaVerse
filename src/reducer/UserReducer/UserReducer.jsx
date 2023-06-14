@@ -1,13 +1,32 @@
-import { ALL_USERS, SET_BOOKMARK } from "../../utils/Constants";
+import {
+  ALL_USERS,
+  SET_BOOKMARK,
+  SET_FOLLOW_USER,
+} from "../../utils/Constants";
 
-export const UserReducer = (userState, {payload, type}) =>{
-    switch (type) {
-        case ALL_USERS:
-            return {...userState, users: payload};
-        
-        case SET_BOOKMARK:
-            return {...userState, userBookmarks: payload};
-        default:
-            break;
-    }
-}
+export const UserReducer = (userState, { payload, type, currentUser, setCurrentUser }) => {
+
+  switch (type) {
+    case ALL_USERS:
+      return { ...userState, users: payload };
+
+    case SET_BOOKMARK:
+      return { ...userState, userBookmarks: payload };
+
+    case SET_FOLLOW_USER:
+      return {
+        ...userState,
+        users: userState.users.map((oldUser) => {
+          const updatedUser = payload.find(({ _id }) => _id === oldUser._id);
+
+
+          if (currentUser._id === updatedUser?._id) {
+            setCurrentUser(updatedUser);
+          }
+          return updatedUser ? updatedUser : oldUser;
+        }),
+      };
+    default:
+      break;
+  }
+};
