@@ -167,11 +167,11 @@ export const likePostHandler = function (schema, request) {
         }
       );
     }
-  console.log("hello");
-
     const postId = request.params.postId;
     const post = schema.posts.findBy({ _id: postId }).attrs;
-    if (post.likes.likedBy.some((currUser) => currUser.username === user.username)) {
+    if (
+      post.likes.likedBy.some((currUser) => currUser.username === user.username)
+    ) {
       return new Response(
         400,
         {},

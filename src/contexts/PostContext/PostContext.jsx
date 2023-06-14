@@ -8,15 +8,15 @@ import {
 
 import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
-import { getAllPosts, likePost } from "./PostApi";
+import { getAllPosts, likePost, unLikePost } from "./PostApi";
 import { ALL_POSTS } from "../../utils/Constants";
-import {useAuth} from "../index";
+import { useAuth } from "../index";
 
 export const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
   const [postState, postDispatch] = useReducer(PostReducer, PostInitialState);
-  const {token} = useAuth();
+  const { token } = useAuth();
 
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,6 @@ export const PostProvider = ({ children }) => {
         status,
         data: { posts },
       } = await getAllPosts();
-      console.log(posts);
       if (status === 200 || status === 201) {
         postDispatch({ type: ALL_POSTS, payload: posts });
       }
@@ -36,22 +35,45 @@ export const PostProvider = ({ children }) => {
       setLoading(false);
     }
   };
- console.log(token)
-  const handlePostLike = async (postId) =>{
+
+
+  const handlePostLike = async (postId) => {
     try {
-      const postLikeResponse = await likePost(postId, token);
-      console.log(postLikeResponse)
+      const {
+        status,
+        data: { posts },
+      } = await likePost(postId, token);
+      if (status === 201 || status === 200) {
+        postDispatch({ type: ALL_POSTS, payload: posts });
+      }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
+
+
+  const handlePostUnLike = async (postId) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await unLikePost(postId, token);
+      if (status === 201 || status === 200) {
+        postDispatch({ type: ALL_POSTS, payload: posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     getPosts();
   }, []);
 
   return (
-    <PostContext.Provider value={{ loading, postDispatch, postState, handlePostLike }}>
+    <PostContext.Provider
+      value={{ loading, postDispatch, postState, handlePostLike, handlePostUnLike }}
+    >
       {children}
     </PostContext.Provider>
   );

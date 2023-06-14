@@ -15,25 +15,26 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useAuth, usePost } from "../../contexts";
-
-import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
 import { useNavigate } from "react-router-dom";
+
+import { useAuth, usePost } from "../../contexts";
 import LikesUserModal from "./PostBox Components/LikesUserModal";
+import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
 import {
   AiOutlineHeart,
   AiFillHeart,
   FaRegComment,
   IoPaperPlaneOutline,
   BsThreeDots,
-  FiBookmark,
+  FaBookmark,
+  FaRegBookmark,
   BsEmojiSunglasses,
 } from "../../utils/Icons";
 
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
   const { currentUser } = useAuth();
-  const { handlePostLike } = usePost();
+  const { handlePostLike, handlePostUnLike } = usePost();
   const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -110,7 +111,6 @@ export const PostBox = ({ post }) => {
       </Flex>
 
       <Image src={mediaUrl} alt="Post Image" w={"100%"} />
-
       <Flex {...iconPostStyles}>
         <Flex
           fontSize={"1.7rem"}
@@ -124,6 +124,7 @@ export const PostBox = ({ post }) => {
                 cursor="pointer"
                 color={"red"}
                 title="Like"
+                onClick={()=> handlePostUnLike(_id)}
               />
             ) : (
               <Box
@@ -136,6 +137,7 @@ export const PostBox = ({ post }) => {
             )}
             <Box
               as={FaRegComment}
+              fontSize={"1.6rem"}
               cursor="pointer"
               _hover={{ color: "gray" }}
               title="Comment"
@@ -149,7 +151,8 @@ export const PostBox = ({ post }) => {
           </HStack>
           <HStack>
             <Box
-              as={FiBookmark}
+              as={FaRegBookmark}
+              fontSize={"1.6rem"}
               cursor="pointer"
               _hover={{ color: "gray" }}
               title="Save"

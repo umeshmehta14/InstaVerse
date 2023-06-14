@@ -8,3 +8,10 @@ export const likePost = async (postId, token) =>
       authorization: token,
     },
   });
+
+export const unLikePost = async (postId, token) =>
+  await axios.post(`/api/posts/dislike/${postId}`,{}, {
+    headers: {
+      authorization: token,
+    },
+  });

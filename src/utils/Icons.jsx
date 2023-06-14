@@ -13,10 +13,9 @@ import {
 } from "react-icons/ai";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import { TbSquareRoundedPlus } from "react-icons/tb";
-import { FaInstalod, FaRegComment } from "react-icons/fa";
+import { FaInstalod, FaRegComment, FaRegBookmark, FaBookmark } from "react-icons/fa";
 import { FcAddImage } from "react-icons/fc";
 import { IoPaperPlaneOutline } from "react-icons/io5";
-import { FiBookmark } from "react-icons/fi";
 import { BiChevronDown } from "react-icons/bi";
 import { VscPassFilled } from "react-icons/vsc";
 
@@ -29,6 +28,8 @@ export {
   BsThreeDots,
   BsEmojiSunglasses,
   IoPaperPlaneOutline,
+  FaBookmark,
+  FaRegBookmark,
   FaRegComment,
   RxHamburgerMenu,
   FcAddImage,
@@ -42,6 +43,5 @@ export {
   BsFillSunFill,
   RxCross2,
   BiChevronDown,
-  FiBookmark,
   VscPassFilled
 };
