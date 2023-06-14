@@ -5,15 +5,18 @@ import {
   useReducer,
   useState,
 } from "react";
+
 import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
-import { getAllPosts } from "./PostApi";
+import { getAllPosts, likePost } from "./PostApi";
 import { ALL_POSTS } from "../../utils/Constants";
+import {useAuth} from "../index";
 
 export const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
   const [postState, postDispatch] = useReducer(PostReducer, PostInitialState);
+  const {token} = useAuth();
 
   const [loading, setLoading] = useState(true);
 
@@ -33,13 +36,22 @@ export const PostProvider = ({ children }) => {
       setLoading(false);
     }
   };
+ console.log(token)
+  const handlePostLike = async (postId) =>{
+    try {
+      const postLikeResponse = await likePost(postId, token);
+      console.log(postLikeResponse)
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     getPosts();
   }, []);
 
   return (
-    <PostContext.Provider value={{ loading, postDispatch, postState }}>
+    <PostContext.Provider value={{ loading, postDispatch, postState, handlePostLike }}>
       {children}
     </PostContext.Provider>
   );

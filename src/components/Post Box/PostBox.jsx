@@ -15,7 +15,11 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useAuth, usePost } from "../../contexts";
 
+import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
+import { useNavigate } from "react-router-dom";
+import LikesUserModal from "./PostBox Components/LikesUserModal";
 import {
   AiOutlineHeart,
   AiFillHeart,
@@ -25,14 +29,11 @@ import {
   FiBookmark,
   BsEmojiSunglasses,
 } from "../../utils/Icons";
-import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
-import { useAuth } from "../../contexts";
-import { useNavigate } from "react-router-dom";
-import LikesUserModal from "./PostBox Components/LikesUserModal";
 
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
   const { currentUser } = useAuth();
+  const { handlePostLike } = usePost();
   const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,6 +41,7 @@ export const PostBox = ({ post }) => {
   const btnRef = useRef(null);
 
   const {
+    _id,
     username,
     mediaUrl,
     avatarURL,
@@ -129,6 +131,7 @@ export const PostBox = ({ post }) => {
                 cursor="pointer"
                 _hover={{ color: "gray" }}
                 title="Like"
+                onClick={() => handlePostLike(_id)}
               />
             )}
             <Box

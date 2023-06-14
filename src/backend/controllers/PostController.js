@@ -167,9 +167,11 @@ export const likePostHandler = function (schema, request) {
         }
       );
     }
+  console.log("hello");
+
     const postId = request.params.postId;
     const post = schema.posts.findBy({ _id: postId }).attrs;
-    if (post.likes.likedBy.some((currUser) => currUser._id === user._id)) {
+    if (post.likes.likedBy.some((currUser) => currUser.username === user.username)) {
       return new Response(
         400,
         {},
@@ -177,7 +179,7 @@ export const likePostHandler = function (schema, request) {
       );
     }
     post.likes.dislikedBy = post.likes.dislikedBy.filter(
-      (currUser) => currUser._id !== user._id
+      (currUser) => currUser.username !== user.username
     );
     post.likes.likeCount += 1;
     post.likes.likedBy.push(user);

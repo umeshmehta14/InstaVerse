@@ -1,7 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { formatDate } from "../utils/authUtils";
 
-
 export const posts = [
   {
     _id: "dofkjnKDJ1234",
@@ -44,6 +43,7 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.-PvVHEASOrJGZCbM2JaYIwHaFR&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
@@ -109,12 +109,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "davidb",
     firstName: "David",
     lastName: "Brown",
     createdAt: "2023-04-10T12:31:25Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse1.mm.bing.net/th?id=OIP.34jQmBtI9wJKevMtcL9ZZgHaHa&pid=Api&P=0&h=180",
     comments: [
@@ -138,7 +140,7 @@ export const posts = [
         text: "Tera ghar jayenga isme",
         createdAt: "2023-04-08T12:31:25Z",
       },
-    ],
+    ]
   },
 
   {
@@ -166,12 +168,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-09T10:30:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
@@ -201,7 +205,8 @@ export const posts = [
   {
     _id: uuid(),
     content: "InstaVerse Is very nice",
-    mediaUrl: "https://tse3.explicit.bing.net/th?id=OIP.F55RSZzK4rtGw9WaBFnM8gHaFt&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse3.explicit.bing.net/th?id=OIP.F55RSZzK4rtGw9WaBFnM8gHaFt&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -222,12 +227,14 @@ export const posts = [
             "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "kaludon",
     firstName: "Kalu",
     lastName: "Don",
     createdAt: "2023-06-11T12:31:25Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
     comments: [],
@@ -258,12 +265,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     firstName: "Emily",
     lastName: "Jones",
     username: "emilyj",
     createdAt: "2023-04-10T12:31:25Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse3.mm.bing.net/th?id=OIP.90k35a_1M3kSF7TRr8lBOAHaKt&pid=Api&P=0&h=180",
     comments: [
@@ -323,12 +332,14 @@ export const posts = [
             "https://res.cloudinary.com/dodkrr6ce/image/upload/v1652181761/socmedia/pic3_py263g.jpg",
         },
       ],
+      dislikedBy:[]
     },
     username: "itsLizzie",
     firstName: "Lizzie",
     lastName: "Anne",
     createdAt: "2023-07-01T18:15:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse2.mm.bing.net/th?id=OIP.-PvVHEASOrJGZCbM2JaYIwHaFR&pid=Api&P=0&h=180",
     comments: [
@@ -396,12 +407,14 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.-PvVHEASOrJGZCbM2JaYIwHaFR&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "SarahW",
     firstName: "Sarah",
     lastName: "Walkman",
     createdAt: "2023-06-11T11:20:00Z",
-    updatedAt: "2023-06-11T11:20:00Z",
+    updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
     comments: [
@@ -453,6 +466,7 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "oliviad",
     firstName: "Olivia",
@@ -518,12 +532,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "SarahW",
     firstName: "Sarah",
     lastName: "Walkman",
     createdAt: "2023-06-09T12:31:25Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
     comments: [
@@ -544,7 +560,8 @@ export const posts = [
     _id: "LKJHoiuyt9876#$",
     content:
       "Attended a cooking class today and learned how to make delicious pasta from scratch. #CookingClass #Foodie",
-    mediaUrl: "https://tse4.mm.bing.net/th?id=OIP.HfKR_Le9hoRNve9BNTD_3AHaE7&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse4.mm.bing.net/th?id=OIP.HfKR_Le9hoRNve9BNTD_3AHaE7&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -565,12 +582,14 @@ export const posts = [
             "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "janedoe",
     firstName: "Jane",
     lastName: "Doe",
     createdAt: "2023-06-19T15:40:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
     comments: [
@@ -600,7 +619,8 @@ export const posts = [
   {
     _id: "kjhbJHBB12",
     content: "Feeling grateful!",
-    mediaUrl: "https://tse4.mm.bing.net/th?id=OIP.lHI5Hi8f3ymUyq47SxYlHQEsEs&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse4.mm.bing.net/th?id=OIP.lHI5Hi8f3ymUyq47SxYlHQEsEs&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -621,12 +641,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "itsLizzie",
     firstName: "Lizzie",
     lastName: "Anne",
     createdAt: "2023-06-09T12:31:25Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse2.mm.bing.net/th?id=OIP.-PvVHEASOrJGZCbM2JaYIwHaFR&pid=Api&P=0&h=180",
     comments: [],
@@ -635,7 +657,8 @@ export const posts = [
   {
     _id: "KJHKJ2jhg",
     content: "Having a great time!",
-    mediaUrl: "https://tse2.mm.bing.net/th?id=OIP.C8iuOh4GCiQoMsYT-HfuFQHaFc&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse2.mm.bing.net/th?id=OIP.C8iuOh4GCiQoMsYT-HfuFQHaFc&pid=Api&P=0&h=180",
     likes: {
       likeCount: 3,
       likedBy: [
@@ -664,12 +687,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "janedoe",
     firstName: "Jane",
     lastName: "Doe",
     createdAt: "2023-06-09T12:31:25Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
     comments: [
@@ -689,7 +714,8 @@ export const posts = [
   {
     _id: "lkjhLKJH765",
     content: "Excited for the weekend!",
-    mediaUrl: "https://tse2.explicit.bing.net/th?id=OIP.Ndv5TyAyCEr8EF6Dv93sFQHaFQ&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse2.explicit.bing.net/th?id=OIP.Ndv5TyAyCEr8EF6Dv93sFQHaFQ&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -710,12 +736,14 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.-PvVHEASOrJGZCbM2JaYIwHaFR&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-08T10:30:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
@@ -757,12 +785,14 @@ export const posts = [
             "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "michaelc",
     firstName: "Michael",
     lastName: "Clark",
     createdAt: "2023-06-09T09:15:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
     comments: [
@@ -814,6 +844,7 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.-PvVHEASOrJGZCbM2JaYIwHaFR&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "SarahW",
     firstName: "Sarah",
@@ -850,12 +881,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-09T08:45:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
@@ -886,7 +919,8 @@ export const posts = [
     _id: "JHiuyt98765",
     content:
       "Attended a fascinating tech conference today. So many exciting innovations! #TechConference #Innovation",
-    mediaUrl: "https://tse3.mm.bing.net/th?id=OIP.8kmffC1mmWunMVp6YI8BYwHaEK&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse3.mm.bing.net/th?id=OIP.8kmffC1mmWunMVp6YI8BYwHaEK&pid=Api&P=0&h=180",
     likes: {
       likeCount: 3,
       likedBy: [
@@ -915,12 +949,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "janedoe",
     firstName: "Jane",
     lastName: "Doe",
     createdAt: "2023-06-17T11:10:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
     comments: [
@@ -972,12 +1008,14 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.-PvVHEASOrJGZCbM2JaYIwHaFR&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-09T09:15:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
@@ -1029,12 +1067,14 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "oliviad",
     firstName: "Olivia",
     lastName: "Davis",
     createdAt: "2023-06-08T10:30:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
     comments: [
@@ -1086,12 +1126,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-09T09:45:00Z",
-    updatedAt: "June 9, 2023",
+    updatedAt: formatDate(),
+    
     avatarURL:
       "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
@@ -1143,12 +1185,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "michaelc",
     firstName: "Michael",
     lastName: "Clark",
     createdAt: "2023-06-11T11:10:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
     comments: [
@@ -1167,7 +1211,8 @@ export const posts = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
+        avatarURL:
+          "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
         text: "Can you share the recipe?",
         createdAt: "2023-06-11T12:30:00Z",
       },
@@ -1178,7 +1223,8 @@ export const posts = [
     _id: "jkhKJHG987",
     content:
       "Enjoying a relaxing Sunday afternoon with a good book. #SundayVibes #Bookworm",
-    mediaUrl: "https://tse1.mm.bing.net/th?id=OIP.JwyKjsZJrKKlje-NDjgr_wHaEK&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse1.mm.bing.net/th?id=OIP.JwyKjsZJrKKlje-NDjgr_wHaEK&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -1199,12 +1245,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "janedoe",
     firstName: "Jane",
     lastName: "Doe",
     createdAt: "2023-06-15T09:15:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
     comments: [
@@ -1244,7 +1292,8 @@ export const posts = [
           firstName: "Umesh",
           lastName: "Mehta",
           username: "umeshmehta14",
-          avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
+          avatarURL:
+            "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
         },
         {
           _id: uuid(),
@@ -1255,12 +1304,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     firstName: "Emily",
     lastName: "Jones",
     username: "emilyj",
     createdAt: "2023-06-09T12:00:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse3.mm.bing.net/th?id=OIP.90k35a_1M3kSF7TRr8lBOAHaKt&pid=Api&P=0&h=180",
     comments: [
@@ -1269,7 +1320,8 @@ export const posts = [
         firstName: "Umesh",
         lastName: "Mehta",
         username: "umeshmehta14",
-        avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
+        avatarURL:
+          "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
         text: "Amazing view!",
         createdAt: "2023-06-09T12:05:00Z",
       },
@@ -1311,12 +1363,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.90k35a_1M3kSF7TRr8lBOAHaKt&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "oliviad",
     firstName: "Olivia",
     lastName: "Davis",
     createdAt: "2023-06-08T10:30:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
     comments: [
@@ -1376,13 +1430,16 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-09T12:00:00Z",
     updatedAt: formatDate(),
-    avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
+    
+    avatarURL:
+      "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
       {
         _id: uuid(),
@@ -1440,12 +1497,14 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.TPxIaCG4-TJtY5rKtkBhyAHaKk&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "michaelc",
     firstName: "Michael",
     lastName: "Clark",
     createdAt: "2023-06-10T14:20:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
     comments: [
@@ -1475,7 +1534,8 @@ export const posts = [
   {
     _id: "jhgIUY987nb",
     content: "Just finished reading a great book. Highly recommend it!",
-    mediaUrl: "https://tse1.mm.bing.net/th?id=OIP.mPNyl0t4UZw4jzZkhn_M1AHaEK&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse1.mm.bing.net/th?id=OIP.mPNyl0t4UZw4jzZkhn_M1AHaEK&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -1496,12 +1556,14 @@ export const posts = [
             "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "kaludon",
     firstName: "Kalu",
     lastName: "Don",
     createdAt: "2023-06-10T09:15:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
     comments: [
@@ -1531,7 +1593,8 @@ export const posts = [
   {
     _id: "jkhgoiuOIU89765",
     content: "Attended a fascinating conference today. Learned so much!",
-    mediaUrl: "https://tse1.mm.bing.net/th?id=OIP.hORRikbO-VZjPC8zZevtjgHaE8&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse1.mm.bing.net/th?id=OIP.hORRikbO-VZjPC8zZevtjgHaE8&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -1552,12 +1615,14 @@ export const posts = [
             "https://tse1.mm.bing.net/th?id=OIP.34jQmBtI9wJKevMtcL9ZZgHaHa&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "kaludon",
     firstName: "Kalu",
     lastName: "Don",
     createdAt: "2023-06-11T14:20:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
     comments: [
@@ -1588,7 +1653,8 @@ export const posts = [
     _id: "JKHGiuy98765",
     content:
       "Exploring new coffee shops in the city. ☕️ #CoffeeLover #CityLife",
-    mediaUrl: "https://tse1.mm.bing.net/th?id=OIP.gNiGdodNdn2Bck61_x18dAHaFi&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse1.mm.bing.net/th?id=OIP.gNiGdodNdn2Bck61_x18dAHaFi&pid=Api&P=0&h=180",
     likes: {
       likeCount: 3,
       likedBy: [
@@ -1617,12 +1683,14 @@ export const posts = [
             "https://tse1.mm.bing.net/th?id=OIP.34jQmBtI9wJKevMtcL9ZZgHaHa&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "janedoe",
     firstName: "Jane",
     lastName: "Doe",
     createdAt: "2023-06-16T14:20:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
     comments: [
@@ -1674,13 +1742,16 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.-PvVHEASOrJGZCbM2JaYIwHaFR&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-09T12:30:00Z",
-    updatedAt: "June 9, 2023",
-    avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
+    updatedAt: formatDate(),
+    
+    avatarURL:
+      "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
       {
         _id: uuid(),
@@ -1730,13 +1801,16 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-09T13:00:00Z",
     updatedAt: formatDate(),
-    avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
+    
+    avatarURL:
+      "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
       {
         _id: uuid(),
@@ -1786,12 +1860,14 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "michaelc",
     firstName: "Michael",
     lastName: "Clark",
     createdAt: "2023-06-13T12:55:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
     comments: [
@@ -1843,13 +1919,16 @@ export const posts = [
             "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "umeshmehta14",
     firstName: "Umesh",
     lastName: "Mehta",
     createdAt: "2023-06-09T13:30:00Z",
     updatedAt: formatDate(),
-    avatarURL: "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
+    
+    avatarURL:
+      "https://res.cloudinary.com/dve78wpnn/image/upload/v1686307561/PicsArt_02-14-11.20.44_pkkfee.jpg",
     comments: [
       {
         _id: uuid(),
@@ -1899,12 +1978,14 @@ export const posts = [
             "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "sophiet",
     firstName: "Sophie",
     lastName: "Taylor",
     createdAt: "2023-06-08T10:30:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
     comments: [
@@ -1956,12 +2037,14 @@ export const posts = [
             "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "oliviad",
     firstName: "Olivia",
     lastName: "Davis",
     createdAt: "2023-06-09T09:15:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
     comments: [
@@ -1992,7 +2075,8 @@ export const posts = [
     _id: "JIHUG987jhg",
     content:
       "Spent the weekend hiking in the mountains. The views were breathtaking! #HikingAdventure #Nature",
-    mediaUrl: "https://tse2.mm.bing.net/th?id=OIP.4s3Boyd8qtDZpW-B4v78LAHaE8&pid=Api&P=0&h=180",
+    mediaUrl:
+      "https://tse2.mm.bing.net/th?id=OIP.4s3Boyd8qtDZpW-B4v78LAHaE8&pid=Api&P=0&h=180",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -2013,12 +2097,14 @@ export const posts = [
             "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "janedoe",
     firstName: "Jane",
     lastName: "Doe",
     createdAt: "2023-06-18T09:30:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse2.mm.bing.net/th?id=OIP.vwcPJxPIrqD9rko7G49EuAHaJ_&pid=Api&P=0&h=180",
     comments: [
@@ -2078,12 +2164,14 @@ export const posts = [
             "https://tse1.mm.bing.net/th?id=OIP.34jQmBtI9wJKevMtcL9ZZgHaHa&pid=Api&P=0&h=180",
         },
       ],
+      dislikedBy:[]
     },
     username: "michaelc",
     firstName: "Michael",
     lastName: "Clark",
     createdAt: "2023-06-08T10:30:00Z",
     updatedAt: formatDate(),
+    
     avatarURL:
       "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
     comments: [
