@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, usePost } from "../../contexts";
+import { useAuth, usePost, useUser } from "../../contexts";
 import LikesUserModal from "./PostBox Components/LikesUserModal";
 import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
 import {
@@ -33,14 +33,18 @@ import {
 
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
-  const { currentUser } = useAuth();
-  const { handlePostLike, handlePostUnLike } = usePost();
-  const navigate = useNavigate();
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const btnRef = useRef(null);
 
+  const { currentUser } = useAuth();
+  const {
+    handleBookmark,
+    handleRemoveBookmark,
+    userState: { userBookmarks },
+  } = useUser();
+  const { handlePostLike, handlePostUnLike } = usePost();
+  const navigate = useNavigate();
+  
   const {
     _id,
     username,
@@ -51,6 +55,9 @@ export const PostBox = ({ post }) => {
     createdAt,
     likes: { likedBy },
   } = post;
+
+
+  const bookmarked = userBookmarks?.includes(_id);
   const friendLike = currentUser.following.find(({ username }) =>
     likedBy.some((likeUser) => likeUser.username === username)
   );
@@ -123,8 +130,8 @@ export const PostBox = ({ post }) => {
                 as={AiFillHeart}
                 cursor="pointer"
                 color={"red"}
-                title="Like"
-                onClick={()=> handlePostUnLike(_id)}
+                title="Unlike"
+                onClick={() => handlePostUnLike(_id)}
               />
             ) : (
               <Box
@@ -150,13 +157,25 @@ export const PostBox = ({ post }) => {
             />
           </HStack>
           <HStack>
-            <Box
-              as={FaRegBookmark}
-              fontSize={"1.6rem"}
-              cursor="pointer"
-              _hover={{ color: "gray" }}
-              title="Save"
-            />
+            {bookmarked ? (
+              <Box
+                as={FaBookmark}
+                fontSize={"1.6rem"}
+                cursor="pointer"
+                _hover={{ color: "gray" }}
+                title="Remove"
+                onClick={() => handleRemoveBookmark(_id)}
+              />
+            ) : (
+              <Box
+                as={FaRegBookmark}
+                fontSize={"1.6rem"}
+                cursor="pointer"
+                _hover={{ color: "gray" }}
+                title="Save"
+                onClick={() => handleBookmark(_id)}
+              />
+            )}
           </HStack>
         </Flex>
         {friendLike ? (

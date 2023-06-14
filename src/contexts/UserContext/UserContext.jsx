@@ -1,36 +1,66 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { getAllUser, getSingleUser } from "./UserApi";
-import { ALL_USERS } from "../../utils/Constants";
+import { addToBookmark, getAllUser, getSingleUser, removeFromBookmark } from "./UserApi";
+import { ALL_USERS, SET_BOOKMARK } from "../../utils/Constants";
 import { UserReducer } from "../../reducer/UserReducer/UserReducer";
 import { UserInitialState } from "../../reducer/UserReducer/UserInitialState";
+import { useAuth } from "../AuthContext/AuthContext";
 
 export const UserContext = createContext();
 
-export const UserProvider = ({children}) =>{
+export const UserProvider = ({ children }) => {
+  const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
+  const {token} = useAuth();
 
-    const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
-
-
-    const getUsers = async () =>{
-        try {
-            const {status, data: {users}} = await getAllUser();
-            // const data = await getSingleUser();
-            // console.log(data);
-            if(status === 200 || status === 201){
-                userDispatch({type: ALL_USERS, payload: users});
-            }
-        } catch (err) {
-            console.error(err)
-        }
+  const getUsers = async () => {
+    try {
+      const {
+        status,
+        data: { users },
+      } = await getAllUser();
+      if (status === 200 || status === 201) {
+        userDispatch({ type: ALL_USERS, payload: users });
+      }
+    } catch (err) {
+      console.error(err);
     }
+  };
 
-    useEffect(() => {
-      getUsers();
-    }, [])
-    
-    return <UserContext.Provider value={{userState, userDispatch}}>
-        {children}
+  const handleBookmark = async (postId)=>{
+    try {
+        const {
+            status,
+            data: { bookmarks },
+          } = await addToBookmark(postId, token);
+          if (status === 200 || status === 201) {
+          userDispatch({type:SET_BOOKMARK, payload: bookmarks});
+        }
+    } catch (error) {
+        console.error(error)
+    }
+  }
+  const handleRemoveBookmark = async (postId)=>{
+    try {
+        const {
+            status,
+            data: { bookmarks },
+          } = await removeFromBookmark(postId, token);
+          if (status === 200 || status === 201) {
+          userDispatch({type:SET_BOOKMARK, payload: bookmarks});
+        }
+    } catch (error) {
+        console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  return (
+    <UserContext.Provider value={{ userState, userDispatch, handleBookmark, handleRemoveBookmark }}>
+      {children}
     </UserContext.Provider>
-}
+  );
+};
 
 export const useUser = () => useContext(UserContext);

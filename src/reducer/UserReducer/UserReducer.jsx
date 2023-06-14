@@ -1,9 +1,12 @@
-import { ALL_USERS } from "../../utils/Constants";
+import { ALL_USERS, SET_BOOKMARK } from "../../utils/Constants";
 
-export const UserReducer = (UserState, {payload, type}) =>{
+export const UserReducer = (userState, {payload, type}) =>{
     switch (type) {
         case ALL_USERS:
-            return {...UserState, users: payload};
+            return {...userState, users: payload};
+        
+        case SET_BOOKMARK:
+            return {...userState, userBookmarks: payload};
         default:
             break;
     }
