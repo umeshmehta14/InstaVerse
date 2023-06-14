@@ -285,10 +285,10 @@ export const unfollowUserHandler = function (schema, request) {
         }
       );
     }
-    console.log("heelo1")
     const isFollowing = user.following.some(
-      (currUser) => currUser._id === followUser._id
+      (currUser) => currUser.username === followUser.username
     );
+    console.log(isFollowing);
 
     if (!isFollowing) {
       return new Response(400, {}, { errors: ["User already not following"] });
@@ -298,13 +298,13 @@ export const unfollowUserHandler = function (schema, request) {
     const updatedUser = {
       ...user,
       following: user.following.filter(
-        (currUser) => currUser._id !== followUser._id
+        (currUser) => currUser.username !== followUser.username
       ),
     };
     const updatedFollowUser = {
       ...followUser,
       followers: followUser.followers.filter(
-        (currUser) => currUser._id !== user._id
+        (currUser) => currUser.username !== user.username
       ),
     };
     this.db.users.update(
