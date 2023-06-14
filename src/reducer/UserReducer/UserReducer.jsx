@@ -2,10 +2,13 @@ import {
   ALL_USERS,
   SET_BOOKMARK,
   SET_FOLLOW_USER,
+  SET_SELECTED_USER,
 } from "../../utils/Constants";
 
-export const UserReducer = (userState, { payload, type, currentUser, setCurrentUser }) => {
-
+export const UserReducer = (
+  userState,
+  { payload, type, currentUser, setCurrentUser }
+) => {
   switch (type) {
     case ALL_USERS:
       return { ...userState, users: payload };
@@ -19,13 +22,15 @@ export const UserReducer = (userState, { payload, type, currentUser, setCurrentU
         users: userState.users.map((oldUser) => {
           const updatedUser = payload.find(({ _id }) => _id === oldUser._id);
 
-
           if (currentUser._id === updatedUser?._id) {
             setCurrentUser(updatedUser);
           }
           return updatedUser ? updatedUser : oldUser;
         }),
       };
+
+    case SET_SELECTED_USER:
+      return { ...userState, selectedUser: payload };
     default:
       break;
   }

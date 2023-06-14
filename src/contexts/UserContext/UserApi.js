@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getAllUser = async () => await axios.get("/api/users");
 
-export const getSingleUser = async () => await axios.get(`/api/users/${"umeshmehta14"}`);
+export const getSingleUser = async (username) => await axios.get(`/api/users/${username}`);
 
 export const addToBookmark = async (postId, token) =>
   await axios.post(`/api/users/bookmark/${postId}`,{}, {

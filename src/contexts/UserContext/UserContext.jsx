@@ -11,16 +11,19 @@ import {
   ALL_USERS,
   SET_BOOKMARK,
   SET_FOLLOW_USER,
+  SET_SELECTED_USER,
 } from "../../utils/Constants";
 import { UserReducer } from "../../reducer/UserReducer/UserReducer";
 import { UserInitialState } from "../../reducer/UserReducer/UserInitialState";
 import { useAuth } from "../AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
   const { token, currentUser, setCurrentUser } = useAuth();
+  const navigate = useNavigate();
 
   const getUsers = async () => {
     try {
@@ -33,6 +36,21 @@ export const UserProvider = ({ children }) => {
       }
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleSingleUser = async (username) => {
+    try {
+      const {
+        status,
+        data: { user },
+      } = await getSingleUser(username);
+      if (status === 200 || status === 201) {
+        userDispatch({ type: SET_SELECTED_USER, payload: user });
+        navigate(`/profile/${username}`);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -108,6 +126,7 @@ export const UserProvider = ({ children }) => {
         handleFollow,
         handleBookmark,
         handleRemoveBookmark,
+        handleSingleUser,
       }}
     >
       {children}

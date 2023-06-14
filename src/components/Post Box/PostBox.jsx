@@ -40,6 +40,7 @@ export const PostBox = ({ post }) => {
   const {
     handleBookmark,
     handleRemoveBookmark,
+    handleSingleUser,
     userState: { userBookmarks },
   } = useUser();
   const { handlePostLike, handlePostUnLike } = usePost();
@@ -83,7 +84,7 @@ export const PostBox = ({ post }) => {
           alignItems={"center"}
           cursor={"pointer"}
           title={username}
-          onClick={() => navigate("/profile")}
+          onClick={() => handleSingleUser(username)}
         >
           <Avatar
             size="sm"

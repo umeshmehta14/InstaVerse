@@ -1,4 +1,5 @@
 export const UserInitialState = {
-    users: [],
-    userBookmarks: [],
-}
+  users: [],
+  userBookmarks: [],
+  selectedUser: {},
+};
