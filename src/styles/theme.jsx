@@ -11,6 +11,7 @@ const colors = {
     black: {
       900: "#000000",
       700: "#121212",
+      600: "#262626",
     },
     blue:{
         900: "#0288df",
@@ -87,6 +88,26 @@ const colors = {
         color:"gray.900",
         fontSize: "md",
         borderRadius:"12px"
+        },
+        'follow-button' : {
+        bg: 'rgb(0, 149, 246)',
+        color:"white.900",
+        fontSize: "sm",
+        py:"0.4rem",
+        px:"1rem",
+        h:"fit-content",
+        borderRadius:"8px",
+        _hover:{bg:"rgb(0, 117, 196)", color:"white"}
+        },
+        'following-button' : {
+        bg: 'rgb(239, 239, 239)',
+        color:"gray.900",
+        fontSize: "sm",
+        py:"0.4rem",
+        px:"1rem",
+        h:"fit-content",
+        borderRadius:"8px",
+        _hover:{bg:"rgb(206, 206, 206)", color:"gray.900"}
         },
     },
     IconButton: {

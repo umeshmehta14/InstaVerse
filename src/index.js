@@ -6,7 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import "./index.css";
 import App from "./App";
 import { makeServer } from "./server";
-import theme from "./styles/theme";
+import theme from "./styles/Theme";
 import {
   AuthProvider,
   AuthContext,

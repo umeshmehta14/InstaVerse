@@ -80,6 +80,7 @@ export const UserSuggestion = () => {
             <ModalBody>
               {users.map((user) => (
                 <Flex
+                key={user._id}
                   gap={"2"}
                   cursor={"pointer"}
                   align={"center"}

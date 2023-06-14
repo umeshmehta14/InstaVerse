@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Avatar,
   Box,
@@ -13,6 +13,7 @@ import {
   PopoverTrigger,
   Text,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import {
@@ -27,11 +28,16 @@ import {
 import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
 import { useAuth } from "../../contexts";
 import { useNavigate } from "react-router-dom";
+import LikesUserModal from "./PostBox Components/LikesUserModal";
 
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const btnRef = useRef(null);
 
   const {
     username,
@@ -148,7 +154,7 @@ export const PostBox = ({ post }) => {
           </HStack>
         </Flex>
         {friendLike ? (
-          <Flex fontSize={"sm"} cursor={"pointer"} align={"center"}>
+          <Flex fontSize={"sm"} align={"center"}>
             <Text>Liked by </Text>
             <Flex
               ml="1"
@@ -156,10 +162,11 @@ export const PostBox = ({ post }) => {
               align={"center"}
               gap={"1"}
               onClick={() => navigate("/profile")}
+              cursor={"pointer"}
             >
               <Avatar
                 size="2xs"
-                name="Dan Abrahmov"
+                title={friendLike.username}
                 src={
                   friendLike?.avatarURL ||
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
@@ -168,10 +175,19 @@ export const PostBox = ({ post }) => {
               {friendLike?.username}
             </Flex>
             <Text mx={"1"}>and</Text>
-            <Text fontWeight="semibold">{likedBy.length - 1} others</Text>
+            <Text
+              fontWeight="semibold"
+              ref={btnRef}
+              onClick={onOpen}
+              cursor={"pointer"}
+            >
+              {likedBy.length - 1} others
+            </Text>
           </Flex>
         ) : (
-          <Text>{likedBy.length} likes</Text>
+          <Text ref={btnRef} onClick={onOpen} cursor={"pointer"}>
+            {likedBy.length} likes
+          </Text>
         )}
 
         <Flex fontSize={"sm"} gap="0.5rem">
@@ -219,6 +235,12 @@ export const PostBox = ({ post }) => {
           Post
         </Button>
       </Flex>
+      <LikesUserModal
+        btnRef={btnRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        likedBy={likedBy}
+      />
     </Box>
   );
 };
