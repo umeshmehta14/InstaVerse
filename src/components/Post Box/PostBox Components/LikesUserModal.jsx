@@ -14,16 +14,22 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "../../../contexts";
+import { useAuth, useUser } from "../../../contexts";
 
 const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
   const { colorMode } = useColorMode();
+  const navigate = useNavigate();
+
+  const { handleUnfollow } = useUser();
+  const { currentUser } = useAuth();
+
   return (
     <Modal onClose={onClose} finalFocusRef={btnRef} isOpen={isOpen}>
       <ModalOverlay />
-      <ModalContent bg={colorMode === "dark" ? "black.600" : "white.500"} mt={"15rem"}>
+      <ModalContent
+        bg={colorMode === "dark" ? "black.600" : "white.500"}
+        mt={"15rem"}
+      >
         <ModalHeader textAlign={"center"} borderBottom={"0.5px solid #aaaaaa"}>
           Liked By
         </ModalHeader>
@@ -58,7 +64,12 @@ const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
               ) : currentUser.following.find(
                   (user) => user.username === username
                 ) ? (
-                <Button variant={"following-button"}>Following</Button>
+                <Button
+                  variant={"following-button"}
+                  onClick={() => handleUnfollow(username)}
+                >
+                  Following
+                </Button>
               ) : (
                 <Button variant={"follow-button"}>Follow</Button>
               )}

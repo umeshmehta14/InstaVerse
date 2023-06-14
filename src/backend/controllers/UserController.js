@@ -272,7 +272,7 @@ export const followUserHandler = function (schema, request) {
 export const unfollowUserHandler = function (schema, request) {
   const user = requiresAuth.call(this, request);
   const { followUserId } = request.params;
-  const followUser = this.db.users.findBy({ _id: followUserId });
+  const followUser = this.db.users.findBy({ username: followUserId });
   try {
     if (!user) {
       return new Response(
@@ -285,6 +285,7 @@ export const unfollowUserHandler = function (schema, request) {
         }
       );
     }
+    console.log("heelo1")
     const isFollowing = user.following.some(
       (currUser) => currUser._id === followUser._id
     );
@@ -292,6 +293,7 @@ export const unfollowUserHandler = function (schema, request) {
     if (!isFollowing) {
       return new Response(400, {}, { errors: ["User already not following"] });
     }
+
 
     const updatedUser = {
       ...user,
