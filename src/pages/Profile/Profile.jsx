@@ -10,10 +10,12 @@ import {
   GridItem,
   Divider,
   Image,
-  Progress,
+  SkeletonCircle,
+  SkeletonText,
 } from "@chakra-ui/react";
-import { useUser } from "../../contexts";
+import { useAuth, useUser } from "../../contexts";
 import { useNavigate, useParams } from "react-router-dom";
+import { SET_SELECTED_USER } from "../../utils/Constants";
 
 export const Profile = () => {
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ export const Profile = () => {
     userState: { selectedUser },
     userDispatch,
   } = useUser();
-
+  const { progress } = useAuth();
   const paramUser = useParams();
 
   const { _id, username, avatarURL, bio, following, followers } = selectedUser;
@@ -32,11 +34,13 @@ export const Profile = () => {
     if (_id?.length === 0) {
       navigate("/");
     }
+    return () => {
+      userDispatch({ type: SET_SELECTED_USER, payload: null });
+    };
   }, []);
 
-  return (
+  return progress === 100 ? (
     <Flex direction="column" align="center" p={4}>
-      <Progress value={20} size="lg" colorScheme="pink" />
       <Box mb={4}>
         <Avatar size="xl" src={avatarURL} alt="Profile Picture" />
       </Box>
@@ -112,5 +116,10 @@ export const Profile = () => {
         </GridItem>
       </Grid>
     </Flex>
+  ) : (
+    <Box padding="6" boxShadow="lg" bg="black" w={"100%"}>
+      <SkeletonCircle size="20" />
+      <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="2" />
+    </Box>
   );
 };
