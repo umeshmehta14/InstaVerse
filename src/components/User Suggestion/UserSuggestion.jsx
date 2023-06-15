@@ -5,7 +5,6 @@ import {
   Button,
   Flex,
   Modal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
@@ -21,24 +20,20 @@ import {
   userSuggestionContainer,
   userSuggestionMainProfile,
 } from "../../styles/UserSuggestionStyles";
-import { VscPassFilled } from "../../utils/Icons";
 import { useNavigate } from "react-router-dom";
-import { userList } from "../../styles/SuggestionBoxStyle";
+import SwitchAccountModal from "./UserSuggestion Components/SwitchAccountModal";
 
 export const UserSuggestion = () => {
+  const navigate = useNavigate();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode } = useColorMode();
+
   const {
-    userDispatch,
     userState: { users },
     handleFollow,
   } = useUser();
-  const { currentUser, logoutHandler, handleGuestLogin } = useAuth();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { colorMode } = useColorMode();
-  const navigate = useNavigate();
-
-  const isLoading = !users || users.length === 0;
-
-  console.log(currentUser);
+  const { currentUser } = useAuth();
 
   const suggestedUser = users?.filter(
     (user) =>
@@ -84,45 +79,7 @@ export const UserSuggestion = () => {
               Switch Accounts
             </ModalHeader>
             <ModalCloseButton _hover={{ bg: "red", color: "white" }} />
-            <ModalBody>
-              {users.map((user) => (
-                <Flex
-                  key={user._id}
-                  {...userList}
-                  onClick={() => {
-                    handleGuestLogin(user);
-                    onClose();
-                  }}
-                >
-                  <Flex alignItems={"center"} gap={"2"}>
-                    <Avatar
-                      size="sm"
-                      name={user?.firstName}
-                      src={
-                        user?.avatarURL ||
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                      }
-                    />
-                    <Text>{user?.username}</Text>
-                  </Flex>
-                  {currentUser.username === user.username ? (
-                    <Box
-                      as={VscPassFilled}
-                      fontSize={"1.4rem"}
-                      color="blue.500"
-                    />
-                  ) : null}
-                </Flex>
-              ))}
-              <Button
-                variant={"link-button"}
-                w="100%"
-                p="1rem"
-                onClick={logoutHandler}
-              >
-                Log In to an Existing Account
-              </Button>
-            </ModalBody>
+            <SwitchAccountModal onClose={onClose} />
           </ModalContent>
         </Modal>
       </Flex>
