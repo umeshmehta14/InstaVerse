@@ -8,7 +8,7 @@ import {
 
 import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
-import { getAllPosts, likePost, unLikePost } from "./PostApi";
+import { createPost, getAllPosts, likePost, unLikePost } from "./PostApi";
 import { ALL_POSTS } from "../../utils/Constants";
 import { useAuth } from "../index";
 
@@ -36,6 +36,14 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const handleCreatePost = async (postDetail) => {
+    try {
+      const response = await createPost(token, postDetail);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handlePostLike = async (postId) => {
     try {
@@ -50,7 +58,6 @@ export const PostProvider = ({ children }) => {
       console.error(error);
     }
   };
-
 
   const handlePostUnLike = async (postId) => {
     try {
@@ -72,7 +79,14 @@ export const PostProvider = ({ children }) => {
 
   return (
     <PostContext.Provider
-      value={{ loading, postDispatch, postState, handlePostLike, handlePostUnLike }}
+      value={{
+        loading,
+        postDispatch,
+        postState,
+        handlePostLike,
+        handlePostUnLike,
+        handleCreatePost,
+      }}
     >
       {children}
     </PostContext.Provider>

@@ -65,6 +65,7 @@ export const getAllUserPostsHandler = function (schema, request) {
 
 export const createPostHandler = function (schema, request) {
   const user = requiresAuth.call(this, request);
+  const userData = schema.users.findBy({ username: user.username }).attrs;
   try {
     if (!user) {
       return new Response(
@@ -87,6 +88,10 @@ export const createPostHandler = function (schema, request) {
         dislikedBy: [],
       },
       username: user.username,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      avatarURL: userData.avatarURL,
+      comments: [],
       createdAt: formatDate(),
       updatedAt: formatDate(),
     };
@@ -224,7 +229,11 @@ export const dislikePostHandler = function (schema, request) {
         { errors: ["Cannot decrement like less than 0."] }
       );
     }
-    if (post.likes.dislikedBy.some((currUser) => currUser.username === user.username)) {
+    if (
+      post.likes.dislikedBy.some(
+        (currUser) => currUser.username === user.username
+      )
+    ) {
       return new Response(
         400,
         {},
