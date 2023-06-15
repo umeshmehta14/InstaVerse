@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
-import { Flex, VStack } from "@chakra-ui/react";
+import { Flex, Text, VStack } from "@chakra-ui/react";
 
 import { PostBox, UserSuggestion } from "../../components";
 import { useAuth, usePost } from "../../contexts";
+import { useNavigate } from "react-router-dom";
+import { heroContentBox } from "../../styles/GlobalStyles";
 
 export const Home = () => {
   const {
     postState: { posts },
   } = usePost();
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   const homePagePosts = posts.filter(
     ({ username }) =>
@@ -23,14 +26,7 @@ export const Home = () => {
   }, []);
 
   return (
-    <Flex
-      gap={"1rem"}
-      w="100%"
-      flexDir={{ base: "column", lg: "row-reverse" }}
-      justifyContent={"center"}
-      mt={"1rem"}
-      alignItems={{ base: "center", lg: "flex-start" }}
-    >
+    <Flex {...heroContentBox}>
       <UserSuggestion />
       {homePagePosts.length === 0 ? (
         <Flex
@@ -39,8 +35,16 @@ export const Home = () => {
           textAlign={"center"}
           align={"center"}
           fontSize={"2xl"}
+          gap={"0.5rem"}
         >
-          No posts yet. You can go Explore Feed
+          <Text>No posts yet. You can go</Text>{" "}
+          <Text
+            onClick={() => navigate("/explore")}
+            cursor={"pointer"}
+            textDecor={"underline"}
+          >
+            Explore Feed
+          </Text>
         </Flex>
       ) : (
         <VStack

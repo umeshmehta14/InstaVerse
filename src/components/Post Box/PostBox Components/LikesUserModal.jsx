@@ -47,7 +47,10 @@ const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
               <Flex
                 alignItems={"center"}
                 gap={"2"}
-                onClick={() => navigate("/profile")}
+                onClick={() => {
+                  navigate(`/profile/${username}`);
+                  onClose();
+                }}
               >
                 <Avatar
                   size="sm"

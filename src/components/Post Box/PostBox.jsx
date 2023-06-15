@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Avatar,
   Box,
@@ -11,6 +11,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  ScaleFade,
   Text,
   useColorMode,
   useDisclosure,
@@ -30,12 +31,14 @@ import {
   FaRegBookmark,
   BsEmojiSunglasses,
 } from "../../utils/Icons";
+import { useEffect } from "react";
 
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
+  const { handlePostLike, handlePostUnLike } = usePost();
   const { currentUser } = useAuth();
   const {
     handleBookmark,
@@ -43,8 +46,9 @@ export const PostBox = ({ post }) => {
     handleSingleUser,
     userState: { userBookmarks },
   } = useUser();
-  const { handlePostLike, handlePostUnLike } = usePost();
   const navigate = useNavigate();
+  const [showSavedPostBox, setShowSavedPostBox] = useState(false);
+  const [clicked, setClicked] = useState(false);
 
   const {
     _id,
@@ -65,6 +69,19 @@ export const PostBox = ({ post }) => {
   const userLike = likedBy.find(
     ({ username }) => username === currentUser.username
   );
+
+  const handleBookmarkClick = () => {
+    if (bookmarked && clicked) {
+      setShowSavedPostBox(true);
+      setTimeout(() => {
+        setShowSavedPostBox(false);
+      }, 2000);
+    }
+  };
+
+  useEffect(() => {
+    handleBookmarkClick();
+  }, [bookmarked]);
 
   return (
     <Box
@@ -117,11 +134,34 @@ export const PostBox = ({ post }) => {
         </Popover>
       </Flex>
 
-      <Image
-        src={mediaUrl}
-        fallbackSrc="https://tse4.mm.bing.net/th?id=OIP.y0vjVCLBEYW5ANsy2YHhGgHaCe&pid=Api&P=0&h=180"
-        w={"100%"}
-      />
+      <Box pos={"relative"}>
+        <Image
+          src={mediaUrl}
+          fallbackSrc="https://tse4.mm.bing.net/th?id=OIP.y0vjVCLBEYW5ANsy2YHhGgHaCe&pid=Api&P=0&h=180"
+          w={"100%"}
+        />
+        {showSavedPostBox && (
+          <ScaleFade in={showSavedPostBox} initialScale={1}>
+            <Flex
+              pos={"absolute"}
+              bottom="0px"
+              w={"100%"}
+              bg={colorMode === "dark" ? "black.900" : "white.500"}
+              h="2rem"
+              align="center"
+              border={"0.5px solid gray"}
+              justifyContent={"space-between"}
+              fontSize={"1rem"}
+              p="1.5rem 1rem"
+            >
+              <Text>Post has been saved</Text>
+              <Button variant={"link-button"} fontSize={"0.8rem"} p="0">
+                View your saved posts
+              </Button>
+            </Flex>
+          </ScaleFade>
+        )}
+      </Box>
       <Flex {...iconPostStyles}>
         <Flex
           fontSize={"1.7rem"}
@@ -177,7 +217,10 @@ export const PostBox = ({ post }) => {
                 cursor="pointer"
                 _hover={{ color: "gray" }}
                 title="Save"
-                onClick={() => handleBookmark(_id)}
+                onClick={() => {
+                  handleBookmark(_id);
+                  setClicked(!clicked);
+                }}
               />
             )}
           </HStack>
@@ -190,7 +233,7 @@ export const PostBox = ({ post }) => {
               fontWeight="semibold"
               align={"center"}
               gap={"1"}
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate(`/profile/${friendLike.username}`)}
               cursor={"pointer"}
             >
               <Avatar
@@ -223,7 +266,7 @@ export const PostBox = ({ post }) => {
           <Text
             fontWeight={"semibold"}
             cursor={"pointer"}
-            onClick={() => navigate("/profile")}
+            onClick={() => navigate(`/profile/${username}`)}
           >
             {username}
           </Text>{" "}

@@ -4,6 +4,7 @@ import { PostBox, UserSuggestion } from "../../components";
 import { Flex, VStack } from "@chakra-ui/react";
 import { usePost } from "../../contexts";
 import { useEffect } from "react";
+import { heroContentBox } from "../../styles/GlobalStyles";
 
 export const Explore = () => {
   const {
@@ -15,14 +16,7 @@ export const Explore = () => {
   }, []);
 
   return (
-    <Flex
-      gap={"1rem"}
-      w="100%"
-      flexDir={{ base: "column", lg: "row-reverse" }}
-      justifyContent={"center"}
-      mt={"1rem"}
-      alignItems={{ base: "center", lg: "flex-start" }}
-    >
+    <Flex {...heroContentBox}>
       <UserSuggestion />
       <VStack
         w={{ base: "100%", lg: "auto" }}
