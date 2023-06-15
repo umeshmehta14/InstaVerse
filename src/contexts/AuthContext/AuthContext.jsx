@@ -1,5 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { getLoginInformation, createUser } from "./AuthApi";
+import { useUser } from "../UserContext/UserContext";
+
 // import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
@@ -9,12 +11,17 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorageToken?.token);
   const [currentUser, setCurrentUser] = useState(localStorageToken?.user);
 
+  const [progress, setProgress] = useState(0);
+
   const loginHandler = async (username, password) => {
+    setProgress(20);
     try {
       const {
         status,
         data: { foundUser, encodedToken },
       } = await getLoginInformation(username, password);
+      setProgress(40);
+
       if (status === 200 || status === 201) {
         localStorage.setItem(
           "loginDetails",
@@ -26,6 +33,8 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (err) {
       // toast.error(`Invalid Credentials`, { containerId: 'A', theme: "colored" });
+    } finally {
+      setProgress(100);
     }
   };
 
@@ -60,7 +69,17 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ loginHandler, logoutHandler,setCurrentUser, token, signUpHandler, currentUser, handleGuestLogin }}
+      value={{
+        loginHandler,
+        logoutHandler,
+        setCurrentUser,
+        token,
+        signUpHandler,
+        currentUser,
+        handleGuestLogin,
+        progress,
+        setProgress,
+      }}
     >
       {children}
     </AuthContext.Provider>

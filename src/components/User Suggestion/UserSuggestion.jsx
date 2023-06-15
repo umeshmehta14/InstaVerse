@@ -23,7 +23,6 @@ import {
 } from "../../styles/UserSuggestionStyles";
 import { VscPassFilled } from "../../utils/Icons";
 import { useNavigate } from "react-router-dom";
-import { SET_SELECTED_USER } from "../../utils/Constants";
 import { userList } from "../../styles/SuggestionBoxStyle";
 
 export const UserSuggestion = () => {
@@ -36,6 +35,8 @@ export const UserSuggestion = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
+
+  const isLoading = !users || users.length === 0;
 
   console.log(currentUser);
 

@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import {
   UnfollowUser,
   addToBookmark,
@@ -22,7 +28,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
-  const { token, currentUser, setCurrentUser } = useAuth();
+  const { token, currentUser, setCurrentUser, setProgress } = useAuth();
   const navigate = useNavigate();
 
   const getUsers = async () => {
@@ -40,17 +46,21 @@ export const UserProvider = ({ children }) => {
   };
 
   const handleSingleUser = async (username) => {
+    setProgress(20);
     try {
       const {
         status,
         data: { user },
       } = await getSingleUser(username);
+      setProgress(40);
       if (status === 200 || status === 201) {
         userDispatch({ type: SET_SELECTED_USER, payload: user });
         navigate(`/profile/${username}`);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setProgress(100);
     }
   };
 

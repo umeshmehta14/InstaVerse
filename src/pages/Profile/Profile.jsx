@@ -10,10 +10,10 @@ import {
   GridItem,
   Divider,
   Image,
+  Progress,
 } from "@chakra-ui/react";
 import { useUser } from "../../contexts";
 import { useNavigate, useParams } from "react-router-dom";
-import { SET_SELECTED_USER } from "../../utils/Constants";
 
 export const Profile = () => {
   const navigate = useNavigate();
@@ -25,22 +25,18 @@ export const Profile = () => {
 
   const paramUser = useParams();
 
-  const getUser = async () => {
-    const responseUser = await handleSingleUser(paramUser);
-    userDispatch({ type: SET_SELECTED_USER, payload: responseUser });
-  };
-
   const { _id, username, avatarURL, bio, following, followers } = selectedUser;
 
   useEffect(() => {
-    getUser();
-    if (_id.length === 0) {
+    handleSingleUser(paramUser.username);
+    if (_id?.length === 0) {
       navigate("/");
     }
-  }, [selectedUser]);
+  }, []);
 
   return (
     <Flex direction="column" align="center" p={4}>
+      <Progress value={20} size="lg" colorScheme="pink" />
       <Box mb={4}>
         <Avatar size="xl" src={avatarURL} alt="Profile Picture" />
       </Box>
@@ -52,8 +48,8 @@ export const Profile = () => {
       <Text fontSize="lg" color="gray.500" mb={4}>
         {bio}
       </Text>
-      <Text>Follower {followers.length}</Text>
-      <Text>Following {following.length}</Text>
+      <Text>Follower {followers?.length}</Text>
+      <Text>Following {following?.length}</Text>
       <Flex>
         <Button variant="outline" size="sm" mr={2}>
           Edit Profile

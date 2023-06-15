@@ -20,7 +20,7 @@ import React from "react";
 
 import { RxCrossCircled } from "../../../utils/Icons";
 import { useAuth, useUser } from "../../../contexts";
-import { SET_SEARCH_VALUE, SET_SELECTED_USER } from "../../../utils/Constants";
+import { SET_SEARCH_VALUE } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
 
 const SearchBox = ({ isOpen, onClose }) => {
@@ -91,10 +91,6 @@ const SearchBox = ({ isOpen, onClose }) => {
                     _hover={{ bg: "#1f1f1f6a" }}
                     title={username}
                     onClick={() => {
-                      userDispatch({
-                        type: SET_SELECTED_USER,
-                        payload: user,
-                      });
                       navigate(`/profile/${username}`);
                       onClose();
                     }}

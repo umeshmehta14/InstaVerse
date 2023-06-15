@@ -34,7 +34,6 @@ import {
   BsMoon,
 } from "../../../utils/Icons";
 import { useAuth, useUser } from "../../../contexts";
-import { SET_SELECTED_USER } from "../../../utils/Constants";
 import SearchBox from "./SearchBox";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
@@ -150,9 +149,6 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             style={getStyle}
             className="nav-links"
             to={`/profile/${currentUser?.username}`}
-            onClick={() =>
-              userDispatch({ type: SET_SELECTED_USER, payload: currentUser })
-            }
           >
             <HStack
               {...navlinkStyle}

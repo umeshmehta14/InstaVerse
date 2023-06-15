@@ -2,15 +2,17 @@ import "./App.css";
 import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 
 import NavBar from "./components/Navbar/NavBar";
-import { usePost } from "./contexts";
+import { useAuth, usePost } from "./contexts";
 import { Route, Routes } from "react-router-dom";
 import { BookMark, Explore, Home, Login, Profile, SignUp } from "./pages";
 import { PrivateRoute } from "./components";
+import LoadingBar from "react-top-loading-bar";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.700");
   const { loading } = usePost();
+  const { progress } = useAuth();
 
   return (
     <Box color={color} bg={bg} className="App">
@@ -19,6 +21,7 @@ function App() {
       ) : (
         <Flex flexDir={{ base: "column", md: "row" }}>
           <NavBar />
+          <LoadingBar height={2} color="yellow" progress={progress} />
           <Routes>
             <Route
               path={"/"}
