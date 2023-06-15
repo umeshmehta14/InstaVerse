@@ -25,19 +25,21 @@ const PostModal = ({ isOpen, onClose }) => {
     setSelectedPhoto(file);
   };
 
-  const handleModalClose = () => {
-    onClose();
-    setSelectedPhoto(null);
-  };
-
   const handlePost = () => {
     onClose();
     setSelectedPhoto(null);
   };
 
   return (
-    <Box p={{base:"0", md:4}}>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+    <Box p={{ base: "0", md: 4 }}>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          setSelectedPhoto(null);
+          onClose();
+        }}
+        size="xl"
+      >
         <ModalOverlay
           bg="blackAlpha.300"
           backdropFilter="blur(10px) hue-rotate(90deg)"
@@ -46,17 +48,16 @@ const PostModal = ({ isOpen, onClose }) => {
           border={"1px solid gray"}
           bg={colorMode === "light" ? "white.500" : "black.900"}
         >
-          <ModalHeader>Create Post</ModalHeader>
+          <ModalHeader>Create New Post</ModalHeader>
           <ModalCloseButton
             color={colorMode === "light" ? "black" : "white"}
             _hover={{ bg: "red" }}
-            onClick={handleModalClose}
           />
           <ModalBody>
             <Flex align="center" mb={4}>
               <Textarea
                 flex="1"
-                placeholder="What's on your mind?"
+                placeholder="Write a caption..."
                 size="lg"
                 resize="none"
                 borderRadius="md"

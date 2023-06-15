@@ -85,6 +85,8 @@ export const UserSuggestion = () => {
       </Flex>
 
       <Box borderWidth="1px" borderRadius="lg">
+        <Button>Trending</Button>
+        <Button>Latest</Button>
         <Flex p="3" align="center">
           <Text fontWeight="semibold" mx={"auto"}>
             Suggested For You
