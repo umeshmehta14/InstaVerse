@@ -20,7 +20,11 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth, usePost, useUser } from "../../contexts";
 import LikesUserModal from "./PostBox Components/LikesUserModal";
-import { iconPostStyles, mainPostBoxStyles } from "../../styles/PostBoxStyles";
+import {
+  bookmarkPopup,
+  iconPostStyles,
+  mainPostBoxStyles,
+} from "../../styles/PostBoxStyles";
 import {
   AiOutlineHeart,
   AiFillHeart,
@@ -73,6 +77,7 @@ export const PostBox = ({ post }) => {
   const handleBookmarkClick = () => {
     if (bookmarked && clicked) {
       setShowSavedPostBox(true);
+      setClicked(!clicked);
       setTimeout(() => {
         setShowSavedPostBox(false);
       }, 2000);
@@ -143,16 +148,8 @@ export const PostBox = ({ post }) => {
         {showSavedPostBox && (
           <ScaleFade in={showSavedPostBox} initialScale={1}>
             <Flex
-              pos={"absolute"}
-              bottom="0px"
-              w={"100%"}
               bg={colorMode === "dark" ? "black.900" : "white.500"}
-              h="2rem"
-              align="center"
-              border={"0.5px solid gray"}
-              justifyContent={"space-between"}
-              fontSize={"1rem"}
-              p="1.5rem 1rem"
+              {...bookmarkPopup}
             >
               <Text>Post has been saved</Text>
               <Button variant={"link-button"} fontSize={"0.8rem"} p="0">
