@@ -40,6 +40,7 @@ export const PostModal = ({ isOpen, onClose }) => {
 
   const handlePost = () => {
     handleCreatePost(postValue);
+    setPostValue({ content: "", mediaUrl: "" });
     onClose();
   };
 
