@@ -26,3 +26,9 @@ export const bookmarkPopup = {
   fontSize: "1rem",
   p: "1.5rem 1rem",
 };
+
+export const postIconStyle = {
+  fontSize: "1.6rem",
+  cursor: "pointer",
+  _hover: { color: "gray" },
+};

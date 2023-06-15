@@ -24,6 +24,7 @@ import {
   bookmarkPopup,
   iconPostStyles,
   mainPostBoxStyles,
+  postIconStyle,
 } from "../../styles/PostBoxStyles";
 import {
   AiOutlineHeart,
@@ -183,13 +184,7 @@ export const PostBox = ({ post }) => {
                 onClick={() => handlePostLike(_id)}
               />
             )}
-            <Box
-              as={FaRegComment}
-              fontSize={"1.6rem"}
-              cursor="pointer"
-              _hover={{ color: "gray" }}
-              title="Comment"
-            />
+            <Box as={FaRegComment} {...postIconStyle} title="Comment" />
             <Box
               as={IoPaperPlaneOutline}
               cursor="pointer"
@@ -201,18 +196,14 @@ export const PostBox = ({ post }) => {
             {bookmarked ? (
               <Box
                 as={FaBookmark}
-                fontSize={"1.6rem"}
-                cursor="pointer"
-                _hover={{ color: "gray" }}
+                {...postIconStyle}
                 title="Remove"
                 onClick={() => handleRemoveBookmark(_id)}
               />
             ) : (
               <Box
                 as={FaRegBookmark}
-                fontSize={"1.6rem"}
-                cursor="pointer"
-                _hover={{ color: "gray" }}
+                {...postIconStyle}
                 title="Save"
                 onClick={() => {
                   handleBookmark(_id);
