@@ -5,10 +5,11 @@ import { PostBox, UserSuggestion } from "../../components";
 import { useAuth, usePost } from "../../contexts";
 import { useNavigate } from "react-router-dom";
 import { heroContentBox } from "../../styles/GlobalStyles";
+import { postFilter } from "../../utils/PostFilter";
 
 export const Home = () => {
   const {
-    postState: { posts },
+    postState: { posts, filter },
   } = usePost();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -20,6 +21,9 @@ export const Home = () => {
         (followingUser) => followingUser.username === username
       )
   );
+
+  const displayedPosts = postFilter(homePagePosts, filter);
+
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
@@ -27,7 +31,7 @@ export const Home = () => {
   return (
     <Flex {...heroContentBox}>
       <UserSuggestion />
-      {homePagePosts?.length === 0 ? (
+      {displayedPosts?.length === 0 ? (
         <Flex
           justifyContent={"center"}
           h="70%"
@@ -51,7 +55,7 @@ export const Home = () => {
           alignItems={"center"}
           minW={{ md: "468px" }}
         >
-          {homePagePosts?.map((post) => (
+          {displayedPosts?.map((post) => (
             <PostBox key={post._id} post={post} />
           ))}
         </VStack>

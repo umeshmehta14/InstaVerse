@@ -1,3 +1,4 @@
 export const PostInitialState = {
-    posts : [],
+  posts: [],
+  filter: "latest",
 };

@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useAuth, useUser } from "../../contexts";
+import { useAuth, usePost, useUser } from "../../contexts";
 import {
   userSuggestionAllProfileBox,
   userSuggestionContainer,
@@ -22,6 +22,7 @@ import {
 } from "../../styles/UserSuggestionStyles";
 import { useNavigate } from "react-router-dom";
 import SwitchAccountModal from "./UserSuggestion Components/SwitchAccountModal";
+import { SET_FILTER } from "../../utils/Constants";
 
 export const UserSuggestion = () => {
   const navigate = useNavigate();
@@ -34,6 +35,10 @@ export const UserSuggestion = () => {
     handleFollow,
   } = useUser();
   const { currentUser } = useAuth();
+  const {
+    postState: { filter },
+    postDispatch,
+  } = usePost();
 
   const suggestedUser = users?.filter(
     (user) =>
@@ -85,8 +90,20 @@ export const UserSuggestion = () => {
       </Flex>
 
       <Box borderWidth="1px" borderRadius="lg">
-        <Button>Trending</Button>
-        <Button>Latest</Button>
+        <Button
+          onClick={() =>
+            postDispatch({ type: SET_FILTER, payload: "trending" })
+          }
+          color={filter === "trending" ? "blue" : "green"}
+        >
+          Trending
+        </Button>
+        <Button
+          color={filter === "latest" ? "blue" : "green"}
+          onClick={() => postDispatch({ type: SET_FILTER, payload: "latest" })}
+        >
+          Latest
+        </Button>
         <Flex p="3" align="center">
           <Text fontWeight="semibold" mx={"auto"}>
             Suggested For You
