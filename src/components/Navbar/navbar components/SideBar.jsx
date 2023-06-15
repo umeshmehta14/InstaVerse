@@ -171,11 +171,12 @@ const SideBar = ({ searchDrawerDisclosure }) => {
         </Flex>
       </Flex>
 
-      <Box
-        display={{ base: "none", md: "block" }}
-        w={"90%"}
+      <Flex
+        display={{ base: "none", md: "flex" }}
+        w={{ md: "100%", lg: "90%" }}
         mx={"auto"}
         mt={"7rem"}
+        justify={"center"}
         className="nav-item"
       >
         <Popover>
@@ -205,7 +206,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             <Button onClick={logoutHandler}>LogOut</Button>
           </PopoverContent>
         </Popover>
-      </Box>
+      </Flex>
 
       <PostModal
         onClose={postModalDisclosure.onClose}

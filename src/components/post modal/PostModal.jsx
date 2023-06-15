@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   Textarea,
   useColorMode,
 } from "@chakra-ui/react";
@@ -24,6 +25,13 @@ export const PostModal = ({ isOpen, onClose }) => {
     content: "",
     mediaUrl: "",
   });
+
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    if (value.length <= 200) {
+      setPostValue({ ...postValue, content: value });
+    }
+  };
 
   const handlePhotoChange = (event) => {
     const file = event.target.files[0];
@@ -41,6 +49,7 @@ export const PostModal = ({ isOpen, onClose }) => {
         isOpen={isOpen}
         onClose={() => {
           onClose();
+          setPostValue({ content: "", mediaUrl: "" });
         }}
         size="xl"
       >
@@ -66,10 +75,13 @@ export const PostModal = ({ isOpen, onClose }) => {
                 resize="none"
                 borderRadius="md"
                 focusBorderColor="blue.400"
-                onChange={(e) =>
-                  setPostValue({ ...postValue, content: e.target.value })
-                }
+                maxLength={200}
+                onChange={handleInputChange}
+                value={postValue.content}
               />
+              <Text
+                color={postValue.content.length >= 195 ? "red" : ""}
+              >{`${postValue.content.length}/200`}</Text>
             </Flex>
             {postValue.mediaUrl && (
               <Flex mt={4} justifyContent={"center"}>

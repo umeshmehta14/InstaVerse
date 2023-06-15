@@ -33,7 +33,7 @@ export const navRoutesStyle = {
   flexDir: { base: "row", md: "column" },
   align: "center",
   w: { base: "100%", md: "auto" },
-  p: { base: "1rem", md: "2rem", lg: "0rem" },
+  p: { base: "1rem", md: "0rem" },
   py: { lg: "2rem" },
   alignItems: { base: "center", lg: "baseline" },
   justifyContent: { base: "space-between", md: "center" },
