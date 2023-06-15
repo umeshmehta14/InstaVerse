@@ -45,7 +45,7 @@ export const PostBox = ({ post }) => {
   } = useUser();
   const { handlePostLike, handlePostUnLike } = usePost();
   const navigate = useNavigate();
-  
+
   const {
     _id,
     username,
@@ -56,7 +56,6 @@ export const PostBox = ({ post }) => {
     createdAt,
     likes: { likedBy },
   } = post;
-
 
   const bookmarked = userBookmarks?.includes(_id);
   const friendLike = currentUser.following.find(({ username }) =>
@@ -118,7 +117,11 @@ export const PostBox = ({ post }) => {
         </Popover>
       </Flex>
 
-      <Image src={mediaUrl} alt="Post Image" w={"100%"} />
+      <Image
+        src={mediaUrl}
+        fallbackSrc="https://tse4.mm.bing.net/th?id=OIP.y0vjVCLBEYW5ANsy2YHhGgHaCe&pid=Api&P=0&h=180"
+        w={"100%"}
+      />
       <Flex {...iconPostStyles}>
         <Flex
           fontSize={"1.7rem"}

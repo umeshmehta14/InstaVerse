@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Flex, VStack } from "@chakra-ui/react";
 
 import { PostBox, UserSuggestion } from "../../components";
@@ -17,6 +17,10 @@ export const Home = () => {
         (followingUser) => followingUser.username === username
       )
   );
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
   return (
     <Flex

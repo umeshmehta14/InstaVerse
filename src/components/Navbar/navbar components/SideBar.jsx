@@ -127,7 +127,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             </Text>
           </HStack>
 
-          <NavLink style={getStyle} className="nav-links" to="/">
+          <NavLink style={getStyle} className="nav-links" to="/like">
             <HStack
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
