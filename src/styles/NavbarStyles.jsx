@@ -18,7 +18,7 @@ export const sidebarStyle = {
   h: { base: "fit-content", md: "100vh" },
   flexDirection: { base: "row", md: "column" },
   w: { base: "100%", md: "5rem", lg: "100%" },
-  maxW:{lg:"240px"},
+  maxW: { lg: "240px" },
   top: { base: "auto", md: "0" },
   py: { base: "0", md: "0.5rem" },
   zIndex: 1,
@@ -28,7 +28,7 @@ export const sidebarStyle = {
 };
 
 export const navRoutesStyle = {
-  gap: {base:"1.5rem",lg:"1rem"},
+  gap: { base: "1.5rem", lg: "1rem" },
   fontSize: "2rem",
   flexDir: { base: "row", md: "column" },
   align: "center",
@@ -59,9 +59,9 @@ export const sidebarLogoBoxStyles = {
 };
 
 export const navlinkStyle = {
-  width: {lg:"100%"},
-  borderRadius: {lg:"30px"},
-  padding: {lg:"6px"},
-}
-
-
+  width: { lg: "100%" },
+  borderRadius: { lg: "30px" },
+  padding: { lg: "6px" },
+  cursor: "pointer",
+  columnGap: "0.8rem",
+};

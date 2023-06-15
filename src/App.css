@@ -1,27 +1,32 @@
-
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-#md-search-nav{
+#md-search-nav {
     display: none;
+}
+
+.nav-item:hover .nav-icon {
+    font-size: 2.08rem;
 }
 
 
 
 @media (min-width: 768px) {
-    
-    #md-search-nav{
+
+    #md-search-nav {
         display: flex;
     }
 }
+
 @media (min-width: 1024px) {
-    .nav-links{
+    .nav-links {
         width: 100%;
     }
-    #md-search-nav{
+
+    #md-search-nav {
         display: flex;
     }
 }
