@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Flex,
@@ -11,26 +11,37 @@ import {
   Divider,
   Image,
 } from "@chakra-ui/react";
+import { useUser } from "../../contexts";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
+  const navigate = useNavigate();
+  const {
+    userState: { selectedUser },
+  } = useUser();
+
+  const { _id, username, avatarURL, bio, following, followers } = selectedUser;
+
+  useEffect(() => {
+    if (_id.length === 0) {
+      navigate("/");
+    }
+  }, [selectedUser]);
   return (
     <Flex direction="column" align="center" p={4}>
       <Box mb={4}>
-        <Avatar
-          size="xl"
-          src="https://via.placeholder.com/150"
-          alt="Profile Picture"
-        />
+        <Avatar size="xl" src={avatarURL} alt="Profile Picture" />
       </Box>
 
       <Text fontSize="2xl" fontWeight="bold" mb={2}>
-        Username
+        {username}
       </Text>
 
       <Text fontSize="lg" color="gray.500" mb={4}>
-        Bio
+        {bio}
       </Text>
-
+      <Text>Follower {followers.length}</Text>
+      <Text>Following {following.length}</Text>
       <Flex>
         <Button variant="outline" size="sm" mr={2}>
           Edit Profile
@@ -95,4 +106,3 @@ export const Profile = () => {
     </Flex>
   );
 };
-

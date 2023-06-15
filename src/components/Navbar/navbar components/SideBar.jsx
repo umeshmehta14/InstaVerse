@@ -41,13 +41,15 @@ import {
   RxHamburgerMenu,
   BsMoon,
 } from "../../../utils/Icons";
-import { useAuth } from "../../../contexts";
+import { useAuth, useUser } from "../../../contexts";
+import { SET_SELECTED_USER } from "../../../utils/Constants";
 
 const SideBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const { onOpen, isOpen, onClose } = useDisclosure();
   const { logoutHandler, currentUser } = useAuth();
+  const { userDispatch } = useUser();
   const btnRef = useRef();
 
   const getStyle = ({ isActive }) => (isActive ? { fontWeight: "bold" } : {});
@@ -153,7 +155,14 @@ const SideBar = () => {
             </HStack>
           </NavLink>
 
-          <NavLink style={getStyle} className="nav-links" to="/profile">
+          <NavLink
+            style={getStyle}
+            className="nav-links"
+            to={`/profile/${currentUser.username}`}
+            onClick={() =>
+              userDispatch({ type: SET_SELECTED_USER, payload: currentUser })
+            }
+          >
             <HStack
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}

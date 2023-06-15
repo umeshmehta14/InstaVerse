@@ -23,9 +23,11 @@ import {
 } from "../../styles/UserSuggestionStyles";
 import { VscPassFilled } from "../../utils/Icons";
 import { useNavigate } from "react-router-dom";
+import { SET_SELECTED_USER } from "../../utils/Constants";
 
 export const UserSuggestion = () => {
   const {
+    userDispatch,
     userState: { users },
     handleFollow,
   } = useUser();
@@ -55,7 +57,10 @@ export const UserSuggestion = () => {
           {...userSuggestionMainProfile}
           title={currentUser.username}
           cursor={"pointer"}
-          onClick={()=> navigate("/profile")}
+          onClick={() => {
+            userDispatch({ type: SET_SELECTED_USER, payload: currentUser });
+            navigate(`/profile/${currentUser.username}`);
+          }}
         >
           <Avatar
             size="lg"
@@ -83,7 +88,7 @@ export const UserSuggestion = () => {
             <ModalBody>
               {users.map((user) => (
                 <Flex
-                key={user._id}
+                  key={user._id}
                   gap={"2"}
                   cursor={"pointer"}
                   align={"center"}
@@ -148,7 +153,13 @@ export const UserSuggestion = () => {
                 align={"center"}
                 gap={"0.5rem"}
                 title={user.username}
-                onClick={()=> navigate("/profile")}
+                onClick={() => {
+                  userDispatch({
+                    type: SET_SELECTED_USER,
+                    payload: user,
+                  });
+                  navigate(`/profile/${user.username}`);
+                }}
               >
                 <Avatar
                   size={{ base: "md", md: "sm" }}
@@ -162,7 +173,12 @@ export const UserSuggestion = () => {
                   <Text fontSize="sm">{user.username}</Text>
                 </Box>
               </Flex>
-              <Button variant={"link-button"} size="sm" colorScheme="blue" onClick={()=> handleFollow(user._id)}>
+              <Button
+                variant={"link-button"}
+                size="sm"
+                colorScheme="blue"
+                onClick={() => handleFollow(user._id)}
+              >
                 Follow
               </Button>
             </Flex>

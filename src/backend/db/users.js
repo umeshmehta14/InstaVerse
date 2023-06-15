@@ -87,6 +87,46 @@ export const users = [
         avatarURL:
           "https://tse3.mm.bing.net/th?id=OIP.V_s1iLCrz_ILH3d36HxkQQHaEL&pid=Api&P=0&h=180",
       },
+      {
+        _id: "kjh987tgfv4dwwa",
+        firstName: "Olivia",
+        lastName: "Davis",
+        username: "oliviad",
+        avatarURL:
+          "https://tse4.mm.bing.net/th?id=OIP.n8t0NeIiY1C_QXGOYwFyVAHaEK&pid=Api&P=0&h=180",
+      },
+      {
+        _id: "SDVFewr455",
+        firstName: "Emily",
+        lastName: "Jones",
+        username: "emilyj",
+        avatarURL:
+          "https://tse3.mm.bing.net/th?id=OIP.90k35a_1M3kSF7TRr8lBOAHaKt&pid=Api&P=0&h=180",
+      },
+      {
+        _id: "kjhbv78ujhbv4",
+        firstName: "Michael",
+        lastName: "Clark",
+        username: "michaelc",
+        avatarURL:
+          "https://tse1.mm.bing.net/th?id=OIP.rmSShc82nBX9dJKLK2vUgAHaFi&pid=Api&P=0&h=180",
+      },
+      {
+        _id: "jkhg876fgvb43",
+        firstName: "Sophie",
+        lastName: "Taylor",
+        username: "sophiet",
+        avatarURL:
+          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+      },
+      {
+        _id: "dfgDF456",
+        firstName: "David",
+        lastName: "Brown",
+        username: "davidb",
+        avatarURL:
+          "https://tse1.mm.bing.net/th?id=OIP.34jQmBtI9wJKevMtcL9ZZgHaHa&pid=Api&P=0&h=180",
+      },
     ],
     bookmarks: [],
     bio: "Hello, i am the developer of this website",
