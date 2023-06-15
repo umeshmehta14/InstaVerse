@@ -32,8 +32,6 @@ const SearchBox = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
-  console.log(searchedUsers);
-
   return (
     <Box>
       <Drawer

@@ -13,14 +13,13 @@ export const Home = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  const homePagePosts = posts.filter(
+  const homePagePosts = posts?.filter(
     ({ username }) =>
       currentUser.username === username ||
-      currentUser.following.some(
+      currentUser.following?.some(
         (followingUser) => followingUser.username === username
       )
   );
-
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
@@ -28,7 +27,7 @@ export const Home = () => {
   return (
     <Flex {...heroContentBox}>
       <UserSuggestion />
-      {homePagePosts.length === 0 ? (
+      {homePagePosts?.length === 0 ? (
         <Flex
           justifyContent={"center"}
           h="70%"
@@ -52,7 +51,7 @@ export const Home = () => {
           alignItems={"center"}
           minW={{ md: "468px" }}
         >
-          {homePagePosts.map((post) => (
+          {homePagePosts?.map((post) => (
             <PostBox key={post._id} post={post} />
           ))}
         </VStack>

@@ -38,8 +38,13 @@ export const PostProvider = ({ children }) => {
 
   const handleCreatePost = async (postDetail) => {
     try {
-      const response = await createPost(token, postDetail);
-      console.log(response);
+      const {
+        status,
+        data: { posts },
+      } = await createPost(token, postDetail);
+      if (status === 200 || status === 201) {
+        postDispatch({ type: ALL_POSTS, payload: posts });
+      }
     } catch (error) {
       console.error(error);
     }

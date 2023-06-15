@@ -15,19 +15,24 @@ import {
 } from "@chakra-ui/react";
 
 import { FcAddImage, BsEmojiSunglasses } from "../../utils/Icons";
+import { usePost } from "../../contexts";
 
 export const PostModal = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const { handleCreatePost } = usePost();
+  const [postValue, setPostValue] = useState({
+    content: "",
+    mediaUrl: "",
+  });
 
   const handlePhotoChange = (event) => {
     const file = event.target.files[0];
-    setSelectedPhoto(file);
+    setPostValue({ ...postValue, mediaUrl: URL.createObjectURL(file) });
   };
 
   const handlePost = () => {
+    handleCreatePost(postValue);
     onClose();
-    setSelectedPhoto(null);
   };
 
   return (
@@ -35,7 +40,6 @@ export const PostModal = ({ isOpen, onClose }) => {
       <Modal
         isOpen={isOpen}
         onClose={() => {
-          setSelectedPhoto(null);
           onClose();
         }}
         size="xl"
@@ -62,15 +66,14 @@ export const PostModal = ({ isOpen, onClose }) => {
                 resize="none"
                 borderRadius="md"
                 focusBorderColor="blue.400"
+                onChange={(e) =>
+                  setPostValue({ ...postValue, content: e.target.value })
+                }
               />
             </Flex>
-            {selectedPhoto && (
+            {postValue.mediaUrl && (
               <Flex mt={4} justifyContent={"center"}>
-                <img
-                  src={URL.createObjectURL(selectedPhoto)}
-                  alt="Selected"
-                  width="200"
-                />
+                <img src={postValue.mediaUrl} alt="Selected" width="200" />
               </Flex>
             )}
           </ModalBody>
