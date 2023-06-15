@@ -15,7 +15,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import PostModal from "../../Post Modal/PostModal";
+import { PostModal } from "../../index";
 import {
   sidebarStyle,
   navRoutesStyle,

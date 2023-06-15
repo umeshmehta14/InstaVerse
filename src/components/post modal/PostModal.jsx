@@ -16,7 +16,7 @@ import {
 
 import { FcAddImage, BsEmojiSunglasses } from "../../utils/Icons";
 
-const PostModal = ({ isOpen, onClose }) => {
+export const PostModal = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
@@ -105,5 +105,3 @@ const PostModal = ({ isOpen, onClose }) => {
     </Box>
   );
 };
-
-export default PostModal;
