@@ -13,14 +13,6 @@ import {
   Box,
   useDisclosure,
   useColorMode,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerHeader,
-  DrawerBody,
-  DrawerFooter,
-  Input,
 } from "@chakra-ui/react";
 
 import PostModal from "../../Post Modal/PostModal";
@@ -43,14 +35,14 @@ import {
 } from "../../../utils/Icons";
 import { useAuth, useUser } from "../../../contexts";
 import { SET_SELECTED_USER } from "../../../utils/Constants";
+import SearchBox from "./SearchBox";
 
-const SideBar = () => {
+const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
-  const { onOpen, isOpen, onClose } = useDisclosure();
+  const postModalDisclosure = useDisclosure();
   const { logoutHandler, currentUser } = useAuth();
   const { userDispatch } = useUser();
-  const btnRef = useRef();
 
   const getStyle = ({ isActive }) => (isActive ? { fontWeight: "bold" } : {});
 
@@ -94,9 +86,8 @@ const SideBar = () => {
             {...navlinkStyle}
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             columnGap={"0.8rem"}
-            ref={btnRef}
             cursor={"pointer"}
-            onClick={onOpen}
+            onClick={searchDrawerDisclosure.onOpen}
           >
             <MdSearch />
             <Text
@@ -127,7 +118,7 @@ const SideBar = () => {
             {...navlinkStyle}
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             columnGap={"0.8rem"}
-            onClick={onOpen}
+            onClick={postModalDisclosure.onOpen}
             cursor={"pointer"}
           >
             <TbSquareRoundedPlus />
@@ -158,7 +149,7 @@ const SideBar = () => {
           <NavLink
             style={getStyle}
             className="nav-links"
-            to={`/profile/${currentUser.username}`}
+            to={`/profile/${currentUser?.username}`}
             onClick={() =>
               userDispatch({ type: SET_SELECTED_USER, payload: currentUser })
             }
@@ -219,31 +210,14 @@ const SideBar = () => {
         </Popover>
       </Box>
 
-      <PostModal onClose={onClose} isOpen={isOpen} />
-
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
-
-          <DrawerBody>
-            <Input placeholder="Type here..." />
-          </DrawerBody>
-
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <PostModal
+        onClose={postModalDisclosure.onClose}
+        isOpen={postModalDisclosure.isOpen}
+      />
+      <SearchBox
+        isOpen={searchDrawerDisclosure.isOpen}
+        onClose={searchDrawerDisclosure.onClose}
+      />
     </Flex>
   );
 };

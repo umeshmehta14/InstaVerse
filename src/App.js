@@ -17,7 +17,7 @@ function App() {
       {loading ? (
         "Loading.."
       ) : (
-        <Flex flexDir={{ base: "column", md: "row" }} gap={"1rem"}>
+        <Flex flexDir={{ base: "column", md: "row" }}>
           <NavBar />
           <Routes>
             <Route

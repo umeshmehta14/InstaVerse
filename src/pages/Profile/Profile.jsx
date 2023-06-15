@@ -12,21 +12,33 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useUser } from "../../contexts";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { SET_SELECTED_USER } from "../../utils/Constants";
 
 export const Profile = () => {
   const navigate = useNavigate();
   const {
+    handleSingleUser,
     userState: { selectedUser },
+    userDispatch,
   } = useUser();
+
+  const paramUser = useParams();
+
+  const getUser = async () => {
+    const responseUser = await handleSingleUser(paramUser);
+    userDispatch({ type: SET_SELECTED_USER, payload: responseUser });
+  };
 
   const { _id, username, avatarURL, bio, following, followers } = selectedUser;
 
   useEffect(() => {
+    getUser();
     if (_id.length === 0) {
       navigate("/");
     }
   }, [selectedUser]);
+
   return (
     <Flex direction="column" align="center" p={4}>
       <Box mb={4}>

@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Flex,
@@ -7,6 +7,7 @@ import {
   useColorMode,
   Button,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import SearchBox from "./Navbar Components/SearchBox";
@@ -15,12 +16,11 @@ import SideBar from "./Navbar Components/SideBar";
 import { MdSearch, BsFillSunFill, BsMoon } from "../../utils/Icons";
 
 const NavBar = () => {
-
   const { toggleColorMode, colorMode } = useColorMode();
-  const [openSearch, setOpenSearch] = useState(false);
   const location = useLocation();
+  const searchDrawerDisclosure = useDisclosure();
 
-  if(location.pathname === "/login" || location.pathname === "/signup"){
+  if (location.pathname === "/login" || location.pathname === "/signup") {
     return null;
   }
 
@@ -38,19 +38,15 @@ const NavBar = () => {
           InstaVerse
         </Text>
         <HStack>
-          {openSearch ? (
-            <SearchBox setOpenSearch={setOpenSearch} openSearch={openSearch} />
-          ) : (
-            <Button
-              variant={"link-button"}
-              fontSize={"2rem"}
-              color={colorMode === "light" ? "black" : "blue.900"}
-              onClick={() => setOpenSearch(!openSearch)}
-              title="Search"
-            >
-              <MdSearch />
-            </Button>
-          )}
+          <Button
+            variant={"link-button"}
+            fontSize={"2rem"}
+            color={colorMode === "light" ? "black" : "blue.900"}
+            onClick={searchDrawerDisclosure.onOpen}
+            title="Search"
+          >
+            <MdSearch />
+          </Button>
           <Button
             variant={"link-button"}
             fontSize={"1.6rem"}
@@ -63,7 +59,11 @@ const NavBar = () => {
           </Button>
         </HStack>
       </Flex>
-      <SideBar />
+      <SideBar searchDrawerDisclosure={searchDrawerDisclosure} />
+      <SearchBox
+        isOpen={searchDrawerDisclosure.isOpen}
+        onClose={searchDrawerDisclosure.onClose}
+      />
     </>
   );
 };

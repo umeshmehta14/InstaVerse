@@ -24,6 +24,7 @@ import {
 import { VscPassFilled } from "../../utils/Icons";
 import { useNavigate } from "react-router-dom";
 import { SET_SELECTED_USER } from "../../utils/Constants";
+import { userList } from "../../styles/SuggestionBoxStyle";
 
 export const UserSuggestion = () => {
   const {
@@ -57,10 +58,7 @@ export const UserSuggestion = () => {
           {...userSuggestionMainProfile}
           title={currentUser.username}
           cursor={"pointer"}
-          onClick={() => {
-            userDispatch({ type: SET_SELECTED_USER, payload: currentUser });
-            navigate(`/profile/${currentUser.username}`);
-          }}
+          onClick={() => navigate(`/profile/${currentUser.username}`)}
         >
           <Avatar
             size="lg"
@@ -89,14 +87,11 @@ export const UserSuggestion = () => {
               {users.map((user) => (
                 <Flex
                   key={user._id}
-                  gap={"2"}
-                  cursor={"pointer"}
-                  align={"center"}
-                  p="2"
-                  onClick={() => handleGuestLogin(user)}
-                  borderRadius={"12px"}
-                  _hover={{ bg: "gray.100" }}
-                  justifyContent={"space-between"}
+                  {...userList}
+                  onClick={() => {
+                    handleGuestLogin(user);
+                    onClose();
+                  }}
                 >
                   <Flex alignItems={"center"} gap={"2"}>
                     <Avatar
@@ -115,9 +110,7 @@ export const UserSuggestion = () => {
                       fontSize={"1.4rem"}
                       color="blue.500"
                     />
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
                 </Flex>
               ))}
               <Button
@@ -146,38 +139,32 @@ export const UserSuggestion = () => {
           overflow={"auto"}
           maxW={"100%"}
         >
-          {suggestedUser?.map((user) => (
-            <Flex key={user._id} {...userSuggestionAllProfileBox}>
+          {suggestedUser?.map(({ _id, username, firstName, avatarURL }) => (
+            <Flex key={_id} {...userSuggestionAllProfileBox}>
               <Flex
                 flexDir={{ base: "column", lg: "row" }}
                 align={"center"}
                 gap={"0.5rem"}
-                title={user.username}
-                onClick={() => {
-                  userDispatch({
-                    type: SET_SELECTED_USER,
-                    payload: user,
-                  });
-                  navigate(`/profile/${user.username}`);
-                }}
+                title={username}
+                onClick={() => navigate(`/profile/${username}`)}
               >
                 <Avatar
                   size={{ base: "md", md: "sm" }}
-                  name={user.firstName}
+                  name={firstName}
                   src={
-                    user.avatarURL ||
+                    avatarURL ||
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
                   }
                 />
                 <Box>
-                  <Text fontSize="sm">{user.username}</Text>
+                  <Text fontSize="sm">{username}</Text>
                 </Box>
               </Flex>
               <Button
                 variant={"link-button"}
                 size="sm"
                 colorScheme="blue"
-                onClick={() => handleFollow(user._id)}
+                onClick={() => handleFollow(_id)}
               >
                 Follow
               </Button>
