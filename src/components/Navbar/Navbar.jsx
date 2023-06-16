@@ -10,9 +10,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import SearchBox from "./Navbar Components1/SearchBox";
+import SearchBox from "./Navbar Components/SearchBox";
 import { mobileNavbarStyle } from "../../styles/NavbarStyles";
-import SideBar from "./Navbar Components1/SideBar";
+import SideBar from "./Navbar Components/SideBar";
 import { MdSearch, BsFillSunFill, BsMoon } from "../../utils/Icons";
 
 const NavBar = () => {
