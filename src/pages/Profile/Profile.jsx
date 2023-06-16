@@ -1,39 +1,40 @@
 import React, { useEffect } from "react";
-
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Flex,
   Box,
   Avatar,
   Text,
   Button,
-  Grid,
-  GridItem,
   Divider,
-  Image,
-  SkeletonCircle,
-  SkeletonText,
-  useColorMode,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
 } from "@chakra-ui/react";
-import { useAuth, useUser } from "../../contexts";
-import { useNavigate, useParams } from "react-router-dom";
+
+import { useAuth, usePost, useUser } from "../../contexts";
 import { SET_SELECTED_USER } from "../../utils/Constants";
+import PostSection from "./Profile Components/PostSection";
+import ProfileSkeleton from "./Profile Components/ProfileSkeleton";
 
 export const Profile = () => {
   const navigate = useNavigate();
   const paramUser = useParams();
-
-  const { colorMode } = useColorMode();
 
   const {
     handleSingleUser,
     userState: { selectedUser },
     userDispatch,
   } = useUser();
+  const { getAllUserPosts } = usePost();
   const { progress } = useAuth();
 
   const { _id, username, avatarURL, bio, following, followers } = selectedUser;
 
   useEffect(() => {
+    getAllUserPosts(paramUser.username);
     handleSingleUser(paramUser.username);
     if (_id?.length === 0) {
       navigate("/");
@@ -44,7 +45,7 @@ export const Profile = () => {
   }, []);
 
   return progress === 100 ? (
-    <Flex direction="column" align="center" p={4}>
+    <Flex direction="column" align="center">
       <Box mb={4}>
         <Avatar size="xl" src={avatarURL} alt="Profile Picture" />
       </Box>
@@ -68,67 +69,22 @@ export const Profile = () => {
       </Flex>
 
       <Divider my={4} />
-
-      <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-        <GridItem>
-          <Image
-            src="https://via.placeholder.com/300"
-            alt="Post"
-            boxSize="300px"
-            objectFit="cover"
-          />
-        </GridItem>
-        <GridItem>
-          <Image
-            src="https://via.placeholder.com/300"
-            alt="Post"
-            boxSize="300px"
-            objectFit="cover"
-          />
-        </GridItem>
-        <GridItem>
-          <Image
-            src="https://via.placeholder.com/300"
-            alt="Post"
-            boxSize="300px"
-            objectFit="cover"
-          />
-        </GridItem>
-        <GridItem>
-          <Image
-            src="https://via.placeholder.com/300"
-            alt="Post"
-            boxSize="300px"
-            objectFit="cover"
-          />
-        </GridItem>
-        <GridItem>
-          <Image
-            src="https://via.placeholder.com/300"
-            alt="Post"
-            boxSize="300px"
-            objectFit="cover"
-          />
-        </GridItem>
-        <GridItem>
-          <Image
-            src="https://via.placeholder.com/300"
-            alt="Post"
-            boxSize="300px"
-            objectFit="cover"
-          />
-        </GridItem>
-      </Grid>
+      <Tabs w={"100%"}>
+        <TabList justifyContent={"center"}>
+          <Tab>Posts</Tab>
+          <Tab>Likes</Tab>
+          <Tab>Saved</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel p="0">
+            <PostSection />
+          </TabPanel>
+          <TabPanel>Likes</TabPanel>
+          <TabPanel>Bookmarks</TabPanel>
+        </TabPanels>
+      </Tabs>
     </Flex>
   ) : (
-    <Box
-      padding="6"
-      boxShadow="lg"
-      bg={colorMode === "dark" ? "black.900" : "white.500"}
-      w={"100%"}
-    >
-      <SkeletonCircle size="20" />
-      <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="2" />
-    </Box>
+    <ProfileSkeleton />
   );
 };

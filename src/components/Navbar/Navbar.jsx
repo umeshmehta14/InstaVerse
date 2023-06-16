@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Flex,
   Text,
@@ -19,6 +19,7 @@ const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const location = useLocation();
   const searchDrawerDisclosure = useDisclosure();
+  const navigate = useNavigate();
 
   if (location.pathname === "/login" || location.pathname === "/signup") {
     return null;
@@ -34,6 +35,7 @@ const NavBar = () => {
           fontFamily={"Pacifico, cursive"}
           fontSize={"1.2rem"}
           title="InstaVerse"
+          onClick={() => navigate("/")}
         >
           InstaVerse
         </Text>

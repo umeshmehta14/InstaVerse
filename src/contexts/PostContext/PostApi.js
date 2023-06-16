@@ -2,6 +2,9 @@ import axios from "axios";
 
 export const getAllPosts = async () => await axios.get("/api/posts");
 
+export const getAllUserPost = async (username) =>
+  await axios.get(`/api/posts/user/${username}`);
+
 export const likePost = async (postId, token) =>
   await axios.post(
     `/api/posts/like/${postId}`,

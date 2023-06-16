@@ -8,8 +8,14 @@ import {
 
 import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
-import { createPost, getAllPosts, likePost, unLikePost } from "./PostApi";
-import { ALL_POSTS } from "../../utils/Constants";
+import {
+  createPost,
+  getAllPosts,
+  getAllUserPost,
+  likePost,
+  unLikePost,
+} from "./PostApi";
+import { ALL_POSTS, SET_ALL_USER_POSTS } from "../../utils/Constants";
 import { useAuth } from "../index";
 
 export const PostContext = createContext();
@@ -33,6 +39,20 @@ export const PostProvider = ({ children }) => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getAllUserPosts = async (username) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await getAllUserPost(username);
+      if (status === 200 || status === 201) {
+        postDispatch({ type: SET_ALL_USER_POSTS, payload: posts });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -91,6 +111,7 @@ export const PostProvider = ({ children }) => {
         handlePostLike,
         handlePostUnLike,
         handleCreatePost,
+        getAllUserPosts,
       }}
     >
       {children}
