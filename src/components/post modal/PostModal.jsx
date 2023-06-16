@@ -17,6 +17,7 @@ import {
 
 import { FcAddImage, BsEmojiSunglasses } from "../../utils/Icons";
 import { usePost } from "../../contexts";
+import { postTextarea } from "../../styles/PostModalStyles";
 
 export const PostModal = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
@@ -70,13 +71,7 @@ export const PostModal = ({ isOpen, onClose }) => {
           <ModalBody>
             <Flex align="center" mb={4} pos={"relative"}>
               <Textarea
-                flex="1"
-                placeholder="Write a caption..."
-                size="lg"
-                resize="none"
-                borderRadius="md"
-                focusBorderColor="blue.400"
-                maxLength={2200}
+                {...postTextarea}
                 onChange={handleInputChange}
                 value={postValue.content}
               />
