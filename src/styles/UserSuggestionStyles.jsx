@@ -20,5 +20,16 @@ export const userSuggestionAllProfileBox = {
   rowGap: "0.5rem",
   outline: { base: "0.5px solid gray", lg: "none" },
   justifyContent: "space-between",
-  cursor:"pointer",
+  cursor: "pointer",
+};
+
+export const filterButton = {
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+  justify: "center",
+  padding: "0.3rem 0.5rem",
+  outline: "0.5px solid gray",
+  width: "fit-content",
+  margin: "0.5rem auto",
 };
