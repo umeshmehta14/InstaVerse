@@ -51,6 +51,7 @@ export const UserSuggestion = () => {
         <Flex
           sx={userSuggestionMainProfile}
           title={currentUser.username}
+          alignItems={"center"}
           cursor={"pointer"}
           onClick={() => navigate(`/profile/${currentUser.username}`)}
         >

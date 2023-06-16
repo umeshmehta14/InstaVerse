@@ -2,8 +2,11 @@ import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAuth, useUser } from "../../../contexts";
 import { userSuggestionAllProfileBox } from "../../../styles/UserSuggestionStyles";
+import { useNavigate } from "react-router-dom";
 
 const UserSuggestionMain = () => {
+  const navigate = useNavigate();
+
   const {
     handleFollow,
     userState: { users },
