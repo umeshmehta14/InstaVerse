@@ -15,7 +15,6 @@ const PostSection = () => {
             <Image
               src={mediaUrl}
               alt="Post"
-              // boxSize="128px"
               objectFit="fill"
               h={"100%"}
               minH={"128px"}
