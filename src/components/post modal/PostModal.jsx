@@ -68,7 +68,7 @@ export const PostModal = ({ isOpen, onClose }) => {
             _hover={{ bg: "red" }}
           />
           <ModalBody>
-            <Flex align="center" mb={4}>
+            <Flex align="center" mb={4} pos={"relative"}>
               <Textarea
                 flex="1"
                 placeholder="Write a caption..."
@@ -81,6 +81,10 @@ export const PostModal = ({ isOpen, onClose }) => {
                 value={postValue.content}
               />
               <Text
+                pos={"absolute"}
+                bottom={"-1rem"}
+                right={"0.5rem"}
+                fontSize={"0.7rem"}
                 color={postValue.content.length >= 195 ? "red" : ""}
               >{`${postValue.content.length}/200`}</Text>
             </Flex>
@@ -113,7 +117,7 @@ export const PostModal = ({ isOpen, onClose }) => {
               />
             </Flex>
             <Button bg={"gray.100"} size="sm" onClick={handlePost} title="Post">
-              Post
+              Share
             </Button>
           </ModalFooter>
         </ModalContent>
