@@ -31,6 +31,7 @@ import {
 import { useAuth, usePost, useUser } from "../../../contexts";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getRelativeTime } from "../../../utils/GetRelativeTime";
 
 const PostDetailSection = ({
   onOpen,
@@ -182,11 +183,7 @@ const PostDetailSection = ({
           </Text>
         </Flex>
         <Text fontSize="xs" color={"#717171e0"}>
-          {` ${new Date(createdAt)
-            .toDateString()
-            .split(" ")
-            .slice(1, 4)
-            .join(" ")}`}
+          {getRelativeTime(createdAt)}
         </Text>
       </Flex>
 
