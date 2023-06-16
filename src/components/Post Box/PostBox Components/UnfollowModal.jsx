@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Button,
@@ -9,12 +10,17 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-import React from "react";
+
 import { useUser } from "../../../contexts";
 import { simpleButton } from "../../../styles/PostBoxStyles";
 
-const UnfollowModal = ({ isOpen, onClose, username, avatarURL }) => {
-  const { handleUnfollow } = useUser();
+const UnfollowModal = ({
+  isOpen,
+  onClose,
+  username,
+  avatarURL,
+  handleFollowUser,
+}) => {
   const { colorMode } = useColorMode();
 
   return (
@@ -33,7 +39,7 @@ const UnfollowModal = ({ isOpen, onClose, username, avatarURL }) => {
             sx={simpleButton}
             color={"red"}
             onClick={() => {
-              handleUnfollow(username);
+              handleFollowUser(username, true);
               onClose();
             }}
           >

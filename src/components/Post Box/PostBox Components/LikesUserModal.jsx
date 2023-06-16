@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "../../../contexts";
 import UnfollowModal from "./UnfollowModal";
 import { useState } from "react";
+import RotatingLoader from "../../Loader/RotatingLoader";
 
 const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
   const navigate = useNavigate();
@@ -29,7 +30,20 @@ const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
     avatarURL: "",
   });
   const { currentUser } = useAuth();
-  const { handleFollow } = useUser();
+  const { handleFollow, handleUnfollow } = useUser();
+  const [loadingUsers, setLoadingUsers] = useState([]);
+
+  const handleFollowUser = async (username, unfollow) => {
+    setLoadingUsers((prevLoadingUsers) => [...prevLoadingUsers, username]);
+    if (unfollow) {
+      await handleUnfollow(username);
+    } else {
+      await handleFollow(username);
+    }
+    setLoadingUsers((prevLoadingUsers) =>
+      prevLoadingUsers.filter((user) => user !== username)
+    );
+  };
 
   return (
     <>
@@ -48,65 +62,69 @@ const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {likedBy?.map(({ _id, firstName, username, avatarURL }) => (
-              <Flex
-                key={_id}
-                gap={"2"}
-                cursor={"pointer"}
-                align={"center"}
-                p="2"
-                justifyContent={"space-between"}
-              >
+            {likedBy?.map(({ _id, firstName, username, avatarURL }) => {
+              const isLoading = loadingUsers.includes(username);
+              return (
                 <Flex
-                  alignItems={"center"}
+                  key={_id}
                   gap={"2"}
-                  onClick={() => {
-                    navigate(`/profile/${username}`);
-                    onClose();
-                  }}
+                  cursor={"pointer"}
+                  align={"center"}
+                  p="2"
+                  justifyContent={"space-between"}
                 >
-                  <Avatar
-                    size="sm"
-                    name={firstName}
-                    src={
-                      avatarURL ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                    }
-                  />
-                  <Text>{username}</Text>
-                </Flex>
-                {currentUser?.username === username ? (
-                  ""
-                ) : currentUser.following.find(
-                    (user) => user.username === username
-                  ) ? (
-                  <Button
-                    variant={"following-button"}
+                  <Flex
+                    alignItems={"center"}
+                    gap={"2"}
                     onClick={() => {
-                      unfollowDisclosure.onOpen();
-                      setUnfollowUser({
-                        username: username,
-                        avatarURL: avatarURL,
-                      });
+                      navigate(`/profile/${username}`);
+                      onClose();
                     }}
                   >
-                    Following
-                  </Button>
-                ) : (
-                  <Button
-                    variant={"follow-button"}
-                    onClick={() => handleFollow(username)}
-                  >
-                    Follow
-                  </Button>
-                )}
-              </Flex>
-            ))}
+                    <Avatar
+                      size="sm"
+                      name={firstName}
+                      src={
+                        avatarURL ||
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
+                      }
+                    />
+                    <Text>{username}</Text>
+                  </Flex>
+                  {currentUser?.username === username ? (
+                    ""
+                  ) : currentUser.following.find(
+                      (user) => user.username === username
+                    ) ? (
+                    <Button
+                      variant={"following-button"}
+                      onClick={() => {
+                        unfollowDisclosure.onOpen();
+                        setUnfollowUser({
+                          username: username,
+                          avatarURL: avatarURL,
+                        });
+                      }}
+                    >
+                      {isLoading ? <RotatingLoader /> : "Following"}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant={"follow-button"}
+                      onClick={() => handleFollowUser(username)}
+                    >
+                      {isLoading ? <RotatingLoader /> : "Follow"}
+                    </Button>
+                  )}
+                </Flex>
+              );
+            })}
           </ModalBody>
         </ModalContent>
       </Modal>
       <UnfollowModal
         {...unfollowUser}
+        handleFollowUser={handleFollowUser}
         isOpen={unfollowDisclosure.isOpen}
         onClose={unfollowDisclosure.onClose}
       />
