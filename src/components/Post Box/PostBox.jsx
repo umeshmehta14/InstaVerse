@@ -54,6 +54,7 @@ export const PostBox = ({ post }) => {
   const navigate = useNavigate();
   const [showSavedPostBox, setShowSavedPostBox] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const {
     _id,
@@ -83,6 +84,10 @@ export const PostBox = ({ post }) => {
         setShowSavedPostBox(false);
       }, 2000);
     }
+  };
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
   };
 
   useEffect(() => {
@@ -251,15 +256,36 @@ export const PostBox = ({ post }) => {
           </Text>
         )}
 
-        <Flex fontSize={"sm"} gap="0.5rem">
-          <Text
-            fontWeight={"semibold"}
-            cursor={"pointer"}
-            onClick={() => navigate(`/profile/${username}`)}
-          >
-            {username}
-          </Text>{" "}
-          {content}
+        <Flex fontSize={"sm"} flexWrap="wrap">
+          <Flex gap={1} w="100%">
+            <Text
+              fontWeight={"semibold"}
+              cursor={"pointer"}
+              onClick={() => navigate(`/profile/${username}`)}
+            >
+              {username}
+            </Text>
+            <Text
+              maxW={"88%"}
+              overflowWrap="break-word"
+              overflow={isExpanded ? "unset" : "hidden"}
+              whiteSpace={isExpanded ? "unset" : "nowrap"}
+              textOverflow="ellipsis"
+            >
+              {content}
+            </Text>
+          </Flex>
+          {content.length > 55 && (
+            <Button
+              variant={"link-button"}
+              fontSize={"0.8rem"}
+              p="0"
+              color={"gray"}
+              onClick={toggleExpanded}
+            >
+              {isExpanded ? "Show less" : "Show more"}
+            </Button>
+          )}
         </Flex>
 
         <Flex>

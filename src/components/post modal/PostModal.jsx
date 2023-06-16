@@ -28,7 +28,7 @@ export const PostModal = ({ isOpen, onClose }) => {
 
   const handleInputChange = (e) => {
     const { value } = e.target;
-    if (value.length <= 200) {
+    if (value.length <= 2200) {
       setPostValue({ ...postValue, content: value });
     }
   };
@@ -76,7 +76,7 @@ export const PostModal = ({ isOpen, onClose }) => {
                 resize="none"
                 borderRadius="md"
                 focusBorderColor="blue.400"
-                maxLength={200}
+                maxLength={2200}
                 onChange={handleInputChange}
                 value={postValue.content}
               />
@@ -85,8 +85,8 @@ export const PostModal = ({ isOpen, onClose }) => {
                 bottom={"-1rem"}
                 right={"0.5rem"}
                 fontSize={"0.7rem"}
-                color={postValue.content.length >= 195 ? "red" : ""}
-              >{`${postValue.content.length}/200`}</Text>
+                color={postValue.content.length >= 2190 ? "red" : ""}
+              >{`${postValue.content.length}/2200`}</Text>
             </Flex>
             {postValue.mediaUrl && (
               <Flex mt={4} justifyContent={"center"}>
