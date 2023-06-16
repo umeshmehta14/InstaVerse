@@ -116,7 +116,7 @@ export const PostModal = ({ isOpen, onClose }) => {
                 title="Emoji"
               />
             </Flex>
-            <Button bg={"gray.100"} size="sm" onClick={handlePost} title="Post">
+            <Button variant={"link-button"} onClick={handlePost} title="Share">
               Share
             </Button>
           </ModalFooter>
