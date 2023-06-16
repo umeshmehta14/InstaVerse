@@ -5,4 +5,5 @@ export const heroContentBox = {
   justifyContent: "center",
   mt: "1rem",
   alignItems: { base: "center", lg: "flex-start" },
+  mb: { base: "4rem", lg: "0.4rem" },
 };

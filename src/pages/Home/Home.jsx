@@ -54,7 +54,6 @@ export const Home = () => {
           w={{ base: "100%", lg: "auto" }}
           alignItems={"center"}
           minW={{ md: "468px" }}
-          mb={{ base: "4rem", lg: "0.4rem" }}
         >
           {displayedPosts?.map((post) => (
             <PostBox key={post._id} post={post} />
