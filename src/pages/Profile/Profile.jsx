@@ -12,6 +12,7 @@ import {
   Image,
   SkeletonCircle,
   SkeletonText,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useAuth, useUser } from "../../contexts";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,13 +20,16 @@ import { SET_SELECTED_USER } from "../../utils/Constants";
 
 export const Profile = () => {
   const navigate = useNavigate();
+  const paramUser = useParams();
+
+  const { colorMode } = useColorMode();
+
   const {
     handleSingleUser,
     userState: { selectedUser },
     userDispatch,
   } = useUser();
   const { progress } = useAuth();
-  const paramUser = useParams();
 
   const { _id, username, avatarURL, bio, following, followers } = selectedUser;
 
@@ -117,7 +121,12 @@ export const Profile = () => {
       </Grid>
     </Flex>
   ) : (
-    <Box padding="6" boxShadow="lg" bg="black" w={"100%"}>
+    <Box
+      padding="6"
+      boxShadow="lg"
+      bg={colorMode === "dark" ? "black.900" : "white.500"}
+      w={"100%"}
+    >
       <SkeletonCircle size="20" />
       <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="2" />
     </Box>
