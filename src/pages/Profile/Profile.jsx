@@ -45,6 +45,7 @@ export const Profile = () => {
     following,
     followers,
     portfolio,
+    bookmarks,
   } = selectedUser;
 
   const likedPosts =
@@ -56,7 +57,7 @@ export const Profile = () => {
 
   const bookmarkPosts =
     currentUser.username === username
-      ? posts?.filter(({ _id }) => selectedUser.bookmarks?.includes(_id))
+      ? posts?.filter(({ _id }) => bookmarks?.includes(_id))
       : [];
 
   useEffect(() => {
@@ -80,9 +81,11 @@ export const Profile = () => {
           </Text>
           <Box>
             <Button variant={"follow-button"}>Follow</Button>
-            <Button variant="outline" size="sm" mr={2}>
-              Edit Profile
-            </Button>
+            {currentUser.username === username && (
+              <Button variant="outline" size="sm" mr={2}>
+                Edit Profile
+              </Button>
+            )}
           </Box>
         </Flex>
       </Flex>
@@ -121,7 +124,7 @@ export const Profile = () => {
           <TabPanel p="0">
             <GridBox showingPost={likedPosts} />
           </TabPanel>
-          <TabPanel>
+          <TabPanel p="0">
             <GridBox showingPost={bookmarkPosts} />
           </TabPanel>
         </TabPanels>

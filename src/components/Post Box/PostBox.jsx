@@ -111,6 +111,7 @@ export const PostBox = ({ post }) => {
           fallbackSrc="https://tse4.mm.bing.net/th?id=OIP.y0vjVCLBEYW5ANsy2YHhGgHaCe&pid=Api&P=0&h=180"
           w={"100%"}
           maxH={"585px"}
+          minH={"400px"}
         />
         {showSavedPostBox && (
           <ScaleFade in={showSavedPostBox} initialScale={1}>

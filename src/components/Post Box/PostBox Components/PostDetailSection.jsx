@@ -143,9 +143,11 @@ const PostDetailSection = ({
             </Text>
           </Flex>
         ) : (
-          <Text ref={btnRef} onClick={onOpen} cursor={"pointer"}>
-            {likedBy.length} likes
-          </Text>
+          likedBy.length !== 0 && (
+            <Text ref={btnRef} onClick={onOpen} cursor={"pointer"}>
+              {likedBy.length} likes
+            </Text>
+          )
         )}
 
         <Flex fontSize={"sm"} flexWrap="wrap">
