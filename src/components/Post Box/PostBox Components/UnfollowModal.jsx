@@ -1,25 +1,49 @@
+import {
+  Avatar,
+  Button,
+  Divider,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  Text,
+  VStack,
+  useColorMode,
+} from "@chakra-ui/react";
 import React from "react";
+import { useUser } from "../../../contexts";
+import { simpleButton } from "../../../styles/PostBoxStyles";
 
-const UnfollowModal = ({ isOpen, onClose }) => {
+const UnfollowModal = ({ isOpen, onClose, username, avatarURL }) => {
+  const { handleUnfollow } = useUser();
+  const { colorMode } = useColorMode();
+
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Modal Title</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Text fontWeight="bold" mb="1rem">
-            You can scroll the content behind the modal
-          </Text>
-          <Lorem count={2} />
-        </ModalBody>
-
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
+      <ModalContent
+        bg={colorMode === "dark" ? "black.600" : "white.500"}
+        mt={"15rem"}
+        maxWidth={"390px"}
+      >
+        <VStack pt={"1.5rem"} pb={"0.5rem"}>
+          <Avatar size={"xl"} src={avatarURL} />
+          <Text m="0.5rem">unfollow @{username}?</Text>
+          <Divider />
+          <Button
+            sx={simpleButton}
+            color={"red"}
+            onClick={() => {
+              handleUnfollow(username);
+              onClose();
+            }}
+          >
+            Unfollow
+          </Button>
+          <Divider />
+          <Button sx={simpleButton} onClick={onClose}>
             Close
           </Button>
-          <Button variant="ghost">Secondary Action</Button>
-        </ModalFooter>
+        </VStack>
       </ModalContent>
     </Modal>
   );

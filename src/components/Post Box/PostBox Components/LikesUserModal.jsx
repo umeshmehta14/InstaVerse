@@ -11,81 +11,106 @@ import {
   ModalOverlay,
   Text,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth, useUser } from "../../../contexts";
+import UnfollowModal from "./UnfollowModal";
+import { useState } from "react";
 
 const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
-  const { colorMode } = useColorMode();
   const navigate = useNavigate();
 
-  const { handleUnfollow, handleFollow } = useUser();
+  const { colorMode } = useColorMode();
+  const unfollowDisclosure = useDisclosure();
+  const [unfollowUser, setUnfollowUser] = useState({
+    username: "",
+    avatarURL: "",
+  });
   const { currentUser } = useAuth();
+  const { handleFollow } = useUser();
 
   return (
-    <Modal onClose={onClose} finalFocusRef={btnRef} isOpen={isOpen}>
-      <ModalOverlay />
-      <ModalContent
-        bg={colorMode === "dark" ? "black.600" : "white.500"}
-        mt={"15rem"}
-      >
-        <ModalHeader textAlign={"center"} borderBottom={"0.5px solid #aaaaaa"}>
-          Liked By
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          {likedBy?.map(({ _id, firstName, username, avatarURL }) => (
-            <Flex
-              key={_id}
-              gap={"2"}
-              cursor={"pointer"}
-              align={"center"}
-              p="2"
-              justifyContent={"space-between"}
-            >
+    <>
+      <Modal onClose={onClose} finalFocusRef={btnRef} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent
+          bg={colorMode === "dark" ? "black.600" : "white.500"}
+          mt={"15rem"}
+          maxWidth={"390px"}
+        >
+          <ModalHeader
+            textAlign={"center"}
+            borderBottom={"0.5px solid #aaaaaa"}
+          >
+            Liked By
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {likedBy?.map(({ _id, firstName, username, avatarURL }) => (
               <Flex
-                alignItems={"center"}
+                key={_id}
                 gap={"2"}
-                onClick={() => {
-                  navigate(`/profile/${username}`);
-                  onClose();
-                }}
+                cursor={"pointer"}
+                align={"center"}
+                p="2"
+                justifyContent={"space-between"}
               >
-                <Avatar
-                  size="sm"
-                  name={firstName}
-                  src={
-                    avatarURL ||
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                  }
-                />
-                <Text>{username}</Text>
+                <Flex
+                  alignItems={"center"}
+                  gap={"2"}
+                  onClick={() => {
+                    navigate(`/profile/${username}`);
+                    onClose();
+                  }}
+                >
+                  <Avatar
+                    size="sm"
+                    name={firstName}
+                    src={
+                      avatarURL ||
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
+                    }
+                  />
+                  <Text>{username}</Text>
+                </Flex>
+                {currentUser?.username === username ? (
+                  ""
+                ) : currentUser.following.find(
+                    (user) => user.username === username
+                  ) ? (
+                  <Button
+                    variant={"following-button"}
+                    onClick={() => {
+                      unfollowDisclosure.onOpen();
+                      setUnfollowUser({
+                        username: username,
+                        avatarURL: avatarURL,
+                      });
+                    }}
+                  >
+                    Following
+                  </Button>
+                ) : (
+                  <Button
+                    variant={"follow-button"}
+                    onClick={() => handleFollow(username)}
+                  >
+                    Follow
+                  </Button>
+                )}
               </Flex>
-              {currentUser?.username === username ? (
-                ""
-              ) : currentUser.following.find(
-                  (user) => user.username === username
-                ) ? (
-                <Button
-                  variant={"following-button"}
-                  onClick={() => handleUnfollow(username)}
-                >
-                  Following
-                </Button>
-              ) : (
-                <Button
-                  variant={"follow-button"}
-                  onClick={() => handleFollow(username)}
-                >
-                  Follow
-                </Button>
-              )}
-            </Flex>
-          ))}
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+            ))}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <UnfollowModal
+        {...unfollowUser}
+        isOpen={unfollowDisclosure.isOpen}
+        onClose={unfollowDisclosure.onClose}
+      />
+    </>
   );
 };
 
