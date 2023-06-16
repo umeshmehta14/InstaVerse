@@ -84,7 +84,7 @@ export const UserSuggestion = () => {
 
       {location?.pathname !== "/explore" && (
         <Menu closeOnSelect={false}>
-          <MenuButton width="100%" margin="auto">
+          <MenuButton width="fit-content" ml="1rem">
             <Text sx={filterButton}>
               Filter Posts <Box as={LuFilter} />
             </Text>

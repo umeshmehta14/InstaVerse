@@ -7,7 +7,7 @@ import { useUser } from "../UserContext/UserContext";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const localStorageToken = JSON.parse(localStorage.getItem("loginDetails"));
+  const localStorageToken = JSON.parse(localStorage.getItem("userDetails"));
   const [token, setToken] = useState(localStorageToken?.token);
   const [currentUser, setCurrentUser] = useState(localStorageToken?.user);
 
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
       if (status === 200 || status === 201) {
         localStorage.setItem(
-          "loginDetails",
+          "userDetails",
           JSON.stringify({ user: foundUser, token: encodedToken })
         );
         setCurrentUser(foundUser);
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
       } = await createUser(firstName, lastName, username, password);
       if (status === 201 || status === 200) {
         localStorage.setItem(
-          "loginDetails",
+          "userDetails",
           JSON.stringify({ token: encodedToken, user: createdUser })
         );
         setCurrentUser(createdUser);
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem("loginDetails");
+    localStorage.removeItem("userDetails");
     setToken(null);
     setCurrentUser(null);
   };
