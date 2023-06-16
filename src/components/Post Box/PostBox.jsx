@@ -134,7 +134,6 @@ export const PostBox = ({ post }) => {
         setClicked={setClicked}
         clicked={clicked}
       />
-
       <LikesUserModal
         btnRef={btnRef}
         onClose={onClose}

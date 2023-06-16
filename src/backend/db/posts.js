@@ -557,7 +557,7 @@ export const posts = [
   },
 
   {
-    _id: "LKJHoiuyt9876#$",
+    _id: "LKJHoiuyt9876",
     content:
       "Attended a cooking class today and learned how to make delicious pasta from scratch. #CookingClass #Foodie",
     mediaUrl:
