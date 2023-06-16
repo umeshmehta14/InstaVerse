@@ -275,7 +275,7 @@ export const PostBox = ({ post }) => {
               {content}
             </Text>
           </Flex>
-          {content.length > 55 && (
+          {content.length > 56 && (
             <Button
               variant={"link-button"}
               fontSize={"0.8rem"}
