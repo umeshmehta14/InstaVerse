@@ -91,9 +91,9 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const handleFollow = async (followUserId) => {
+  const handleFollow = async (followUsername) => {
     try {
-      const { status, data } = await followUser(followUserId, token);
+      const { status, data } = await followUser(followUsername, token);
 
       if (status === 200 || status === 201) {
         userDispatch({

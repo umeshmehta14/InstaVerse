@@ -20,7 +20,7 @@ const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
 
-  const { handleUnfollow } = useUser();
+  const { handleUnfollow, handleFollow } = useUser();
   const { currentUser } = useAuth();
 
   return (
@@ -74,7 +74,12 @@ const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
                   Following
                 </Button>
               ) : (
-                <Button variant={"follow-button"}>Follow</Button>
+                <Button
+                  variant={"follow-button"}
+                  onClick={() => handleFollow(username)}
+                >
+                  Follow
+                </Button>
               )}
             </Flex>
           ))}

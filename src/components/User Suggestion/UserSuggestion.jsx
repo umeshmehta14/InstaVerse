@@ -141,7 +141,7 @@ export const UserSuggestion = () => {
                 variant={"link-button"}
                 size="sm"
                 colorScheme="blue"
-                onClick={() => handleFollow(_id)}
+                onClick={() => handleFollow(username)}
               >
                 Follow
               </Button>

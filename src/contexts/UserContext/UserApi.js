@@ -2,32 +2,49 @@ import axios from "axios";
 
 export const getAllUser = async () => await axios.get("/api/users");
 
-export const getSingleUser = async (username) => await axios.get(`/api/users/${username}`);
+export const getSingleUser = async (username) =>
+  await axios.get(`/api/users/${username}`);
 
 export const addToBookmark = async (postId, token) =>
-  await axios.post(`/api/users/bookmark/${postId}`,{}, {
-    headers: {
-      authorization: token,
-    },
-  });
+  await axios.post(
+    `/api/users/bookmark/${postId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
 
 export const removeFromBookmark = async (postId, token) =>
-  await axios.post(`/api/users/remove-bookmark/${postId}`,{}, {
-    headers: {
-      authorization: token,
-    },
-  });
+  await axios.post(
+    `/api/users/remove-bookmark/${postId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
 
 export const followUser = async (followUserId, token) =>
-  await axios.post(`/api/users/follow/${followUserId}`,{}, {
-    headers: {
-      authorization: token,
-    },
-  });
+  await axios.post(
+    `/api/users/follow/${followUserId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
 
 export const UnfollowUser = async (unfollowUserId, token) =>
-  await axios.post(`/api/users/unfollow/${unfollowUserId}`,{}, {
-    headers: {
-      authorization: token,
-    },
-  });
+  await axios.post(
+    `/api/users/unfollow/${unfollowUserId}`,
+    {},
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
