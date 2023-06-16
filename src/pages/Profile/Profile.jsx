@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Flex,
   Box,
@@ -12,11 +12,12 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  HStack,
 } from "@chakra-ui/react";
 
 import { useAuth, usePost, useUser } from "../../contexts";
 import { SET_SELECTED_USER } from "../../utils/Constants";
-import PostSection from "./Profile Components/PostSection";
+import GridBox from "./Profile Components/GridBox";
 import ProfileSkeleton from "./Profile Components/ProfileSkeleton";
 
 export const Profile = () => {
@@ -28,10 +29,35 @@ export const Profile = () => {
     userState: { selectedUser },
     userDispatch,
   } = useUser();
-  const { getAllUserPosts } = usePost();
-  const { progress } = useAuth();
+  const {
+    getAllUserPosts,
+    postState: { posts, userAllPost },
+  } = usePost();
+  const { progress, currentUser } = useAuth();
 
-  const { _id, username, avatarURL, bio, following, followers } = selectedUser;
+  const {
+    _id,
+    username,
+    firstName,
+    lastName,
+    avatarURL,
+    bio,
+    following,
+    followers,
+    portfolio,
+  } = selectedUser;
+
+  const likedPosts =
+    currentUser.username === username
+      ? posts?.filter(({ likes }) =>
+          likes.likedBy?.some((user) => user.username === username)
+        )
+      : [];
+
+  const bookmarkPosts =
+    currentUser.username === username
+      ? posts?.filter(({ _id }) => selectedUser.bookmarks?.includes(_id))
+      : [];
 
   useEffect(() => {
     getAllUserPosts(paramUser.username);
@@ -46,41 +72,58 @@ export const Profile = () => {
 
   return progress === 100 ? (
     <Flex direction="column" align="center">
-      <Box mb={4}>
+      <Flex justifyContent="space-evenly" alignItems="center" width="100%">
         <Avatar size="xl" src={avatarURL} alt="Profile Picture" />
-      </Box>
-
-      <Text fontSize="2xl" fontWeight="bold" mb={2}>
-        {username}
-      </Text>
-
-      <Text fontSize="lg" color="gray.500" mb={4}>
-        {bio}
-      </Text>
-      <Text>Follower {followers?.length}</Text>
-      <Text>Following {following?.length}</Text>
+        <Flex flexDir={"column"}>
+          <Text fontSize="2xl" fontWeight="bold" mb={2}>
+            {username}
+          </Text>
+          <Box>
+            <Button variant={"follow-button"}>Follow</Button>
+            <Button variant="outline" size="sm" mr={2}>
+              Edit Profile
+            </Button>
+          </Box>
+        </Flex>
+      </Flex>
+      <Flex flexDir="column" w="100%" gap="0.1rem">
+        <Text>{` ${firstName} ${lastName}`}</Text>
+        <Text>{bio}</Text>
+        <Text color={"blue.200"}>
+          <Link to={portfolio}>{portfolio}</Link>
+        </Text>
+      </Flex>
+      <HStack>
+        <Text>Follower {followers?.length}</Text>
+        <Text>Following {following?.length}</Text>
+      </HStack>
       <Flex>
-        <Button variant="outline" size="sm" mr={2}>
-          Edit Profile
-        </Button>
         <Button variant="outline" size="sm">
           Logout
         </Button>
       </Flex>
 
       <Divider my={4} />
-      <Tabs w={"100%"}>
+      <Tabs isLazy w={"100%"}>
         <TabList justifyContent={"center"}>
           <Tab>Posts</Tab>
-          <Tab>Likes</Tab>
-          <Tab>Saved</Tab>
+          {currentUser.username === username && (
+            <>
+              <Tab>Likes</Tab>
+              <Tab>Saved</Tab>
+            </>
+          )}
         </TabList>
         <TabPanels>
           <TabPanel p="0">
-            <PostSection />
+            <GridBox showingPost={userAllPost} />
           </TabPanel>
-          <TabPanel>Likes</TabPanel>
-          <TabPanel>Bookmarks</TabPanel>
+          <TabPanel p="0">
+            <GridBox showingPost={likedPosts} />
+          </TabPanel>
+          <TabPanel>
+            <GridBox showingPost={bookmarkPosts} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Flex>

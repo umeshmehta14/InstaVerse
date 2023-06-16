@@ -1,14 +1,10 @@
 import { Grid, GridItem, Image } from "@chakra-ui/react";
 import React from "react";
-import { usePost } from "../../../contexts";
 
-const PostSection = () => {
-  const {
-    postState: { userAllPost },
-  } = usePost();
+const GridBox = ({ showingPost }) => {
   return (
     <Grid templateColumns="repeat(3, minmax(128px, 1fr))" gap={"1"}>
-      {userAllPost?.map((post) => {
+      {showingPost?.map((post) => {
         const { mediaUrl, _id, comment } = post;
         return (
           <GridItem key={_id}>
@@ -26,4 +22,4 @@ const PostSection = () => {
   );
 };
 
-export default PostSection;
+export default GridBox;
