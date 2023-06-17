@@ -117,7 +117,7 @@ export const PostBox = ({ post }) => {
           <ScaleFade in={showSavedPostBox} initialScale={1}>
             <Flex
               bg={colorMode === "dark" ? "black.900" : "white.500"}
-              {...bookmarkPopup}
+              sx={bookmarkPopup}
             >
               <Text>Post has been saved</Text>
               <Button variant={"link-button"} fontSize={"0.8rem"} p="0">
