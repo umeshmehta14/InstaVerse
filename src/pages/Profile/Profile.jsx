@@ -19,6 +19,12 @@ import { useAuth, usePost, useUser } from "../../contexts";
 import { SET_SELECTED_USER } from "../../utils/Constants";
 import GridBox from "./Profile Components/GridBox";
 import ProfileSkeleton from "./Profile Components/ProfileSkeleton";
+import {
+  FiLogOut,
+  MdGridOn,
+  FaRegBookmark,
+  AiOutlineHeart,
+} from "../../utils/Icons";
 
 export const Profile = () => {
   const navigate = useNavigate();
@@ -33,7 +39,7 @@ export const Profile = () => {
     getAllUserPosts,
     postState: { posts, userAllPost },
   } = usePost();
-  const { progress, currentUser } = useAuth();
+  const { progress, currentUser, logoutHandler } = useAuth();
 
   const {
     _id,
@@ -60,6 +66,12 @@ export const Profile = () => {
       ? posts?.filter(({ _id }) => bookmarks?.includes(_id))
       : [];
 
+  const mutualFollowers = followers?.filter(({ username }) =>
+    currentUser?.following?.some((user) => user?.username === username)
+  );
+
+  const currentUserCheck = currentUser.username === username;
+
   useEffect(() => {
     getAllUserPosts(paramUser.username);
     handleSingleUser(paramUser.username);
@@ -69,51 +81,98 @@ export const Profile = () => {
     return () => {
       userDispatch({ type: SET_SELECTED_USER, payload: null });
     };
-  }, []);
+  }, [paramUser.username]);
 
   return progress === 100 ? (
-    <Flex direction="column" align="center">
-      <Flex justifyContent="space-evenly" alignItems="center" width="100%">
-        <Avatar size="xl" src={avatarURL} alt="Profile Picture" />
-        <Flex flexDir={"column"}>
-          <Text fontSize="2xl" fontWeight="bold" mb={2}>
+    <Flex direction="column" mb={{ base: "4.2rem", md: "0.4rem" }}>
+      <Flex alignItems="center" width="100%" gap="1rem" p="1rem">
+        <Avatar size="xl" src={avatarURL} />
+        <Flex flexDir={"column"} gap={"0.5rem"}>
+          <Flex
+            fontSize="2xl"
+            fontWeight="bold"
+            mb={2}
+            align={"center"}
+            gap={"2"}
+          >
             {username}
-          </Text>
+            <Box
+              as={FiLogOut}
+              fontSize={"1.4rem"}
+              onClick={logoutHandler}
+              title="Logout"
+            />
+          </Flex>
           <Box>
-            <Button variant={"follow-button"}>Follow</Button>
-            {currentUser.username === username && (
-              <Button variant="outline" size="sm" mr={2}>
-                Edit Profile
+            {!currentUserCheck && (
+              <Button variant={"follow-button"} title="Follow">
+                Follow
               </Button>
+            )}
+            {currentUserCheck && (
+              <>
+                <Button
+                  variant="following-button"
+                  mr={2}
+                  w="100%"
+                  title="Edit Profile"
+                >
+                  Edit Profile
+                </Button>
+              </>
             )}
           </Box>
         </Flex>
       </Flex>
-      <Flex flexDir="column" w="100%" gap="0.1rem">
+      <Flex flexDir="column" w="100%" gap="0.1rem" p={"0.5rem 1rem"}>
         <Text>{` ${firstName} ${lastName}`}</Text>
         <Text>{bio}</Text>
         <Text color={"blue.200"}>
           <Link to={portfolio}>{portfolio}</Link>
         </Text>
       </Flex>
-      <HStack>
-        <Text>Follower {followers?.length}</Text>
-        <Text>Following {following?.length}</Text>
-      </HStack>
-      <Flex>
-        <Button variant="outline" size="sm">
-          Logout
-        </Button>
-      </Flex>
+      {!currentUserCheck && (
+        <Flex fontSize={"sm"} color={"gray"} px={"1rem"} pb={"0.5rem"}>
+          {mutualFollowers?.length === 1 && (
+            <Text>Followed by {mutualFollowers[0]?.username}</Text>
+          )}
+          {mutualFollowers?.length === 2 && (
+            <Text>
+              Followed by {mutualFollowers[0]?.username},{" "}
+              {mutualFollowers[1]?.username}
+            </Text>
+          )}
+          {mutualFollowers?.length > 2 && (
+            <Text>
+              Followed by {mutualFollowers[0]?.username},{" "}
+              {mutualFollowers[1]?.username} and +{mutualFollowers?.length - 2}{" "}
+              more
+            </Text>
+          )}
+        </Flex>
+      )}
 
-      <Divider my={4} />
-      <Tabs isLazy w={"100%"}>
+      <Divider />
+      <HStack w="100%" justifyContent="space-around" p="1rem">
+        <Text>{userAllPost?.length} posts</Text>
+        <Text>{followers?.length} follower</Text>
+        <Text>{following?.length} following</Text>
+      </HStack>
+      <Divider />
+      <Divider />
+      <Tabs isLazy defaultIndex={0} w={"100%"}>
         <TabList justifyContent={"center"}>
-          <Tab>Posts</Tab>
-          {currentUser.username === username && (
+          <Tab flexGrow={1} colorScheme="blue">
+            <Box as={MdGridOn} fontSize={"1.7rem"} />
+          </Tab>
+          {currentUserCheck && (
             <>
-              <Tab>Likes</Tab>
-              <Tab>Saved</Tab>
+              <Tab flexGrow={1}>
+                <Box as={AiOutlineHeart} fontSize={"1.7rem"} />
+              </Tab>
+              <Tab flexGrow={1}>
+                <Box as={FaRegBookmark} fontSize={"1.5rem"} />
+              </Tab>
             </>
           )}
         </TabList>

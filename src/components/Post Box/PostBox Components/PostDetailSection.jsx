@@ -96,21 +96,21 @@ const PostDetailSection = ({
                 onClick={() => handlePostLike(_id)}
               />
             )}
-            <Box as={FaRegComment} {...postIconStyle} title="Comment" />
-            <Box as={IoPaperPlaneOutline} {...IconHoverStyle} title="Share" />
+            <Box as={FaRegComment} sx={postIconStyle} title="Comment" />
+            <Box as={IoPaperPlaneOutline} sx={IconHoverStyle} title="Share" />
           </HStack>
           <HStack>
             {bookmarked ? (
               <Box
                 as={FaBookmark}
-                {...postIconStyle}
+                sx={postIconStyle}
                 title="Remove"
                 onClick={() => handleRemoveBookmark(_id)}
               />
             ) : (
               <Box
                 as={FaRegBookmark}
-                {...postIconStyle}
+                sx={postIconStyle}
                 title="Save"
                 onClick={() => {
                   handleBookmark(_id);
@@ -124,21 +124,18 @@ const PostDetailSection = ({
           <Flex fontSize={"sm"} align={"center"}>
             <Text>Liked by </Text>
             <Flex
-              {...friendLikeUserStyle}
+              sx={friendLikeUserStyle}
               onClick={() => navigate(`/profile/${friendLike.username}`)}
             >
               <Avatar
                 size="2xs"
-                title={friendLike.username}
-                src={
-                  friendLike?.avatarURL ||
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                }
+                title={friendLike?.username}
+                src={friendLike?.avatarURL}
               />
               {friendLike?.username}
             </Flex>
             <Text mx={"1"}>and</Text>
-            <Text {...userBoldStyle} ref={btnRef} onClick={onOpen}>
+            <Text sx={userBoldStyle} ref={btnRef} onClick={onOpen}>
               {likedBy.length - 1} others
             </Text>
           </Flex>

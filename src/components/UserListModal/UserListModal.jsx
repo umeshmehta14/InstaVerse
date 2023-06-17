@@ -15,12 +15,12 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, useUser } from "../../../contexts";
-import UnfollowModal from "./UnfollowModal";
+import { useAuth, useUser } from "../../contexts";
+import UnfollowModal from "../Post Box/PostBox Components/UnfollowModal";
 import { useState } from "react";
-import RotatingLoader from "../../Loader/RotatingLoader";
+import RotatingLoader from "../Loader/RotatingLoader";
 
-const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
+export const UserListModal = ({ btnRef, onClose, isOpen, users, heading }) => {
   const navigate = useNavigate();
 
   const { colorMode } = useColorMode();
@@ -58,11 +58,11 @@ const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
             textAlign={"center"}
             borderBottom={"0.5px solid #aaaaaa"}
           >
-            Liked By
+            {heading}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {likedBy?.map(({ _id, firstName, username, avatarURL }) => {
+            {users?.map(({ _id, firstName, username, avatarURL }) => {
               const isLoading = loadingUsers.includes(username);
               return (
                 <Flex
@@ -131,5 +131,3 @@ const LikesUserModal = ({ btnRef, onClose, isOpen, likedBy }) => {
     </>
   );
 };
-
-export default LikesUserModal;

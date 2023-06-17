@@ -109,16 +109,6 @@ export const components = {
         _hover: { bg: "rgb(206, 206, 206)", color: "gray.900" },
       },
     },
-    IconButton: {
-      as: "span",
-      color: "white.500",
-      fontSize: "1.2rem",
-      background: "transparent",
-      borderColor: "transparent",
-      _hover: {
-        background: "transparent",
-      },
-    },
     outline: {
       background: "none",
     },
@@ -127,6 +117,20 @@ export const components = {
       _hover: {
         background: "transparent",
         textDecoration: "none",
+      },
+    },
+  },
+  Tabs: {
+    parts: ["tab"],
+    baseStyle: {
+      tab: {
+        _selected: {
+          borderBottom: "none",
+          borderTop: "2px solid white",
+        },
+        _focus: {
+          color: "#63b3ed",
+        },
       },
     },
   },

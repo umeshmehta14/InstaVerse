@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useUser } from "../../contexts";
-import LikesUserModal from "./PostBox Components/LikesUserModal";
+import { UserListModal } from "../index";
 import {
   bookmarkPopup,
   postThreeDot,
@@ -135,11 +135,12 @@ export const PostBox = ({ post }) => {
         setClicked={setClicked}
         clicked={clicked}
       />
-      <LikesUserModal
+      <UserListModal
         btnRef={btnRef}
         onClose={onClose}
         isOpen={isOpen}
-        likedBy={likedBy}
+        users={likedBy}
+        heading={"Liked By"}
       />
     </Box>
   );

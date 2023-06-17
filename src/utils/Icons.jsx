@@ -1,4 +1,10 @@
-import { MdHome, MdOutlineExplore, MdFavorite, MdSearch } from "react-icons/md";
+import {
+  MdHome,
+  MdOutlineExplore,
+  MdFavorite,
+  MdSearch,
+  MdGridOn,
+} from "react-icons/md";
 import {
   BsFillSunFill,
   BsMoon,
@@ -24,6 +30,7 @@ import { IoPaperPlaneOutline } from "react-icons/io5";
 import { BiChevronDown } from "react-icons/bi";
 import { VscPassFilled } from "react-icons/vsc";
 import { LuFilter } from "react-icons/lu";
+import { FiLogOut } from "react-icons/fi";
 
 export {
   AiOutlineHeart,
@@ -51,4 +58,6 @@ export {
   VscPassFilled,
   RxCrossCircled,
   LuFilter,
+  FiLogOut,
+  MdGridOn,
 };
