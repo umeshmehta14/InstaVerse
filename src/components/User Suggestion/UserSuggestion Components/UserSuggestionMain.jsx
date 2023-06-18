@@ -3,6 +3,7 @@ import React from "react";
 import { useAuth, useUser } from "../../../contexts";
 import { userSuggestionAllProfileBox } from "../../../styles/UserSuggestionStyles";
 import { useNavigate } from "react-router-dom";
+import { FollowedByUsers } from "../../FollowedByUsers/FollowedByUsers";
 
 const UserSuggestionMain = () => {
   const navigate = useNavigate();
@@ -35,37 +36,40 @@ const UserSuggestionMain = () => {
         overflow={"auto"}
         maxW={"100%"}
       >
-        {suggestedUser?.map(({ _id, username, firstName, avatarURL }) => (
-          <Flex key={_id} sx={userSuggestionAllProfileBox}>
-            <Flex
-              flexDir={{ base: "column", lg: "row" }}
-              align={"center"}
-              gap={"0.5rem"}
-              title={username}
-              onClick={() => navigate(`/profile/${username}`)}
-            >
-              <Avatar
-                size={{ base: "md", md: "sm" }}
-                name={firstName}
-                src={
-                  avatarURL ||
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                }
-              />
-              <Box>
-                <Text fontSize="sm">{username}</Text>
-              </Box>
+        {suggestedUser?.map(
+          ({ _id, username, firstName, avatarURL, followers }) => (
+            <Flex key={_id} sx={userSuggestionAllProfileBox}>
+              <Flex
+                flexDir={{ base: "column", lg: "row" }}
+                align={"center"}
+                gap={"0.5rem"}
+                title={username}
+                onClick={() => navigate(`/profile/${username}`)}
+              >
+                <Avatar
+                  size={{ base: "md", md: "sm" }}
+                  name={firstName}
+                  src={
+                    avatarURL ||
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
+                  }
+                />
+                <Box>
+                  <Text fontSize="sm">{username}</Text>
+                  <FollowedByUsers followers={followers} />
+                </Box>
+              </Flex>
+              <Button
+                variant={"link-button"}
+                size="sm"
+                colorScheme="blue"
+                onClick={() => handleFollow(username)}
+              >
+                Follow
+              </Button>
             </Flex>
-            <Button
-              variant={"link-button"}
-              size="sm"
-              colorScheme="blue"
-              onClick={() => handleFollow(username)}
-            >
-              Follow
-            </Button>
-          </Flex>
-        ))}
+          )
+        )}
       </Flex>
     </Box>
   );
