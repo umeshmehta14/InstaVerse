@@ -28,7 +28,7 @@ export const NavBar = () => {
   return (
     <>
       <Flex
-        bg={useColorModeValue("white.900", "black.900")}
+        bg={colorMode === "light" ? "white.900" : "black.900"}
         {...mobileNavbarStyle}
       >
         <Text
