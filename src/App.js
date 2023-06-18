@@ -1,11 +1,10 @@
 import "./App.css";
 import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
-
-import NavBar from "./components/Navbar/NavBar";
-import { useAuth, usePost } from "./contexts";
 import { Route, Routes } from "react-router-dom";
+
+import { useAuth, usePost } from "./contexts";
+import { NavBar, PrivateRoute } from "./components";
 import { BookMark, Explore, Home, Login, Profile, SignUp } from "./pages";
-import { PrivateRoute } from "./components";
 import LoadingBar from "react-top-loading-bar";
 
 function App() {

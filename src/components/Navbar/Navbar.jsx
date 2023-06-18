@@ -15,7 +15,7 @@ import { mobileNavbarStyle } from "../../styles/NavbarStyles";
 import SideBar from "./Navbar Components/SideBar";
 import { MdSearch, BsFillSunFill, BsMoon } from "../../utils/Icons";
 
-const NavBar = () => {
+export const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const location = useLocation();
   const searchDrawerDisclosure = useDisclosure();
@@ -69,5 +69,3 @@ const NavBar = () => {
     </>
   );
 };
-
-export default NavBar;
