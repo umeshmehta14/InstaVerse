@@ -126,7 +126,7 @@ export const Profile = () => {
           </Box>
         </Flex>
       </Flex>
-      <Flex flexDir="column" w="100%" gap="0.1rem" p={"0.5rem 1rem"}>
+      <Flex flexDir="column" w="100%" gap="0.1rem" p={"0.5rem 1rem"} pt={0}>
         <Text>{` ${firstName} ${lastName}`}</Text>
         <Text>{bio}</Text>
         <Text color={"blue.200"}>
