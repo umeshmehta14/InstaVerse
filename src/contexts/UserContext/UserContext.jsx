@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import {
   UnfollowUser,
   addToBookmark,
@@ -28,6 +22,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
+  const { users } = userState;
   const { token, currentUser, setCurrentUser, setProgress } = useAuth();
   const navigate = useNavigate();
 
@@ -125,7 +120,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [users]);
 
   return (
     <UserContext.Provider

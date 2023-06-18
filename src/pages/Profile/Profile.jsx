@@ -25,6 +25,7 @@ import {
   FaRegBookmark,
   AiOutlineHeart,
 } from "../../utils/Icons";
+import { FollowedByUsers } from "../../components";
 
 export const Profile = () => {
   const navigate = useNavigate();
@@ -65,10 +66,6 @@ export const Profile = () => {
     currentUser.username === username
       ? posts?.filter(({ _id }) => bookmarks?.includes(_id))
       : [];
-
-  const mutualFollowers = followers?.filter(({ username }) =>
-    currentUser?.following?.some((user) => user?.username === username)
-  );
 
   const currentUserCheck = currentUser.username === username;
 
@@ -131,26 +128,7 @@ export const Profile = () => {
           <Link to={portfolio}>{portfolio}</Link>
         </Text>
       </Flex>
-      {!currentUserCheck && (
-        <Flex fontSize={"sm"} color={"gray"} px={"1rem"} pb={"0.5rem"}>
-          {mutualFollowers?.length === 1 && (
-            <Text>Followed by {mutualFollowers[0]?.username}</Text>
-          )}
-          {mutualFollowers?.length === 2 && (
-            <Text>
-              Followed by {mutualFollowers[0]?.username},{" "}
-              {mutualFollowers[1]?.username}
-            </Text>
-          )}
-          {mutualFollowers?.length > 2 && (
-            <Text>
-              Followed by {mutualFollowers[0]?.username},{" "}
-              {mutualFollowers[1]?.username} and +{mutualFollowers?.length - 2}{" "}
-              more
-            </Text>
-          )}
-        </Flex>
-      )}
+      {!currentUserCheck && <FollowedByUsers followers={followers} />}
 
       <Divider />
       <HStack w="100%" justifyContent="space-around" p="1rem">
@@ -184,6 +162,9 @@ export const Profile = () => {
             <GridBox showingPost={likedPosts} />
           </TabPanel>
           <TabPanel p="0">
+            <Flex justify={"center"} fontSize={"sm"} p="0.5rem" color="gray">
+              Only you can see what you've saved
+            </Flex>
             <GridBox showingPost={bookmarkPosts} />
           </TabPanel>
         </TabPanels>
