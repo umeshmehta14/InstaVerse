@@ -20,7 +20,7 @@ import UnfollowModal from "../Post Box/PostBox Components/UnfollowModal";
 import { useState } from "react";
 import RotatingLoader from "../Loader/RotatingLoader";
 
-export const UserListModal = ({ btnRef, onClose, isOpen, users, heading }) => {
+export const UserListModal = ({ onClose, isOpen, users, heading }) => {
   const navigate = useNavigate();
 
   const { colorMode } = useColorMode();
@@ -47,7 +47,7 @@ export const UserListModal = ({ btnRef, onClose, isOpen, users, heading }) => {
 
   return (
     <>
-      <Modal onClose={onClose} finalFocusRef={btnRef} isOpen={isOpen}>
+      <Modal onClose={onClose} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent
           bg={colorMode === "dark" ? "black.600" : "white.500"}

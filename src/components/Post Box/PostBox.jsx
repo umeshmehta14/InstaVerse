@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -29,7 +29,6 @@ import PostDetailSection from "./PostBox Components/PostDetailSection";
 export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef(null);
 
   const {
     handleSingleUser,
@@ -131,12 +130,10 @@ export const PostBox = ({ post }) => {
         onOpen={onOpen}
         bookmarked={bookmarked}
         post={post}
-        btnRef={btnRef}
         setClicked={setClicked}
         clicked={clicked}
       />
       <UserListModal
-        btnRef={btnRef}
         onClose={onClose}
         isOpen={isOpen}
         users={likedBy}

@@ -37,7 +37,6 @@ const PostDetailSection = ({
   onOpen,
   post,
   bookmarked,
-  btnRef,
   setClicked,
   clicked,
 }) => {
@@ -135,13 +134,13 @@ const PostDetailSection = ({
               {friendLike?.username}
             </Flex>
             <Text mx={"1"}>and</Text>
-            <Text sx={userBoldStyle} ref={btnRef} onClick={onOpen}>
+            <Text sx={userBoldStyle} onClick={onOpen}>
               {likedBy.length - 1} others
             </Text>
           </Flex>
         ) : (
           likedBy.length !== 0 && (
-            <Text ref={btnRef} onClick={onOpen} cursor={"pointer"}>
+            <Text onClick={onOpen} cursor={"pointer"}>
               {likedBy.length} likes
             </Text>
           )

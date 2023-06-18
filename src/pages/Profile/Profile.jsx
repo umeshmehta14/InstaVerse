@@ -13,23 +13,28 @@ import {
   TabPanels,
   TabPanel,
   HStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { useAuth, usePost, useUser } from "../../contexts";
 import { SET_SELECTED_USER } from "../../utils/Constants";
 import GridBox from "./Profile Components/GridBox";
 import ProfileSkeleton from "./Profile Components/ProfileSkeleton";
+import { FollowedByUsers, UserListModal } from "../../components";
 import {
   FiLogOut,
   MdGridOn,
   FaRegBookmark,
   AiOutlineHeart,
 } from "../../utils/Icons";
-import { FollowedByUsers } from "../../components";
+import { useState } from "react";
 
 export const Profile = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const navigate = useNavigate();
   const paramUser = useParams();
+  const [userList, setUserList] = useState("");
 
   const {
     handleSingleUser,
@@ -133,8 +138,22 @@ export const Profile = () => {
       <Divider />
       <HStack w="100%" justifyContent="space-around" p="1rem">
         <Text>{userAllPost?.length} posts</Text>
-        <Text>{followers?.length} follower</Text>
-        <Text>{following?.length} following</Text>
+        <Text
+          onClick={() => {
+            onOpen();
+            setUserList("followers");
+          }}
+        >
+          {followers?.length} follower
+        </Text>
+        <Text
+          onClick={() => {
+            onOpen();
+            setUserList("following");
+          }}
+        >
+          {following?.length} following
+        </Text>
       </HStack>
       <Divider />
       <Divider />
@@ -169,6 +188,12 @@ export const Profile = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <UserListModal
+        onClose={onClose}
+        isOpen={isOpen}
+        users={userList === "followers" ? followers : following}
+        heading={userList === "followers" ? "Followers" : "Following"}
+      />
     </Flex>
   ) : (
     <ProfileSkeleton />
