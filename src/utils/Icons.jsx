@@ -35,6 +35,7 @@ import { VscPassFilled } from "react-icons/vsc";
 import { LuFilter } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { SlTrash } from "react-icons/sl";
+import { CiCamera } from "react-icons/ci";
 
 export {
   AiOutlineHeart,
@@ -68,4 +69,5 @@ export {
   AiOutlinePicture,
   SlTrash,
   FaComment,
+  CiCamera,
 };

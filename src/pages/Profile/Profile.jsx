@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Flex,
   Box,
@@ -9,13 +9,22 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Text,
+  Button,
+  VStack,
+  Heading,
 } from "@chakra-ui/react";
 
 import { useAuth, usePost, useUser } from "../../contexts";
 import { SET_SELECTED_USER } from "../../utils/Constants";
 import GridBox from "./Profile Components/GridBox";
 import ProfileSkeleton from "./Profile Components/ProfileSkeleton";
-import { MdGridOn, FaRegBookmark, AiOutlineHeart } from "../../utils/Icons";
+import {
+  MdGridOn,
+  FaRegBookmark,
+  AiOutlineHeart,
+  CiCamera,
+} from "../../utils/Icons";
 import ProfileDetail from "./Profile Components/ProfileDetail";
 
 export const Profile = () => {
@@ -96,7 +105,25 @@ export const Profile = () => {
         </TabList>
         <TabPanels>
           <TabPanel p="0">
-            <GridBox showingPost={userAllPost} />
+            {userAllPost?.length === 0 ? (
+              <VStack justifyContent="center" height="300px" gap={"4"}>
+                <Box
+                  as={CiCamera}
+                  color={"gray"}
+                  fontSize="7rem"
+                  border={"1px solid gray"}
+                  borderRadius="50%"
+                  p="1rem"
+                />
+                <Heading>Share photos</Heading>
+                <Text>
+                  When you share photos, they will appear on your profile.
+                </Text>
+                <Button variant={"link-button"}>Share your first photo</Button>
+              </VStack>
+            ) : (
+              <GridBox showingPost={userAllPost} />
+            )}
           </TabPanel>
           <TabPanel p="0">
             <GridBox showingPost={likedPosts} />
