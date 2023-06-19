@@ -16,9 +16,11 @@ import { UserListModal } from "../../../components";
 import { followedByUser } from "../../../styles/GlobalStyles";
 import { getMutualFollowers } from "../../../utils/MutualFollowers";
 import { FiLogOut } from "../../../utils/Icons";
+import EditProfileModal from "./EditProfileModal";
 
 const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const editModalDisclosure = useDisclosure();
 
   const { logoutHandler, currentUser } = useAuth();
   const [userList, setUserList] = useState("");
@@ -84,6 +86,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
                   mr={2}
                   w="100%"
                   title="Edit Profile"
+                  onClick={editModalDisclosure.onOpen}
                 >
                   Edit Profile
                 </Button>
@@ -224,6 +227,11 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
         isOpen={isOpen}
         users={userList === "followers" ? followers : following}
         heading={userList === "followers" ? "Followers" : "Following"}
+      />
+      <EditProfileModal
+        onOpen={editModalDisclosure.onOpen}
+        isOpen={editModalDisclosure.isOpen}
+        onClose={editModalDisclosure.onClose}
       />
     </>
   );

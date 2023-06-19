@@ -36,59 +36,50 @@ const UserSuggestionMain = () => {
         overflow={"auto"}
         maxW={"100%"}
       >
-        {suggestedUser?.map(
-          ({ _id, username, firstName, avatarURL, followers }) => {
-            const mutualFollowers = getMutualFollowers(followers, currentUser);
-            return (
+        {suggestedUser?.map(({ _id, username, avatarURL, followers }) => {
+          const mutualFollowers = getMutualFollowers(followers, currentUser);
+          return (
+            <Flex
+              key={_id}
+              sx={userSuggestionAllProfileBox}
+              alignItems={"center"}
+            >
               <Flex
-                key={_id}
-                sx={userSuggestionAllProfileBox}
-                alignItems={"center"}
+                flexDir={{ base: "column", lg: "row" }}
+                align={"center"}
+                gap={"0.5rem"}
+                title={username}
+                onClick={() => navigate(`/profile/${username}`)}
               >
-                <Flex
-                  flexDir={{ base: "column", lg: "row" }}
-                  align={"center"}
-                  gap={"0.5rem"}
-                  title={username}
-                  onClick={() => navigate(`/profile/${username}`)}
-                >
-                  <Avatar
-                    size={{ base: "md", md: "sm" }}
-                    name={firstName}
-                    src={
-                      avatarURL ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                    }
-                  />
-                  <Flex flexDir={"column"}>
-                    <Text fontSize="sm">{username}</Text>
-                    {mutualFollowers.length > 0 && (
-                      <Flex
-                        fontSize={"12px"}
-                        color={"gray"}
-                        display={{ base: "none", lg: "flex" }}
-                      >
-                        Followed by {mutualFollowers[0].username}
-                        {mutualFollowers?.length > 1 && (
-                          <> and +{mutualFollowers?.length - 1} more</>
-                        )}
-                      </Flex>
-                    )}
-                  </Flex>
+                <Avatar size={{ base: "md", md: "sm" }} src={avatarURL} />
+                <Flex flexDir={"column"}>
+                  <Text fontSize="sm">{username}</Text>
+                  {mutualFollowers.length > 0 && (
+                    <Flex
+                      fontSize={"12px"}
+                      color={"gray"}
+                      display={{ base: "none", lg: "flex" }}
+                    >
+                      Followed by {mutualFollowers[0].username}
+                      {mutualFollowers?.length > 1 && (
+                        <> and +{mutualFollowers?.length - 1} more</>
+                      )}
+                    </Flex>
+                  )}
                 </Flex>
-                <Button
-                  variant={"link-button"}
-                  size="sm"
-                  colorScheme="blue"
-                  p={0}
-                  onClick={() => handleFollow(username)}
-                >
-                  Follow
-                </Button>
               </Flex>
-            );
-          }
-        )}
+              <Button
+                variant={"link-button"}
+                size="sm"
+                colorScheme="blue"
+                p={0}
+                onClick={() => handleFollow(username)}
+              >
+                Follow
+              </Button>
+            </Flex>
+          );
+        })}
       </Flex>
     </Box>
   );
