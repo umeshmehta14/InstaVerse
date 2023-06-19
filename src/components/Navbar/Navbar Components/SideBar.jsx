@@ -10,7 +10,6 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Box,
   useDisclosure,
   useColorMode,
 } from "@chakra-ui/react";
@@ -32,6 +31,8 @@ import {
   FaInstalod,
   RxHamburgerMenu,
   BsMoon,
+  FaRegBookmark,
+  FiLogOut,
 } from "../../../utils/Icons";
 import { useAuth } from "../../../contexts";
 import SearchBox from "./SearchBox";
@@ -203,7 +204,17 @@ const SideBar = ({ searchDrawerDisclosure }) => {
               <span>Switch Apperrance</span>
               <BsMoon />
             </Button>
-            <Button onClick={logoutHandler}>LogOut</Button>
+            <Button justifyContent={"flex-start"} gap={2}>
+              Saved <FaRegBookmark />
+            </Button>
+            <Button justifyContent={"flex-start"}>Switch Accounts</Button>
+            <Button
+              justifyContent={"flex-start"}
+              gap={2}
+              onClick={logoutHandler}
+            >
+              LogOut <FiLogOut />
+            </Button>
           </PopoverContent>
         </Popover>
       </Flex>
