@@ -5,9 +5,7 @@ import {
   Image,
   AspectRatio,
   Box,
-  Text,
   Flex,
-  HStack,
 } from "@chakra-ui/react";
 
 import { FaComment, AiFillHeart } from "../../../utils/Icons";
@@ -54,6 +52,7 @@ const GridBox = ({ showingPost }) => {
                 />
               </AspectRatio>
               <Flex
+                display={isHovered ? "flex" : "none"}
                 pos={"absolute"}
                 top="0"
                 justifyContent="center"
@@ -61,8 +60,8 @@ const GridBox = ({ showingPost }) => {
                 alignItems="center"
                 height="100%"
                 bg={"#00000069"}
-                display={isHovered ? "flex" : "none"}
                 gap={"3rem"}
+                color={"white"}
               >
                 <Flex align={"center"} gap={"2"}>
                   <Box as={FaComment} fontSize={"1.5rem"} />

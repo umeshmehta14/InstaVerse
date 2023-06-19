@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
+
 import {
   UnfollowUser,
   addToBookmark,
@@ -8,25 +9,26 @@ import {
   getSingleUser,
   removeFromBookmark,
 } from "./UserApi";
+import { UserReducer } from "../../reducer/UserReducer/UserReducer";
+import { UserInitialState } from "../../reducer/UserReducer/UserInitialState";
+import { useAuth } from "../AuthContext/AuthContext";
 import {
   ALL_USERS,
   SET_BOOKMARK,
   SET_EDIT_USER,
+  SET_EDIT_USER_POST,
   SET_FOLLOW_USER,
   SET_SELECTED_USER,
 } from "../../utils/Constants";
-import { UserReducer } from "../../reducer/UserReducer/UserReducer";
-import { UserInitialState } from "../../reducer/UserReducer/UserInitialState";
-import { useAuth } from "../AuthContext/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { usePost } from "../PostContext/PostContext";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
   const { users } = userState;
+  const { postDispatch } = usePost();
   const { token, currentUser, setCurrentUser, setProgress } = useAuth();
-  const navigate = useNavigate();
 
   const getUsers = async () => {
     try {
@@ -69,6 +71,7 @@ export const UserProvider = ({ children }) => {
       if (status === 200 || status === 201) {
         setCurrentUser(user);
         userDispatch({ type: SET_EDIT_USER, payload: user });
+        postDispatch({ type: SET_EDIT_USER_POST, payload: user });
       }
     } catch (error) {
       console.error(error);

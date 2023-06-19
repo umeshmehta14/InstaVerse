@@ -2,6 +2,7 @@ import {
   ALL_POSTS,
   SET_ALL_USER_POSTS,
   SET_FILTER,
+  SET_EDIT_USER_POST,
 } from "../../utils/Constants";
 
 export const PostReducer = (postState, { payload, type }) => {
@@ -14,6 +15,14 @@ export const PostReducer = (postState, { payload, type }) => {
 
     case SET_ALL_USER_POSTS:
       return { ...postState, userAllPost: payload };
+
+    case SET_EDIT_USER_POST:
+      return {
+        ...postState,
+        posts: postState.posts.map((user) =>
+          user.username === payload.username ? { ...user, ...payload } : user
+        ),
+      };
 
     default:
       break;
