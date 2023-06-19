@@ -63,13 +63,16 @@ export const UserSuggestion = () => {
         <Button variant={"link-button"} onClick={onOpen}>
           Switch
         </Button>
-
         <SwitchAccountModal onClose={onClose} isOpen={isOpen} />
       </Flex>
 
       {location?.pathname !== "/explore" && (
         <Menu closeOnSelect={false}>
-          <MenuButton width="fit-content" ml="1rem">
+          <MenuButton
+            width="fit-content"
+            ml="1rem"
+            display={{ base: "none", lg: "block" }}
+          >
             <Text sx={filterButton}>
               Filter Posts <Box as={LuFilter} />
             </Text>
