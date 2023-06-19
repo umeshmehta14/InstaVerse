@@ -3,7 +3,6 @@ import React from "react";
 import { useAuth, useUser } from "../../../contexts";
 import { userSuggestionAllProfileBox } from "../../../styles/UserSuggestionStyles";
 import { useNavigate } from "react-router-dom";
-import { FollowedByUsers } from "../../FollowedByUsers/FollowedByUsers";
 
 const UserSuggestionMain = () => {
   const navigate = useNavigate();
@@ -56,7 +55,6 @@ const UserSuggestionMain = () => {
                 />
                 <Box>
                   <Text fontSize="sm">{username}</Text>
-                  <FollowedByUsers followers={followers} />
                 </Box>
               </Flex>
               <Button

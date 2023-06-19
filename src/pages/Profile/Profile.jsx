@@ -20,7 +20,7 @@ import { useAuth, usePost, useUser } from "../../contexts";
 import { SET_SELECTED_USER } from "../../utils/Constants";
 import GridBox from "./Profile Components/GridBox";
 import ProfileSkeleton from "./Profile Components/ProfileSkeleton";
-import { FollowedByUsers, UserListModal } from "../../components";
+import { UserListModal } from "../../components";
 import {
   FiLogOut,
   MdGridOn,
@@ -28,6 +28,7 @@ import {
   AiOutlineHeart,
 } from "../../utils/Icons";
 import { useState } from "react";
+import { getMutualFollowers } from "../../utils/MutualFollowers";
 
 export const Profile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -73,6 +74,9 @@ export const Profile = () => {
       : [];
 
   const currentUserCheck = currentUser.username === username;
+
+  const mutualFollowers =
+    !currentUserCheck && getMutualFollowers(followers, currentUser);
 
   useEffect(() => {
     getAllUserPosts(paramUser.username);
@@ -133,7 +137,38 @@ export const Profile = () => {
           <Link to={portfolio}>{portfolio}</Link>
         </Text>
       </Flex>
-      {!currentUserCheck && <FollowedByUsers followers={followers} />}
+      {!currentUserCheck && (
+        <Flex
+          fontSize={"sm"}
+          color={"gray"}
+          px={"1rem"}
+          pb={"0.5rem"}
+          onClick={onOpen}
+        >
+          {mutualFollowers?.length === 1 && (
+            <Text>Followed by {mutualFollowers[0]?.username}</Text>
+          )}
+          {mutualFollowers?.length === 2 && (
+            <Text>
+              Followed by {mutualFollowers[0]?.username},{" "}
+              {mutualFollowers[1]?.username}
+            </Text>
+          )}
+          {mutualFollowers?.length > 2 && (
+            <Text>
+              Followed by {mutualFollowers[0]?.username},{" "}
+              {mutualFollowers[1]?.username} and +{mutualFollowers?.length - 2}{" "}
+              more
+            </Text>
+          )}
+          <UserListModal
+            onClose={onClose}
+            isOpen={isOpen}
+            users={followers}
+            heading={"Followers"}
+          />
+        </Flex>
+      )}
 
       <Divider />
       <HStack w="100%" justifyContent="space-around" p="1rem">
