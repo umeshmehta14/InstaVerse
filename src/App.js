@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useAuth, usePost } from "./contexts";
 import { NavBar, PrivateRoute } from "./components";
-import { BookMark, Explore, Home, Login, Profile, SignUp } from "./pages";
+import { Explore, Home, Login, Profile, SignUp } from "./pages";
 import LoadingBar from "react-top-loading-bar";
 
 function App() {
@@ -27,15 +27,6 @@ function App() {
               element={
                 <PrivateRoute>
                   <Home />
-                </PrivateRoute>
-              }
-            />
-
-            <Route
-              path={"/bookmark"}
-              element={
-                <PrivateRoute>
-                  <BookMark />
                 </PrivateRoute>
               }
             />
