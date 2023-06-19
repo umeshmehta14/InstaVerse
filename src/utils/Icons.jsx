@@ -10,6 +10,7 @@ import {
   BsMoon,
   BsEmojiSunglasses,
   BsThreeDots,
+  BsDot,
 } from "react-icons/bs";
 import {
   AiOutlineHeart,
@@ -60,4 +61,5 @@ export {
   LuFilter,
   FiLogOut,
   MdGridOn,
+  BsDot,
 };

@@ -18,10 +18,11 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import { RxCrossCircled } from "../../../utils/Icons";
+import { RxCrossCircled, BsDot } from "../../../utils/Icons";
 import { useAuth, useUser } from "../../../contexts";
 import { SET_SEARCH_VALUE } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
+import { getMutualFollowers } from "../../../utils/MutualFollowers";
 
 const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
@@ -49,7 +50,7 @@ const SearchBox = ({ isOpen, onClose }) => {
         >
           <DrawerCloseButton title="Close" />
           <DrawerHeader>Search</DrawerHeader>
-          <DrawerBody>
+          <DrawerBody p={"1rem 0.5rem"}>
             <InputGroup mb={"1rem"}>
               <Input
                 placeholder="Search..."
@@ -79,7 +80,18 @@ const SearchBox = ({ isOpen, onClose }) => {
 
             {searchValue &&
               searchedUsers?.map((user) => {
-                const { _id, avatarURL, username, firstName, lastName } = user;
+                const {
+                  _id,
+                  avatarURL,
+                  username,
+                  firstName,
+                  lastName,
+                  followers,
+                } = user;
+                const mutualFollower = getMutualFollowers(
+                  followers,
+                  currentUser
+                );
                 return (
                   <Flex
                     key={_id}
@@ -103,12 +115,31 @@ const SearchBox = ({ isOpen, onClose }) => {
                         }
                       />
                     </Flex>
-                    <VStack align={"flex-start"} gap={"0"}>
+                    <VStack
+                      align={"flex-start"}
+                      gap={"0"}
+                      whiteSpace={"nowrap"}
+                    >
                       <Text>{username}</Text>
-                      <Text
-                        fontSize={"0.8rem"}
-                        color={"gray"}
-                      >{`${firstName} ${lastName}`}</Text>
+                      <Flex fontSize={"0.8rem"} color={"gray"}>
+                        <Text>{`${firstName} ${lastName}`}</Text>
+                        {mutualFollower.length > 0 && (
+                          <Flex alignItems={"center"}>
+                            <BsDot />
+                            <Text
+                              whiteSpace="nowrap"
+                              overflow="hidden"
+                              textOverflow="ellipsis"
+                              w="150px"
+                            >
+                              Followed By {mutualFollower[0].username}{" "}
+                              {mutualFollower.length > 1 && (
+                                <>+{mutualFollower.length - 1} more</>
+                              )}
+                            </Text>
+                          </Flex>
+                        )}
+                      </Flex>
                     </VStack>
                   </Flex>
                 );
