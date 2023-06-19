@@ -3,6 +3,7 @@ import React from "react";
 import { useAuth, useUser } from "../../../contexts";
 import { userSuggestionAllProfileBox } from "../../../styles/UserSuggestionStyles";
 import { useNavigate } from "react-router-dom";
+import { getMutualFollowers } from "../../../utils/MutualFollowers";
 
 const UserSuggestionMain = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const UserSuggestionMain = () => {
   );
 
   return (
-    <Box borderWidth="1px" borderRadius="lg">
+    <Box>
       <Flex p="3" align="center">
         <Text fontWeight="semibold" mx={"auto"}>
           Suggested For You
@@ -36,37 +37,57 @@ const UserSuggestionMain = () => {
         maxW={"100%"}
       >
         {suggestedUser?.map(
-          ({ _id, username, firstName, avatarURL, followers }) => (
-            <Flex key={_id} sx={userSuggestionAllProfileBox}>
+          ({ _id, username, firstName, avatarURL, followers }) => {
+            const mutualFollowers = getMutualFollowers(followers, currentUser);
+            return (
               <Flex
-                flexDir={{ base: "column", lg: "row" }}
-                align={"center"}
-                gap={"0.5rem"}
-                title={username}
-                onClick={() => navigate(`/profile/${username}`)}
+                key={_id}
+                sx={userSuggestionAllProfileBox}
+                alignItems={"center"}
               >
-                <Avatar
-                  size={{ base: "md", md: "sm" }}
-                  name={firstName}
-                  src={
-                    avatarURL ||
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                  }
-                />
-                <Box>
-                  <Text fontSize="sm">{username}</Text>
-                </Box>
+                <Flex
+                  flexDir={{ base: "column", lg: "row" }}
+                  align={"center"}
+                  gap={"0.5rem"}
+                  title={username}
+                  onClick={() => navigate(`/profile/${username}`)}
+                >
+                  <Avatar
+                    size={{ base: "md", md: "sm" }}
+                    name={firstName}
+                    src={
+                      avatarURL ||
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
+                    }
+                  />
+                  <Flex flexDir={"column"}>
+                    <Text fontSize="sm">{username}</Text>
+                    {mutualFollowers.length > 0 && (
+                      <Flex
+                        fontSize={"12px"}
+                        color={"gray"}
+                        display={{ base: "none", lg: "flex" }}
+                      >
+                        Followed by {mutualFollowers[0].username}
+                        {mutualFollowers?.length > 1 && (
+                          <> and +{mutualFollowers?.length - 1} more</>
+                        )}
+                      </Flex>
+                    )}
+                  </Flex>
+                </Flex>
+                <Button
+                  variant={"link-button"}
+                  size="sm"
+                  colorScheme="blue"
+                  p={0}
+                  onClick={() => handleFollow(username)}
+                >
+                  Follow
+                </Button>
               </Flex>
-              <Button
-                variant={"link-button"}
-                size="sm"
-                colorScheme="blue"
-                onClick={() => handleFollow(username)}
-              >
-                Follow
-              </Button>
-            </Flex>
-          )
+            );
+          }
         )}
       </Flex>
     </Box>

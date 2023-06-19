@@ -1,7 +1,7 @@
 export const userSuggestionContainer = {
   overflow: "hidden",
   w: { lg: "30%" },
-  maxW: { base: "468px", lg: "300px" },
+  maxW: { base: "468px", lg: "347px" },
   h: "fit-content",
 };
 

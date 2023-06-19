@@ -139,10 +139,10 @@ export const Profile = () => {
         </Text>
       </Flex>
       {!currentUserCheck && (
-        <Flex sx={followedByUser} onClick={onOpen}>
+        <Flex sx={followedByUser} fontSize={"sm"} onClick={onOpen}>
           {mutualFollowers && mutualFollowers?.length > 0 && (
             <Text>
-              Followed by{" "}
+              Followed by
               {mutualFollowers
                 ?.slice(0, 2)
                 ?.map((follower) => follower.username)

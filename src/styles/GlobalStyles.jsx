@@ -9,7 +9,6 @@ export const heroContentBox = {
 };
 
 export const followedByUser = {
-  fontSize: "sm",
   color: "gray",
   px: "1rem",
   pb: "0.5rem",
