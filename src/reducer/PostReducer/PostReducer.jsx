@@ -20,7 +20,16 @@ export const PostReducer = (postState, { payload, type }) => {
       return {
         ...postState,
         posts: postState.posts.map((user) =>
-          user.username === payload.username ? { ...user, ...payload } : user
+          user.username === payload.username
+            ? {
+                ...user,
+                avatarURL: payload.avatarURL,
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                bio: payload.bio,
+                portfolio: payload.portfolio,
+              }
+            : user
         ),
       };
 
