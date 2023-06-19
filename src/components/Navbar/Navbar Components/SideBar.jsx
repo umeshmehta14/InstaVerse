@@ -135,7 +135,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
           <NavLink
             style={getStyle}
             className="nav-links"
-            to={`/profile/${currentUser.username}`}
+            to={`/profile/${currentUser?.username}`}
             onClick={() => userDispatch({ type: SET_DEFAULT_TAB, payload: 1 })}
           >
             <HStack
@@ -211,7 +211,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
               gap={2}
               onClick={() => {
                 userDispatch({ type: SET_DEFAULT_TAB, payload: 2 });
-                navigate(`/profile/${currentUser.username}`);
+                navigate(`/profile/${currentUser?.username}`);
               }}
             >
               Saved <FaRegBookmark />

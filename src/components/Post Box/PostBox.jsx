@@ -78,7 +78,7 @@ export const PostBox = ({ post }) => {
           alignItems={"center"}
           cursor={"pointer"}
           title={username}
-          onClick={() => navigate(`/profile/${currentUser.username}`)}
+          onClick={() => navigate(`/profile/${username}`)}
         >
           <Avatar size="sm" src={avatarURL} />
           <Text ml="2" fontWeight="semibold">

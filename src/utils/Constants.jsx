@@ -8,3 +8,4 @@ export const SET_FILTER = "SET_FILTER";
 export const SET_ALL_USER_POSTS = "SET_ALL_USER_POSTS";
 export const SET_EDIT_USER = "SET_EDIT_USER";
 export const SET_DEFAULT_TAB = "DEFAULT_TAB";
+export const SET_EDIT_USER_POST = "SET_EDIT_USER_POST";

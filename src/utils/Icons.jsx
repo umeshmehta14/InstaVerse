@@ -11,6 +11,8 @@ import {
   BsEmojiSunglasses,
   BsThreeDots,
   BsDot,
+  BsBookmarkX,
+  BsFillHeartbreakFill,
 } from "react-icons/bs";
 import {
   AiOutlineHeart,
@@ -26,6 +28,7 @@ import {
   FaRegComment,
   FaRegBookmark,
   FaBookmark,
+  FaComment,
 } from "react-icons/fa";
 import { FcAddImage } from "react-icons/fc";
 import { IoPaperPlaneOutline } from "react-icons/io5";
@@ -34,6 +37,7 @@ import { VscPassFilled } from "react-icons/vsc";
 import { LuFilter } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { SlTrash } from "react-icons/sl";
+import { CiCamera } from "react-icons/ci";
 
 export {
   AiOutlineHeart,
@@ -47,6 +51,7 @@ export {
   FaRegBookmark,
   FaRegComment,
   RxHamburgerMenu,
+  BsFillHeartbreakFill,
   FcAddImage,
   MdHome,
   FaInstalod,
@@ -66,4 +71,7 @@ export {
   BsDot,
   AiOutlinePicture,
   SlTrash,
+  FaComment,
+  CiCamera,
+  BsBookmarkX,
 };

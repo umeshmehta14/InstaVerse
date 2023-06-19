@@ -125,6 +125,7 @@ const PostDetailSection = ({
             <Flex
               sx={friendLikeUserStyle}
               onClick={() => navigate(`/profile/${friendLike.username}`)}
+              align={"center"}
             >
               <Avatar
                 size="2xs"

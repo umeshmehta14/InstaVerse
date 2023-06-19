@@ -57,7 +57,7 @@ const SwitchAccountModal = ({ onClose, isOpen }) => {
                   />
                   <Text>{username}</Text>
                 </Flex>
-                {currentUser.username === username ? (
+                {currentUser?.username === username ? (
                   <Box
                     as={VscPassFilled}
                     fontSize={"1.4rem"}

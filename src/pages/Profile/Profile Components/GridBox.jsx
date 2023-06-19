@@ -1,5 +1,15 @@
-import { Grid, GridItem, Image, AspectRatio } from "@chakra-ui/react";
 import React from "react";
+import {
+  Grid,
+  GridItem,
+  Image,
+  AspectRatio,
+  Box,
+  Flex,
+} from "@chakra-ui/react";
+
+import { FaComment, AiFillHeart } from "../../../utils/Icons";
+import { useState } from "react";
 
 const GridBox = ({ showingPost }) => {
   return (
@@ -9,21 +19,63 @@ const GridBox = ({ showingPost }) => {
       gap={"1"}
     >
       {showingPost?.map((post) => {
-        const { mediaUrl, _id, comment } = post;
+        const {
+          mediaUrl,
+          _id,
+          comments,
+          likes: { likedBy },
+        } = post;
+        const [isHovered, setIsHovered] = useState(false);
+
         return (
-          <GridItem key={_id}>
-            <AspectRatio ratio={1}>
-              <Image
-                src={mediaUrl}
-                alt="Post"
-                objectFit="fill"
-                h={"100%"}
-                w={"100%"}
+          <>
+            <GridItem
+              key={_id}
+              pos={"relative"}
+              onMouseEnter={() => {
+                setIsHovered(true);
+              }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+              }}
+              cursor={"pointer"}
+            >
+              <AspectRatio ratio={1}>
+                <Image
+                  src={mediaUrl}
+                  alt="Post"
+                  objectFit="fill"
+                  h={"100%"}
+                  w={"100%"}
+                  maxW={"293px"}
+                  maxH={"293px"}
+                />
+              </AspectRatio>
+              <Flex
+                display={isHovered ? "flex" : "none"}
+                pos={"absolute"}
+                top="0"
+                justifyContent="center"
+                w="100%"
+                alignItems="center"
+                height="100%"
+                bg={"#00000069"}
+                gap={"3rem"}
+                color={"white"}
                 maxW={"293px"}
                 maxH={"293px"}
-              />
-            </AspectRatio>
-          </GridItem>
+              >
+                <Flex align={"center"} gap={"2"}>
+                  <Box as={FaComment} fontSize={"1.5rem"} />
+                  {comments.length}
+                </Flex>
+                <Flex align={"center"} gap={"2"}>
+                  <Box as={AiFillHeart} fontSize={"1.5rem"} />
+                  {likedBy.length}
+                </Flex>
+              </Flex>
+            </GridItem>
+          </>
         );
       })}
     </Grid>

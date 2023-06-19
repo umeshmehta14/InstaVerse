@@ -38,7 +38,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
   const handleBioChange = (e) => {
     const { value } = e.target;
-    if (value.length <= 150) {
+    if (value?.length <= 150) {
       setUpdateProfile({ ...updateProfile, bio: value });
     }
   };
@@ -59,10 +59,6 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     handleEditUser(updateProfile);
     onClose();
   };
-
-  // useEffect(() => {
-  //   setUpdateProfile(currentUser);
-  // }, [currentUser]);
 
   return (
     <>
@@ -103,7 +99,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                         <Box as={AiOutlinePicture} fontSize={"1.5rem"} /> New
                         profile picture
                       </Button>
-                      {avatarURL.length > 0 && (
+                      {avatarURL?.length > 0 && (
                         <Button
                           w="100%"
                           justifyContent={"flex-start"}
@@ -174,8 +170,8 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   bottom={"-1rem"}
                   right={"0.5rem"}
                   fontSize={"0.7rem"}
-                  color={bio.length >= 145 ? "red" : ""}
-                >{`${bio.length}/150`}</Text>
+                  color={bio?.length >= 145 ? "red" : ""}
+                >{`${bio?.length}/150`}</Text>
               </FormControl>
 
               <FormControl>
