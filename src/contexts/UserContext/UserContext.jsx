@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import {
   UnfollowUser,
   addToBookmark,
+  editUser,
   followUser,
   getAllUser,
   getSingleUser,
@@ -56,6 +57,15 @@ export const UserProvider = ({ children }) => {
       console.error(error);
     } finally {
       setProgress(100);
+    }
+  };
+
+  const handleEditUser = async (userData) => {
+    try {
+      const data = await editUser(userData, token);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -132,6 +142,7 @@ export const UserProvider = ({ children }) => {
         handleBookmark,
         handleRemoveBookmark,
         handleSingleUser,
+        handleEditUser,
       }}
     >
       {children}

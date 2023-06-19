@@ -48,3 +48,16 @@ export const UnfollowUser = async (unfollowUserId, token) =>
       },
     }
   );
+
+export const editUser = async (userData, token) =>
+  await axios.post(
+    "/api/users/edit",
+    {
+      userData,
+    },
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
