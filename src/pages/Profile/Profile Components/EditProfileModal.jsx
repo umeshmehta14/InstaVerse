@@ -60,10 +60,6 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  // useEffect(() => {
-  //   setUpdateProfile(currentUser);
-  // }, [currentUser]);
-
   return (
     <>
       <Modal
