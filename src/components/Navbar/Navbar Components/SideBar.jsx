@@ -37,11 +37,13 @@ import {
 import { useAuth, useUser } from "../../../contexts";
 import SearchBox from "./SearchBox";
 import { SET_DEFAULT_TAB } from "../../../utils/Constants";
+import SwitchAccountModal from "../../User Suggestion/UserSuggestion Components/SwitchAccountModal";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const postModalDisclosure = useDisclosure();
+  const SwitchUserDisclosure = useDisclosure();
   const { logoutHandler, currentUser } = useAuth();
   const { userDispatch } = useUser();
 
@@ -130,7 +132,12 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             </Text>
           </HStack>
 
-          <NavLink style={getStyle} className="nav-links" to="/like">
+          <NavLink
+            style={getStyle}
+            className="nav-links"
+            to={`/profile/${currentUser.username}`}
+            onClick={() => userDispatch({ type: SET_DEFAULT_TAB, payload: 1 })}
+          >
             <HStack
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
@@ -155,14 +162,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             >
-              <Avatar
-                size={"sm"}
-                name="Dan Abrahmov"
-                src={
-                  currentUser?.avatarURL ||
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                }
-              />
+              <Avatar size={"sm"} src={currentUser?.avatarURL} />
               <Text
                 display={{ base: "none", lg: "inline-block" }}
                 fontSize={"1rem"}
@@ -216,7 +216,12 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             >
               Saved <FaRegBookmark />
             </Button>
-            <Button justifyContent={"flex-start"}>Switch Accounts</Button>
+            <Button
+              justifyContent={"flex-start"}
+              onClick={SwitchUserDisclosure.onOpen}
+            >
+              Switch Accounts
+            </Button>
             <Button
               justifyContent={"flex-start"}
               gap={2}
@@ -236,6 +241,10 @@ const SideBar = ({ searchDrawerDisclosure }) => {
       <SearchBox
         isOpen={searchDrawerDisclosure.isOpen}
         onClose={searchDrawerDisclosure.onClose}
+      />
+      <SwitchAccountModal
+        isOpen={SwitchUserDisclosure.isOpen}
+        onClose={SwitchUserDisclosure.onClose}
       />
     </Flex>
   );

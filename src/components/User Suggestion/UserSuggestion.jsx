@@ -10,13 +10,7 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
-  Modal,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
   Text,
-  useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
 
@@ -36,7 +30,6 @@ export const UserSuggestion = () => {
   const location = useLocation();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { colorMode } = useColorMode();
 
   const { currentUser } = useAuth();
   const { postDispatch } = usePost();
@@ -71,16 +64,7 @@ export const UserSuggestion = () => {
           Switch
         </Button>
 
-        <Modal onClose={onClose} size={"sm"} isOpen={isOpen}>
-          <ModalOverlay />
-          <ModalContent bg={colorMode === "light" ? "white.500" : "black.700"}>
-            <ModalHeader borderBottom={"1px solid gray"}>
-              Switch Accounts
-            </ModalHeader>
-            <ModalCloseButton _hover={{ bg: "red", color: "white" }} />
-            <SwitchAccountModal onClose={onClose} />
-          </ModalContent>
-        </Modal>
+        <SwitchAccountModal onClose={onClose} isOpen={isOpen} />
       </Flex>
 
       {location?.pathname !== "/explore" && (
