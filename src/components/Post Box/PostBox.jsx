@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useUser } from "../../contexts";
+import { useAuth, useUser } from "../../contexts";
 import { UserListModal } from "../index";
 import {
   bookmarkPopup,
@@ -25,15 +25,20 @@ import {
 } from "../../styles/PostBoxStyles";
 import { BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
+import { useNavigate } from "react-router-dom";
+import { SET_DEFAULT_TAB } from "../../utils/Constants";
 
 export const PostBox = ({ post }) => {
+  const navigate = useNavigate();
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
-    handleSingleUser,
     userState: { userBookmarks },
+    userDispatch,
   } = useUser();
+
+  const { currentUser } = useAuth();
 
   const [showSavedPostBox, setShowSavedPostBox] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -73,9 +78,9 @@ export const PostBox = ({ post }) => {
           alignItems={"center"}
           cursor={"pointer"}
           title={username}
-          onClick={() => handleSingleUser(username)}
+          onClick={() => navigate(`/profile/${currentUser.username}`)}
         >
-          <Avatar size="sm" name={username} src={avatarURL} />
+          <Avatar size="sm" src={avatarURL} />
           <Text ml="2" fontWeight="semibold">
             {username}
           </Text>
@@ -112,7 +117,15 @@ export const PostBox = ({ post }) => {
               {...bookmarkPopup}
             >
               <Text>Post has been saved</Text>
-              <Button variant={"link-button"} fontSize={"0.8rem"} p="0">
+              <Button
+                variant={"link-button"}
+                fontSize={"0.8rem"}
+                p="0"
+                onClick={() => {
+                  userDispatch({ type: SET_DEFAULT_TAB, payload: 2 });
+                  navigate(`/profile/${currentUser.username}`);
+                }}
+              >
                 View your saved posts
               </Button>
             </Flex>

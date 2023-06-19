@@ -2,15 +2,17 @@ import React, { useEffect } from "react";
 import { Flex, Text, VStack } from "@chakra-ui/react";
 
 import { PostBox, UserSuggestion } from "../../components";
-import { useAuth, usePost } from "../../contexts";
+import { useAuth, usePost, useUser } from "../../contexts";
 import { useNavigate } from "react-router-dom";
 import { heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
+import { SET_DEFAULT_TAB } from "../../utils/Constants";
 
 export const Home = () => {
   const {
     postState: { posts, filter },
   } = usePost();
+  const { userDispatch } = useUser();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -26,6 +28,7 @@ export const Home = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
   }, []);
 
   return (

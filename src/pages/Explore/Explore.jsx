@@ -2,22 +2,25 @@ import React from "react";
 
 import { PostBox, UserSuggestion } from "../../components";
 import { Flex, VStack } from "@chakra-ui/react";
-import { usePost } from "../../contexts";
+import { usePost, useUser } from "../../contexts";
 import { useEffect } from "react";
 import { heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
-import { SET_FILTER } from "../../utils/Constants";
+import { SET_DEFAULT_TAB, SET_FILTER } from "../../utils/Constants";
 
 export const Explore = () => {
   const {
     postDispatch,
     postState: { posts, filter },
   } = usePost();
+  const { userDispatch } = useUser();
 
   const ExplorePosts = postFilter(posts, filter);
 
   useEffect(() => {
     postDispatch({ type: SET_FILTER, payload: "latest" });
+    userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
+
     window.scrollTo({ top: 0 });
   }, []);
 

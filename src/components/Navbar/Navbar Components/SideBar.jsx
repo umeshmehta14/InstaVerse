@@ -221,6 +221,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
               justifyContent={"flex-start"}
               gap={2}
               onClick={logoutHandler}
+              color={"red.500"}
             >
               LogOut <FiLogOut />
             </Button>
