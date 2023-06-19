@@ -17,6 +17,7 @@ import {
   AiFillHeart,
   AiOutlineComment,
   AiOutlinePaperClip,
+  AiOutlinePicture,
 } from "react-icons/ai";
 import { RxCross2, RxHamburgerMenu, RxCrossCircled } from "react-icons/rx";
 import { TbSquareRoundedPlus } from "react-icons/tb";
@@ -32,6 +33,7 @@ import { BiChevronDown } from "react-icons/bi";
 import { VscPassFilled } from "react-icons/vsc";
 import { LuFilter } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
+import { SlTrash } from "react-icons/sl";
 
 export {
   AiOutlineHeart,
@@ -62,4 +64,6 @@ export {
   FiLogOut,
   MdGridOn,
   BsDot,
+  AiOutlinePicture,
+  SlTrash,
 };

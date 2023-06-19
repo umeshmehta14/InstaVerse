@@ -4,4 +4,5 @@ export const UserInitialState = {
   selectedUser: {},
   searchValue: "",
   searchedUsers: [],
+  defaultTab: 0,
 };

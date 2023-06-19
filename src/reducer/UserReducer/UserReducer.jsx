@@ -1,8 +1,9 @@
 import {
   ALL_USERS,
   SET_BOOKMARK,
+  SET_DEFAULT_TAB,
+  SET_EDIT_USER,
   SET_FOLLOW_USER,
-  SET_PROGRESS,
   SET_SEARCH_VALUE,
   SET_SELECTED_USER,
 } from "../../utils/Constants";
@@ -14,6 +15,14 @@ export const UserReducer = (
   switch (type) {
     case ALL_USERS:
       return { ...userState, users: payload };
+
+    case SET_EDIT_USER:
+      return {
+        ...userState,
+        users: userState.users.map((user) =>
+          user.username === payload.username ? { ...user, ...payload } : user
+        ),
+      };
 
     case SET_BOOKMARK:
       return { ...userState, userBookmarks: payload };
@@ -48,6 +57,9 @@ export const UserReducer = (
                 lastName.toLowerCase().includes(userKey.toLowerCase())
         ),
       };
+
+    case SET_DEFAULT_TAB:
+      return { ...userState, defaultTab: payload };
 
     default:
       break;

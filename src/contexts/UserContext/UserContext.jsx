@@ -11,6 +11,7 @@ import {
 import {
   ALL_USERS,
   SET_BOOKMARK,
+  SET_EDIT_USER,
   SET_FOLLOW_USER,
   SET_SELECTED_USER,
 } from "../../utils/Constants";
@@ -51,7 +52,6 @@ export const UserProvider = ({ children }) => {
       setProgress(40);
       if (status === 200 || status === 201) {
         userDispatch({ type: SET_SELECTED_USER, payload: user });
-        navigate(`/profile/${username}`);
       }
     } catch (error) {
       console.error(error);
@@ -62,8 +62,14 @@ export const UserProvider = ({ children }) => {
 
   const handleEditUser = async (userData) => {
     try {
-      const data = await editUser(userData, token);
-      console.log(data);
+      const {
+        status,
+        data: { user },
+      } = await editUser(userData, token);
+      if (status === 200 || status === 201) {
+        setCurrentUser(user);
+        userDispatch({ type: SET_EDIT_USER, payload: user });
+      }
     } catch (error) {
       console.error(error);
     }

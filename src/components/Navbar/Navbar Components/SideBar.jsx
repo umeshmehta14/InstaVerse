@@ -34,14 +34,16 @@ import {
   FaRegBookmark,
   FiLogOut,
 } from "../../../utils/Icons";
-import { useAuth } from "../../../contexts";
+import { useAuth, useUser } from "../../../contexts";
 import SearchBox from "./SearchBox";
+import { SET_DEFAULT_TAB } from "../../../utils/Constants";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const postModalDisclosure = useDisclosure();
   const { logoutHandler, currentUser } = useAuth();
+  const { userDispatch } = useUser();
 
   const getStyle = ({ isActive }) =>
     isActive ? { fontWeight: "bold", fontSize: "2.08rem" } : {};
@@ -204,7 +206,14 @@ const SideBar = ({ searchDrawerDisclosure }) => {
               <span>Switch Apperrance</span>
               <BsMoon />
             </Button>
-            <Button justifyContent={"flex-start"} gap={2}>
+            <Button
+              justifyContent={"flex-start"}
+              gap={2}
+              onClick={() => {
+                userDispatch({ type: SET_DEFAULT_TAB, payload: 2 });
+                navigate(`/profile/${currentUser.username}`);
+              }}
+            >
               Saved <FaRegBookmark />
             </Button>
             <Button justifyContent={"flex-start"}>Switch Accounts</Button>

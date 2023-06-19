@@ -75,14 +75,7 @@ export const PostBox = ({ post }) => {
           title={username}
           onClick={() => handleSingleUser(username)}
         >
-          <Avatar
-            size="sm"
-            name={username}
-            src={
-              avatarURL ||
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-            }
-          />
+          <Avatar size="sm" name={username} src={avatarURL} />
           <Text ml="2" fontWeight="semibold">
             {username}
           </Text>

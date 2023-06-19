@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Flex,
   Box,
@@ -19,12 +19,11 @@ import { MdGridOn, FaRegBookmark, AiOutlineHeart } from "../../utils/Icons";
 import ProfileDetail from "./Profile Components/ProfileDetail";
 
 export const Profile = () => {
-  const navigate = useNavigate();
   const paramUser = useParams();
 
   const {
     handleSingleUser,
-    userState: { selectedUser },
+    userState: { selectedUser, defaultTab },
     userDispatch,
   } = useUser();
   const {
@@ -33,7 +32,7 @@ export const Profile = () => {
   } = usePost();
   const { progress, currentUser } = useAuth();
 
-  const { _id, username, bookmarks } = selectedUser;
+  const { username, bookmarks } = selectedUser;
 
   const likedPosts =
     currentUser.username === username
@@ -52,13 +51,11 @@ export const Profile = () => {
   useEffect(() => {
     getAllUserPosts(paramUser.username);
     handleSingleUser(paramUser.username);
-    if (_id?.length === 0) {
-      navigate("/");
-    }
+
     return () => {
       userDispatch({ type: SET_SELECTED_USER, payload: null });
     };
-  }, [paramUser.username]);
+  }, [paramUser.username, currentUser]);
 
   return progress === 100 ? (
     <Flex
@@ -75,7 +72,7 @@ export const Profile = () => {
         userAllPost={userAllPost}
       />
       <Divider />
-      <Tabs isLazy defaultIndex={0} w={"100%"}>
+      <Tabs isLazy defaultIndex={defaultTab} w={"100%"}>
         <TabList
           justifyContent={"center"}
           w={{ base: "100%", md: "70%" }}

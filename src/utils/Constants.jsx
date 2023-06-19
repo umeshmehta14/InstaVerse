@@ -6,3 +6,5 @@ export const SET_SELECTED_USER = "SET_SELECTED_USER";
 export const SET_SEARCH_VALUE = "SET_SEARCH_VALUE";
 export const SET_FILTER = "SET_FILTER";
 export const SET_ALL_USER_POSTS = "SET_ALL_USER_POSTS";
+export const SET_EDIT_USER = "SET_EDIT_USER";
+export const SET_DEFAULT_TAB = "DEFAULT_TAB";
