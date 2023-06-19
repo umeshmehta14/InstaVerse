@@ -62,6 +62,8 @@ const GridBox = ({ showingPost }) => {
                 bg={"#00000069"}
                 gap={"3rem"}
                 color={"white"}
+                maxW={"293px"}
+                maxH={"293px"}
               >
                 <Flex align={"center"} gap={"2"}>
                   <Box as={FaComment} fontSize={"1.5rem"} />

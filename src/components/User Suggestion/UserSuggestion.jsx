@@ -48,14 +48,7 @@ export const UserSuggestion = () => {
           cursor={"pointer"}
           onClick={() => navigate(`/profile/${currentUser.username}`)}
         >
-          <Avatar
-            size="lg"
-            name={currentUser.username}
-            src={
-              currentUser.avatarURL ||
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-            }
-          />
+          <Avatar size="lg" src={currentUser.avatarURL} />
           <Text fontWeight={"normal"} justifySelf={"flex-end"}>
             {currentUser.username}
           </Text>
