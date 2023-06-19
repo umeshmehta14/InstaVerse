@@ -11,6 +11,8 @@ import {
   BsEmojiSunglasses,
   BsThreeDots,
   BsDot,
+  BsBookmarkX,
+  BsFillHeartbreakFill,
 } from "react-icons/bs";
 import {
   AiOutlineHeart,
@@ -49,6 +51,7 @@ export {
   FaRegBookmark,
   FaRegComment,
   RxHamburgerMenu,
+  BsFillHeartbreakFill,
   FcAddImage,
   MdHome,
   FaInstalod,
@@ -70,4 +73,5 @@ export {
   SlTrash,
   FaComment,
   CiCamera,
+  BsBookmarkX,
 };

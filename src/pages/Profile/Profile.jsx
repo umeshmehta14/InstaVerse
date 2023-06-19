@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Flex,
   Box,
@@ -13,6 +13,7 @@ import {
   Button,
   VStack,
   Heading,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { useAuth, usePost, useUser } from "../../contexts";
@@ -24,11 +25,17 @@ import {
   FaRegBookmark,
   AiOutlineHeart,
   CiCamera,
+  BsFillHeartbreakFill,
+  BsBookmarkX,
 } from "../../utils/Icons";
 import ProfileDetail from "./Profile Components/ProfileDetail";
+import { PostModal } from "../../components";
 
 export const Profile = () => {
   const paramUser = useParams();
+  const navigate = useNavigate();
+
+  const postModalDisclosure = useDisclosure();
 
   const {
     handleSingleUser,
@@ -64,16 +71,16 @@ export const Profile = () => {
     return () => {
       userDispatch({ type: SET_SELECTED_USER, payload: null });
     };
-  }, [paramUser.username, currentUser]);
+  }, [paramUser.username, currentUser, posts]);
 
   return progress === 100 ? (
     <Flex
       direction="column"
-      mb={{ base: "4.2rem", md: "0.4rem" }}
       w="100%"
       p={{ base: 0, md: "1rem" }}
       maxW={"975px"}
       margin={"0 auto"}
+      mb={{ base: "4.2rem", md: "0.4rem" }}
     >
       <ProfileDetail
         selectedUser={selectedUser}
@@ -116,26 +123,67 @@ export const Profile = () => {
                   p="1rem"
                 />
                 <Heading>Share photos</Heading>
-                <Text>
+                <Text textAlign={"center"}>
                   When you share photos, they will appear on your profile.
                 </Text>
-                <Button variant={"link-button"}>Share your first photo</Button>
+                <Button
+                  variant={"link-button"}
+                  onClick={postModalDisclosure.onOpen}
+                >
+                  Share your first photo
+                </Button>
               </VStack>
             ) : (
               <GridBox showingPost={userAllPost} />
             )}
           </TabPanel>
           <TabPanel p="0">
-            <GridBox showingPost={likedPosts} />
+            {likedPosts.length === 0 ? (
+              <VStack height={"300px"} gap={"4"} my={"1rem"}>
+                <Box as={BsFillHeartbreakFill} color={"gray"} fontSize="5rem" />
+                <Text w="100%" maxW={"90%"} textAlign={"center"}>
+                  Your liked posts list is empty. Begin discovering and liking
+                  posts to populate it.
+                </Text>
+                <Button
+                  variant={"follow-button"}
+                  onClick={() => navigate("/explore")}
+                >
+                  Start Liking
+                </Button>
+              </VStack>
+            ) : (
+              <GridBox showingPost={likedPosts} />
+            )}
           </TabPanel>
           <TabPanel p="0">
             <Flex justify={"center"} fontSize={"sm"} p="0.5rem" color="gray">
               Only you can see what you've saved
             </Flex>
-            <GridBox showingPost={bookmarkPosts} />
+            {bookmarkPosts?.length === 0 ? (
+              <VStack height={"300px"} gap={"4"} my={"1rem"}>
+                <Box as={BsBookmarkX} color={"gray"} fontSize="5rem" />
+                <Text w="100%" maxW={"90%"} textAlign={"center"}>
+                  Your bookmarked posts list is waiting for you to add content.
+                  Start saving your favorites!
+                </Text>
+                <Button
+                  variant={"follow-button"}
+                  onClick={() => navigate("/explore")}
+                >
+                  Begin Saving
+                </Button>
+              </VStack>
+            ) : (
+              <GridBox showingPost={bookmarkPosts} />
+            )}
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <PostModal
+        isOpen={postModalDisclosure.isOpen}
+        onClose={postModalDisclosure.onClose}
+      />
     </Flex>
   ) : (
     <ProfileSkeleton />
