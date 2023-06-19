@@ -26,6 +26,7 @@ import {
   FaRegComment,
   FaRegBookmark,
   FaBookmark,
+  FaComment,
 } from "react-icons/fa";
 import { FcAddImage } from "react-icons/fc";
 import { IoPaperPlaneOutline } from "react-icons/io5";
@@ -66,4 +67,5 @@ export {
   BsDot,
   AiOutlinePicture,
   SlTrash,
+  FaComment,
 };
