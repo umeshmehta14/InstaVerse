@@ -91,26 +91,48 @@ export const Profile = () => {
   }, [paramUser.username]);
 
   return progress === 100 ? (
-    <Flex direction="column" mb={{ base: "4.2rem", md: "0.4rem" }}>
-      <Flex alignItems="center" width="100%" gap="1rem" p="1rem">
-        <Avatar size="xl" src={avatarURL} />
-        <Flex flexDir={"column"} gap={"0.5rem"}>
+    <Flex
+      direction="column"
+      mb={{ base: "4.2rem", md: "0.4rem" }}
+      w="100%"
+      p={{ base: 0, md: "1rem" }}
+      maxW={"975px"}
+      margin={"0 auto"}
+    >
+      <Flex
+        alignItems="center"
+        width="100%"
+        gap={{ base: "1rem", md: "4rem" }}
+        p="1rem"
+        ml={{ base: 0, lg: "5rem" }}
+        pb={{ lg: "0" }}
+      >
+        <Avatar size={{ base: "xl", md: "2xl" }} src={avatarURL} />
+        <Flex
+          flexDir={{ base: "column", md: "row" }}
+          gap={"0.5rem"}
+          flexWrap="wrap"
+          maxW="613px"
+          padding={"1rem"}
+        >
           <Flex
             fontSize="2xl"
             fontWeight="bold"
             mb={2}
             align={"center"}
-            gap={"2"}
+            gap={"4"}
+            width={{ base: "auto", md: "30%" }}
           >
-            {username}
+            <Text>{username}</Text>
             <Box
               as={FiLogOut}
               fontSize={"1.4rem"}
               onClick={logoutHandler}
+              cursor={"pointer"}
               title="Logout"
             />
           </Flex>
-          <Box>
+          <Flex alignItems={"center"}>
             {!currentUserCheck && (
               <Button variant={"follow-button"} title="Follow">
                 Follow
@@ -128,10 +150,81 @@ export const Profile = () => {
                 </Button>
               </>
             )}
-          </Box>
+          </Flex>
+          <Flex flexDir={"column"} display={{ base: "none", md: "flex" }}>
+            <HStack
+              w="100%"
+              maxW={"400px"}
+              justifyContent="space-between"
+              p={"0.5rem 0"}
+            >
+              <Text>{userAllPost?.length} posts</Text>
+              <Text
+                cursor={"pointer"}
+                onClick={() => {
+                  onOpen();
+                  setUserList("followers");
+                }}
+              >
+                {followers?.length} follower
+              </Text>
+              <Text
+                cursor={"pointer"}
+                onClick={() => {
+                  onOpen();
+                  setUserList("following");
+                }}
+              >
+                {following?.length} following
+              </Text>
+            </HStack>
+            <Flex flexDir="column" w="100%" gap="0.4rem" pt={0}>
+              <Text>{` ${firstName} ${lastName}`}</Text>
+              <Text>{bio}</Text>
+              <Text color={"blue.200"}>
+                <Link to={portfolio}>{portfolio}</Link>
+              </Text>
+            </Flex>
+            {!currentUserCheck && (
+              <Flex
+                sx={followedByUser}
+                fontSize={"sm"}
+                cursor={"pointer"}
+                p="0.5rem 0rem!important"
+                display={{ base: "none", md: "flex" }}
+                onClick={onOpen}
+              >
+                {mutualFollowers && mutualFollowers?.length > 0 && (
+                  <Text p="0">
+                    Followed by{" "}
+                    {mutualFollowers
+                      ?.slice(0, 2)
+                      ?.map((follower) => follower.username)
+                      ?.join(", ")}
+                    {mutualFollowers?.length > 2 && (
+                      <> and +{mutualFollowers?.length - 2} more</>
+                    )}
+                  </Text>
+                )}
+                <UserListModal
+                  onClose={onClose}
+                  isOpen={isOpen}
+                  users={followers}
+                  heading={"Followers"}
+                />
+              </Flex>
+            )}
+          </Flex>
         </Flex>
       </Flex>
-      <Flex flexDir="column" w="100%" gap="0.1rem" p={"0.5rem 1rem"} pt={0}>
+      <Flex
+        flexDir="column"
+        w="100%"
+        display={{ base: "flex", md: "none" }}
+        gap="0.1rem"
+        p={"0.5rem 1rem"}
+        pt={0}
+      >
         <Text>{` ${firstName} ${lastName}`}</Text>
         <Text>{bio}</Text>
         <Text color={"blue.200"}>
@@ -139,10 +232,15 @@ export const Profile = () => {
         </Text>
       </Flex>
       {!currentUserCheck && (
-        <Flex sx={followedByUser} fontSize={"sm"} onClick={onOpen}>
+        <Flex
+          sx={followedByUser}
+          display={{ base: "flex", md: "none" }}
+          fontSize={"sm"}
+          onClick={onOpen}
+        >
           {mutualFollowers && mutualFollowers?.length > 0 && (
             <Text>
-              Followed by
+              Followed by{" "}
               {mutualFollowers
                 ?.slice(0, 2)
                 ?.map((follower) => follower.username)
@@ -162,7 +260,12 @@ export const Profile = () => {
       )}
 
       <Divider />
-      <HStack w="100%" justifyContent="space-around" p="1rem">
+      <HStack
+        w="100%"
+        justifyContent="space-around"
+        p="1rem"
+        display={{ base: "flex", md: "none" }}
+      >
         <Text>{userAllPost?.length} posts</Text>
         <Text
           cursor={"pointer"}
@@ -186,7 +289,13 @@ export const Profile = () => {
       <Divider />
       <Divider />
       <Tabs isLazy defaultIndex={0} w={"100%"}>
-        <TabList justifyContent={"center"}>
+        <TabList
+          justifyContent={"center"}
+          w={{ base: "100%", md: "70%" }}
+          maxW={"483px"}
+          m="auto"
+          border={"none"}
+        >
           <Tab flexGrow={1} colorScheme="blue">
             <Box as={MdGridOn} fontSize={"1.7rem"} />
           </Tab>

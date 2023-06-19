@@ -19,6 +19,8 @@ const GridBox = ({ showingPost }) => {
                 objectFit="fill"
                 h={"100%"}
                 w={"100%"}
+                maxW={"293px"}
+                maxH={"293px"}
               />
             </AspectRatio>
           </GridItem>
