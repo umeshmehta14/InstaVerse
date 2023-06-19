@@ -7,3 +7,10 @@ export const heroContentBox = {
   alignItems: { base: "center", lg: "flex-start" },
   mb: { base: "4rem", lg: "0.4rem" },
 };
+
+export const followedByUser = {
+  fontSize: "sm",
+  color: "gray",
+  px: "1rem",
+  pb: "0.5rem",
+};

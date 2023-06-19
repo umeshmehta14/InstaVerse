@@ -27,9 +27,9 @@ import {
   userSuggestionMainProfile,
 } from "../../styles/UserSuggestionStyles";
 import SwitchAccountModal from "./UserSuggestion Components/SwitchAccountModal";
+import UserSuggestionMain from "./UserSuggestion Components/UserSuggestionMain";
 import { SET_FILTER } from "../../utils/Constants";
 import { LuFilter } from "../../utils/Icons";
-import UserSuggestionMain from "./UserSuggestion Components/UserSuggestionMain";
 
 export const UserSuggestion = () => {
   const navigate = useNavigate();

@@ -29,6 +29,7 @@ import {
 } from "../../utils/Icons";
 import { useState } from "react";
 import { getMutualFollowers } from "../../utils/MutualFollowers";
+import { followedByUser } from "../../styles/GlobalStyles";
 
 export const Profile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -138,27 +139,17 @@ export const Profile = () => {
         </Text>
       </Flex>
       {!currentUserCheck && (
-        <Flex
-          fontSize={"sm"}
-          color={"gray"}
-          px={"1rem"}
-          pb={"0.5rem"}
-          onClick={onOpen}
-        >
-          {mutualFollowers?.length === 1 && (
-            <Text>Followed by {mutualFollowers[0]?.username}</Text>
-          )}
-          {mutualFollowers?.length === 2 && (
+        <Flex sx={followedByUser} onClick={onOpen}>
+          {mutualFollowers && mutualFollowers?.length > 0 && (
             <Text>
-              Followed by {mutualFollowers[0]?.username},{" "}
-              {mutualFollowers[1]?.username}
-            </Text>
-          )}
-          {mutualFollowers?.length > 2 && (
-            <Text>
-              Followed by {mutualFollowers[0]?.username},{" "}
-              {mutualFollowers[1]?.username} and +{mutualFollowers?.length - 2}{" "}
-              more
+              Followed by{" "}
+              {mutualFollowers
+                ?.slice(0, 2)
+                ?.map((follower) => follower.username)
+                ?.join(", ")}
+              {mutualFollowers?.length > 2 && (
+                <> and +{mutualFollowers?.length - 2} more</>
+              )}
             </Text>
           )}
           <UserListModal
@@ -174,6 +165,7 @@ export const Profile = () => {
       <HStack w="100%" justifyContent="space-around" p="1rem">
         <Text>{userAllPost?.length} posts</Text>
         <Text
+          cursor={"pointer"}
           onClick={() => {
             onOpen();
             setUserList("followers");
@@ -182,6 +174,7 @@ export const Profile = () => {
           {followers?.length} follower
         </Text>
         <Text
+          cursor={"pointer"}
           onClick={() => {
             onOpen();
             setUserList("following");
