@@ -67,7 +67,10 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
         handleCreatePost(postValue);
       }
       setPostValue({ content: "", mediaUrl: "" });
-      postDispatch({ type: SET_EDIT_POST, payload: {} });
+      postDispatch({
+        type: SET_EDIT_POST,
+        payload: { content: "", mediaUrl: "" },
+      });
       onClose();
     }
   };
@@ -79,7 +82,10 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
         onClose={() => {
           onClose();
           setPostValue({ content: "", mediaUrl: "" });
-          postDispatch({ type: SET_EDIT_POST, payload: {} });
+          postDispatch({
+            type: SET_EDIT_POST,
+            payload: { content: "", mediaUrl: "" },
+          });
         }}
         size="xl"
       >
