@@ -3,6 +3,7 @@ import {
   SET_ALL_USER_POSTS,
   SET_FILTER,
   SET_EDIT_USER_POST,
+  SET_EDIT_POST,
 } from "../../utils/Constants";
 
 export const PostReducer = (postState, { payload, type }) => {
@@ -32,6 +33,9 @@ export const PostReducer = (postState, { payload, type }) => {
             : user
         ),
       };
+
+    case SET_EDIT_POST:
+      return { ...postState, editPost: payload };
 
     default:
       break;

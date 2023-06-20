@@ -9,6 +9,7 @@ import {
 import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
 import {
+  EditPost,
   createPost,
   deletePost,
   getAllPosts,
@@ -118,9 +119,9 @@ export const PostProvider = ({ children }) => {
       const {
         status,
         data: { posts },
-      } = await deletePost(postData, token);
+      } = await EditPost(postData, token);
       if (status === 201 || status === 200) {
-        console.log(posts);
+        postDispatch({ type: ALL_POSTS, payload: posts });
       }
     } catch (error) {
       console.error(error);

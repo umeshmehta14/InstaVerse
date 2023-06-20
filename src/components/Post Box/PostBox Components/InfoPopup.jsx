@@ -13,6 +13,9 @@ import {
 import { simpleButton } from "../../../styles/PostBoxStyles";
 import UnfollowModal from "./UnfollowModal";
 import { useAuth, usePost, useUser } from "../../../contexts";
+import { PostModal } from "../../Post Modal/PostModal";
+import { SET_EDIT_POST } from "../../../utils/Constants";
+import { useEffect } from "react";
 
 const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
   const { colorMode } = useColorMode();
@@ -23,9 +26,10 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
     handleRemoveBookmark,
   } = useUser();
   const unfollowModalDisclosure = useDisclosure();
+  const postModalDisclosure = useDisclosure();
 
   const { _id, username } = post;
-  const { handleDeletePost } = usePost();
+  const { handleDeletePost, postDispatch } = usePost();
 
   const checkBookmark = userBookmarks.find((bookmark) => bookmark === _id);
 
@@ -40,7 +44,15 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
           <ModalBody>
             {currentUser.username === username ? (
               <>
-                <Button sx={simpleButton}>Edit</Button>
+                <Button
+                  sx={simpleButton}
+                  onClick={() => {
+                    postDispatch({ type: SET_EDIT_POST, payload: post });
+                    postModalDisclosure.onOpen();
+                  }}
+                >
+                  Edit
+                </Button>
                 <Divider />
                 <Button
                   sx={simpleButton}
@@ -107,6 +119,11 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
         isOpen={unfollowModalDisclosure.isOpen}
         onClose={unfollowModalDisclosure.onClose}
         fromInfoPop={true}
+      />
+      <PostModal
+        isOpen={postModalDisclosure.isOpen}
+        onClose={postModalDisclosure.onClose}
+        edit={true}
       />
     </>
   );
