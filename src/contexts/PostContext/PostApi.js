@@ -55,3 +55,6 @@ export const EditPost = async (postData, token) =>
       },
     }
   );
+
+export const getSinglePost = async (postId) =>
+  await axios.get(`/api/posts/${postId}`);

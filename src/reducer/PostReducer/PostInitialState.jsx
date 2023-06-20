@@ -3,4 +3,5 @@ export const PostInitialState = {
   filter: "latest",
   userAllPost: [],
   editPost: { content: "", mediaUrl: "" },
+  singlePost: {},
 };

@@ -91,13 +91,15 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
             width={{ base: "auto", md: "40%" }}
           >
             <Text>{username}</Text>
-            <Box
-              as={FiLogOut}
-              fontSize={"1.4rem"}
-              onClick={logoutHandler}
-              cursor={"pointer"}
-              title="Logout"
-            />
+            {currentUserCheck && (
+              <Box
+                as={FiLogOut}
+                fontSize={"1.4rem"}
+                onClick={logoutHandler}
+                cursor={"pointer"}
+                title="Logout"
+              />
+            )}
           </Flex>
           <Flex alignItems={"center"}>
             {!currentUserCheck &&

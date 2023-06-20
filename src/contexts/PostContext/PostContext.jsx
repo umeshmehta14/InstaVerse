@@ -14,10 +14,15 @@ import {
   deletePost,
   getAllPosts,
   getAllUserPost,
+  getSinglePost,
   likePost,
   unLikePost,
 } from "./PostApi";
-import { ALL_POSTS, SET_ALL_USER_POSTS } from "../../utils/Constants";
+import {
+  ALL_POSTS,
+  SET_ALL_USER_POSTS,
+  SET_SINGLE_POST,
+} from "../../utils/Constants";
 import { useAuth } from "../index";
 
 export const PostContext = createContext();
@@ -128,6 +133,20 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const HandleSinglePost = async (postId) => {
+    try {
+      const {
+        status,
+        data: { post },
+      } = await getSinglePost(postId);
+      if (status === 201 || status === 200) {
+        postDispatch({ type: SET_SINGLE_POST, payload: post });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -144,6 +163,7 @@ export const PostProvider = ({ children }) => {
         getAllUserPosts,
         handleDeletePost,
         handleEditPost,
+        HandleSinglePost,
       }}
     >
       {children}

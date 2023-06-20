@@ -29,7 +29,7 @@ import {
 } from "../../../utils/Icons";
 import { useAuth, usePost, useUser } from "../../../contexts";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getRelativeTime } from "../../../utils/GetRelativeTime";
 
 const PostDetailSection = ({
@@ -40,6 +40,7 @@ const PostDetailSection = ({
   clicked,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { colorMode } = useColorMode();
 
   const { handlePostLike, handlePostUnLike } = usePost();
@@ -94,7 +95,14 @@ const PostDetailSection = ({
                 onClick={() => handlePostLike(_id)}
               />
             )}
-            <Box as={FaRegComment} sx={postIconStyle} title="Comment" />
+            <Box
+              as={FaRegComment}
+              sx={postIconStyle}
+              title="Comment"
+              onClick={() =>
+                navigate(`/post/${_id}`, { state: { from: location } })
+              }
+            />
             <Box
               as={IoPaperPlaneOutline}
               sx={IconHoverStyle}
