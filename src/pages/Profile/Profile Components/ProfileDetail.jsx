@@ -15,8 +15,8 @@ import { useAuth } from "../../../contexts";
 import { UserListModal } from "../../../components";
 import { followedByUser } from "../../../styles/GlobalStyles";
 import { getMutualFollowers } from "../../../utils/MutualFollowers";
-import { FiLogOut } from "../../../utils/Icons";
 import EditProfileModal from "./EditProfileModal";
+import { FiLogOut } from "../../../utils/Icons";
 
 const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

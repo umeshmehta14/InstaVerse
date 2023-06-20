@@ -5,10 +5,6 @@ import {
   Button,
   Flex,
   Image,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   ScaleFade,
   Text,
   useColorMode,
@@ -27,11 +23,13 @@ import { BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
 import { useNavigate } from "react-router-dom";
 import { SET_DEFAULT_TAB } from "../../utils/Constants";
+import InfoPopup from "./PostBox Components/InfoPopup";
 
 export const PostBox = ({ post }) => {
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const infoPopupDisclosure = useDisclosure();
 
   const {
     userState: { userBookmarks },
@@ -85,21 +83,13 @@ export const PostBox = ({ post }) => {
             {username}
           </Text>
         </Flex>
-        <Popover>
-          <PopoverTrigger>
-            <Button
-              {...postThreeDot}
-              _hover={{ color: "gray", bg: "transparent" }}
-            >
-              <Box as={BsThreeDots} cursor={"pointer"} />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent w={"fit-content"}>
-            <PopoverBody>
-              <Button>Edit</Button>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+        <Button
+          {...postThreeDot}
+          _hover={{ color: "gray", bg: "transparent" }}
+          onClick={infoPopupDisclosure.onOpen}
+        >
+          <Box as={BsThreeDots} cursor={"pointer"} />
+        </Button>
       </Flex>
 
       <Box pos={"relative"}>
@@ -144,6 +134,11 @@ export const PostBox = ({ post }) => {
         isOpen={isOpen}
         users={likedBy}
         heading={"Liked By"}
+      />
+      <InfoPopup
+        isOpen={infoPopupDisclosure.isOpen}
+        onClose={infoPopupDisclosure.onClose}
+        post={post}
       />
     </Box>
   );

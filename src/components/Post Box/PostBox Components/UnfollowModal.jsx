@@ -11,8 +11,8 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import { useUser } from "../../../contexts";
 import { simpleButton } from "../../../styles/PostBoxStyles";
+import { useUser } from "../../../contexts";
 
 const UnfollowModal = ({
   isOpen,
@@ -20,8 +20,10 @@ const UnfollowModal = ({
   username,
   avatarURL,
   handleFollowUser,
+  fromInfoPop,
 }) => {
   const { colorMode } = useColorMode();
+  const { handleUnfollow } = useUser();
 
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
@@ -39,7 +41,9 @@ const UnfollowModal = ({
             sx={simpleButton}
             color={"red"}
             onClick={() => {
-              handleFollowUser(username, true);
+              fromInfoPop
+                ? handleUnfollow(username)
+                : handleFollowUser(username, true);
               onClose();
             }}
           >
