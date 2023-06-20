@@ -35,6 +35,7 @@ import { useAuth, useUser } from "../../../contexts";
 import { AiOutlinePicture, SlTrash } from "../../../utils/Icons";
 import { editFormInput, editFormLabel } from "../../../styles/ProfileStyles";
 import { simpleButton } from "../../../styles/PostBoxStyles";
+import { useEffect } from "react";
 
 const EditProfileModal = ({ isOpen, onClose }) => {
   const { currentUser } = useAuth();
@@ -71,6 +72,10 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     handleEditUser(updateProfile);
     onClose();
   };
+
+  useEffect(() => {
+    setUpdateProfile(currentUser);
+  }, [isOpen]);
 
   return (
     <>
@@ -147,6 +152,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   placeholder="First name"
                   value={firstName}
                   sx={editFormInput}
+                  maxLength={25}
                   onChange={(e) =>
                     setUpdateProfile({
                       ...updateProfile,
@@ -162,6 +168,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   placeholder="Last name"
                   value={lastName}
                   sx={editFormInput}
+                  maxLength={25}
                   onChange={(e) =>
                     setUpdateProfile({
                       ...updateProfile,
@@ -193,6 +200,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   placeholder="Add link"
                   value={portfolio}
                   sx={editFormInput}
+                  maxLength={50}
                   onChange={(e) =>
                     setUpdateProfile({
                       ...updateProfile,
