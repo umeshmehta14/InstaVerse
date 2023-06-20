@@ -18,7 +18,6 @@ import {
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
-
 import {
   AiOutlineHeart,
   AiFillHeart,
@@ -141,13 +140,13 @@ const PostDetailSection = ({
             </Flex>
             <Text mx={"1"}>and</Text>
             <Text sx={userBoldStyle} onClick={onOpen}>
-              {likedBy.length - 1} others
+              {likedBy?.length - 1} others
             </Text>
           </Flex>
         ) : (
-          likedBy.length !== 0 && (
+          likedBy?.length !== 0 && (
             <Text onClick={onOpen} cursor={"pointer"}>
-              {likedBy.length} likes
+              {likedBy?.length} likes
             </Text>
           )
         )}
@@ -168,7 +167,7 @@ const PostDetailSection = ({
               {content}
             </Text>
           </Flex>
-          {content.length > 56 && (
+          {content?.length > 56 && (
             <Button
               variant={"link-button"}
               fontSize={"0.8rem"}

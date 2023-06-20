@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Img,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,14 +15,22 @@ import {
   Textarea,
   useColorMode,
 } from "@chakra-ui/react";
+import { toast } from "react-hot-toast";
 
-import { FcAddImage, BsEmojiSunglasses } from "../../utils/Icons";
+import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
 import { usePost } from "../../contexts";
 import { postTextarea } from "../../styles/PostModalStyles";
+import { useEffect } from "react";
+import { SET_EDIT_POST } from "../../utils/Constants";
 
-export const PostModal = ({ isOpen, onClose }) => {
+export const PostModal = ({ isOpen, onClose, edit }) => {
   const { colorMode } = useColorMode();
-  const { handleCreatePost } = usePost();
+  const {
+    handleCreatePost,
+    handleEditPost,
+    postState: { editPost },
+    postDispatch,
+  } = usePost();
   const [postValue, setPostValue] = useState({
     content: "",
     mediaUrl: "",
@@ -29,7 +38,7 @@ export const PostModal = ({ isOpen, onClose }) => {
 
   const handleInputChange = (e) => {
     const { value } = e.target;
-    if (value.length <= 2200) {
+    if (value?.length <= 2200) {
       setPostValue({ ...postValue, content: value });
     }
   };
@@ -39,10 +48,31 @@ export const PostModal = ({ isOpen, onClose }) => {
     setPostValue({ ...postValue, mediaUrl: URL.createObjectURL(file) });
   };
 
+  useEffect(() => {
+    setPostValue({
+      content: editPost?.content,
+      mediaUrl: editPost?.mediaUrl,
+    });
+  }, [isOpen]);
+
   const handlePost = () => {
-    handleCreatePost(postValue);
-    setPostValue({ content: "", mediaUrl: "" });
-    onClose();
+    if (postValue.mediaUrl === "") {
+      toast.error("Please select a picture");
+    } else if (postValue.content === "") {
+      toast.error("Please write caption for your post");
+    } else {
+      if (edit) {
+        handleEditPost({ ...postValue, _id: editPost._id });
+      } else {
+        handleCreatePost(postValue);
+      }
+      setPostValue({ content: "", mediaUrl: "" });
+      postDispatch({
+        type: SET_EDIT_POST,
+        payload: { content: "", mediaUrl: "" },
+      });
+      onClose();
+    }
   };
 
   return (
@@ -52,6 +82,10 @@ export const PostModal = ({ isOpen, onClose }) => {
         onClose={() => {
           onClose();
           setPostValue({ content: "", mediaUrl: "" });
+          postDispatch({
+            type: SET_EDIT_POST,
+            payload: { content: "", mediaUrl: "" },
+          });
         }}
         size="xl"
       >
@@ -80,12 +114,21 @@ export const PostModal = ({ isOpen, onClose }) => {
                 bottom={"-1rem"}
                 right={"0.5rem"}
                 fontSize={"0.7rem"}
-                color={postValue.content.length >= 2190 ? "red" : ""}
-              >{`${postValue.content.length}/2200`}</Text>
+                color={postValue?.content?.length >= 2190 ? "red" : ""}
+              >{`${postValue?.content?.length || 0}/2200`}</Text>
             </Flex>
-            {postValue.mediaUrl && (
-              <Flex mt={4} justifyContent={"center"}>
-                <img src={postValue.mediaUrl} alt="Selected" width="200" />
+            {postValue?.mediaUrl && (
+              <Flex mt={"2rem"} justifyContent={"center"} pos={"relative"}>
+                <Img src={postValue?.mediaUrl} alt="Selected" width="200px" />
+                <Box
+                  as={RxCross2}
+                  position={"absolute"}
+                  fontSize={"1.5rem"}
+                  right={"3rem"}
+                  cursor={"pointer"}
+                  title="Remove"
+                  onClick={() => setPostValue({ ...postValue, mediaUrl: "" })}
+                />
               </Flex>
             )}
           </ModalBody>
@@ -111,7 +154,12 @@ export const PostModal = ({ isOpen, onClose }) => {
                 title="Emoji"
               />
             </Flex>
-            <Button variant={"link-button"} onClick={handlePost} title="Share">
+            <Button
+              variant={"link-button"}
+              onClick={handlePost}
+              fontSize={"1rem"}
+              title="Share"
+            >
               Share
             </Button>
           </ModalFooter>

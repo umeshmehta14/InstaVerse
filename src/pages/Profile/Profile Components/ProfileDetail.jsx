@@ -11,8 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-import { useAuth } from "../../../contexts";
-import { UserListModal } from "../../../components";
+import { useAuth, useUser } from "../../../contexts";
+import {
+  RotatingLoader,
+  UnfollowModal,
+  UserListModal,
+} from "../../../components";
 import { followedByUser } from "../../../styles/GlobalStyles";
 import { getMutualFollowers } from "../../../utils/MutualFollowers";
 import EditProfileModal from "./EditProfileModal";
@@ -21,9 +25,12 @@ import { FiLogOut } from "../../../utils/Icons";
 const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const editModalDisclosure = useDisclosure();
+  const unfollowModalDisclosure = useDisclosure();
 
   const { logoutHandler, currentUser } = useAuth();
+  const { handleFollow, handleUnfollow } = useUser();
   const [userList, setUserList] = useState("");
+  const [loadingUsers, setLoadingUsers] = useState([]);
 
   const {
     username,
@@ -38,6 +45,24 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
 
   const mutualFollowers =
     !currentUserCheck && getMutualFollowers(followers, currentUser);
+
+  const isFollowing =
+    !currentUserCheck &&
+    currentUser.following.find((user) => user.username === username);
+
+  const handleFollowUser = async (username, unfollow) => {
+    setLoadingUsers((prevLoadingUsers) => [...prevLoadingUsers, username]);
+    if (unfollow) {
+      await handleUnfollow(username);
+    } else {
+      await handleFollow(username);
+    }
+    setLoadingUsers((prevLoadingUsers) =>
+      prevLoadingUsers.filter((user) => user !== username)
+    );
+  };
+
+  const isLoading = loadingUsers.includes(username);
 
   return (
     <>
@@ -75,11 +100,24 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
             />
           </Flex>
           <Flex alignItems={"center"}>
-            {!currentUserCheck && (
-              <Button variant={"follow-button"} title="Follow">
-                Follow
-              </Button>
-            )}
+            {!currentUserCheck &&
+              (isFollowing ? (
+                <Button
+                  variant={"following-button"}
+                  title="Unfollow"
+                  onClick={unfollowModalDisclosure.onOpen}
+                >
+                  {isLoading ? <RotatingLoader /> : "Unfollow"}
+                </Button>
+              ) : (
+                <Button
+                  variant={"follow-button"}
+                  title="Follow"
+                  onClick={() => handleFollowUser(username)}
+                >
+                  {isLoading ? <RotatingLoader /> : "Follow"}
+                </Button>
+              ))}
             {currentUserCheck && (
               <>
                 <Button
@@ -230,9 +268,14 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
         heading={userList === "followers" ? "Followers" : "Following"}
       />
       <EditProfileModal
-        onOpen={editModalDisclosure.onOpen}
         isOpen={editModalDisclosure.isOpen}
         onClose={editModalDisclosure.onClose}
+      />
+      <UnfollowModal
+        isOpen={unfollowModalDisclosure.isOpen}
+        onClose={unfollowModalDisclosure.onClose}
+        {...selectedUser}
+        handleFollowUser={handleFollowUser}
       />
     </>
   );

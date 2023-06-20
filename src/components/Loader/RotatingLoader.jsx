@@ -1,7 +1,7 @@
 import React from "react";
 import { RotatingLines } from "react-loader-spinner";
 
-const RotatingLoader = () => {
+export const RotatingLoader = () => {
   return (
     <RotatingLines
       strokeColor="grey"
@@ -12,5 +12,3 @@ const RotatingLoader = () => {
     />
   );
 };
-
-export default RotatingLoader;

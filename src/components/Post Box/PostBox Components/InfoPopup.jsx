@@ -11,15 +11,30 @@ import {
 } from "@chakra-ui/react";
 
 import { simpleButton } from "../../../styles/PostBoxStyles";
-import UnfollowModal from "./UnfollowModal";
-import { useAuth } from "../../../contexts";
+import { UnfollowModal } from "../../index";
+import { useAuth, usePost, useUser } from "../../../contexts";
+import { PostModal } from "../../Post Modal/PostModal";
+import { SET_EDIT_POST } from "../../../utils/Constants";
 
-const InfoPopup = ({ onClose, isOpen, post }) => {
+const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
   const { colorMode } = useColorMode();
   const { currentUser } = useAuth();
+  const {
+    userState: { userBookmarks },
+    handleBookmark,
+    handleRemoveBookmark,
+    handleFollow,
+  } = useUser();
   const unfollowModalDisclosure = useDisclosure();
+  const postModalDisclosure = useDisclosure();
 
-  const { username } = post;
+  const { _id, username } = post;
+  const { handleDeletePost, postDispatch } = usePost();
+
+  const checkBookmark = userBookmarks.find((bookmark) => bookmark === _id);
+  const isFollowing = currentUser.following.find(
+    (user) => user.username === username
+  );
 
   return (
     <>
@@ -32,30 +47,80 @@ const InfoPopup = ({ onClose, isOpen, post }) => {
           <ModalBody>
             {currentUser.username === username ? (
               <>
-                <Button sx={simpleButton}>Edit</Button>
+                <Button
+                  sx={simpleButton}
+                  onClick={() => {
+                    postDispatch({ type: SET_EDIT_POST, payload: post });
+                    postModalDisclosure.onOpen();
+                  }}
+                >
+                  Edit
+                </Button>
                 <Divider />
-                <Button sx={simpleButton} color={"red"}>
+                <Button
+                  sx={simpleButton}
+                  color={"red"}
+                  onClick={() => handleDeletePost(_id)}
+                >
                   Delete
                 </Button>
                 <Divider />
               </>
             ) : (
               <>
-                {" "}
-                <Button sx={simpleButton}>Add to favourites</Button>
-                <Divider />
-                <Button sx={simpleButton}>Copy link</Button>
+                {checkBookmark ? (
+                  <Button
+                    sx={simpleButton}
+                    onClick={() => {
+                      handleRemoveBookmark(_id);
+                      setClicked(!clicked);
+                      onClose();
+                    }}
+                  >
+                    Remove from favourites
+                  </Button>
+                ) : (
+                  <Button
+                    sx={simpleButton}
+                    onClick={() => {
+                      handleBookmark(_id);
+                      onClose();
+                    }}
+                  >
+                    Add to favourites
+                  </Button>
+                )}
                 <Divider />
                 <Button
                   sx={simpleButton}
-                  color={"red.500"}
-                  onClick={() => {
-                    unfollowModalDisclosure.onOpen();
-                    onClose();
-                  }}
+                  onClick={() => console.log("link copy")}
                 >
-                  Unfollow
+                  Copy link
                 </Button>
+                <Divider />
+                {isFollowing ? (
+                  <Button
+                    sx={simpleButton}
+                    color={"red.500"}
+                    onClick={() => {
+                      unfollowModalDisclosure.onOpen();
+                    }}
+                  >
+                    Unfollow
+                  </Button>
+                ) : (
+                  <Button
+                    sx={simpleButton}
+                    color={"blue.500"}
+                    onClick={() => {
+                      handleFollow(username);
+                      onClose();
+                    }}
+                  >
+                    Follow
+                  </Button>
+                )}
+
                 <Divider />
               </>
             )}
@@ -70,6 +135,11 @@ const InfoPopup = ({ onClose, isOpen, post }) => {
         isOpen={unfollowModalDisclosure.isOpen}
         onClose={unfollowModalDisclosure.onClose}
         fromInfoPop={true}
+      />
+      <PostModal
+        isOpen={postModalDisclosure.isOpen}
+        onClose={postModalDisclosure.onClose}
+        edit={true}
       />
     </>
   );

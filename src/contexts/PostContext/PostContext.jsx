@@ -9,7 +9,9 @@ import {
 import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
 import {
+  EditPost,
   createPost,
+  deletePost,
   getAllPosts,
   getAllUserPost,
   likePost,
@@ -98,6 +100,34 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const handleDeletePost = async (postId) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await deletePost(postId, token);
+      if (status === 201 || status === 200) {
+        postDispatch({ type: ALL_POSTS, payload: posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleEditPost = async (postData) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await EditPost(postData, token);
+      if (status === 201 || status === 200) {
+        postDispatch({ type: ALL_POSTS, payload: posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -112,6 +142,8 @@ export const PostProvider = ({ children }) => {
         handlePostUnLike,
         handleCreatePost,
         getAllUserPosts,
+        handleDeletePost,
+        handleEditPost,
       }}
     >
       {children}

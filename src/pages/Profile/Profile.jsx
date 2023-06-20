@@ -96,16 +96,19 @@ export const Profile = () => {
           m="auto"
           border={"none"}
         >
-          <Tab flexGrow={1} colorScheme="blue">
+          <Tab flexGrow={1} colorScheme="blue" gap={2}>
             <Box as={MdGridOn} fontSize={"1.7rem"} />
+            <Text display={{ base: "none", md: "block" }}>Posts</Text>
           </Tab>
           {currentUserCheck && (
             <>
-              <Tab flexGrow={1}>
+              <Tab flexGrow={1} gap={2}>
                 <Box as={AiOutlineHeart} fontSize={"1.7rem"} />
+                <Text display={{ base: "none", md: "block" }}>Likes</Text>
               </Tab>
-              <Tab flexGrow={1}>
+              <Tab flexGrow={1} gap={2}>
                 <Box as={FaRegBookmark} fontSize={"1.5rem"} />
+                <Text display={{ base: "none", md: "block" }}>Saved</Text>
               </Tab>
             </>
           )}
