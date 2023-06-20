@@ -113,6 +113,20 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const handleEditPost = async (postData) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await deletePost(postData, token);
+      if (status === 201 || status === 200) {
+        console.log(posts);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -128,6 +142,7 @@ export const PostProvider = ({ children }) => {
         handleCreatePost,
         getAllUserPosts,
         handleDeletePost,
+        handleEditPost,
       }}
     >
       {children}
