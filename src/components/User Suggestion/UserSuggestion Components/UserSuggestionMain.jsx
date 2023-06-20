@@ -1,8 +1,9 @@
-import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
+import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+
 import { useAuth, useUser } from "../../../contexts";
 import { userSuggestionAllProfileBox } from "../../../styles/UserSuggestionStyles";
-import { useNavigate } from "react-router-dom";
 import { getMutualFollowers } from "../../../utils/MutualFollowers";
 
 const UserSuggestionMain = () => {

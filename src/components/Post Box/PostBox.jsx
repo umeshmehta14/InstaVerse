@@ -34,6 +34,7 @@ export const PostBox = ({ post }) => {
   const {
     userState: { userBookmarks },
     userDispatch,
+    handleFollow,
   } = useUser();
 
   const { currentUser } = useAuth();
@@ -50,6 +51,10 @@ export const PostBox = ({ post }) => {
   } = post;
 
   const bookmarked = userBookmarks?.includes(_id);
+
+  const postFollow = currentUser.following.find(
+    (user) => user.username === username
+  );
 
   const handleBookmarkClick = () => {
     if (bookmarked && clicked) {
@@ -72,16 +77,28 @@ export const PostBox = ({ post }) => {
       boxShadow={colorMode === "light" ? "1px 1px 8px #8080805e" : ""}
     >
       <Flex {...postNavStyles}>
-        <Flex
-          alignItems={"center"}
-          cursor={"pointer"}
-          title={username}
-          onClick={() => navigate(`/profile/${username}`)}
-        >
-          <Avatar size="sm" src={avatarURL} />
-          <Text ml="2" fontWeight="semibold">
-            {username}
-          </Text>
+        <Flex alignItems={"center"} gap={2}>
+          <Flex
+            alignItems={"center"}
+            cursor={"pointer"}
+            title={username}
+            onClick={() => navigate(`/profile/${username}`)}
+          >
+            <Avatar size="sm" src={avatarURL} />
+            <Text ml="2" fontWeight="semibold">
+              {username}
+            </Text>
+          </Flex>
+          {!postFollow && !(currentUser.username === username) && (
+            <Button
+              alignItems={"center"}
+              variant={"link-button"}
+              justifyContent="flex-start"
+              onClick={() => handleFollow(username)}
+            >
+              Follow
+            </Button>
+          )}
         </Flex>
         <Button
           {...postThreeDot}
