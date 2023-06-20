@@ -55,19 +55,19 @@ export const NavBar = () => {
         <HStack>
           {location?.pathname.includes("/profile") ? (
             <Flex w="56vw" alignItems="center" justifyContent="center">
-              {currentUser.username === selectedUser.username ? (
+              {currentUser?.username === selectedUser?.username ? (
                 <Flex
                   gap={2}
                   align={"center"}
                   fontWeight={"bold"}
                   onClick={switchUserDisclosure.onOpen}
                 >
-                  {currentUser.username}
+                  {currentUser?.username}
                   <Box as={AiOutlineDown} fontSize={"1.2rem"} />
                 </Flex>
               ) : (
                 <Flex align={"center"} fontWeight={"bold"}>
-                  {selectedUser.username}
+                  {selectedUser?.username}
                 </Flex>
               )}
             </Flex>
