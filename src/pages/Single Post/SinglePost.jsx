@@ -53,8 +53,8 @@ export const SinglePost = () => {
   const { username, comments, mediaUrl, createdAt, content, avatarURL } =
     singlePost;
 
-  const postFollow = currentUser.following.find(
-    (user) => user.username === username
+  const postFollow = currentUser?.following?.find(
+    (user) => user?.username === username
   );
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export const SinglePost = () => {
                 gap={"1rem"}
                 w="100%"
               >
-                {comments.map((comment) => {
+                {comments?.map((comment) => {
                   const { avatarURL, text, createdAt, username } = comment;
                   return (
                     <Flex gap={"1rem"}>
