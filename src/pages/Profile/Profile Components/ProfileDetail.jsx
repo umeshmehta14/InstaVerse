@@ -38,6 +38,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
 
   const mutualFollowers =
     !currentUserCheck && getMutualFollowers(followers, currentUser);
+
   return (
     <>
       <Flex
@@ -120,7 +121,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
                 {following?.length} following
               </Text>
             </HStack>
-            <Flex flexDir="column" w="100%" gap="0.4rem" pt={0}>
+            <Flex flexDir="column" w="100%" gap="0.4rem" pt={0} minW={"300px"}>
               <Text>{` ${firstName} ${lastName}`}</Text>
               <Text>{bio}</Text>
               <Text color={"blue.200"}>

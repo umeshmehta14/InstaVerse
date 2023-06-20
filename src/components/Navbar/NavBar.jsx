@@ -60,13 +60,18 @@ export const NavBar = () => {
                   gap={2}
                   align={"center"}
                   fontWeight={"bold"}
+                  title={currentUser?.username}
                   onClick={switchUserDisclosure.onOpen}
                 >
                   {currentUser?.username}
                   <Box as={AiOutlineDown} fontSize={"1.2rem"} />
                 </Flex>
               ) : (
-                <Flex align={"center"} fontWeight={"bold"}>
+                <Flex
+                  align={"center"}
+                  fontWeight={"bold"}
+                  title={selectedUser?.username}
+                >
                   {selectedUser?.username}
                 </Flex>
               )}
