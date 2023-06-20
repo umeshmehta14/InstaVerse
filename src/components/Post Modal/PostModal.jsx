@@ -14,7 +14,6 @@ import {
   Text,
   Textarea,
   useColorMode,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
 
