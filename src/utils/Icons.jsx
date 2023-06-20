@@ -20,6 +20,7 @@ import {
   AiOutlineComment,
   AiOutlinePaperClip,
   AiOutlinePicture,
+  AiOutlineDown,
 } from "react-icons/ai";
 import { RxCross2, RxHamburgerMenu, RxCrossCircled } from "react-icons/rx";
 import { TbSquareRoundedPlus } from "react-icons/tb";
@@ -41,6 +42,7 @@ import { CiCamera } from "react-icons/ci";
 
 export {
   AiOutlineHeart,
+  AiOutlineDown,
   AiFillHeart,
   AiOutlineComment,
   AiOutlinePaperClip,
