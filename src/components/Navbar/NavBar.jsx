@@ -6,20 +6,33 @@ import {
   HStack,
   useColorMode,
   Button,
-  useColorModeValue,
   useDisclosure,
+  Box,
 } from "@chakra-ui/react";
 
-import SearchBox from "./Navbar Components/SearchBox";
 import { mobileNavbarStyle } from "../../styles/NavbarStyles";
+import SearchBox from "./Navbar Components/SearchBox";
 import SideBar from "./Navbar Components/SideBar";
-import { MdSearch, BsFillSunFill, BsMoon } from "../../utils/Icons";
+import {
+  MdSearch,
+  BsFillSunFill,
+  BsMoon,
+  AiOutlineDown,
+} from "../../utils/Icons";
+import { useAuth, useUser } from "../../contexts";
+import SwitchAccountModal from "../User Suggestion/UserSuggestion Components/SwitchAccountModal";
 
 export const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   const location = useLocation();
   const searchDrawerDisclosure = useDisclosure();
+  const switchUserDisclosure = useDisclosure();
   const navigate = useNavigate();
+
+  const {
+    userState: { selectedUser },
+  } = useUser();
+  const { currentUser } = useAuth();
 
   if (location.pathname === "/login" || location.pathname === "/signup") {
     return null;
@@ -40,15 +53,40 @@ export const NavBar = () => {
           InstaVerse
         </Text>
         <HStack>
-          <Button
-            variant={"link-button"}
-            fontSize={"2rem"}
-            color={colorMode === "light" ? "black" : "blue.900"}
-            onClick={searchDrawerDisclosure.onOpen}
-            title="Search"
-          >
-            <MdSearch />
-          </Button>
+          {location?.pathname.includes("/profile") ? (
+            <Flex w="56vw" alignItems="center" justifyContent="center">
+              {currentUser?.username === selectedUser?.username ? (
+                <Flex
+                  gap={2}
+                  align={"center"}
+                  fontWeight={"bold"}
+                  title={currentUser?.username}
+                  onClick={switchUserDisclosure.onOpen}
+                >
+                  {currentUser?.username}
+                  <Box as={AiOutlineDown} fontSize={"1.2rem"} />
+                </Flex>
+              ) : (
+                <Flex
+                  align={"center"}
+                  fontWeight={"bold"}
+                  title={selectedUser?.username}
+                >
+                  {selectedUser?.username}
+                </Flex>
+              )}
+            </Flex>
+          ) : (
+            <Button
+              variant={"link-button"}
+              fontSize={"2rem"}
+              color={colorMode === "light" ? "black" : "blue.900"}
+              onClick={searchDrawerDisclosure.onOpen}
+              title="Search"
+            >
+              <MdSearch />
+            </Button>
+          )}
           <Button
             variant={"link-button"}
             fontSize={"1.6rem"}
@@ -65,6 +103,10 @@ export const NavBar = () => {
       <SearchBox
         isOpen={searchDrawerDisclosure.isOpen}
         onClose={searchDrawerDisclosure.onClose}
+      />
+      <SwitchAccountModal
+        onClose={switchUserDisclosure.onClose}
+        isOpen={switchUserDisclosure.isOpen}
       />
     </>
   );

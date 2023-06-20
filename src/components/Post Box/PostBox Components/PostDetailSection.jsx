@@ -96,7 +96,12 @@ const PostDetailSection = ({
               />
             )}
             <Box as={FaRegComment} sx={postIconStyle} title="Comment" />
-            <Box as={IoPaperPlaneOutline} sx={IconHoverStyle} title="Share" />
+            <Box
+              as={IoPaperPlaneOutline}
+              sx={IconHoverStyle}
+              onClick={() => navigator.clipboard.writeText("hello")}
+              title="Share"
+            />
           </HStack>
           <HStack>
             {bookmarked ? (
