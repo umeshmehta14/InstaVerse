@@ -15,7 +15,6 @@ import UnfollowModal from "./UnfollowModal";
 import { useAuth, usePost, useUser } from "../../../contexts";
 import { PostModal } from "../../Post Modal/PostModal";
 import { SET_EDIT_POST } from "../../../utils/Constants";
-import { useEffect } from "react";
 
 const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
   const { colorMode } = useColorMode();
@@ -24,6 +23,7 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
     userState: { userBookmarks },
     handleBookmark,
     handleRemoveBookmark,
+    handleFollow,
   } = useUser();
   const unfollowModalDisclosure = useDisclosure();
   const postModalDisclosure = useDisclosure();
@@ -32,6 +32,9 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
   const { handleDeletePost, postDispatch } = usePost();
 
   const checkBookmark = userBookmarks.find((bookmark) => bookmark === _id);
+  const isFollowing = currentUser.following.find(
+    (user) => user.username === username
+  );
 
   return (
     <>
@@ -95,16 +98,29 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
                   Copy link
                 </Button>
                 <Divider />
-                <Button
-                  sx={simpleButton}
-                  color={"red.500"}
-                  onClick={() => {
-                    unfollowModalDisclosure.onOpen();
-                    onClose();
-                  }}
-                >
-                  Unfollow
-                </Button>
+                {isFollowing ? (
+                  <Button
+                    sx={simpleButton}
+                    color={"red.500"}
+                    onClick={() => {
+                      unfollowModalDisclosure.onOpen();
+                    }}
+                  >
+                    Unfollow
+                  </Button>
+                ) : (
+                  <Button
+                    sx={simpleButton}
+                    color={"blue.500"}
+                    onClick={() => {
+                      handleFollow(username);
+                      onClose();
+                    }}
+                  >
+                    Follow
+                  </Button>
+                )}
+
                 <Divider />
               </>
             )}

@@ -89,15 +89,6 @@ export const PostBox = ({ post }) => {
           onClick={infoPopupDisclosure.onOpen}
         >
           <Box as={BsThreeDots} cursor={"pointer"} />
-          {infoPopupDisclosure.isOpen && (
-            <InfoPopup
-              setClicked={setClicked}
-              clicked={clicked}
-              isOpen={infoPopupDisclosure.isOpen}
-              onClose={infoPopupDisclosure.onClose}
-              post={post}
-            />
-          )}
         </Button>
       </Flex>
 
@@ -144,6 +135,15 @@ export const PostBox = ({ post }) => {
         users={likedBy}
         heading={"Liked By"}
       />
+      {infoPopupDisclosure.isOpen && (
+        <InfoPopup
+          setClicked={setClicked}
+          clicked={clicked}
+          isOpen={infoPopupDisclosure.isOpen}
+          onClose={infoPopupDisclosure.onClose}
+          post={post}
+        />
+      )}
     </Box>
   );
 };

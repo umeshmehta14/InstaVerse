@@ -21,6 +21,7 @@ import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
 import { usePost } from "../../contexts";
 import { postTextarea } from "../../styles/PostModalStyles";
 import { useEffect } from "react";
+import { SET_EDIT_POST } from "../../utils/Constants";
 
 export const PostModal = ({ isOpen, onClose, edit }) => {
   const { colorMode } = useColorMode();
@@ -28,6 +29,7 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
     handleCreatePost,
     handleEditPost,
     postState: { editPost },
+    postDispatch,
   } = usePost();
   const [postValue, setPostValue] = useState({
     content: "",
@@ -65,6 +67,7 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
         handleCreatePost(postValue);
       }
       setPostValue({ content: "", mediaUrl: "" });
+      postDispatch({ type: SET_EDIT_POST, payload: {} });
       onClose();
     }
   };
@@ -76,6 +79,7 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
         onClose={() => {
           onClose();
           setPostValue({ content: "", mediaUrl: "" });
+          postDispatch({ type: SET_EDIT_POST, payload: {} });
         }}
         size="xl"
       >
@@ -144,7 +148,12 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                 title="Emoji"
               />
             </Flex>
-            <Button variant={"link-button"} onClick={handlePost} title="Share">
+            <Button
+              variant={"link-button"}
+              onClick={handlePost}
+              fontSize={"1rem"}
+              title="Share"
+            >
               Share
             </Button>
           </ModalFooter>
