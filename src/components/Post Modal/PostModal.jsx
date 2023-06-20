@@ -14,6 +14,7 @@ import {
   Textarea,
   useColorMode,
 } from "@chakra-ui/react";
+import { toast } from "react-hot-toast";
 
 import { FcAddImage, BsEmojiSunglasses } from "../../utils/Icons";
 import { usePost } from "../../contexts";
@@ -40,9 +41,15 @@ export const PostModal = ({ isOpen, onClose }) => {
   };
 
   const handlePost = () => {
-    handleCreatePost(postValue);
-    setPostValue({ content: "", mediaUrl: "" });
-    onClose();
+    if (postValue.mediaUrl === "") {
+      toast.error("Please select a piture");
+    } else if (postValue.content === "") {
+      toast.error("Please write caption for your post");
+    } else {
+      handleCreatePost(postValue);
+      setPostValue({ content: "", mediaUrl: "" });
+      onClose();
+    }
   };
 
   return (

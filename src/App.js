@@ -6,6 +6,7 @@ import { useAuth, usePost } from "./contexts";
 import { NavBar, PrivateRoute } from "./components";
 import { Explore, Home, Login, Profile, SignUp } from "./pages";
 import LoadingBar from "react-top-loading-bar";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
@@ -15,6 +16,7 @@ function App() {
 
   return (
     <Box color={color} bg={bg} className="App">
+      <Toaster position="top-center" reverseOrder={true} />
       {loading ? (
         "Loading.."
       ) : (
