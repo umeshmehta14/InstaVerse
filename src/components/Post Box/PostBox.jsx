@@ -63,7 +63,7 @@ export const PostBox = ({ post }) => {
 
   useEffect(() => {
     handleBookmarkClick();
-  }, [bookmarked]);
+  }, [bookmarked, userBookmarks]);
 
   return (
     <Box
@@ -89,6 +89,15 @@ export const PostBox = ({ post }) => {
           onClick={infoPopupDisclosure.onOpen}
         >
           <Box as={BsThreeDots} cursor={"pointer"} />
+          {infoPopupDisclosure.isOpen && (
+            <InfoPopup
+              setClicked={setClicked}
+              clicked={clicked}
+              isOpen={infoPopupDisclosure.isOpen}
+              onClose={infoPopupDisclosure.onClose}
+              post={post}
+            />
+          )}
         </Button>
       </Flex>
 
@@ -134,11 +143,6 @@ export const PostBox = ({ post }) => {
         isOpen={isOpen}
         users={likedBy}
         heading={"Liked By"}
-      />
-      <InfoPopup
-        isOpen={infoPopupDisclosure.isOpen}
-        onClose={infoPopupDisclosure.onClose}
-        post={post}
       />
     </Box>
   );

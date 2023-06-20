@@ -12,14 +12,21 @@ import {
 
 import { simpleButton } from "../../../styles/PostBoxStyles";
 import UnfollowModal from "./UnfollowModal";
-import { useAuth } from "../../../contexts";
+import { useAuth, useUser } from "../../../contexts";
 
-const InfoPopup = ({ onClose, isOpen, post }) => {
+const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
   const { colorMode } = useColorMode();
   const { currentUser } = useAuth();
+  const {
+    userState: { userBookmarks },
+    handleBookmark,
+    handleRemoveBookmark,
+  } = useUser();
   const unfollowModalDisclosure = useDisclosure();
 
-  const { username } = post;
+  const { _id, username } = post;
+
+  const checkBookmark = userBookmarks.find((bookmark) => bookmark === _id);
 
   return (
     <>
@@ -41,10 +48,35 @@ const InfoPopup = ({ onClose, isOpen, post }) => {
               </>
             ) : (
               <>
-                {" "}
-                <Button sx={simpleButton}>Add to favourites</Button>
+                {checkBookmark ? (
+                  <Button
+                    sx={simpleButton}
+                    onClick={() => {
+                      handleRemoveBookmark(_id);
+                      setClicked(!clicked);
+                      onClose();
+                    }}
+                  >
+                    Remove from favourites
+                  </Button>
+                ) : (
+                  <Button
+                    sx={simpleButton}
+                    onClick={() => {
+                      handleBookmark(_id);
+                      onClose();
+                    }}
+                  >
+                    Add to favourites
+                  </Button>
+                )}
                 <Divider />
-                <Button sx={simpleButton}>Copy link</Button>
+                <Button
+                  sx={simpleButton}
+                  onClick={() => console.log("link copy")}
+                >
+                  Copy link
+                </Button>
                 <Divider />
                 <Button
                   sx={simpleButton}
