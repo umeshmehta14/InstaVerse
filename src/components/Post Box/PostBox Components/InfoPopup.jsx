@@ -12,7 +12,7 @@ import {
 
 import { simpleButton } from "../../../styles/PostBoxStyles";
 import UnfollowModal from "./UnfollowModal";
-import { useAuth, useUser } from "../../../contexts";
+import { useAuth, usePost, useUser } from "../../../contexts";
 
 const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
   const { colorMode } = useColorMode();
@@ -25,6 +25,7 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
   const unfollowModalDisclosure = useDisclosure();
 
   const { _id, username } = post;
+  const { handleDeletePost } = usePost();
 
   const checkBookmark = userBookmarks.find((bookmark) => bookmark === _id);
 
@@ -41,7 +42,11 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
               <>
                 <Button sx={simpleButton}>Edit</Button>
                 <Divider />
-                <Button sx={simpleButton} color={"red"}>
+                <Button
+                  sx={simpleButton}
+                  color={"red"}
+                  onClick={() => handleDeletePost(_id)}
+                >
                   Delete
                 </Button>
                 <Divider />

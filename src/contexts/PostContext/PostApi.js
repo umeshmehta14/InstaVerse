@@ -37,3 +37,10 @@ export const createPost = async (token, postData) =>
       },
     }
   );
+
+export const deletePost = async (postId, token) =>
+  await axios.delete(`/api/posts/${postId}`, {
+    headers: {
+      authorization: token,
+    },
+  });
