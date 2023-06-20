@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 import { simpleButton } from "../../../styles/PostBoxStyles";
-import UnfollowModal from "./UnfollowModal";
+import { UnfollowModal } from "../../index";
 import { useAuth, usePost, useUser } from "../../../contexts";
 import { PostModal } from "../../Post Modal/PostModal";
 import { SET_EDIT_POST } from "../../../utils/Constants";

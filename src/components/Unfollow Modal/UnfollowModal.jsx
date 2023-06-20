@@ -11,10 +11,10 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import { simpleButton } from "../../../styles/PostBoxStyles";
-import { useUser } from "../../../contexts";
+import { simpleButton } from "../../styles/PostBoxStyles";
+import { useUser } from "../../contexts";
 
-const UnfollowModal = ({
+export const UnfollowModal = ({
   isOpen,
   onClose,
   username,
@@ -58,5 +58,3 @@ const UnfollowModal = ({
     </Modal>
   );
 };
-
-export default UnfollowModal;

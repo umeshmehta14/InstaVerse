@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -16,9 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import { useAuth, useUser } from "../../contexts";
-import UnfollowModal from "../Post Box/PostBox Components/UnfollowModal";
-import { useState } from "react";
-import RotatingLoader from "../Loader/RotatingLoader";
+import { UnfollowModal, RotatingLoader } from "../index";
 
 export const UserListModal = ({ onClose, isOpen, users, heading }) => {
   const navigate = useNavigate();

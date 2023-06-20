@@ -18,7 +18,6 @@ import {
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
-
 import {
   AiOutlineHeart,
   AiFillHeart,
