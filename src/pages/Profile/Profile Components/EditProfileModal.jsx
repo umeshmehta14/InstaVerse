@@ -184,7 +184,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   right={"0.5rem"}
                   fontSize={"0.7rem"}
                   color={bio?.length >= 145 ? "red" : ""}
-                >{`${bio?.length}/150`}</Text>
+                >{`${bio?.length || 0}/150`}</Text>
               </FormControl>
 
               <FormControl>

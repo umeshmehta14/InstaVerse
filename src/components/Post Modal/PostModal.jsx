@@ -106,7 +106,7 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                 right={"0.5rem"}
                 fontSize={"0.7rem"}
                 color={postValue?.content?.length >= 2190 ? "red" : ""}
-              >{`${postValue?.content?.length}/2200`}</Text>
+              >{`${postValue?.content?.length || 0}/2200`}</Text>
             </Flex>
             {postValue?.mediaUrl && (
               <Flex mt={"2rem"} justifyContent={"center"} pos={"relative"}>
