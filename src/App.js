@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useAuth, usePost } from "./contexts";
 import { NavBar, PrivateRoute } from "./components";
-import { Explore, Home, Login, Profile, SignUp } from "./pages";
+import { Explore, Home, Login, Profile, SignUp, SinglePost } from "./pages";
 import LoadingBar from "react-top-loading-bar";
 import { Toaster } from "react-hot-toast";
 
@@ -37,6 +37,15 @@ function App() {
               element={
                 <PrivateRoute>
                   <Explore />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path={"/post/:postId"}
+              element={
+                <PrivateRoute>
+                  <SinglePost />
                 </PrivateRoute>
               }
             />
