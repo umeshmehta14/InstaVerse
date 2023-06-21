@@ -141,12 +141,12 @@ const DisplayComments = ({ post, location }) => {
           location={location}
         />
       )}
-      <Modal onClose={onClose} size={size} isOpen={isOpen}>
+      {/* <Modal onClose={onClose} size={size} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
           <ModalBody>hello</ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
