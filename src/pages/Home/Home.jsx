@@ -33,20 +33,22 @@ export const Home = () => {
       window.scrollTo({ top: 0 });
     }
     userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
-  }, []);
+  }, [location?.pathname, userDispatch]);
 
   return (
     <Flex sx={heroContentBox}>
       <UserSuggestion />
       {displayedPosts?.length === 0 ? (
         <Flex {...emptyMessageStyle}>
-          <Text>No posts yet. You can go</Text>{" "}
-          <Text
-            onClick={() => navigate("/explore")}
-            cursor={"pointer"}
-            textDecor={"underline"}
-          >
-            Explore Feed
+          <Text>
+            No posts yet. You can go
+            <Text
+              onClick={() => navigate("/explore")}
+              cursor={"pointer"}
+              textDecor={"underline"}
+            >
+              Explore Feed
+            </Text>
           </Text>
         </Flex>
       ) : (
