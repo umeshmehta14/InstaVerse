@@ -69,3 +69,10 @@ export const createComment = async (postId, commentData, token) =>
       },
     }
   );
+
+export const deleteComment = async (commentId, postId, token) =>
+  await axios.delete(`/api/comments/delete/${postId}/${commentId}`, {
+    headers: {
+      authorization: token,
+    },
+  });

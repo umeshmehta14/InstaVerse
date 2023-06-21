@@ -22,7 +22,7 @@ import {
 } from "../../../styles/PostBoxStyles";
 import { getRelativeTime } from "../../../utils/GetRelativeTime";
 import InfoPopup from "../../../components/Post Box/PostBox Components/InfoPopup";
-import { useAuth, useUser } from "../../../contexts";
+import { useAuth, usePost, useUser } from "../../../contexts";
 import { useNavigate } from "react-router-dom";
 import {
   commentTextStyle,
@@ -41,6 +41,7 @@ const DisplayComments = ({ post, location }) => {
 
   const { currentUser } = useAuth();
   const { handleFollow } = useUser();
+  const { HandleDeleteComment } = usePost();
   const postFollow = currentUser?.following?.find(
     (user) => user?.username === username
   );
@@ -105,9 +106,9 @@ const DisplayComments = ({ post, location }) => {
         {...displayCommentMainBox}
       >
         {comments?.map((comment) => {
-          const { avatarURL, text, createdAt, username } = comment;
+          const { _id, avatarURL, text, createdAt, username } = comment;
           return (
-            <Flex gap={"1rem"} title={username}>
+            <Flex key={_id} gap={"1rem"} title={username}>
               <Box pt={"4"} onClick={() => navigate(`/profile/${username}`)}>
                 <Avatar src={avatarURL} size={"sm"} cursor={"pointer"} />
               </Box>
@@ -137,6 +138,39 @@ const DisplayComments = ({ post, location }) => {
                   {text}
                 </Text>
               </VStack>
+              {commentDeleteDisclosure.isOpen && (
+                <Modal
+                  onClose={commentDeleteDisclosure.onClose}
+                  size={"xs"}
+                  isOpen={commentDeleteDisclosure.isOpen}
+                >
+                  <ModalOverlay />
+                  <ModalContent
+                    bg={colorMode === "dark" ? "black.700" : "white.500"}
+                    mt={"20rem"}
+                  >
+                    <ModalBody>
+                      <Button
+                        sx={simpleButton}
+                        color={"red.500"}
+                        onClick={() => {
+                          HandleDeleteComment(_id, post._id);
+                          commentDeleteDisclosure.onClose();
+                        }}
+                      >
+                        Delete
+                      </Button>
+                      <Divider />
+                      <Button
+                        sx={simpleButton}
+                        onClick={commentDeleteDisclosure.onClose}
+                      >
+                        Cancel
+                      </Button>
+                    </ModalBody>
+                  </ModalContent>
+                </Modal>
+              )}
             </Flex>
           );
         })}
@@ -149,27 +183,6 @@ const DisplayComments = ({ post, location }) => {
           fromSinglePost={true}
           location={location}
         />
-      )}
-      {commentDeleteDisclosure.isOpen && (
-        <Modal
-          onClose={commentDeleteDisclosure.onClose}
-          size={"xs"}
-          isOpen={commentDeleteDisclosure.isOpen}
-        >
-          <ModalOverlay />
-          <ModalContent
-            bg={colorMode === "dark" ? "black.700" : "white.500"}
-            mt={"20rem"}
-          >
-            <ModalBody>
-              <Button sx={simpleButton} color={"red.500"}>
-                Delete
-              </Button>
-              <Divider />
-              <Button sx={simpleButton}>Cancel</Button>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
       )}
     </>
   );

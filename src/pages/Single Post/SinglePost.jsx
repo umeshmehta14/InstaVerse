@@ -61,8 +61,6 @@ export const SinglePost = () => {
 
   const profileUser = users.find((user) => user.username === username);
 
-  console.log(profileUser);
-
   const handleCommentPost = () => {
     HandleCreateComment(commentValue, _id);
     setCommentValue("");
@@ -70,12 +68,7 @@ export const SinglePost = () => {
 
   useEffect(() => {
     HandleSinglePost(postId);
-  }, [postId, comments]);
-
-  console.log(location?.pathname);
-  console.log(redirectLocation);
-
-  console.log(location?.pathname === redirectLocation);
+  }, [postId, comments, HandleSinglePost]);
 
   return (
     <>

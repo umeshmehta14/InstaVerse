@@ -12,6 +12,7 @@ import {
   EditPost,
   createComment,
   createPost,
+  deleteComment,
   deletePost,
   getAllPosts,
   getAllUserPost,
@@ -163,6 +164,20 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const HandleDeleteComment = async (commentId, postId) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await deleteComment(commentId, postId, token);
+      if (status === 201 || status === 200) {
+        postDispatch({ type: ALL_POSTS, payload: posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -181,6 +196,7 @@ export const PostProvider = ({ children }) => {
         handleEditPost,
         HandleSinglePost,
         HandleCreateComment,
+        HandleDeleteComment,
       }}
     >
       {children}
