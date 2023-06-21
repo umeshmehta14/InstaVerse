@@ -44,6 +44,10 @@ const UserSuggestionMain = () => {
                 followers,
                 currentUser
               );
+
+              const isFollowing = currentUser.followers.find(
+                (user) => user.username === username
+              );
               return (
                 <Flex
                   key={_id}
@@ -60,7 +64,7 @@ const UserSuggestionMain = () => {
                     <Avatar size={{ base: "md", md: "sm" }} src={avatarURL} />
                     <Flex flexDir={"column"}>
                       <Text fontSize="sm">{username}</Text>
-                      {mutualFollowers.length > 0 && (
+                      {mutualFollowers.length > 0 ? (
                         <Flex
                           fontSize={"12px"}
                           color={"gray"}
@@ -71,6 +75,16 @@ const UserSuggestionMain = () => {
                             <> and +{mutualFollowers?.length - 1} more</>
                           )}
                         </Flex>
+                      ) : (
+                        isFollowing && (
+                          <Flex
+                            fontSize={"12px"}
+                            color={"gray"}
+                            display={{ base: "none", lg: "flex" }}
+                          >
+                            Follows you
+                          </Flex>
+                        )
                       )}
                     </Flex>
                   </Flex>

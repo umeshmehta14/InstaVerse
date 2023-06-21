@@ -3,7 +3,7 @@ import { Flex, Text, VStack } from "@chakra-ui/react";
 
 import { PostBox, UserSuggestion } from "../../components";
 import { useAuth, usePost, useUser } from "../../contexts";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
 import { SET_DEFAULT_TAB } from "../../utils/Constants";
@@ -15,6 +15,7 @@ export const Home = () => {
   const { userDispatch } = useUser();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const homePagePosts = posts?.filter(
     ({ username }) =>
@@ -27,7 +28,10 @@ export const Home = () => {
   const displayedPosts = postFilter(homePagePosts, filter);
 
   useEffect(() => {
-    window.scrollTo({ top: 0 });
+    if (location?.pathname.includes("/post/")) {
+    } else {
+      window.scrollTo({ top: 0 });
+    }
     userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
   }, []);
 

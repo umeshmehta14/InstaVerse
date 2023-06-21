@@ -1,91 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Box,
   Button,
+  Divider,
   Flex,
   HStack,
   Input,
   Text,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 
+import { useAuth, usePost, useUser } from "../../../contexts";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  BsEmojiSunglasses,
+  FaBookmark,
+  FaRegBookmark,
+  IoPaperPlaneOutline,
+} from "../../../utils/Icons";
 import {
   IconHoverStyle,
   friendLikeUserStyle,
   iconPostStyles,
-  postContent,
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
-import {
-  AiOutlineHeart,
-  AiFillHeart,
-  FaRegComment,
-  IoPaperPlaneOutline,
-  FaBookmark,
-  FaRegBookmark,
-  BsEmojiSunglasses,
-} from "../../../utils/Icons";
-import { useAuth, usePost, useUser } from "../../../contexts";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getRelativeTime } from "../../../utils/GetRelativeTime";
-import { toast } from "react-hot-toast";
+import { UserListModal } from "../../../components";
 
-const PostDetailSection = ({
-  onOpen,
-  post,
-  bookmarked,
-  setClicked,
-  clicked,
-}) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+const CommentFooter = ({ post }) => {
   const { colorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { handlePostLike, handlePostUnLike, HandleCreateComment } = usePost();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [commentValue, setCommentValue] = useState("");
-
-  const { currentUser } = useAuth();
-  const { handleBookmark, handleRemoveBookmark } = useUser();
+  const navigate = useNavigate();
 
   const {
     _id,
-    username,
-    comments,
-    content,
-    createdAt,
     likes: { likedBy },
   } = post;
 
-  const userLike = likedBy.find(
-    ({ username }) => username === currentUser.username
+  const { handlePostLike, handlePostUnLike, HandleCreateComment } = usePost();
+  const { currentUser } = useAuth();
+  const {
+    handleBookmark,
+    handleRemoveBookmark,
+    userState: { userBookmarks },
+  } = useUser();
+
+  const [commentValue, setCommentValue] = useState("");
+
+  const bookmarked = userBookmarks?.includes(_id);
+  const userLike = likedBy?.find(
+    ({ username }) => username === currentUser?.username
   );
 
-  const friendLike = currentUser.following.find(({ username }) =>
-    likedBy.some((likeUser) => likeUser.username === username)
+  const friendLike = currentUser?.following?.find(({ username }) =>
+    likedBy?.some((likeUser) => likeUser?.username === username)
   );
-
-  const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
-  };
 
   const handleCommentPost = () => {
     HandleCreateComment(commentValue, _id);
     setCommentValue("");
   };
-
   return (
     <>
-      <Flex {...iconPostStyles}>
+      <Divider display={{ base: "none", md: "flex" }} />
+      <Flex {...iconPostStyles} display={{ base: "none", md: "flex" }}>
         <Flex
           fontSize={"1.7rem"}
           color={colorMode === "light" ? "black" : "white"}
           justifyContent={"space-between"}
         >
-          <HStack justifyContent={"space-between"} w={"30%"}>
+          <HStack justifyContent={"space-between"} w={"20%"}>
             {userLike ? (
               <Box
                 as={AiFillHeart}
@@ -102,14 +91,6 @@ const PostDetailSection = ({
                 onClick={() => handlePostLike(_id)}
               />
             )}
-            <Box
-              as={FaRegComment}
-              sx={postIconStyle}
-              title="Comment"
-              onClick={() =>
-                navigate(`/post/${_id}`, { state: { from: location } })
-              }
-            />
             <Box
               as={IoPaperPlaneOutline}
               sx={IconHoverStyle}
@@ -132,7 +113,6 @@ const PostDetailSection = ({
                 title="Save"
                 onClick={() => {
                   handleBookmark(_id);
-                  setClicked(!clicked);
                 }}
               />
             )}
@@ -143,7 +123,7 @@ const PostDetailSection = ({
             <Text>Liked by </Text>
             <Flex
               sx={friendLikeUserStyle}
-              onClick={() => navigate(`/profile/${friendLike.username}`)}
+              onClick={() => navigate(`/profile/${friendLike?.username}`)}
               align={"center"}
             >
               <Avatar
@@ -165,50 +145,19 @@ const PostDetailSection = ({
             </Text>
           )
         )}
-
-        <Flex fontSize={"sm"} flexWrap="wrap">
-          <Flex gap={1} w="100%">
-            <Text
-              {...userBoldStyle}
-              onClick={() => navigate(`/profile/${username}`)}
-            >
-              {username}
-            </Text>
-            <Text
-              {...postContent}
-              overflow={isExpanded ? "unset" : "hidden"}
-              whiteSpace={isExpanded ? "unset" : "nowrap"}
-            >
-              {content}
-            </Text>
-          </Flex>
-          {content?.length > 56 && (
-            <Button
-              variant={"link-button"}
-              fontSize={"0.8rem"}
-              p="0"
-              color={"gray"}
-              onClick={toggleExpanded}
-            >
-              {isExpanded ? "Show less" : "Show more"}
-            </Button>
-          )}
-        </Flex>
-
-        <Flex>
-          <Text fontSize={"sm"} color={"#717171e0"} cursor={"pointer"}>
-            View All Comments
-          </Text>
-        </Flex>
-        <Text fontSize="xs" color={"#717171e0"}>
-          {getRelativeTime(createdAt)}
-        </Text>
       </Flex>
-
-      <Flex py="1" borderTop="1px solid gray" alignItems={"center"}>
+      <Flex
+        py="1"
+        borderTop="1px solid gray"
+        borderBottom="1px solid gray"
+        alignItems="center"
+        display={{ base: "none", md: "flex" }}
+        w="100%"
+        bg={colorMode === "dark" ? "black.900" : "white.500"}
+      >
         <Box
           as={BsEmojiSunglasses}
-          fontSize={"1.8rem"}
+          fontSize="1.8rem"
           cursor="pointer"
           ml="2"
           title="Emoji"
@@ -221,20 +170,32 @@ const PostDetailSection = ({
           border={"none"}
           flex="1"
           mr="2"
-          _focus={{ outline: "none", boxShadow: "none", border: "none" }}
+          _focus={{
+            outline: "none",
+            boxShadow: "none",
+            border: "none",
+          }}
         />
         <Button
           fontSize={"1rem"}
           variant={"link-button"}
           size="sm"
           onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
-          color={commentValue === "" ? "gray" : undefined}
+          color={commentValue === "" ? "gray" : null}
         >
           Post
         </Button>
       </Flex>
+      {isOpen && (
+        <UserListModal
+          onClose={onClose}
+          isOpen={isOpen}
+          users={likedBy}
+          heading={"Liked By"}
+        />
+      )}
     </>
   );
 };
 
-export default PostDetailSection;
+export default CommentFooter;

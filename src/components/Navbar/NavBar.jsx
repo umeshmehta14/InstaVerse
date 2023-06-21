@@ -34,7 +34,7 @@ export const NavBar = () => {
   } = useUser();
   const { currentUser } = useAuth();
 
-  if (location.pathname === "/login" || location.pathname === "/signup") {
+  if (location?.pathname === "/login" || location?.pathname === "/signup") {
     return null;
   }
 
