@@ -1,9 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
   Avatar,
@@ -35,7 +34,6 @@ import { useAuth, useUser } from "../../../contexts";
 import { AiOutlinePicture, SlTrash } from "../../../utils/Icons";
 import { editFormInput, editFormLabel } from "../../../styles/ProfileStyles";
 import { simpleButton } from "../../../styles/PostBoxStyles";
-import { useEffect } from "react";
 
 const EditProfileModal = ({ isOpen, onClose }) => {
   const { currentUser } = useAuth();
