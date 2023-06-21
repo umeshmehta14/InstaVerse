@@ -31,6 +31,7 @@ import { useAuth, usePost, useUser } from "../../../contexts";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getRelativeTime } from "../../../utils/GetRelativeTime";
+import { toast } from "react-hot-toast";
 
 const PostDetailSection = ({
   onOpen,
@@ -43,8 +44,9 @@ const PostDetailSection = ({
   const location = useLocation();
   const { colorMode } = useColorMode();
 
-  const { handlePostLike, handlePostUnLike } = usePost();
+  const { handlePostLike, handlePostUnLike, HandleCreateComment } = usePost();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [commentValue, setCommentValue] = useState("");
 
   const { currentUser } = useAuth();
   const { handleBookmark, handleRemoveBookmark } = useUser();
@@ -68,6 +70,11 @@ const PostDetailSection = ({
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const handleCommentPost = () => {
+    HandleCreateComment(commentValue, _id);
+    setCommentValue("");
   };
 
   return (
@@ -209,12 +216,20 @@ const PostDetailSection = ({
 
         <Input
           placeholder="Add a comment..."
+          value={commentValue}
+          onChange={(e) => setCommentValue(e.target.value)}
           border={"none"}
           flex="1"
           mr="2"
           _focus={{ outline: "none", boxShadow: "none", border: "none" }}
         />
-        <Button fontSize={"1rem"} variant={"link-button"} size="sm">
+        <Button
+          fontSize={"1rem"}
+          variant={"link-button"}
+          size="sm"
+          onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
+          color={commentValue === "" ? "gray" : undefined}
+        >
           Post
         </Button>
       </Flex>

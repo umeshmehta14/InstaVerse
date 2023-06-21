@@ -42,28 +42,36 @@ export const SinglePost = () => {
   const { colorMode } = useColorMode();
 
   const [clicked, setClicked] = useState();
+  const [commentValue, setCommentValue] = useState("");
 
   const {
     HandleSinglePost,
+    HandleCreateComment,
     postState: { singlePost },
   } = usePost();
   const { currentUser } = useAuth();
   const { handleFollow } = useUser();
 
-  const { username, comments, mediaUrl, createdAt, content, avatarURL } =
+  const { _id, username, comments, mediaUrl, createdAt, content, avatarURL } =
     singlePost;
 
   const postFollow = currentUser?.following?.find(
     (user) => user?.username === username
   );
 
+  const handleCommentPost = () => {
+    console.log("object");
+    HandleCreateComment(commentValue, _id);
+    setCommentValue("");
+  };
+
   useEffect(() => {
     HandleSinglePost(postId);
-  }, [postId]);
+  }, [postId, comments]);
 
   return (
     <>
-      <Modal onClose={onClose} size={"full"} isOpen={true}>
+      <Modal onClose={onClose} size={{ base: "full", md: "lg" }} isOpen={true}>
         <ModalOverlay />
         <ModalContent
           bg={colorMode === "dark" ? "black.900" : "white.500"}
@@ -85,7 +93,6 @@ export const SinglePost = () => {
               </HStack>
               <Flex {...postNavStyles} w={"100%"}>
                 <Flex
-                  // alignItems={"center"}
                   gap={4}
                   cursor={"pointer"}
                   title={username}
@@ -117,7 +124,7 @@ export const SinglePost = () => {
                       <Box pt={"4"}>
                         <Avatar src={avatarURL} size={"sm"} />
                       </Box>
-                      <VStack align={"flex-start"} gap={"0.2rem"}>
+                      <VStack align={"flex-start"} gap={"0"}>
                         <Flex gap={"0.5rem"} align={"center"}>
                           <Text>{username}</Text>
                           <Text fontSize="sm" color={"#717171e0"}>
@@ -151,12 +158,20 @@ export const SinglePost = () => {
 
               <Input
                 placeholder="Add a comment..."
+                value={commentValue}
+                onChange={(e) => setCommentValue(e.target.value)}
                 border={"none"}
                 flex="1"
                 mr="2"
                 _focus={{ outline: "none", boxShadow: "none", border: "none" }}
               />
-              <Button fontSize={"1rem"} variant={"link-button"} size="sm">
+              <Button
+                fontSize={"1rem"}
+                variant={"link-button"}
+                size="sm"
+                onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
+                color={commentValue === "" ? "gray" : undefined}
+              >
                 Post
               </Button>
             </Flex>

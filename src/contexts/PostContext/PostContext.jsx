@@ -10,6 +10,7 @@ import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
 import {
   EditPost,
+  createComment,
   createPost,
   deletePost,
   getAllPosts,
@@ -147,6 +148,20 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const HandleCreateComment = async (commentData, postId) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await createComment(postId, commentData, token);
+      if (status === 201 || status === 200) {
+        postDispatch({ type: ALL_POSTS, payload: posts });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -164,6 +179,7 @@ export const PostProvider = ({ children }) => {
         handleDeletePost,
         handleEditPost,
         HandleSinglePost,
+        HandleCreateComment,
       }}
     >
       {children}

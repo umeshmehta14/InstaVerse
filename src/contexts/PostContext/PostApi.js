@@ -58,3 +58,14 @@ export const EditPost = async (postData, token) =>
 
 export const getSinglePost = async (postId) =>
   await axios.get(`/api/posts/${postId}`);
+
+export const createComment = async (postId, commentData, token) =>
+  await axios.post(
+    `/api/comments/add/${postId}`,
+    { commentData },
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
