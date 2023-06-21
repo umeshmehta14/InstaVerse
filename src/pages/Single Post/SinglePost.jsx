@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Button,
+  Divider,
   Flex,
   HStack,
   Image,
@@ -21,6 +22,7 @@ import {
 import { usePost } from "../../contexts";
 import DisplayComments from "./SinglePost Components/DisplayComments";
 import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../utils/Icons";
+import CommentFooter from "./SinglePost Components/CommentFooter";
 
 export const SinglePost = () => {
   const { postId } = useParams();
@@ -38,6 +40,7 @@ export const SinglePost = () => {
     postState: { singlePost },
   } = usePost();
 
+  console.log(singlePost);
   const { _id, username, comments, mediaUrl, createdAt, content, avatarURL } =
     singlePost;
 
@@ -68,6 +71,8 @@ export const SinglePost = () => {
         >
           <ModalCloseButton
             display={{ base: "none", md: "flex" }}
+            color={colorMode === "dark" ? "white" : "black"}
+            _hover={{ bg: "red" }}
             pos={"absolute"}
             right={"0"}
             top={"-3rem"}
@@ -112,47 +117,8 @@ export const SinglePost = () => {
                   post={singlePost}
                   location={location?.state?.from?.pathname}
                 />
-                <Flex
-                  py="1"
-                  borderTop="1px solid gray"
-                  alignItems={"center"}
-                  w={"100%"}
-                  display={{ base: "none", md: "flex" }}
-                  bg={colorMode === "dark" ? "black.900" : "white.500"}
-                >
-                  <Box
-                    as={BsEmojiSunglasses}
-                    fontSize={"1.8rem"}
-                    cursor="pointer"
-                    ml="2"
-                    title="Emoji"
-                  />
-
-                  <Input
-                    placeholder="Add a comment..."
-                    value={commentValue}
-                    onChange={(e) => setCommentValue(e.target.value)}
-                    border={"none"}
-                    flex="1"
-                    mr="2"
-                    _focus={{
-                      outline: "none",
-                      boxShadow: "none",
-                      border: "none",
-                    }}
-                  />
-                  <Button
-                    fontSize={"1rem"}
-                    variant={"link-button"}
-                    size="sm"
-                    onClick={() =>
-                      commentValue !== "" ? handleCommentPost() : ""
-                    }
-                    color={commentValue === "" ? "gray" : null}
-                  >
-                    Post
-                  </Button>
-                </Flex>
+                <Divider />
+                {singlePost?.username && <CommentFooter post={singlePost} />}
               </Flex>
             </HStack>
           </ModalBody>

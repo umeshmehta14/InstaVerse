@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Avatar,
   Box,
@@ -15,14 +15,16 @@ import { getRelativeTime } from "../../../utils/GetRelativeTime";
 import InfoPopup from "../../../components/Post Box/PostBox Components/InfoPopup";
 import { useAuth, useUser } from "../../../contexts";
 import { BsThreeDots } from "../../../utils/Icons";
+import { useNavigate } from "react-router-dom";
 
 const DisplayComments = ({ post, location }) => {
   const { username, avatarURL, comments, createdAt, content } = post;
 
+  const navigate = useNavigate();
+
   const infoPopupDisclosure = useDisclosure();
   const { colorMode } = useColorMode();
 
-  const [clicked, setClicked] = useState();
   const { currentUser } = useAuth();
   const { handleFollow } = useUser();
   const postFollow = currentUser?.following?.find(
@@ -64,16 +66,22 @@ const DisplayComments = ({ post, location }) => {
         </Button>
       </Flex>
       <Flex {...postNavStyles} w={"100%"}>
-        <Flex
-          gap={4}
-          cursor={"pointer"}
-          title={username}
-          onClick={() => navigate(`/profile/${username}`)}
-        >
-          <Avatar size="md" src={avatarURL} />
+        <Flex gap={4} cursor={"pointer"} title={username}>
+          <Avatar
+            size="md"
+            src={avatarURL}
+            onClick={() => navigate(`/profile/${username}`)}
+            cursor={"pointer"}
+          />
           <VStack alignItems={"flex-start"}>
             <Flex alignItems={"center"} gap={4}>
-              <Text fontWeight="semibold">{username}</Text>
+              <Text
+                fontWeight="semibold"
+                onClick={() => navigate(`/profile/${username}`)}
+                cursor={"pointer"}
+              >
+                {username}
+              </Text>
               <Text fontSize="sm" color={"#717171e0"}>
                 {getRelativeTime(createdAt)}
               </Text>
@@ -88,8 +96,8 @@ const DisplayComments = ({ post, location }) => {
         align={"flex-start"}
         gap={"1rem"}
         w="100%"
-        maxH={{ base: "none", md: "390px" }}
-        minH={{ base: "none", md: "390px" }}
+        maxH={{ base: "none", md: "275px" }}
+        minH={{ base: "none", md: "275px" }}
         overflow={"auto"}
         mb={{ base: "3rem", md: "0" }}
         bg={colorMode === "dark" ? "black.900" : "white.500"}
@@ -97,18 +105,27 @@ const DisplayComments = ({ post, location }) => {
         {comments?.map((comment) => {
           const { avatarURL, text, createdAt, username } = comment;
           return (
-            <Flex gap={"1rem"}>
-              <Box pt={"4"}>
-                <Avatar src={avatarURL} size={"sm"} />
+            <Flex gap={"1rem"} title={username}>
+              <Box pt={"4"} onClick={() => navigate(`/profile/${username}`)}>
+                <Avatar src={avatarURL} size={"sm"} cursor={"pointer"} />
               </Box>
               <VStack align={"flex-start"} gap={"0"}>
                 <Flex gap={"0.5rem"} align={"center"}>
-                  <Text>{username}</Text>
+                  <Text
+                    fontWeight={"bold"}
+                    cursor={"pointer"}
+                    onClick={() => navigate(`/profile/${username}`)}
+                  >
+                    {username}
+                  </Text>
                   <Text fontSize="sm" color={"#717171e0"}>
                     {getRelativeTime(createdAt)}
                   </Text>
                 </Flex>
-                <Text fontWeight={0} color={"#d7d7d7"}>
+                <Text
+                  fontWeight={0}
+                  color={colorMode === "dark" ? "#d7d7d7" : "black"}
+                >
                   {text}
                 </Text>
               </VStack>
@@ -118,8 +135,6 @@ const DisplayComments = ({ post, location }) => {
       </VStack>
       {infoPopupDisclosure.isOpen && (
         <InfoPopup
-          setClicked={setClicked}
-          clicked={clicked}
           isOpen={infoPopupDisclosure.isOpen}
           onClose={infoPopupDisclosure.onClose}
           post={post}

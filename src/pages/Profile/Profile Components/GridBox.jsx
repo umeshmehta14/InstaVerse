@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Grid,
   GridItem,
@@ -9,9 +10,10 @@ import {
 } from "@chakra-ui/react";
 
 import { FaComment, AiFillHeart } from "../../../utils/Icons";
-import { useState } from "react";
 
 const GridBox = ({ showingPost }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <Grid
       templateColumns="repeat(3, minmax(104px, 1fr))"
@@ -39,6 +41,9 @@ const GridBox = ({ showingPost }) => {
                 setIsHovered(false);
               }}
               cursor={"pointer"}
+              onClick={() =>
+                navigate(`/post/${_id}`, { state: { from: location } })
+              }
             >
               <AspectRatio ratio={1}>
                 <Image

@@ -17,21 +17,12 @@ import { PostModal } from "../../Post Modal/PostModal";
 import { SET_EDIT_POST } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
 
-const InfoPopup = ({
-  onClose,
-  isOpen,
-  post,
-  setClicked,
-  clicked,
-  fromSinglePost,
-  location,
-}) => {
+const InfoPopup = ({ onClose, isOpen, post, fromSinglePost, location }) => {
   const { colorMode } = useColorMode();
   const unfollowModalDisclosure = useDisclosure();
   const postModalDisclosure = useDisclosure();
 
   const navigate = useNavigate();
-  console.log(location);
 
   const { currentUser } = useAuth();
   const {
@@ -89,7 +80,6 @@ const InfoPopup = ({
                     sx={simpleButton}
                     onClick={() => {
                       handleRemoveBookmark(_id);
-                      setClicked(!clicked);
                       onClose();
                     }}
                   >
