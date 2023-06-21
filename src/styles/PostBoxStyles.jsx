@@ -20,6 +20,7 @@ export const postThreeDot = {
   pr: 0,
   bg: "transparent",
   borderRadius: "40%",
+  _hover: { color: "gray", bg: "transparent" },
 };
 
 export const iconPostStyles = {
