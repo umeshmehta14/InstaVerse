@@ -34,6 +34,7 @@ import { useAuth, useUser } from "../../../contexts";
 import { AiOutlinePicture, SlTrash } from "../../../utils/Icons";
 import { editFormInput, editFormLabel } from "../../../styles/ProfileStyles";
 import { simpleButton } from "../../../styles/PostBoxStyles";
+import { inputLengthReader } from "../../../styles/GlobalStyles";
 
 const EditProfileModal = ({ isOpen, onClose }) => {
   const { currentUser } = useAuth();
@@ -184,10 +185,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   value={bio}
                 />
                 <Text
-                  pos={"absolute"}
-                  bottom={"-1rem"}
-                  right={"0.5rem"}
-                  fontSize={"0.7rem"}
+                  {...inputLengthReader}
                   color={bio?.length >= 145 ? "red" : ""}
                 >{`${bio?.length || 0}/150`}</Text>
               </FormControl>

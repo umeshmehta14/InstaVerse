@@ -39,3 +39,10 @@ export const commentInput = {
     border: "none",
   },
 };
+
+export const inputLengthReader = {
+  pos: "absolute",
+  bottom: "-1rem",
+  right: "0.5rem",
+  fontSize: "0.7rem",
+};
