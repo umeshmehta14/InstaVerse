@@ -13,3 +13,20 @@ export const followedByUser = {
   px: "1rem",
   pb: "0.5rem",
 };
+
+export const emojiPickerButton = {
+  fontSize: "1.8rem",
+  cursor: "pointer",
+  ml: "2",
+};
+
+export const commentInput = {
+  border: "none",
+  flex: "1",
+  mr: "2",
+  _focus: {
+    outline: "none",
+    boxShadow: "none",
+    border: "none",
+  },
+};

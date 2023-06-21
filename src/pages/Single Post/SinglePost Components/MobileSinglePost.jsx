@@ -4,6 +4,10 @@ import { Box, HStack, Text, VStack, useColorMode } from "@chakra-ui/react";
 import { AiOutlineArrowLeft } from "../../../utils/Icons";
 import { PostBox } from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  mobilePostMainBoxStyle,
+  mobileSinglePostHeading,
+} from "../../../styles/SinglePostStyle";
 
 const MobileSinglePost = ({ post }) => {
   const { colorMode } = useColorMode();
@@ -11,21 +15,12 @@ const MobileSinglePost = ({ post }) => {
   const location = useLocation();
   return (
     <VStack
-      h="92vh"
-      zIndex="5"
-      pos="fixed"
-      top="0"
       bg={colorMode === "dark" ? "black.700" : "white.500"}
-      align={"flex-start"}
-      gap={"1rem"}
+      {...mobilePostMainBoxStyle}
     >
       <HStack
-        p="0.5rem"
-        align={"center"}
-        gap={"1rem"}
-        display={{ base: "flex", md: "none" }}
         bg={colorMode === "dark" ? "black.900" : "white.500"}
-        w={"100%"}
+        {...mobileSinglePostHeading}
       >
         <Box
           as={AiOutlineArrowLeft}

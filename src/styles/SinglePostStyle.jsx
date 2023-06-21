@@ -42,3 +42,48 @@ export const mobileFooterStyle = {
   bottom: 0,
   width: "100%",
 };
+
+export const addCommentMainBox = {
+  py: "1",
+  borderTop: "1px solid gray",
+  alignItems: "center",
+  w: "100%",
+};
+
+export const mobilePostMainBoxStyle = {
+  h: "92vh",
+  zIndex: "5",
+  pos: "fixed",
+  top: "0",
+  align: "flex-start",
+  gap: "1rem",
+};
+
+export const mobileSinglePostHeading = {
+  p: "0.5rem",
+  align: "center",
+  gap: "1rem",
+  display: { base: "flex", md: "none" },
+  w: "100%",
+};
+
+export const displayCommentMainBox = {
+  flexDir: "column",
+  p: "0.5rem",
+  align: "flex-start",
+  gap: "1rem",
+  w: "100%",
+  maxH: { base: "none", md: "275px" },
+  minH: { base: "none", md: "275px" },
+  overflow: "auto",
+  mb: { base: "3rem", md: "0" },
+};
+
+export const commentFooterInputMain = {
+  py: "1",
+  borderTop: "1px solid gray",
+  borderBottom: "1px solid gray",
+  alignItems: "center",
+  display: { base: "none", md: "flex" },
+  w: "100%",
+};

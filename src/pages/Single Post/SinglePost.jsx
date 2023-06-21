@@ -25,6 +25,7 @@ import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../utils/Icons";
 import CommentFooter from "./SinglePost Components/CommentFooter";
 import MobileSinglePost from "./SinglePost Components/MobileSinglePost";
 import {
+  addCommentMainBox,
   commentSectionMain,
   mediaPostBox,
   mobileCommentHeading,
@@ -32,6 +33,7 @@ import {
   modalContentStyle,
   singlePostModalClose,
 } from "../../styles/SinglePostStyle";
+import { commentInput, emojiPickerButton } from "../../styles/GlobalStyles";
 
 export const SinglePost = () => {
   const { postId } = useParams();
@@ -135,32 +137,17 @@ export const SinglePost = () => {
               bg={colorMode === "dark" ? "black.900" : "white.500"}
               {...mobileFooterStyle}
             >
-              <Flex
-                py="1"
-                borderTop="1px solid gray"
-                alignItems={"center"}
-                w={"100%"}
-              >
+              <Flex {...addCommentMainBox}>
                 <Box
                   as={BsEmojiSunglasses}
-                  fontSize={"1.8rem"}
-                  cursor="pointer"
-                  ml="2"
                   title="Emoji"
+                  {...emojiPickerButton}
                 />
-
                 <Input
                   placeholder="Add a comment..."
                   value={commentValue}
                   onChange={(e) => setCommentValue(e.target.value)}
-                  border={"none"}
-                  flex="1"
-                  mr="2"
-                  _focus={{
-                    outline: "none",
-                    boxShadow: "none",
-                    border: "none",
-                  }}
+                  {...commentInput}
                 />
                 <Button
                   fontSize={"1rem"}

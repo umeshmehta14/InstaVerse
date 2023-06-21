@@ -32,6 +32,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getRelativeTime } from "../../../utils/GetRelativeTime";
 import { toast } from "react-hot-toast";
+import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
 
 const PostDetailSection = ({
   onOpen,
@@ -206,22 +207,13 @@ const PostDetailSection = ({
       </Flex>
 
       <Flex py="1" borderTop="1px solid gray" alignItems={"center"}>
-        <Box
-          as={BsEmojiSunglasses}
-          fontSize={"1.8rem"}
-          cursor="pointer"
-          ml="2"
-          title="Emoji"
-        />
+        <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
 
         <Input
           placeholder="Add a comment..."
           value={commentValue}
           onChange={(e) => setCommentValue(e.target.value)}
-          border={"none"}
-          flex="1"
-          mr="2"
-          _focus={{ outline: "none", boxShadow: "none", border: "none" }}
+          {...commentInput}
         />
         <Button
           fontSize={"1rem"}

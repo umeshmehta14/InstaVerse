@@ -16,6 +16,7 @@ import InfoPopup from "../../../components/Post Box/PostBox Components/InfoPopup
 import { useAuth, useUser } from "../../../contexts";
 import { BsThreeDots } from "../../../utils/Icons";
 import { useNavigate } from "react-router-dom";
+import { displayCommentMainBox } from "../../../styles/SinglePostStyle";
 
 const DisplayComments = ({ post, location }) => {
   const { username, avatarURL, comments, createdAt, content } = post;
@@ -91,16 +92,8 @@ const DisplayComments = ({ post, location }) => {
         </Flex>
       </Flex>
       <VStack
-        flexDir={"column"}
-        p="0.5rem"
-        align={"flex-start"}
-        gap={"1rem"}
-        w="100%"
-        maxH={{ base: "none", md: "275px" }}
-        minH={{ base: "none", md: "275px" }}
-        overflow={"auto"}
-        mb={{ base: "3rem", md: "0" }}
         bg={colorMode === "dark" ? "black.900" : "white.500"}
+        {...displayCommentMainBox}
       >
         {comments?.map((comment) => {
           const { avatarURL, text, createdAt, username } = comment;
