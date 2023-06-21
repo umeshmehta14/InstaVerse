@@ -12,6 +12,13 @@ export const userSuggestionMainProfile = {
   display: { base: "none", lg: "flex" },
 };
 
+export const allSuggestedProfileBox = {
+  flexDir: { base: "row", lg: "column" },
+  w: { base: "100vw", md: "auto" },
+  overflow: "auto",
+  maxW: "100%",
+};
+
 export const userSuggestionAllProfileBox = {
   p: "3",
   align: "center",
