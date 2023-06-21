@@ -117,6 +117,10 @@ const DisplayComments = ({ post, location }) => {
                 </Flex>
                 <Text
                   fontWeight={0}
+                  width={"100%"}
+                  overflowWrap="break-word"
+                  whiteSpace="normal"
+                  wordBreak="break-all"
                   color={colorMode === "dark" ? "#d7d7d7" : "black"}
                 >
                   {text}

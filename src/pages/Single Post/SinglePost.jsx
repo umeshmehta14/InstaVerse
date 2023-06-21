@@ -116,7 +116,7 @@ export const SinglePost = () => {
                       onClick={() =>
                         navigate(
                           location?.pathname === redirectLocation
-                            ? `/profile/${profileUser.username}`
+                            ? `/profile/${profileUser?.username}`
                             : redirectLocation
                         )
                       }
