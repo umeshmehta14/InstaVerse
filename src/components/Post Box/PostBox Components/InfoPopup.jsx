@@ -60,7 +60,10 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
                 <Button
                   sx={simpleButton}
                   color={"red"}
-                  onClick={() => handleDeletePost(_id)}
+                  onClick={() => {
+                    handleDeletePost(_id);
+                    onClose();
+                  }}
                 >
                   Delete
                 </Button>
