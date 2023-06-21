@@ -16,7 +16,10 @@ import InfoPopup from "../../../components/Post Box/PostBox Components/InfoPopup
 import { useAuth, useUser } from "../../../contexts";
 import { BsThreeDots } from "../../../utils/Icons";
 import { useNavigate } from "react-router-dom";
-import { displayCommentMainBox } from "../../../styles/SinglePostStyle";
+import {
+  commentTextStyle,
+  displayCommentMainBox,
+} from "../../../styles/SinglePostStyle";
 
 const DisplayComments = ({ post, location }) => {
   const { username, avatarURL, comments, createdAt, content } = post;
@@ -116,11 +119,7 @@ const DisplayComments = ({ post, location }) => {
                   </Text>
                 </Flex>
                 <Text
-                  fontWeight={0}
-                  width={"100%"}
-                  overflowWrap="break-word"
-                  whiteSpace="normal"
-                  wordBreak="break-all"
+                  {...commentTextStyle}
                   color={colorMode === "dark" ? "#d7d7d7" : "black"}
                 >
                   {text}

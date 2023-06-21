@@ -79,6 +79,14 @@ export const displayCommentMainBox = {
   mb: { base: "3rem", md: "0" },
 };
 
+export const commentTextStyle = {
+  fontWeight: 0,
+  width: "100%",
+  overflowWrap: "break-word",
+  whiteSpace: "normal",
+  wordBreak: "break-all",
+};
+
 export const commentFooterInputMain = {
   py: "1",
   borderTop: "1px solid gray",
