@@ -31,7 +31,6 @@ import { useAuth, usePost, useUser } from "../../../contexts";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getRelativeTime } from "../../../utils/GetRelativeTime";
-import { toast } from "react-hot-toast";
 import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
 
 const PostDetailSection = ({
@@ -196,11 +195,19 @@ const PostDetailSection = ({
           )}
         </Flex>
 
-        <Flex>
-          <Text fontSize={"sm"} color={"#717171e0"} cursor={"pointer"}>
-            View All Comments
-          </Text>
-        </Flex>
+        <Text
+          fontSize={"sm"}
+          color={"#717171e0"}
+          cursor={"pointer"}
+          onClick={() =>
+            navigate(`/post/${_id}`, { state: { from: location } })
+          }
+        >
+          {comments?.length > 0 &&
+            `View ${comments.length > 1 ? "all" : ""} ${
+              comments.length
+            }  comment${comments.length > 1 ? "s" : ""}`}
+        </Text>
         <Text fontSize="xs" color={"#717171e0"}>
           {getRelativeTime(createdAt)}
         </Text>
