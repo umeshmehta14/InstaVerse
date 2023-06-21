@@ -14,11 +14,11 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import { userList } from "../../../styles/SuggestionBoxStyle";
-import { useAuth, useUser } from "../../../contexts";
-import { VscPassFilled } from "../../../utils/Icons";
+import { userList } from "../../styles/SuggestionBoxStyle";
+import { useAuth, useUser } from "../../contexts";
+import { VscPassFilled } from "../../utils/Icons";
 
-const SwitchAccountModal = ({ onClose, isOpen }) => {
+export const SwitchAccountModal = ({ onClose, isOpen }) => {
   const { logoutHandler, handleGuestLogin, currentUser } = useAuth();
   const { colorMode } = useColorMode();
 
@@ -80,5 +80,3 @@ const SwitchAccountModal = ({ onClose, isOpen }) => {
     </Modal>
   );
 };
-
-export default SwitchAccountModal;

@@ -21,6 +21,8 @@ import {
   desktopLogoStyles,
   sidebarLogoBoxStyles,
   navlinkStyle,
+  sideBarLogoMain,
+  navPopOverMain,
 } from "../../../styles/NavbarStyles";
 import {
   MdHome,
@@ -37,7 +39,7 @@ import {
 import { useAuth, useUser } from "../../../contexts";
 import SearchBox from "./SearchBox";
 import { SET_DEFAULT_TAB } from "../../../utils/Constants";
-import SwitchAccountModal from "../../User Suggestion/UserSuggestion Components/SwitchAccountModal";
+import { SwitchAccountModal } from "../../index";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -58,13 +60,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             <FaInstalod />
           </Text>
 
-          <Text
-            fontFamily={"Pacifico, cursive"}
-            fontSize={"1.5rem"}
-            display={{ base: "none", lg: "flex" }}
-            pl="0.5rem"
-            onClick={() => navigate("/")}
-          >
+          <Text {...sideBarLogoMain} onClick={() => navigate("/")}>
             InstaVerse
           </Text>
         </HStack>
@@ -174,14 +170,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
         </Flex>
       </Flex>
 
-      <Flex
-        display={{ base: "none", md: "flex" }}
-        w={{ md: "100%", lg: "90%" }}
-        mx={"auto"}
-        mt={"7rem"}
-        justify={"center"}
-        className="nav-item"
-      >
+      <Flex {...navPopOverMain}>
         <Popover>
           <PopoverTrigger>
             <HStack

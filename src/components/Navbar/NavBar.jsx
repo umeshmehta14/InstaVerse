@@ -20,7 +20,7 @@ import {
   AiOutlineDown,
 } from "../../utils/Icons";
 import { useAuth, useUser } from "../../contexts";
-import SwitchAccountModal from "../User Suggestion/UserSuggestion Components/SwitchAccountModal";
+import { SwitchAccountModal } from "../index";
 
 export const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
