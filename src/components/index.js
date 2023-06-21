@@ -6,3 +6,4 @@ export { UserListModal } from "./UserListModal/UserListModal.jsx";
 export { NavBar } from "./Navbar/NavBar.jsx";
 export { UnfollowModal } from "./Unfollow Modal/UnfollowModal.jsx";
 export { RotatingLoader } from "./Loader/RotatingLoader.jsx";
+export { SwitchAccountModal } from "./SwitchAccount Modal/SwitchAccountModal.jsx";

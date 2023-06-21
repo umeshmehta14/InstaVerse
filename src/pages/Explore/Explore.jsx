@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Flex, VStack } from "@chakra-ui/react";
 
 import { PostBox, UserSuggestion } from "../../components";
-import { Flex, VStack } from "@chakra-ui/react";
 import { usePost, useUser } from "../../contexts";
-import { useEffect } from "react";
 import { heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
 import { SET_DEFAULT_TAB, SET_FILTER } from "../../utils/Constants";

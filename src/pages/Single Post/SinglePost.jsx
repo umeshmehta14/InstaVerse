@@ -24,6 +24,16 @@ import DisplayComments from "./SinglePost Components/DisplayComments";
 import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../utils/Icons";
 import CommentFooter from "./SinglePost Components/CommentFooter";
 import MobileSinglePost from "./SinglePost Components/MobileSinglePost";
+import {
+  addCommentMainBox,
+  commentSectionMain,
+  mediaPostBox,
+  mobileCommentHeading,
+  mobileFooterStyle,
+  modalContentStyle,
+  singlePostModalClose,
+} from "../../styles/SinglePostStyle";
+import { commentInput, emojiPickerButton } from "../../styles/GlobalStyles";
 
 export const SinglePost = () => {
   const { postId } = useParams();
@@ -81,28 +91,16 @@ export const SinglePost = () => {
           <ModalOverlay />
           <ModalContent
             bg={colorMode === "dark" ? "black.900" : "white.500"}
-            p={0}
-            maxW={"896px !important"}
-            w={"100%"}
-            maxH={{ base: "auto", md: "750px" }}
+            {...modalContentStyle}
           >
             <ModalCloseButton
-              display={{ base: "none", md: "flex" }}
               color={colorMode === "dark" ? "white" : "black"}
-              _hover={{ bg: "red" }}
-              pos={"absolute"}
-              right={"0"}
-              top={"-3rem"}
+              {...singlePostModalClose}
               onClick={() => navigate(redirectLocation)}
             />
             <ModalBody p={0} height={"100%"}>
               <HStack align={"flex-start"} height={"600px"}>
-                <Flex
-                  display={{ base: "none", md: "flex" }}
-                  height={"100%"}
-                  flex={1}
-                  alignItems={"center"}
-                >
+                <Flex {...mediaPostBox}>
                   <Image
                     src={mediaUrl}
                     fallbackSrc="https://tse4.mm.bing.net/th?id=OIP.y0vjVCLBEYW5ANsy2YHhGgHaCe&pid=Api&P=0&h=180"
@@ -110,25 +108,15 @@ export const SinglePost = () => {
                     height={"100%"}
                   />
                 </Flex>
-                <Flex
-                  flexDir={"column"}
-                  gap={"0.5rem"}
-                  width={"100%"}
-                  maxW={"400px"}
-                >
-                  <HStack
-                    p="0.5rem"
-                    align={"center"}
-                    gap={"1rem"}
-                    display={{ base: "flex", md: "none" }}
-                  >
+                <Flex {...commentSectionMain}>
+                  <HStack {...mobileCommentHeading}>
                     <Box
                       as={AiOutlineArrowLeft}
                       fontSize={"1.8rem"}
                       onClick={() =>
                         navigate(
                           location?.pathname === redirectLocation
-                            ? `/profile/${profileUser.username}`
+                            ? `/profile/${profileUser?.username}`
                             : redirectLocation
                         )
                       }
@@ -146,40 +134,20 @@ export const SinglePost = () => {
               </HStack>
             </ModalBody>
             <ModalFooter
-              p="0"
-              justifyContent={"flex-start"}
-              display={{ base: "flex", md: "none" }}
               bg={colorMode === "dark" ? "black.900" : "white.500"}
-              pos={"fixed"}
-              bottom={0}
-              width={"100%"}
+              {...mobileFooterStyle}
             >
-              <Flex
-                py="1"
-                borderTop="1px solid gray"
-                alignItems={"center"}
-                w={"100%"}
-              >
+              <Flex {...addCommentMainBox}>
                 <Box
                   as={BsEmojiSunglasses}
-                  fontSize={"1.8rem"}
-                  cursor="pointer"
-                  ml="2"
                   title="Emoji"
+                  {...emojiPickerButton}
                 />
-
                 <Input
                   placeholder="Add a comment..."
                   value={commentValue}
                   onChange={(e) => setCommentValue(e.target.value)}
-                  border={"none"}
-                  flex="1"
-                  mr="2"
-                  _focus={{
-                    outline: "none",
-                    boxShadow: "none",
-                    border: "none",
-                  }}
+                  {...commentInput}
                 />
                 <Button
                   fontSize={"1rem"}

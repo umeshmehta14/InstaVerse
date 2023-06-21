@@ -30,6 +30,8 @@ import {
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
 import { UserListModal } from "../../../components";
+import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
+import { commentFooterInputMain } from "../../../styles/SinglePostStyle";
 
 const CommentFooter = ({ post }) => {
   const { colorMode } = useColorMode();
@@ -147,34 +149,16 @@ const CommentFooter = ({ post }) => {
         )}
       </Flex>
       <Flex
-        py="1"
-        borderTop="1px solid gray"
-        borderBottom="1px solid gray"
-        alignItems="center"
-        display={{ base: "none", md: "flex" }}
-        w="100%"
         bg={colorMode === "dark" ? "black.900" : "white.500"}
+        {...commentFooterInputMain}
       >
-        <Box
-          as={BsEmojiSunglasses}
-          fontSize="1.8rem"
-          cursor="pointer"
-          ml="2"
-          title="Emoji"
-        />
+        <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
 
         <Input
           placeholder="Add a comment..."
           value={commentValue}
           onChange={(e) => setCommentValue(e.target.value)}
-          border={"none"}
-          flex="1"
-          mr="2"
-          _focus={{
-            outline: "none",
-            boxShadow: "none",
-            border: "none",
-          }}
+          {...commentInput}
         />
         <Button
           fontSize={"1rem"}

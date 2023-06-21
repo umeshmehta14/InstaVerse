@@ -4,7 +4,7 @@ import { Flex, Text, VStack } from "@chakra-ui/react";
 import { PostBox, UserSuggestion } from "../../components";
 import { useAuth, usePost, useUser } from "../../contexts";
 import { useLocation, useNavigate } from "react-router-dom";
-import { heroContentBox } from "../../styles/GlobalStyles";
+import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
 import { SET_DEFAULT_TAB } from "../../utils/Constants";
 
@@ -39,14 +39,7 @@ export const Home = () => {
     <Flex sx={heroContentBox}>
       <UserSuggestion />
       {displayedPosts?.length === 0 ? (
-        <Flex
-          justifyContent={"center"}
-          h="70%"
-          textAlign={"center"}
-          align={"center"}
-          fontSize={"2xl"}
-          gap={"0.5rem"}
-        >
+        <Flex {...emptyMessageStyle}>
           <Text>No posts yet. You can go</Text>{" "}
           <Text
             onClick={() => navigate("/explore")}

@@ -58,10 +58,26 @@ export const sidebarLogoBoxStyles = {
   justifyContent: { base: "space-between", lg: "flex-start" },
 };
 
+export const sideBarLogoMain = {
+  fontFamily: "Pacifico, cursive",
+  fontSize: "1.5rem",
+  display: { base: "none", lg: "flex" },
+  pl: "0.5rem",
+};
+
 export const navlinkStyle = {
   width: { lg: "100%" },
   borderRadius: { lg: "30px" },
   padding: { lg: "6px" },
   cursor: "pointer",
   columnGap: "0.8rem",
+};
+
+export const navPopOverMain = {
+  display: { base: "none", md: "flex" },
+  w: { md: "100%", lg: "90%" },
+  mx: "auto",
+  mt: "7rem",
+  justify: "center",
+  className: "nav-item",
 };

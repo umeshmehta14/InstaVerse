@@ -31,7 +31,7 @@ import { useAuth, usePost, useUser } from "../../../contexts";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getRelativeTime } from "../../../utils/GetRelativeTime";
-import { toast } from "react-hot-toast";
+import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
 
 const PostDetailSection = ({
   onOpen,
@@ -195,33 +195,32 @@ const PostDetailSection = ({
           )}
         </Flex>
 
-        <Flex>
-          <Text fontSize={"sm"} color={"#717171e0"} cursor={"pointer"}>
-            View All Comments
-          </Text>
-        </Flex>
+        <Text
+          fontSize={"sm"}
+          color={"#717171e0"}
+          cursor={"pointer"}
+          onClick={() =>
+            navigate(`/post/${_id}`, { state: { from: location } })
+          }
+        >
+          {comments?.length > 0 &&
+            `View ${comments.length > 1 ? "all" : ""} ${
+              comments.length
+            }  comment${comments.length > 1 ? "s" : ""}`}
+        </Text>
         <Text fontSize="xs" color={"#717171e0"}>
           {getRelativeTime(createdAt)}
         </Text>
       </Flex>
 
       <Flex py="1" borderTop="1px solid gray" alignItems={"center"}>
-        <Box
-          as={BsEmojiSunglasses}
-          fontSize={"1.8rem"}
-          cursor="pointer"
-          ml="2"
-          title="Emoji"
-        />
+        <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
 
         <Input
           placeholder="Add a comment..."
           value={commentValue}
           onChange={(e) => setCommentValue(e.target.value)}
-          border={"none"}
-          flex="1"
-          mr="2"
-          _focus={{ outline: "none", boxShadow: "none", border: "none" }}
+          {...commentInput}
         />
         <Button
           fontSize={"1rem"}

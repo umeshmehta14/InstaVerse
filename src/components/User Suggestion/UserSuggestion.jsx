@@ -20,7 +20,7 @@ import {
   userSuggestionContainer,
   userSuggestionMainProfile,
 } from "../../styles/UserSuggestionStyles";
-import SwitchAccountModal from "./UserSuggestion Components/SwitchAccountModal";
+import { SwitchAccountModal } from "../index";
 import UserSuggestionMain from "./UserSuggestion Components/UserSuggestionMain";
 import { SET_FILTER } from "../../utils/Constants";
 import { LuFilter } from "../../utils/Icons";

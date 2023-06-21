@@ -3,7 +3,10 @@ import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth, useUser } from "../../../contexts";
-import { userSuggestionAllProfileBox } from "../../../styles/UserSuggestionStyles";
+import {
+  allSuggestedProfileBox,
+  userSuggestionAllProfileBox,
+} from "../../../styles/UserSuggestionStyles";
 import { getMutualFollowers } from "../../../utils/MutualFollowers";
 
 const UserSuggestionMain = () => {
@@ -33,12 +36,7 @@ const UserSuggestionMain = () => {
             </Text>
           </Flex>
 
-          <Flex
-            flexDir={{ base: "row", lg: "column" }}
-            w={{ base: "100vw", md: "auto" }}
-            overflow={"auto"}
-            maxW={"100%"}
-          >
+          <Flex {...allSuggestedProfileBox}>
             {suggestedUser?.map(({ _id, username, avatarURL, followers }) => {
               const mutualFollowers = getMutualFollowers(
                 followers,

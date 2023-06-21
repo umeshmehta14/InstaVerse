@@ -87,6 +87,28 @@ export const mobileUserLength = {
   display: { base: "flex", md: "none" },
 };
 
+export const profileImageStyle = {
+  objectFit: "fill",
+  h: "100%",
+  w: "100%",
+  maxW: "293px",
+  maxH: "293px",
+};
+
+export const profileHoverStyle = {
+  pos: "absolute",
+  top: "0",
+  justifyContent: "center",
+  w: "100%",
+  alignItems: "center",
+  height: "100%",
+  bg: "#00000069",
+  gap: "3rem",
+  color: "white",
+  maxW: "293px",
+  maxH: "293px",
+};
+
 export const editFormInput = {
   border: "none",
   borderRadius: "0",

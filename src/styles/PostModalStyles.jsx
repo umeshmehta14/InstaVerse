@@ -7,3 +7,10 @@ export const postTextarea = {
   placeholder: "Write a caption...",
   maxLength: 2200,
 };
+
+export const imageCrossButton = {
+  position: "absolute",
+  fontSize: "1.5rem",
+  right: "3rem",
+  cursor: "pointer",
+};

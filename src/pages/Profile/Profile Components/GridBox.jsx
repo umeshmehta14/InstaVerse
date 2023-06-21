@@ -10,6 +10,10 @@ import {
 } from "@chakra-ui/react";
 
 import { FaComment, AiFillHeart } from "../../../utils/Icons";
+import {
+  profileHoverStyle,
+  profileImageStyle,
+} from "../../../styles/ProfileStyles";
 
 const GridBox = ({ showingPost }) => {
   const navigate = useNavigate();
@@ -25,6 +29,7 @@ const GridBox = ({ showingPost }) => {
           mediaUrl,
           _id,
           comments,
+          username,
           likes: { likedBy },
         } = post;
         const [isHovered, setIsHovered] = useState(false);
@@ -45,30 +50,9 @@ const GridBox = ({ showingPost }) => {
             }
           >
             <AspectRatio ratio={1}>
-              <Image
-                src={mediaUrl}
-                alt="Post"
-                objectFit="fill"
-                h={"100%"}
-                w={"100%"}
-                maxW={"293px"}
-                maxH={"293px"}
-              />
+              <Image src={mediaUrl} alt={username} {...profileImageStyle} />
             </AspectRatio>
-            <Flex
-              display={isHovered ? "flex" : "none"}
-              pos={"absolute"}
-              top="0"
-              justifyContent="center"
-              w="100%"
-              alignItems="center"
-              height="100%"
-              bg={"#00000069"}
-              gap={"3rem"}
-              color={"white"}
-              maxW={"293px"}
-              maxH={"293px"}
-            >
+            <Flex display={isHovered ? "flex" : "none"} {...profileHoverStyle}>
               <Flex align={"center"} gap={"2"}>
                 <Box as={FaComment} fontSize={"1.5rem"} />
                 {comments?.length}

@@ -19,9 +19,10 @@ import { toast } from "react-hot-toast";
 
 import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
 import { usePost } from "../../contexts";
-import { postTextarea } from "../../styles/PostModalStyles";
+import { imageCrossButton, postTextarea } from "../../styles/PostModalStyles";
 import { useEffect } from "react";
 import { SET_EDIT_POST } from "../../utils/Constants";
+import { inputLengthReader } from "../../styles/GlobalStyles";
 
 export const PostModal = ({ isOpen, onClose, edit }) => {
   const { colorMode } = useColorMode();
@@ -110,10 +111,7 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                 value={postValue.content}
               />
               <Text
-                pos={"absolute"}
-                bottom={"-1rem"}
-                right={"0.5rem"}
-                fontSize={"0.7rem"}
+                {...inputLengthReader}
                 color={postValue?.content?.length >= 2190 ? "red" : ""}
               >{`${postValue?.content?.length || 0}/2200`}</Text>
             </Flex>
@@ -122,10 +120,7 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                 <Img src={postValue?.mediaUrl} alt="Selected" width="200px" />
                 <Box
                   as={RxCross2}
-                  position={"absolute"}
-                  fontSize={"1.5rem"}
-                  right={"3rem"}
-                  cursor={"pointer"}
+                  {...imageCrossButton}
                   title="Remove"
                   onClick={() => setPostValue({ ...postValue, mediaUrl: "" })}
                 />

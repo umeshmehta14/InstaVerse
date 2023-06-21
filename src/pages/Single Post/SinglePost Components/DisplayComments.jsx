@@ -4,6 +4,10 @@ import {
   Box,
   Button,
   Flex,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
   Text,
   VStack,
   useColorMode,
@@ -14,8 +18,12 @@ import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
 import { getRelativeTime } from "../../../utils/GetRelativeTime";
 import InfoPopup from "../../../components/Post Box/PostBox Components/InfoPopup";
 import { useAuth, useUser } from "../../../contexts";
-import { BsThreeDots } from "../../../utils/Icons";
 import { useNavigate } from "react-router-dom";
+import {
+  commentTextStyle,
+  displayCommentMainBox,
+} from "../../../styles/SinglePostStyle";
+import { BsThreeDots } from "../../../utils/Icons";
 
 const DisplayComments = ({ post, location }) => {
   const { username, avatarURL, comments, createdAt, content } = post;
@@ -57,11 +65,7 @@ const DisplayComments = ({ post, location }) => {
             </Button>
           )}
         </Flex>
-        <Button
-          {...postThreeDot}
-          _hover={{ color: "gray", bg: "transparent" }}
-          onClick={infoPopupDisclosure.onOpen}
-        >
+        <Button {...postThreeDot} onClick={infoPopupDisclosure.onOpen}>
           <Box as={BsThreeDots} cursor={"pointer"} />
         </Button>
       </Flex>
@@ -91,16 +95,8 @@ const DisplayComments = ({ post, location }) => {
         </Flex>
       </Flex>
       <VStack
-        flexDir={"column"}
-        p="0.5rem"
-        align={"flex-start"}
-        gap={"1rem"}
-        w="100%"
-        maxH={{ base: "none", md: "275px" }}
-        minH={{ base: "none", md: "275px" }}
-        overflow={"auto"}
-        mb={{ base: "3rem", md: "0" }}
         bg={colorMode === "dark" ? "black.900" : "white.500"}
+        {...displayCommentMainBox}
       >
         {comments?.map((comment) => {
           const { avatarURL, text, createdAt, username } = comment;
@@ -121,9 +117,12 @@ const DisplayComments = ({ post, location }) => {
                   <Text fontSize="sm" color={"#717171e0"}>
                     {getRelativeTime(createdAt)}
                   </Text>
+                  {currentUser.username === username && (
+                    <Box as={BsThreeDots} />
+                  )}
                 </Flex>
                 <Text
-                  fontWeight={0}
+                  {...commentTextStyle}
                   color={colorMode === "dark" ? "#d7d7d7" : "black"}
                 >
                   {text}
@@ -142,6 +141,12 @@ const DisplayComments = ({ post, location }) => {
           location={location}
         />
       )}
+      <Modal onClose={onClose} size={size} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>hello</ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
