@@ -8,6 +8,15 @@ export const heroContentBox = {
   mb: { base: "4rem", md: "0.4rem" },
 };
 
+export const emptyMessageStyle = {
+  justifyContent: "center",
+  h: "70%",
+  textAlign: "center",
+  align: "center",
+  fontSize: "2xl",
+  gap: "0.5rem",
+};
+
 export const followedByUser = {
   color: "gray",
   px: "1rem",
