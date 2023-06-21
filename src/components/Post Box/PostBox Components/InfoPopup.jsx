@@ -15,9 +15,24 @@ import { UnfollowModal } from "../../index";
 import { useAuth, usePost, useUser } from "../../../contexts";
 import { PostModal } from "../../Post Modal/PostModal";
 import { SET_EDIT_POST } from "../../../utils/Constants";
+import { useNavigate } from "react-router-dom";
 
-const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
+const InfoPopup = ({
+  onClose,
+  isOpen,
+  post,
+  setClicked,
+  clicked,
+  fromSinglePost,
+  location,
+}) => {
   const { colorMode } = useColorMode();
+  const unfollowModalDisclosure = useDisclosure();
+  const postModalDisclosure = useDisclosure();
+
+  const navigate = useNavigate();
+  console.log(location);
+
   const { currentUser } = useAuth();
   const {
     userState: { userBookmarks },
@@ -25,9 +40,6 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
     handleRemoveBookmark,
     handleFollow,
   } = useUser();
-  const unfollowModalDisclosure = useDisclosure();
-  const postModalDisclosure = useDisclosure();
-
   const { _id, username } = post;
   const { handleDeletePost, postDispatch } = usePost();
 
@@ -62,6 +74,7 @@ const InfoPopup = ({ onClose, isOpen, post, setClicked, clicked }) => {
                   color={"red"}
                   onClick={() => {
                     handleDeletePost(_id);
+                    fromSinglePost ? navigate(location) : "";
                     onClose();
                   }}
                 >

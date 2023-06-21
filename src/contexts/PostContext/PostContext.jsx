@@ -145,6 +145,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      postDispatch({ type: SET_SINGLE_POST, payload: {} });
     }
   };
 
