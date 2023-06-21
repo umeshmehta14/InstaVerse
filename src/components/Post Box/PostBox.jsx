@@ -100,11 +100,7 @@ export const PostBox = ({ post }) => {
             </Button>
           )}
         </Flex>
-        <Button
-          {...postThreeDot}
-          _hover={{ color: "gray", bg: "transparent" }}
-          onClick={infoPopupDisclosure.onOpen}
-        >
+        <Button {...postThreeDot} onClick={infoPopupDisclosure.onOpen}>
           <Box as={BsThreeDots} cursor={"pointer"} />
         </Button>
       </Flex>
