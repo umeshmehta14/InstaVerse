@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  Divider,
   Flex,
   Modal,
   ModalBody,
@@ -14,7 +15,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
+import {
+  postNavStyles,
+  postThreeDot,
+  simpleButton,
+} from "../../../styles/PostBoxStyles";
 import { getRelativeTime } from "../../../utils/GetRelativeTime";
 import InfoPopup from "../../../components/Post Box/PostBox Components/InfoPopup";
 import { useAuth, useUser } from "../../../contexts";
@@ -31,6 +36,7 @@ const DisplayComments = ({ post, location }) => {
   const navigate = useNavigate();
 
   const infoPopupDisclosure = useDisclosure();
+  const commentDeleteDisclosure = useDisclosure();
   const { colorMode } = useColorMode();
 
   const { currentUser } = useAuth();
@@ -118,7 +124,10 @@ const DisplayComments = ({ post, location }) => {
                     {getRelativeTime(createdAt)}
                   </Text>
                   {currentUser.username === username && (
-                    <Box as={BsThreeDots} />
+                    <Box
+                      as={BsThreeDots}
+                      onClick={commentDeleteDisclosure.onOpen}
+                    />
                   )}
                 </Flex>
                 <Text
@@ -141,12 +150,27 @@ const DisplayComments = ({ post, location }) => {
           location={location}
         />
       )}
-      <Modal onClose={onClose} size={size} isOpen={isOpen}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody>hello</ModalBody>
-        </ModalContent>
-      </Modal>
+      {commentDeleteDisclosure.isOpen && (
+        <Modal
+          onClose={commentDeleteDisclosure.onClose}
+          size={"xs"}
+          isOpen={commentDeleteDisclosure.isOpen}
+        >
+          <ModalOverlay />
+          <ModalContent
+            bg={colorMode === "dark" ? "black.700" : "white.500"}
+            mt={"20rem"}
+          >
+            <ModalBody>
+              <Button sx={simpleButton} color={"red.500"}>
+                Delete
+              </Button>
+              <Divider />
+              <Button sx={simpleButton}>Cancel</Button>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      )}
     </>
   );
 };
