@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Button,
+  Divider,
   Flex,
   HStack,
   Input,
@@ -66,7 +67,8 @@ const CommentFooter = ({ post }) => {
   };
   return (
     <>
-      <Flex {...iconPostStyles}>
+      <Divider display={{ base: "none", md: "flex" }} />
+      <Flex {...iconPostStyles} display={{ base: "none", md: "flex" }}>
         <Flex
           fontSize={"1.7rem"}
           color={colorMode === "light" ? "black" : "white"}
@@ -149,8 +151,8 @@ const CommentFooter = ({ post }) => {
         borderTop="1px solid gray"
         borderBottom="1px solid gray"
         alignItems="center"
-        w="100%"
         display={{ base: "none", md: "flex" }}
+        w="100%"
         bg={colorMode === "dark" ? "black.900" : "white.500"}
       >
         <Box
