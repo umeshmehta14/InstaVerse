@@ -30,6 +30,11 @@ import {
 } from "../../utils/Icons";
 import ProfileDetail from "./Profile Components/ProfileDetail";
 import { PostModal } from "../../components";
+import {
+  emptyCameraStyles,
+  profileMainBox,
+  tabListStyle,
+} from "../../styles/ProfileStyles";
 
 export const Profile = () => {
   const paramUser = useParams();
@@ -74,14 +79,7 @@ export const Profile = () => {
   }, [paramUser.username, currentUser, posts]);
 
   return progress === 100 ? (
-    <Flex
-      direction="column"
-      w="100%"
-      p={{ base: 0, md: "1rem" }}
-      maxW={"975px"}
-      margin={"0 auto"}
-      mb={{ base: "4.2rem", md: "0.4rem" }}
-    >
+    <Flex {...profileMainBox}>
       <ProfileDetail
         selectedUser={selectedUser}
         currentUserCheck={currentUserCheck}
@@ -89,13 +87,7 @@ export const Profile = () => {
       />
       <Divider />
       <Tabs isLazy defaultIndex={defaultTab} w={"100%"}>
-        <TabList
-          justifyContent={"center"}
-          w={{ base: "100%", md: "70%" }}
-          maxW={"483px"}
-          m="auto"
-          border={"none"}
-        >
+        <TabList {...tabListStyle}>
           <Tab flexGrow={1} colorScheme="blue" gap={2}>
             <Box as={MdGridOn} fontSize={"1.7rem"} />
             <Text display={{ base: "none", md: "block" }}>Posts</Text>
@@ -117,14 +109,7 @@ export const Profile = () => {
           <TabPanel p="0">
             {userAllPost?.length === 0 ? (
               <VStack justifyContent="center" height="300px" gap={"4"}>
-                <Box
-                  as={CiCamera}
-                  color={"gray"}
-                  fontSize="7rem"
-                  border={"1px solid gray"}
-                  borderRadius="50%"
-                  p="1rem"
-                />
+                <Box as={CiCamera} {...emptyCameraStyles} />
                 <Heading>Share photos</Heading>
                 <Text textAlign={"center"}>
                   When you share photos, they will appear on your profile.

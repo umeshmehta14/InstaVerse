@@ -21,6 +21,16 @@ import { followedByUser } from "../../../styles/GlobalStyles";
 import { getMutualFollowers } from "../../../utils/MutualFollowers";
 import EditProfileModal from "./EditProfileModal";
 import { FiLogOut } from "../../../utils/Icons";
+import {
+  mobileBioStyle,
+  mobileUserLength,
+  pcBioStyle,
+  profileButtonMain,
+  profileDetailMain,
+  profileFollowedByStyle,
+  profileUsernameStyle,
+  userPostLengthStyle,
+} from "../../../styles/ProfileStyles";
 
 const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,6 +60,10 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
     !currentUserCheck &&
     currentUser.following.find((user) => user.username === username);
 
+  const checkFollowing = currentUser.followers.find(
+    (user) => user.username === username
+  );
+
   const handleFollowUser = async (username, unfollow) => {
     setLoadingUsers((prevLoadingUsers) => [...prevLoadingUsers, username]);
     if (unfollow) {
@@ -66,37 +80,17 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
 
   return (
     <>
-      <Flex
-        alignItems="center"
-        width="100%"
-        gap={{ base: "1rem", md: "4rem" }}
-        p="1rem"
-        ml={{ base: 0, lg: "5rem" }}
-        pb={{ lg: "0" }}
-      >
+      <Flex {...profileDetailMain}>
         <Avatar size={{ base: "xl", md: "2xl" }} src={avatarURL} />
-        <Flex
-          flexDir={{ base: "column", md: "row" }}
-          gap={"0.5rem"}
-          flexWrap="wrap"
-          maxW="613px"
-          padding={"1rem"}
-        >
-          <Flex
-            fontSize="2xl"
-            fontWeight="bold"
-            mb={{ base: 2, md: 0 }}
-            align={"center"}
-            gap={"4"}
-            width={{ base: "auto", md: "40%" }}
-          >
+        <Flex {...profileButtonMain}>
+          <Flex {...profileUsernameStyle}>
             <Text>{username}</Text>
             {currentUserCheck && (
               <Box
                 as={FiLogOut}
                 fontSize={"1.4rem"}
-                onClick={logoutHandler}
                 cursor={"pointer"}
+                onClick={logoutHandler}
                 title="Logout"
               />
             )}
@@ -117,7 +111,13 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
                   title="Follow"
                   onClick={() => handleFollowUser(username)}
                 >
-                  {isLoading ? <RotatingLoader /> : "Follow"}
+                  {isLoading ? (
+                    <RotatingLoader />
+                  ) : checkFollowing ? (
+                    "Follow Back"
+                  ) : (
+                    "Follow"
+                  )}
                 </Button>
               ))}
             {currentUserCheck && (
@@ -135,12 +135,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
             )}
           </Flex>
           <Flex flexDir={"column"} display={{ base: "none", md: "flex" }}>
-            <HStack
-              w="100%"
-              maxW={"400px"}
-              justifyContent="space-between"
-              p={"0.5rem 0"}
-            >
+            <HStack {...userPostLengthStyle}>
               <Text>{userAllPost?.length} posts</Text>
               <Text
                 cursor={"pointer"}
@@ -161,7 +156,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
                 {following?.length} following
               </Text>
             </HStack>
-            <Flex flexDir="column" w="100%" gap="0.4rem" pt={0} minW={"300px"}>
+            <Flex {...pcBioStyle}>
               <Text>{` ${firstName} ${lastName}`}</Text>
               <Text>{bio}</Text>
               <Text color={"blue.200"}>
@@ -171,10 +166,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
             {!currentUserCheck && (
               <Flex
                 sx={followedByUser}
-                fontSize={"sm"}
-                cursor={"pointer"}
-                p="0.5rem 0rem!important"
-                display={{ base: "none", md: "flex" }}
+                {...profileFollowedByStyle}
                 onClick={onOpen}
               >
                 {mutualFollowers && mutualFollowers?.length > 0 && (
@@ -195,14 +187,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
         </Flex>
       </Flex>
 
-      <Flex
-        flexDir="column"
-        w="100%"
-        display={{ base: "flex", md: "none" }}
-        gap="0.1rem"
-        p={"0.5rem 1rem"}
-        pt={0}
-      >
+      <Flex {...mobileBioStyle}>
         <Text>{` ${firstName} ${lastName}`}</Text>
         <Text>{bio}</Text>
         <Text color={"blue.200"}>
@@ -237,12 +222,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
       )}
 
       <Divider />
-      <HStack
-        w="100%"
-        justifyContent="space-around"
-        p="1rem"
-        display={{ base: "flex", md: "none" }}
-      >
+      <HStack {...mobileUserLength}>
         <Text>{userAllPost?.length} posts</Text>
         <Text
           cursor={"pointer"}

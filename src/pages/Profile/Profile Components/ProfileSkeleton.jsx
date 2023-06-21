@@ -11,9 +11,9 @@ const ProfileSkeleton = () => {
 
   return (
     <Box
+      bg={colorMode === "dark" ? "black.900" : "white.500"}
       padding="6"
       boxShadow="lg"
-      bg={colorMode === "dark" ? "black.900" : "white.500"}
       w={"100%"}
       h={"100vh"}
     >
