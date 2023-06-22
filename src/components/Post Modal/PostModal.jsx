@@ -11,11 +11,17 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   Text,
   Textarea,
   useColorMode,
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
 import { usePost } from "../../contexts";
@@ -127,7 +133,11 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
               </Flex>
             )}
           </ModalBody>
-          <ModalFooter display={"flex"} justifyContent={"space-between"}>
+          <ModalFooter
+            display={"flex"}
+            justifyContent={"space-between"}
+            pos={"relative"}
+          >
             <Flex justify="flex-start" gap={"1rem"}>
               <label htmlFor="photo-upload">
                 <input
@@ -143,12 +153,35 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                   title="Add Photo"
                 />
               </label>
-              <BsEmojiSunglasses
-                fontSize={"1.8rem"}
-                cursor="pointer"
-                title="Emoji"
-              />
+
+              <Popover>
+                <PopoverTrigger>
+                  <Box
+                    as={BsEmojiSunglasses}
+                    fontSize={"1.8rem"}
+                    cursor="pointer"
+                    title="Emoji"
+                  />
+                </PopoverTrigger>
+                <PopoverContent top={"4rem"} bg={"transparent"}>
+                  <PopoverBody p={0}>
+                    <Picker
+                      data={data}
+                      onEmojiSelect={(emoji) =>
+                        setPostValue({
+                          ...postValue,
+                          content: postValue.content + emoji.native,
+                        })
+                      }
+                      theme={colorMode}
+                      title="Pick an Emoji"
+                      emoji=""
+                    />
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
             </Flex>
+
             <Button
               variant={"link-button"}
               onClick={handlePost}
