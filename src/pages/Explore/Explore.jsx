@@ -5,12 +5,12 @@ import { PostBox, UserSuggestion } from "../../components";
 import { usePost, useUser } from "../../contexts";
 import { heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
-import { SET_DEFAULT_TAB, SET_FILTER } from "../../utils/Constants";
+import { SET_DEFAULT_TAB, SET_FILTER, SET_PAGE } from "../../utils/Constants";
 
 export const Explore = () => {
   const {
     postDispatch,
-    postState: { posts, filter },
+    postState: { posts, filter, page },
   } = usePost();
   const { userDispatch } = useUser();
 
@@ -18,8 +18,8 @@ export const Explore = () => {
 
   useEffect(() => {
     postDispatch({ type: SET_FILTER, payload: "latest" });
+    postDispatch({ type: SET_PAGE, payload: 1 });
     userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
-
     window.scrollTo({ top: 0 });
   }, []);
 

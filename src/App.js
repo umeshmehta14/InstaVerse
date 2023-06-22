@@ -36,7 +36,7 @@ function App() {
               path={"/explore"}
               element={
                 <PrivateRoute>
-                  <Explore />
+                  <Home />
                 </PrivateRoute>
               }
             />

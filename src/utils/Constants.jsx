@@ -11,3 +11,4 @@ export const SET_DEFAULT_TAB = "DEFAULT_TAB";
 export const SET_EDIT_USER_POST = "SET_EDIT_USER_POST";
 export const SET_EDIT_POST = "SET_EDIT_POST";
 export const SET_SINGLE_POST = "SET_SINGLE_POST";
+export const SET_PAGE = "SET_PAGE";

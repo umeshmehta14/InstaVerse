@@ -6,11 +6,12 @@ import { useAuth, usePost, useUser } from "../../contexts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
-import { SET_DEFAULT_TAB } from "../../utils/Constants";
+import { SET_DEFAULT_TAB, SET_FILTER, SET_PAGE } from "../../utils/Constants";
 
 export const Home = () => {
   const {
-    postState: { posts, filter },
+    postState: { posts, filter, page },
+    postDispatch,
   } = usePost();
   const { userDispatch } = useUser();
   const { currentUser } = useAuth();
@@ -18,26 +19,26 @@ export const Home = () => {
   const location = useLocation();
 
   const bottomRef = useRef(null);
-  const [page, setPage] = useState(1);
   const [isPostLoading, setIsPostLoading] = useState(false);
 
-  const homePagePosts = posts?.filter(
-    ({ username }) =>
-      currentUser.username === username ||
-      currentUser.following?.some(
-        (followingUser) => followingUser.username === username
-      )
-  );
-  const displayedPosts = postFilter(homePagePosts, filter).slice(0, page * 5);
-  console.log(homePagePosts);
-  console.log(page);
-  console.log(displayedPosts);
+  const allPost =
+    location?.pathname === "/explore"
+      ? posts
+      : posts?.filter(
+          ({ username }) =>
+            currentUser.username === username ||
+            currentUser.following?.some(
+              (followingUser) => followingUser.username === username
+            )
+        );
+
+  const displayedPosts = postFilter(allPost, filter).slice(0, page * 10);
 
   const handleObserver = (entries) => {
     const entry = entries[0];
     if (entry.isIntersecting) {
       setIsPostLoading(true);
-      setPage((prevPage) => prevPage + 1);
+      postDispatch({ type: SET_PAGE, payload: page + 1 });
     }
   };
 
@@ -70,7 +71,9 @@ export const Home = () => {
     } else {
       window.scrollTo({ top: 0 });
     }
-    // setPage(1);
+    if (location?.pathname === "/explore") {
+      postDispatch({ type: SET_FILTER, payload: "latest" });
+    }
     userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
   }, [location?.pathname, userDispatch]);
 
@@ -104,12 +107,12 @@ export const Home = () => {
                   <div ref={bottomRef} style={{ height: 0 }} />
                 )}
                 {index === displayedPosts?.length - 1 &&
-                  displayedPosts?.length === homePagePosts?.length &&
-                  isPostLoading && <RotatingLoader w={"50"} sw={"9"} />}
+                  displayedPosts?.length === allPost?.length &&
+                  isPostLoading && <RotatingLoader w={"50"} sw={"7"} />}
               </React.Fragment>
             );
           })}
-          {displayedPosts?.length === homePagePosts?.length && (
+          {displayedPosts?.length === allPost?.length && (
             <Alert
               status="info"
               variant="subtle"

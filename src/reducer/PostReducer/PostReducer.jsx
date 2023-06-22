@@ -5,6 +5,7 @@ import {
   SET_EDIT_USER_POST,
   SET_EDIT_POST,
   SET_SINGLE_POST,
+  SET_PAGE,
 } from "../../utils/Constants";
 
 export const PostReducer = (postState, { payload, type }) => {
@@ -40,6 +41,9 @@ export const PostReducer = (postState, { payload, type }) => {
 
     case SET_SINGLE_POST:
       return { ...postState, singlePost: payload };
+
+    case SET_PAGE:
+      return { ...postState, page: payload };
 
     default:
       break;

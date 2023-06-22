@@ -4,4 +4,5 @@ export const PostInitialState = {
   userAllPost: [],
   editPost: { content: "", mediaUrl: "" },
   singlePost: {},
+  page: 1,
 };
