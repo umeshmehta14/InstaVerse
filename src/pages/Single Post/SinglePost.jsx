@@ -13,11 +13,17 @@ import {
   ModalContent,
   ModalFooter,
   ModalOverlay,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   Text,
   useColorMode,
   useDisclosure,
   useMediaQuery,
 } from "@chakra-ui/react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 import { usePost, useUser } from "../../contexts";
 import DisplayComments from "./SinglePost Components/DisplayComments";
@@ -131,11 +137,28 @@ export const SinglePost = () => {
               {...mobileFooterStyle}
             >
               <Flex {...addCommentMainBox}>
-                <Box
-                  as={BsEmojiSunglasses}
-                  title="Emoji"
-                  {...emojiPickerButton}
-                />
+                <Popover>
+                  <PopoverTrigger>
+                    <Box
+                      as={BsEmojiSunglasses}
+                      {...emojiPickerButton}
+                      title="Emoji"
+                    />
+                  </PopoverTrigger>
+                  <PopoverContent bottom={"27rem"} bg={"transparent"}>
+                    <PopoverBody p={0}>
+                      <Picker
+                        data={data}
+                        onEmojiSelect={(emoji) =>
+                          setCommentValue(commentValue + emoji.native)
+                        }
+                        theme={colorMode}
+                        title="Pick an Emoji"
+                        emoji=""
+                      />
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
                 <Input
                   placeholder="Add a comment..."
                   value={commentValue}

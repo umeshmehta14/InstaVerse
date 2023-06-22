@@ -8,10 +8,16 @@ import {
   Flex,
   HStack,
   Input,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   Text,
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 import { useAuth, usePost, useUser } from "../../../contexts";
 import {
@@ -152,7 +158,24 @@ const CommentFooter = ({ post }) => {
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...commentFooterInputMain}
       >
-        <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
+        <Popover>
+          <PopoverTrigger>
+            <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
+          </PopoverTrigger>
+          <PopoverContent bottom={"27rem"} bg={"transparent"}>
+            <PopoverBody p={0}>
+              <Picker
+                data={data}
+                onEmojiSelect={(emoji) =>
+                  setCommentValue(commentValue + emoji.native)
+                }
+                theme={colorMode}
+                title="Pick an Emoji"
+                emoji=""
+              />
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
 
         <Input
           placeholder="Add a comment..."

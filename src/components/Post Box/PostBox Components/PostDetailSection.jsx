@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -6,10 +7,19 @@ import {
   Flex,
   HStack,
   Input,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
+import { useAuth, usePost, useUser } from "../../../contexts";
+import { getRelativeTime } from "../../../utils/GetRelativeTime";
+import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
 import {
   IconHoverStyle,
   friendLikeUserStyle,
@@ -27,11 +37,6 @@ import {
   FaRegBookmark,
   BsEmojiSunglasses,
 } from "../../../utils/Icons";
-import { useAuth, usePost, useUser } from "../../../contexts";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getRelativeTime } from "../../../utils/GetRelativeTime";
-import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
 
 const PostDetailSection = ({
   onOpen,
@@ -213,8 +218,30 @@ const PostDetailSection = ({
         </Text>
       </Flex>
 
-      <Flex py="1" borderTop="1px solid gray" alignItems={"center"}>
-        <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
+      <Flex
+        py="1"
+        borderTop="1px solid gray"
+        alignItems={"center"}
+        pos={"relative"}
+      >
+        <Popover>
+          <PopoverTrigger>
+            <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
+          </PopoverTrigger>
+          <PopoverContent top={"4rem"} bg={"transparent"}>
+            <PopoverBody p={0}>
+              <Picker
+                data={data}
+                onEmojiSelect={(emoji) =>
+                  setCommentValue(commentValue + emoji.native)
+                }
+                theme={colorMode}
+                title="Pick an Emoji"
+                emoji=""
+              />
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
 
         <Input
           placeholder="Add a comment..."
