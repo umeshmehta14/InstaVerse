@@ -102,6 +102,15 @@ export const PostBox = ({ post }) => {
         </Flex>
         <Button {...postThreeDot} onClick={infoPopupDisclosure.onOpen}>
           <Box as={BsThreeDots} cursor={"pointer"} />
+          {infoPopupDisclosure.isOpen && (
+            <InfoPopup
+              setClicked={setClicked}
+              clicked={clicked}
+              isOpen={infoPopupDisclosure.isOpen}
+              onClose={infoPopupDisclosure.onClose}
+              post={post}
+            />
+          )}
         </Button>
       </Flex>
 
@@ -135,6 +144,7 @@ export const PostBox = ({ post }) => {
           </ScaleFade>
         )}
       </Box>
+
       <PostDetailSection
         onOpen={onOpen}
         bookmarked={bookmarked}
@@ -142,19 +152,13 @@ export const PostBox = ({ post }) => {
         setClicked={setClicked}
         clicked={clicked}
       />
-      <UserListModal
-        onClose={onClose}
-        isOpen={isOpen}
-        users={likedBy}
-        heading={"Liked By"}
-      />
-      {infoPopupDisclosure.isOpen && (
-        <InfoPopup
-          setClicked={setClicked}
-          clicked={clicked}
-          isOpen={infoPopupDisclosure.isOpen}
-          onClose={infoPopupDisclosure.onClose}
-          post={post}
+
+      {isOpen && (
+        <UserListModal
+          onClose={onClose}
+          isOpen={isOpen}
+          users={likedBy}
+          heading={"Liked By"}
         />
       )}
     </Box>

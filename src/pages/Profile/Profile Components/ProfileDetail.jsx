@@ -103,7 +103,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
                   title="Unfollow"
                   onClick={unfollowModalDisclosure.onOpen}
                 >
-                  {isLoading ? <RotatingLoader /> : "Unfollow"}
+                  {isLoading ? <RotatingLoader w="20" sw={"7"} /> : "Unfollow"}
                 </Button>
               ) : (
                 <Button
@@ -112,7 +112,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
                   onClick={() => handleFollowUser(username)}
                 >
                   {isLoading ? (
-                    <RotatingLoader />
+                    <RotatingLoader w="20" sw={"7"} />
                   ) : checkFollowing ? (
                     "Follow Back"
                   ) : (
@@ -243,22 +243,28 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
           {following?.length} following
         </Text>
       </HStack>
-      <UserListModal
-        onClose={onClose}
-        isOpen={isOpen}
-        users={userList === "followers" ? followers : following}
-        heading={userList === "followers" ? "Followers" : "Following"}
-      />
-      <EditProfileModal
-        isOpen={editModalDisclosure.isOpen}
-        onClose={editModalDisclosure.onClose}
-      />
-      <UnfollowModal
-        isOpen={unfollowModalDisclosure.isOpen}
-        onClose={unfollowModalDisclosure.onClose}
-        {...selectedUser}
-        handleFollowUser={handleFollowUser}
-      />
+      {isOpen && (
+        <UserListModal
+          onClose={onClose}
+          isOpen={isOpen}
+          users={userList === "followers" ? followers : following}
+          heading={userList === "followers" ? "Followers" : "Following"}
+        />
+      )}
+      {editModalDisclosure.isOpen && (
+        <EditProfileModal
+          isOpen={editModalDisclosure.isOpen}
+          onClose={editModalDisclosure.onClose}
+        />
+      )}
+      {unfollowModalDisclosure.isOpen && (
+        <UnfollowModal
+          isOpen={unfollowModalDisclosure.isOpen}
+          onClose={unfollowModalDisclosure.onClose}
+          {...selectedUser}
+          handleFollowUser={handleFollowUser}
+        />
+      )}
     </>
   );
 };

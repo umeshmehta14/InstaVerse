@@ -104,14 +104,22 @@ export const UserListModal = ({ onClose, isOpen, users, heading }) => {
                         });
                       }}
                     >
-                      {isLoading ? <RotatingLoader /> : "Following"}
+                      {isLoading ? (
+                        <RotatingLoader w={"20"} sw={"7"} />
+                      ) : (
+                        "Following"
+                      )}
                     </Button>
                   ) : (
                     <Button
                       variant={"follow-button"}
                       onClick={() => handleFollowUser(username)}
                     >
-                      {isLoading ? <RotatingLoader /> : "Follow"}
+                      {isLoading ? (
+                        <RotatingLoader w={"20"} sw={"7"} />
+                      ) : (
+                        "Follow"
+                      )}
                     </Button>
                   )}
                 </Flex>
@@ -120,12 +128,14 @@ export const UserListModal = ({ onClose, isOpen, users, heading }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <UnfollowModal
-        {...unfollowUser}
-        handleFollowUser={handleFollowUser}
-        isOpen={unfollowDisclosure.isOpen}
-        onClose={unfollowDisclosure.onClose}
-      />
+      {unfollowDisclosure.isOpen && (
+        <UnfollowModal
+          {...unfollowUser}
+          handleFollowUser={handleFollowUser}
+          isOpen={unfollowDisclosure.isOpen}
+          onClose={unfollowDisclosure.onClose}
+        />
+      )}
     </>
   );
 };

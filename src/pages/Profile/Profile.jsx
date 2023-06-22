@@ -168,10 +168,12 @@ export const Profile = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <PostModal
-        isOpen={postModalDisclosure.isOpen}
-        onClose={postModalDisclosure.onClose}
-      />
+      {postModalDisclosure.isOpen && (
+        <PostModal
+          isOpen={postModalDisclosure.isOpen}
+          onClose={postModalDisclosure.onClose}
+        />
+      )}
     </Flex>
   ) : (
     <ProfileSkeleton />

@@ -216,43 +216,45 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <AlertDialog
-        motionPreset="slideInBottom"
-        leastDestructiveRef={cancelRef}
-        onClose={discardDisclosure.onClose}
-        isOpen={discardDisclosure.isOpen}
-        isCentered
-      >
-        <AlertDialogOverlay />
-
-        <AlertDialogContent
-          bg={colorMode === "dark" ? "black.600" : "white.500"}
-          w={"350px"}
+      {discardDisclosure.isOpen && (
+        <AlertDialog
+          motionPreset="slideInBottom"
+          leastDestructiveRef={cancelRef}
+          onClose={discardDisclosure.onClose}
+          isOpen={discardDisclosure.isOpen}
+          isCentered
         >
-          <AlertDialogHeader pb={0} textAlign={"center"}>
-            Discard Changes?
-          </AlertDialogHeader>
-          <AlertDialogBody>
-            <Text color={"gray"} textAlign={"center"} pb={"1rem"}>
-              If you leave, your edits won't be saved.
-            </Text>
-            <Button
-              sx={simpleButton}
-              color={"red.500"}
-              onClick={() => {
-                discardDisclosure.onClose();
-                onClose();
-              }}
-            >
-              Discard
-            </Button>
-            <Divider />
-            <Button sx={simpleButton} onClick={discardDisclosure.onClose}>
-              Cancel
-            </Button>
-          </AlertDialogBody>
-        </AlertDialogContent>
-      </AlertDialog>
+          <AlertDialogOverlay />
+
+          <AlertDialogContent
+            bg={colorMode === "dark" ? "black.600" : "white.500"}
+            w={"350px"}
+          >
+            <AlertDialogHeader pb={0} textAlign={"center"}>
+              Discard Changes?
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              <Text color={"gray"} textAlign={"center"} pb={"1rem"}>
+                If you leave, your edits won't be saved.
+              </Text>
+              <Button
+                sx={simpleButton}
+                color={"red.500"}
+                onClick={() => {
+                  discardDisclosure.onClose();
+                  onClose();
+                }}
+              >
+                Discard
+              </Button>
+              <Divider />
+              <Button sx={simpleButton} onClick={discardDisclosure.onClose}>
+                Cancel
+              </Button>
+            </AlertDialogBody>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </>
   );
 };

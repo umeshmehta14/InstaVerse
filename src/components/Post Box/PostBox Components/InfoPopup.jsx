@@ -136,17 +136,21 @@ const InfoPopup = ({ onClose, isOpen, post, fromSinglePost, location }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <UnfollowModal
-        {...post}
-        isOpen={unfollowModalDisclosure.isOpen}
-        onClose={unfollowModalDisclosure.onClose}
-        fromInfoPop={true}
-      />
-      <PostModal
-        isOpen={postModalDisclosure.isOpen}
-        onClose={postModalDisclosure.onClose}
-        edit={true}
-      />
+      {unfollowModalDisclosure.isOpen && (
+        <UnfollowModal
+          {...post}
+          isOpen={unfollowModalDisclosure.isOpen}
+          onClose={unfollowModalDisclosure.onClose}
+          fromInfoPop={true}
+        />
+      )}
+      {postModalDisclosure.isOpen && (
+        <PostModal
+          isOpen={postModalDisclosure.isOpen}
+          onClose={postModalDisclosure.onClose}
+          edit={true}
+        />
+      )}
     </>
   );
 };

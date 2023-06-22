@@ -223,18 +223,24 @@ const SideBar = ({ searchDrawerDisclosure }) => {
         </Popover>
       </Flex>
 
-      <PostModal
-        onClose={postModalDisclosure.onClose}
-        isOpen={postModalDisclosure.isOpen}
-      />
-      <SearchBox
-        isOpen={searchDrawerDisclosure.isOpen}
-        onClose={searchDrawerDisclosure.onClose}
-      />
-      <SwitchAccountModal
-        isOpen={SwitchUserDisclosure.isOpen}
-        onClose={SwitchUserDisclosure.onClose}
-      />
+      {postModalDisclosure.isOpen && (
+        <PostModal
+          onClose={postModalDisclosure.onClose}
+          isOpen={postModalDisclosure.isOpen}
+        />
+      )}
+      {searchDrawerDisclosure.isOpen && (
+        <SearchBox
+          isOpen={searchDrawerDisclosure.isOpen}
+          onClose={searchDrawerDisclosure.onClose}
+        />
+      )}
+      {SwitchUserDisclosure.isOpen && (
+        <SwitchAccountModal
+          isOpen={SwitchUserDisclosure.isOpen}
+          onClose={SwitchUserDisclosure.onClose}
+        />
+      )}
     </Flex>
   );
 };

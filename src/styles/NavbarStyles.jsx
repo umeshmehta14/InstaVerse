@@ -21,6 +21,7 @@ export const sidebarStyle = {
   maxW: { lg: "240px" },
   top: { base: "auto", md: "0" },
   py: { base: "0", md: "0.5rem" },
+  pb: { md: "3.5rem" },
   zIndex: 1,
   borderTop: { base: "1px solid gray", md: "none" },
   borderRight: { base: "none", md: "1px solid gray" },
@@ -77,7 +78,7 @@ export const navPopOverMain = {
   display: { base: "none", md: "flex" },
   w: { md: "100%", lg: "90%" },
   mx: "auto",
-  mt: "7rem",
+  mt: "4rem",
   justify: "center",
   className: "nav-item",
 };

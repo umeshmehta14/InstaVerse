@@ -228,7 +228,7 @@ const PostDetailSection = ({
           <PopoverTrigger>
             <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
           </PopoverTrigger>
-          <PopoverContent top={"4rem"} bg={"transparent"}>
+          <PopoverContent bottom={"27rem"} bg={"transparent"}>
             <PopoverBody p={0}>
               <Picker
                 data={data}

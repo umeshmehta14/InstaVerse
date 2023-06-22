@@ -100,14 +100,18 @@ export const NavBar = () => {
         </HStack>
       </Flex>
       <SideBar searchDrawerDisclosure={searchDrawerDisclosure} />
-      <SearchBox
-        isOpen={searchDrawerDisclosure.isOpen}
-        onClose={searchDrawerDisclosure.onClose}
-      />
-      <SwitchAccountModal
-        onClose={switchUserDisclosure.onClose}
-        isOpen={switchUserDisclosure.isOpen}
-      />
+      {searchDrawerDisclosure.isOpen && (
+        <SearchBox
+          isOpen={searchDrawerDisclosure.isOpen}
+          onClose={searchDrawerDisclosure.onClose}
+        />
+      )}
+      {switchUserDisclosure.isOpen && (
+        <SwitchAccountModal
+          onClose={switchUserDisclosure.onClose}
+          isOpen={switchUserDisclosure.isOpen}
+        />
+      )}
     </>
   );
 };

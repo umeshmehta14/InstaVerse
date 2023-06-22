@@ -1,13 +1,13 @@
 import React from "react";
 import { RotatingLines } from "react-loader-spinner";
 
-export const RotatingLoader = () => {
+export const RotatingLoader = ({ w, sw }) => {
   return (
     <RotatingLines
       strokeColor="grey"
-      strokeWidth="7"
+      strokeWidth={sw}
       animationDuration="0.75"
-      width="20"
+      width={w}
       visible={true}
     />
   );
