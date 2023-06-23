@@ -8,7 +8,7 @@ import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
 import { SET_DEFAULT_TAB, SET_FILTER, SET_PAGE } from "../../utils/Constants";
 
-export const Home = () => {
+export const PostFeed = () => {
   const {
     postState: { posts, filter, page },
     postDispatch,
@@ -32,13 +32,15 @@ export const Home = () => {
             )
         );
 
-  const displayedPosts = postFilter(allPost, filter).slice(0, page * 10);
+  const displayedPosts = postFilter(allPost, filter).slice(0, page * 5);
 
   const handleObserver = (entries) => {
     const entry = entries[0];
     if (entry.isIntersecting) {
       setIsPostLoading(true);
       postDispatch({ type: SET_PAGE, payload: page + 1 });
+    } else {
+      setIsPostLoading(false);
     }
   };
 
@@ -50,7 +52,7 @@ export const Home = () => {
     return () => {
       observer.unobserve(elementRef);
     };
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     let timeoutId;
@@ -64,12 +66,13 @@ export const Home = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [isPostLoading]);
+  }, [isPostLoading, displayedPosts]);
 
   useEffect(() => {
     if (location?.pathname.includes("/post/")) {
     } else {
       window.scrollTo({ top: 0 });
+      postDispatch({ type: SET_PAGE, payload: 1 });
     }
     if (location?.pathname === "/explore") {
       postDispatch({ type: SET_FILTER, payload: "latest" });
@@ -103,15 +106,15 @@ export const Home = () => {
             return (
               <React.Fragment key={post?._id}>
                 <PostBox post={post} />
-                {index === displayedPosts.length - 1 && (
+                {index === displayedPosts?.length - 1 && (
                   <div ref={bottomRef} style={{ height: 0 }} />
                 )}
-                {index === displayedPosts?.length - 1 &&
-                  displayedPosts?.length === allPost?.length &&
-                  isPostLoading && <RotatingLoader w={"50"} sw={"7"} />}
               </React.Fragment>
             );
           })}
+
+          {displayedPosts?.length === allPost?.length ||
+            (isPostLoading && <RotatingLoader w={"50"} sw={"7"} />)}
           {displayedPosts?.length === allPost?.length && (
             <Alert
               status="info"

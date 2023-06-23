@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useAuth, usePost } from "./contexts";
 import { NavBar, PrivateRoute } from "./components";
-import { Explore, Home, Login, Profile, SignUp, SinglePost } from "./pages";
+import { PostFeed, Login, Profile, SignUp, SinglePost } from "./pages";
 import LoadingBar from "react-top-loading-bar";
 import { Toaster } from "react-hot-toast";
 
@@ -28,7 +28,7 @@ function App() {
               path={"/"}
               element={
                 <PrivateRoute>
-                  <Home />
+                  <PostFeed />
                 </PrivateRoute>
               }
             />
@@ -36,7 +36,7 @@ function App() {
               path={"/explore"}
               element={
                 <PrivateRoute>
-                  <Home />
+                  <PostFeed />
                 </PrivateRoute>
               }
             />
