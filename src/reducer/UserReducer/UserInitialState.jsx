@@ -10,4 +10,16 @@ export const UserInitialState = {
     avatarURL: "",
   },
   loadingUsers: [],
+  loginForm: {
+    username: "",
+    password: "",
+  },
+  showPassword: false,
+  signupForm: {
+    fistName: "",
+    lastName: "",
+    username: "",
+    password: "",
+    Cpassword: "",
+  },
 };

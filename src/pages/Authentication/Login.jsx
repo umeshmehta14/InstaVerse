@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -26,24 +26,19 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth, useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
+import { SET_LOGIN_FORM, SET_SHOW_PASSWORD } from "../../utils/Constants";
 
 export const Login = () => {
   document.title = "InstaVerse | Login";
+
   const { colorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    userState: { users },
+    userState: { users, loginForm, showPassword },
+    userDispatch,
   } = useUser();
   const { loginHandler, token, handleGuestLogin } = useAuth();
   const navigate = useNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [loginForm, setLoginForm] = useState({
-    username: "",
-    password: "",
-  });
-
-
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -57,13 +52,8 @@ export const Login = () => {
   }, [token]);
 
   return (
-    <Flex
-      {...mainAuthContainer}
-    >
-      <Box
-        {...authBox}
-        bg={colorMode === "light" ? "white.500" : "black.900"}
-      >
+    <Flex {...mainAuthContainer}>
+      <Box {...authBox} bg={colorMode === "light" ? "white.500" : "black.900"}>
         <Heading
           fontFamily={"Pacifico, cursive"}
           title="InstaVerse"
@@ -82,7 +72,10 @@ export const Login = () => {
               value={loginForm.username}
               required
               onChange={(event) =>
-                setLoginForm({ ...loginForm, username: event.target.value })
+                userDispatch({
+                  type: SET_LOGIN_FORM,
+                  payload: { ...loginForm, username: event.target.value },
+                })
               }
             />
           </FormControl>
@@ -95,14 +88,17 @@ export const Login = () => {
                 value={loginForm.password}
                 required
                 onChange={(event) =>
-                  setLoginForm({ ...loginForm, password: event.target.value })
+                  userDispatch({
+                    type: SET_LOGIN_FORM,
+                    payload: { ...loginForm, password: event.target.value },
+                  })
                 }
               />
               {loginForm.password && (
                 <InputRightElement
                   cursor={"pointer"}
                   fontSize={"sm"}
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => userDispatch({ type: SET_SHOW_PASSWORD })}
                 >
                   {showPassword ? "Hide" : "Show"}
                 </InputRightElement>

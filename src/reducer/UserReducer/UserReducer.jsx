@@ -5,8 +5,11 @@ import {
   SET_EDIT_USER,
   SET_FOLLOW_USER,
   SET_LOADING_USERS,
+  SET_LOGIN_FORM,
   SET_SEARCH_VALUE,
   SET_SELECTED_USER,
+  SET_SHOW_PASSWORD,
+  SET_SIGNUP_FORM,
   SET_UNFOLLOW_USER,
 } from "../../utils/Constants";
 
@@ -68,6 +71,15 @@ export const UserReducer = (
 
     case SET_LOADING_USERS:
       return { ...userState, loadingUsers: payload };
+
+    case SET_LOGIN_FORM:
+      return { ...userState, loginForm: payload };
+
+    case SET_SHOW_PASSWORD:
+      return { ...userState, showPassword: !userState.showPassword };
+
+    case SET_SIGNUP_FORM:
+      return { ...userState, signupForm: payload };
 
     default:
       break;

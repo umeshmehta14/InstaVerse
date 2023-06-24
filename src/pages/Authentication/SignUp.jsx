@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -16,25 +16,22 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts";
+
+import { useAuth, useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 import { toast } from "react-hot-toast";
+import { SET_SHOW_PASSWORD, SET_SIGNUP_FORM } from "../../utils/Constants";
 
 export const SignUp = () => {
   document.title = "InstaVerse | Login";
   const { colorMode } = useColorMode();
 
   const { signUpHandler, token } = useAuth();
+  const {
+    userState: { showPassword, signupForm },
+    userDispatch,
+  } = useUser();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [signupForm, setSignupForm] = useState({
-    fistName: "",
-    lastName: "",
-    username: "",
-    password: "",
-    Cpassword: "",
-  });
 
   const { firstName, lastName, username, password, Cpassword } = signupForm;
 
@@ -79,9 +76,12 @@ export const SignUp = () => {
                 value={firstName}
                 required
                 onChange={(event) =>
-                  setSignupForm({
-                    ...signupForm,
-                    firstName: event.target.value,
+                  userDispatch({
+                    type: SET_SIGNUP_FORM,
+                    payload: {
+                      ...signupForm,
+                      firstName: event.target.value,
+                    },
                   })
                 }
               />
@@ -94,7 +94,10 @@ export const SignUp = () => {
                 value={lastName}
                 required
                 onChange={(event) =>
-                  setSignupForm({ ...signupForm, lastName: event.target.value })
+                  userDispatch({
+                    type: SET_SIGNUP_FORM,
+                    payload: { ...signupForm, lastName: event.target.value },
+                  })
                 }
               />
             </FormControl>
@@ -108,7 +111,10 @@ export const SignUp = () => {
               value={username}
               required
               onChange={(event) =>
-                setSignupForm({ ...signupForm, username: event.target.value })
+                userDispatch({
+                  type: SET_SIGNUP_FORM,
+                  payload: { ...signupForm, username: event.target.value },
+                })
               }
             />
           </FormControl>
@@ -121,14 +127,17 @@ export const SignUp = () => {
                 value={password}
                 required
                 onChange={(event) =>
-                  setSignupForm({ ...signupForm, password: event.target.value })
+                  userDispatch({
+                    type: SET_SIGNUP_FORM,
+                    payload: { ...signupForm, password: event.target.value },
+                  })
                 }
               />
               {password && (
                 <InputRightElement
                   cursor={"pointer"}
                   fontSize={"sm"}
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => userDispatch({ type: SET_SHOW_PASSWORD })}
                 >
                   {showPassword ? "Hide" : "Show"}
                 </InputRightElement>
@@ -144,9 +153,9 @@ export const SignUp = () => {
                 value={Cpassword}
                 required
                 onChange={(event) =>
-                  setSignupForm({
-                    ...signupForm,
-                    Cpassword: event.target.value,
+                  userDispatch({
+                    type: SET_SIGNUP_FORM,
+                    payload: { ...signupForm, Cpassword: event.target.value },
                   })
                 }
               />

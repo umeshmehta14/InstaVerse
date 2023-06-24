@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
         setToken(encodedToken);
       }
     } catch (err) {
-      console.log(err);
+      toast.error(`Invalid Credentials`);
     } finally {
       setProgress(100);
     }
