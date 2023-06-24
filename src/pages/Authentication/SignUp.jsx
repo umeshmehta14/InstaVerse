@@ -13,10 +13,12 @@ import {
   Text,
   useColorMode,
   VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
+import { toast } from "react-hot-toast";
 
 export const SignUp = () => {
   document.title = "InstaVerse | Login";
@@ -31,13 +33,22 @@ export const SignUp = () => {
     lastName: "",
     username: "",
     password: "",
+    Cpassword: "",
   });
 
-  const { firstName, lastName, username, password } = signupForm;
+  const { firstName, lastName, username, password, Cpassword } = signupForm;
 
   const handleSignup = (e) => {
     e.preventDefault();
-    signUpHandler(firstName, lastName, username, password);
+    if (password === Cpassword) {
+      if (password.length < 8) {
+        toast.error("Password Have Atleast 8 Characters");
+      } else {
+        signUpHandler(firstName, lastName, username, password);
+      }
+    } else {
+      toast.error("Password Does'nt Match");
+    }
   };
 
   useEffect(() => {
@@ -59,30 +70,36 @@ export const SignUp = () => {
           InstaVerse
         </Heading>
         <form onSubmit={handleSignup}>
-          <FormControl id="firstname" mb={4}>
-            <FormLabel mb={"1"}>First Name:</FormLabel>
-            <Input
-              type="text"
-              placeholder="Enter first name"
-              value={firstName}
-              required
-              onChange={(event) =>
-                setSignupForm({ ...signupForm, firstName: event.target.value })
-              }
-            />
-          </FormControl>
-          <FormControl id="lastname" mb={4}>
-            <FormLabel mb={"1"}>Last Name:</FormLabel>
-            <Input
-              type="text"
-              placeholder="Enter last name"
-              value={lastName}
-              required
-              onChange={(event) =>
-                setSignupForm({ ...signupForm, lastName: event.target.value })
-              }
-            />
-          </FormControl>
+          <HStack>
+            <FormControl id="firstname" mb={4}>
+              <FormLabel mb={"1"}>First Name:</FormLabel>
+              <Input
+                type="text"
+                placeholder="First name"
+                value={firstName}
+                required
+                onChange={(event) =>
+                  setSignupForm({
+                    ...signupForm,
+                    firstName: event.target.value,
+                  })
+                }
+              />
+            </FormControl>
+            <FormControl id="lastname" mb={4}>
+              <FormLabel mb={"1"}>Last Name:</FormLabel>
+              <Input
+                type="text"
+                placeholder="Last name"
+                value={lastName}
+                required
+                onChange={(event) =>
+                  setSignupForm({ ...signupForm, lastName: event.target.value })
+                }
+              />
+            </FormControl>
+          </HStack>
+
           <FormControl id="username" mb={4}>
             <FormLabel mb={"1"}>User Name:</FormLabel>
             <Input
@@ -116,6 +133,23 @@ export const SignUp = () => {
                   {showPassword ? "Hide" : "Show"}
                 </InputRightElement>
               )}
+            </InputGroup>
+          </FormControl>
+          <FormControl id="c-password" mb={6}>
+            <FormLabel>Confirm Password:</FormLabel>
+            <InputGroup>
+              <Input
+                type={"password"}
+                placeholder="Confirm password"
+                value={Cpassword}
+                required
+                onChange={(event) =>
+                  setSignupForm({
+                    ...signupForm,
+                    Cpassword: event.target.value,
+                  })
+                }
+              />
             </InputGroup>
           </FormControl>
           <VStack justifyContent={"space-between"}>

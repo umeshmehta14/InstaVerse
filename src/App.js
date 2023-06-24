@@ -1,5 +1,11 @@
 import "./App.css";
-import { Box, Flex, VStack, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  VStack,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 
 import { useAuth, usePost } from "./contexts";
@@ -11,12 +17,25 @@ import { Toaster } from "react-hot-toast";
 function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.700");
+  const { colorMode } = useColorMode();
   const { loading } = usePost();
   const { progress } = useAuth();
 
   return (
     <Box color={color} bg={bg} className="App">
-      <Toaster position="top-center" reverseOrder={true} />
+      <Toaster
+        position="top-center"
+        reverseOrder={true}
+        toastOptions={{
+          style:
+            colorMode === "dark"
+              ? {
+                  backgroundColor: "#000",
+                  color: "#fff",
+                }
+              : { backgroundColor: "#fff", color: "#0000" },
+        }}
+      />
       {loading ? (
         <VStack h="100vh" w="100vw" justify={"center"}>
           <RotatingLoader w="50" sw="6" />

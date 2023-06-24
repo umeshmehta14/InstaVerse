@@ -45,13 +45,15 @@ export const PostFeed = () => {
   };
 
   useEffect(() => {
-    const elementRef = bottomRef.current;
-    const observer = new IntersectionObserver(handleObserver);
-    if (elementRef) observer.observe(elementRef);
+    if (displayedPosts.length > 0) {
+      const elementRef = bottomRef?.current;
+      const observer = new IntersectionObserver(handleObserver);
+      if (elementRef) observer?.observe(elementRef);
 
-    return () => {
-      observer.unobserve(elementRef);
-    };
+      return () => {
+        observer?.unobserve(elementRef);
+      };
+    }
   }, [page]);
 
   useEffect(() => {
