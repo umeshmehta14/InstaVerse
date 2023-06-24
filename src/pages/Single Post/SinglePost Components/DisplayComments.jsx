@@ -27,7 +27,7 @@ import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
 import { BsThreeDots } from "../../../utils/Icons";
 import { simpleButton } from "../../../styles/GlobalStyles";
 
-const DisplayComments = ({ post, location }) => {
+export const DisplayComments = ({ post, location }) => {
   const { username, avatarURL, comments, createdAt, content } = post;
 
   const navigate = useNavigate();
@@ -184,5 +184,3 @@ const DisplayComments = ({ post, location }) => {
     </>
   );
 };
-
-export default DisplayComments;

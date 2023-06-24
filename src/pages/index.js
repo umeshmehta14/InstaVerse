@@ -4,6 +4,11 @@ export { SignUp } from "./Authentication/SignUp.jsx";
 export { Profile } from "./Profile/Profile.jsx";
 export { SinglePost } from "./Single Post/SinglePost.jsx";
 export { Error } from "./Error/Error.jsx";
+
+export { CommentFooter } from "./Single Post/SinglePost Components/CommentFooter.jsx";
+export { DisplayComments } from "./Single Post/SinglePost Components/DisplayComments.jsx";
+export { MobileSinglePost } from "./Single Post/SinglePost Components/MobileSinglePost.jsx";
+
 export { AvatarModal } from "./Profile/Profile Components/AvatarModal.jsx";
 export { EditProfileModal } from "./Profile/Profile Components/EditProfileModal.jsx";
 export { GridBox } from "./Profile/Profile Components/GridBox.jsx";

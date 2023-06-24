@@ -39,7 +39,7 @@ import { UserListModal } from "../../../components";
 import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
 import { commentFooterInputMain } from "../../../styles/SinglePostStyle";
 
-const CommentFooter = ({ post }) => {
+export const CommentFooter = ({ post }) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -205,5 +205,3 @@ const CommentFooter = ({ post }) => {
     </>
   );
 };
-
-export default CommentFooter;

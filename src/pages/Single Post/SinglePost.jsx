@@ -26,10 +26,8 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 import { usePost, useUser } from "../../contexts";
-import DisplayComments from "./SinglePost Components/DisplayComments";
 import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../utils/Icons";
-import CommentFooter from "./SinglePost Components/CommentFooter";
-import MobileSinglePost from "./SinglePost Components/MobileSinglePost";
+import { DisplayComments, CommentFooter, MobileSinglePost } from "../index";
 import {
   addCommentMainBox,
   commentSectionMain,

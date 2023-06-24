@@ -1,15 +1,15 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Box, HStack, Text, VStack, useColorMode } from "@chakra-ui/react";
 
-import { AiOutlineArrowLeft } from "../../../utils/Icons";
 import { PostBox } from "../../../components";
-import { useLocation, useNavigate } from "react-router-dom";
 import {
   mobilePostMainBoxStyle,
   mobileSinglePostHeading,
 } from "../../../styles/SinglePostStyle";
+import { AiOutlineArrowLeft } from "../../../utils/Icons";
 
-const MobileSinglePost = ({ post }) => {
+export const MobileSinglePost = ({ post }) => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,5 +33,3 @@ const MobileSinglePost = ({ post }) => {
     </VStack>
   );
 };
-
-export default MobileSinglePost;
