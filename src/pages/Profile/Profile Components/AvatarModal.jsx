@@ -4,6 +4,7 @@ import {
   Flex,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
@@ -36,6 +37,7 @@ const AvatarModal = ({ isOpen, onClose, handleCartoonAvatar }) => {
         bg={colorMode === "dark" ? "black.700" : "white.500"}
       >
         <ModalHeader>Choose Avatar</ModalHeader>
+        <ModalCloseButton />
         <Divider />
         <ModalBody
           p="0"

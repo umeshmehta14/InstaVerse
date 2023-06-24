@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -15,19 +16,18 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
+import { useAuth, usePost, useUser } from "../../../contexts";
+import { getRelativeTime } from "../../../utils/GetRelativeTime";
+import { InfoPopup } from "../../../components/index";
+import {
+  commentTextStyle,
+  displayCommentMainBox,
+} from "../../../styles/SinglePostStyle";
 import {
   postNavStyles,
   postThreeDot,
   simpleButton,
 } from "../../../styles/PostBoxStyles";
-import { getRelativeTime } from "../../../utils/GetRelativeTime";
-import InfoPopup from "../../../components/Post Box/PostBox Components/InfoPopup";
-import { useAuth, usePost, useUser } from "../../../contexts";
-import { useNavigate } from "react-router-dom";
-import {
-  commentTextStyle,
-  displayCommentMainBox,
-} from "../../../styles/SinglePostStyle";
 import { BsThreeDots } from "../../../utils/Icons";
 
 const DisplayComments = ({ post, location }) => {

@@ -12,11 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
 
-import { simpleButton } from "../../../styles/PostBoxStyles";
-import { UnfollowModal } from "../../index";
-import { useAuth, usePost, useUser } from "../../../contexts";
-import { PostModal } from "../../Post Modal/PostModal";
-import { SET_EDIT_POST } from "../../../utils/Constants";
+import { simpleButton } from "../../styles/PostBoxStyles";
+import { UnfollowModal } from "../index";
+import { useAuth, usePost, useUser } from "../../contexts";
+import { PostModal } from "../Post Modal/PostModal";
+import { SET_EDIT_POST } from "../../utils/Constants";
 
 export const InfoPopup = ({
   onClose,
@@ -187,5 +187,3 @@ export const InfoPopup = ({
     </>
   );
 };
-
-export default InfoPopup;

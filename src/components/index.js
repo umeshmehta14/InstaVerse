@@ -7,4 +7,5 @@ export { NavBar } from "./Navbar/NavBar.jsx";
 export { UnfollowModal } from "./Unfollow Modal/UnfollowModal.jsx";
 export { RotatingLoader } from "./Loader/RotatingLoader.jsx";
 export { PostFeedSkeleton } from "./Loader/PostFeedSkeleton.jsx";
+export { InfoPopup } from "./InfoPopup/InfoPopup.jsx";
 export { SwitchAccountModal } from "./SwitchAccount Modal/SwitchAccountModal.jsx";

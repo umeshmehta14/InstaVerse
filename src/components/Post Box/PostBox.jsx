@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -21,9 +22,8 @@ import {
 } from "../../styles/PostBoxStyles";
 import { BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
-import { useNavigate } from "react-router-dom";
 import { SET_DEFAULT_TAB } from "../../utils/Constants";
-import InfoPopup from "./PostBox Components/InfoPopup";
+import { InfoPopup } from "../index";
 
 export const PostBox = ({ post }) => {
   const navigate = useNavigate();
