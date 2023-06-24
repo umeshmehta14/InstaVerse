@@ -11,6 +11,7 @@ import {
   SET_SHOW_PASSWORD,
   SET_SIGNUP_FORM,
   SET_UNFOLLOW_USER,
+  SET_USER_LIST,
 } from "../../utils/Constants";
 
 export const UserReducer = (
@@ -80,6 +81,9 @@ export const UserReducer = (
 
     case SET_SIGNUP_FORM:
       return { ...userState, signupForm: payload };
+
+    case SET_USER_LIST:
+      return { ...userState, userList: payload };
 
     default:
       break;

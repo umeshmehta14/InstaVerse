@@ -18,6 +18,7 @@ import {
   SET_EDIT_USER,
   SET_EDIT_USER_POST,
   SET_FOLLOW_USER,
+  SET_LOADING_USERS,
   SET_SELECTED_USER,
 } from "../../utils/Constants";
 import { usePost } from "../PostContext/PostContext";
@@ -26,7 +27,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
-  const { users } = userState;
+  const { users, loadingUsers } = userState;
   const { postDispatch } = usePost();
   const { token, currentUser, setCurrentUser, setProgress } = useAuth();
 
@@ -137,6 +138,23 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const handleFollowUser = async (username, unfollow) => {
+    userDispatch({
+      type: SET_LOADING_USERS,
+      payload: [...loadingUsers, username],
+    });
+    if (unfollow) {
+      await handleUnfollow(username);
+    } else {
+      await handleFollow(username);
+    }
+
+    userDispatch({
+      type: SET_LOADING_USERS,
+      payload: loadingUsers.filter((user) => user !== username),
+    });
+  };
+
   useEffect(() => {
     getUsers();
   }, [users]);
@@ -152,6 +170,7 @@ export const UserProvider = ({ children }) => {
         handleRemoveBookmark,
         handleSingleUser,
         handleEditUser,
+        handleFollowUser,
       }}
     >
       {children}

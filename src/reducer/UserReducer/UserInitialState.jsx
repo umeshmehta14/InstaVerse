@@ -22,4 +22,5 @@ export const UserInitialState = {
     password: "",
     Cpassword: "",
   },
+  userList: "",
 };

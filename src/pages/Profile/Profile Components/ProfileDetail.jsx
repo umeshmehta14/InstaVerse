@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Avatar,
   Box,
@@ -32,6 +32,7 @@ import {
 } from "../../../styles/ProfileStyles";
 import { followedByUser } from "../../../styles/GlobalStyles";
 import { FiLogOut } from "../../../utils/Icons";
+import { SET_USER_LIST } from "../../../utils/Constants";
 
 export const ProfileDetail = ({
   selectedUser,
@@ -44,9 +45,11 @@ export const ProfileDetail = ({
   const { colorMode } = useColorMode();
 
   const { logoutHandler, currentUser } = useAuth();
-  const { handleFollow, handleUnfollow } = useUser();
-  const [userList, setUserList] = useState("");
-  const [loadingUsers, setLoadingUsers] = useState([]);
+  const {
+    userState: { loadingUsers, userList },
+    handleFollowUser,
+    userDispatch,
+  } = useUser();
 
   const {
     username,
@@ -69,18 +72,6 @@ export const ProfileDetail = ({
   const checkFollowing = currentUser.followers.find(
     (user) => user.username === username
   );
-
-  const handleFollowUser = async (username, unfollow) => {
-    setLoadingUsers((prevLoadingUsers) => [...prevLoadingUsers, username]);
-    if (unfollow) {
-      await handleUnfollow(username);
-    } else {
-      await handleFollow(username);
-    }
-    setLoadingUsers((prevLoadingUsers) =>
-      prevLoadingUsers.filter((user) => user !== username)
-    );
-  };
 
   const isLoading = loadingUsers.includes(username);
 
@@ -147,7 +138,7 @@ export const ProfileDetail = ({
                 cursor={"pointer"}
                 onClick={() => {
                   onOpen();
-                  setUserList("followers");
+                  userDispatch({ type: SET_USER_LIST, payload: "followers" });
                 }}
               >
                 {followers?.length} follower
@@ -156,7 +147,7 @@ export const ProfileDetail = ({
                 cursor={"pointer"}
                 onClick={() => {
                   onOpen();
-                  setUserList("following");
+                  userDispatch({ type: SET_USER_LIST, payload: "following" });
                 }}
               >
                 {following?.length} following
@@ -213,7 +204,7 @@ export const ProfileDetail = ({
             <Text
               onClick={() => {
                 onOpen();
-                setUserList("followers");
+                userDispatch({ type: SET_USER_LIST, payload: "followers" });
               }}
             >
               Followed by{" "}
@@ -236,7 +227,7 @@ export const ProfileDetail = ({
           cursor={"pointer"}
           onClick={() => {
             onOpen();
-            setUserList("followers");
+            userDispatch({ type: SET_USER_LIST, payload: "followers" });
           }}
         >
           {followers?.length} follower
@@ -245,7 +236,7 @@ export const ProfileDetail = ({
           cursor={"pointer"}
           onClick={() => {
             onOpen();
-            setUserList("following");
+            userDispatch({ type: SET_USER_LIST, payload: "following" });
           }}
         >
           {following?.length} following

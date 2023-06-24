@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth, useUser } from "../../contexts";
 import { UnfollowModal, RotatingLoader } from "../index";
-import { SET_LOADING_USERS, SET_UNFOLLOW_USER } from "../../utils/Constants";
+import { SET_UNFOLLOW_USER } from "../../utils/Constants";
 
 export const UserListModal = ({ onClose, isOpen, users, heading }) => {
   const navigate = useNavigate();
@@ -27,28 +27,10 @@ export const UserListModal = ({ onClose, isOpen, users, heading }) => {
 
   const { currentUser } = useAuth();
   const {
-    handleFollow,
-    handleUnfollow,
+    handleFollowUser,
     userState: { unfollowUser, loadingUsers },
     userDispatch,
   } = useUser();
-
-  const handleFollowUser = async (username, unfollow) => {
-    userDispatch({
-      type: SET_LOADING_USERS,
-      payload: [...loadingUsers, username],
-    });
-    if (unfollow) {
-      await handleUnfollow(username);
-    } else {
-      await handleFollow(username);
-    }
-
-    userDispatch({
-      type: SET_LOADING_USERS,
-      payload: loadingUsers.filter((user) => user !== username),
-    });
-  };
 
   return (
     <>
