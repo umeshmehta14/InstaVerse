@@ -23,7 +23,7 @@ import { toast } from "react-hot-toast";
 import { SET_SHOW_PASSWORD, SET_SIGNUP_FORM } from "../../utils/Constants";
 
 export const SignUp = () => {
-  document.title = "InstaVerse | Login";
+  document.title = "InstaVerse | SignUp";
   const { colorMode } = useColorMode();
 
   const { signUpHandler, token } = useAuth();

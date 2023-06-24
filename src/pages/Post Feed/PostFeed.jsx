@@ -23,6 +23,9 @@ export const PostFeed = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  document.title = `InstaVerse | ${
+    location?.pathname === "/explore" ? "Explore" : "Home"
+  }`;
   const bottomRef = useRef(null);
 
   const allPost =

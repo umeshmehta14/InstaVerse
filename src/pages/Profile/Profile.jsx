@@ -52,6 +52,7 @@ export const Profile = () => {
   const { progress, currentUser } = useAuth();
 
   const { username, bookmarks } = selectedUser;
+  document.title = `Profile @${username}`;
 
   const likedPosts =
     currentUser.username === username

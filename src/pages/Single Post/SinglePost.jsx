@@ -64,6 +64,7 @@ export const SinglePost = () => {
   } = useUser();
 
   const { _id, comments, username, mediaUrl } = singlePost;
+  document.title = `@${username}`;
 
   const profileUser = users.find((user) => user.username === username);
 
