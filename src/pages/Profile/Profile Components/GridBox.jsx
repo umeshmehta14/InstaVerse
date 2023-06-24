@@ -9,13 +9,13 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-import { FaComment, AiFillHeart } from "../../../utils/Icons";
 import {
   profileHoverStyle,
   profileImageStyle,
 } from "../../../styles/ProfileStyles";
+import { FaComment, AiFillHeart } from "../../../utils/Icons";
 
-const GridBox = ({ showingPost }) => {
+export const GridBox = ({ showingPost }) => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
@@ -68,5 +68,3 @@ const GridBox = ({ showingPost }) => {
     </Grid>
   );
 };
-
-export default GridBox;

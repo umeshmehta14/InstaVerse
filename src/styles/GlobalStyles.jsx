@@ -48,3 +48,27 @@ export const inputLengthReader = {
   right: "0.5rem",
   fontSize: "0.7rem",
 };
+
+export const simpleButton = {
+  w: "100%",
+  bg: "transparent",
+  _hover: { bg: "transparent", color: "inherit" },
+  fontWeight: "0",
+};
+
+export const editFormInput = {
+  border: "none",
+  borderRadius: "0",
+  borderBottom: "1px solid",
+  px: 0,
+  _focusVisible: {
+    border: "none",
+    borderBottom: "1px solid",
+  },
+};
+
+export const editFormLabel = {
+  m: 0,
+  fontWeight: 200,
+  color: "gray",
+};

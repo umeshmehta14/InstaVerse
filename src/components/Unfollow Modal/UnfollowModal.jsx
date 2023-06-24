@@ -11,7 +11,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import { simpleButton } from "../../styles/PostBoxStyles";
+import { simpleButton } from "../../styles/GlobalStyles";
 import { useUser } from "../../contexts";
 
 export const UnfollowModal = ({

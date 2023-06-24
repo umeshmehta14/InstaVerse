@@ -23,12 +23,9 @@ import {
   commentTextStyle,
   displayCommentMainBox,
 } from "../../../styles/SinglePostStyle";
-import {
-  postNavStyles,
-  postThreeDot,
-  simpleButton,
-} from "../../../styles/PostBoxStyles";
+import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
 import { BsThreeDots } from "../../../utils/Icons";
+import { simpleButton } from "../../../styles/GlobalStyles";
 
 const DisplayComments = ({ post, location }) => {
   const { username, avatarURL, comments, createdAt, content } = post;

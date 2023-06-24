@@ -31,13 +31,16 @@ import {
 } from "@chakra-ui/react";
 
 import { useAuth, useUser } from "../../../contexts";
+import { AvatarModal } from "../../index";
+import {
+  inputLengthReader,
+  simpleButton,
+  editFormInput,
+  editFormLabel,
+} from "../../../styles/GlobalStyles";
 import { AiOutlinePicture, SlTrash, RxAvatar } from "../../../utils/Icons";
-import { editFormInput, editFormLabel } from "../../../styles/ProfileStyles";
-import { simpleButton } from "../../../styles/PostBoxStyles";
-import { inputLengthReader } from "../../../styles/GlobalStyles";
-import AvatarModal from "./AvatarModal";
 
-const EditProfileModal = ({ isOpen, onClose }) => {
+export const EditProfileModal = ({ isOpen, onClose }) => {
   const { currentUser } = useAuth();
   const { handleEditUser } = useUser();
   const { colorMode } = useColorMode();
@@ -286,5 +289,3 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     </>
   );
 };
-
-export default EditProfileModal;

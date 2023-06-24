@@ -1,22 +1,17 @@
 import React from "react";
 import {
-  AspectRatio,
   Box,
   Divider,
   Flex,
-  GridItem,
-  Skeleton,
   SkeletonCircle,
   SkeletonText,
-  VStack,
   useColorMode,
 } from "@chakra-ui/react";
 
 import { profileMainBox } from "../../../styles/ProfileStyles";
-import { Grid } from "react-loader-spinner";
 import ContentLoader from "react-content-loader";
 
-const ProfileSkeleton = () => {
+export const ProfileSkeleton = () => {
   const { colorMode } = useColorMode();
 
   return (
@@ -66,5 +61,3 @@ const ProfileSkeleton = () => {
     </Flex>
   );
 };
-
-export default ProfileSkeleton;

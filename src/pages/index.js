@@ -4,3 +4,8 @@ export { SignUp } from "./Authentication/SignUp.jsx";
 export { Profile } from "./Profile/Profile.jsx";
 export { SinglePost } from "./Single Post/SinglePost.jsx";
 export { Error } from "./Error/Error.jsx";
+export { AvatarModal } from "./Profile/Profile Components/AvatarModal.jsx";
+export { EditProfileModal } from "./Profile/Profile Components/EditProfileModal.jsx";
+export { GridBox } from "./Profile/Profile Components/GridBox.jsx";
+export { ProfileDetail } from "./Profile/Profile Components/ProfileDetail.jsx";
+export { ProfileSkeleton } from "./Profile/Profile Components/ProfileSkeleton.jsx";

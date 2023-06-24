@@ -89,7 +89,6 @@ const UserSuggestionMain = () => {
                   <Button
                     variant={"link-button"}
                     size="sm"
-                    colorScheme="blue"
                     p={0}
                     onClick={() => handleFollow(username)}
                   >

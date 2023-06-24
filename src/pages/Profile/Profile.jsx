@@ -17,9 +17,14 @@ import {
 } from "@chakra-ui/react";
 
 import { useAuth, usePost, useUser } from "../../contexts";
+import { GridBox, ProfileSkeleton, ProfileDetail } from "../index";
+import { PostModal } from "../../components";
+import {
+  emptyCameraStyles,
+  profileMainBox,
+  tabListStyle,
+} from "../../styles/ProfileStyles";
 import { SET_SELECTED_USER } from "../../utils/Constants";
-import GridBox from "./Profile Components/GridBox";
-import ProfileSkeleton from "./Profile Components/ProfileSkeleton";
 import {
   MdGridOn,
   FaRegBookmark,
@@ -28,13 +33,6 @@ import {
   BsFillHeartbreakFill,
   BsBookmarkX,
 } from "../../utils/Icons";
-import ProfileDetail from "./Profile Components/ProfileDetail";
-import { PostModal } from "../../components";
-import {
-  emptyCameraStyles,
-  profileMainBox,
-  tabListStyle,
-} from "../../styles/ProfileStyles";
 
 export const Profile = () => {
   const paramUser = useParams();

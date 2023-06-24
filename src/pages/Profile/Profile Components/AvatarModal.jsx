@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Divider,
@@ -10,7 +11,6 @@ import {
   ModalOverlay,
   useColorMode,
 } from "@chakra-ui/react";
-import React from "react";
 
 const avatarUrls = [
   "https://tse1.mm.bing.net/th?id=OIP.BFzFHuNVf8BaHZYsvnYoyQAAAA&pid=Api&P=0&h=180",
@@ -27,7 +27,7 @@ const avatarUrls = [
   "https://tse4.mm.bing.net/th?id=OIP.7tTAo8gFMfyI-o-EjaaxKQHaHa&pid=Api&P=0&h=180",
 ];
 
-const AvatarModal = ({ isOpen, onClose, handleCartoonAvatar }) => {
+export const AvatarModal = ({ isOpen, onClose, handleCartoonAvatar }) => {
   const { colorMode } = useColorMode();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -66,5 +66,3 @@ const AvatarModal = ({ isOpen, onClose, handleCartoonAvatar }) => {
     </Modal>
   );
 };
-
-export default AvatarModal;

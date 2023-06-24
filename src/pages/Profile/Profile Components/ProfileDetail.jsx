@@ -7,6 +7,7 @@ import {
   Flex,
   HStack,
   Text,
+  useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
@@ -17,10 +18,8 @@ import {
   UnfollowModal,
   UserListModal,
 } from "../../../components";
-import { followedByUser } from "../../../styles/GlobalStyles";
 import { getMutualFollowers } from "../../../utils/MutualFollowers";
-import EditProfileModal from "./EditProfileModal";
-import { FiLogOut } from "../../../utils/Icons";
+import { EditProfileModal } from "../../index";
 import {
   mobileBioStyle,
   mobileUserLength,
@@ -31,11 +30,18 @@ import {
   profileUsernameStyle,
   userPostLengthStyle,
 } from "../../../styles/ProfileStyles";
+import { followedByUser } from "../../../styles/GlobalStyles";
+import { FiLogOut } from "../../../utils/Icons";
 
-const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
+export const ProfileDetail = ({
+  selectedUser,
+  currentUserCheck,
+  userAllPost,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const editModalDisclosure = useDisclosure();
   const unfollowModalDisclosure = useDisclosure();
+  const { colorMode } = useColorMode();
 
   const { logoutHandler, currentUser } = useAuth();
   const { handleFollow, handleUnfollow } = useUser();
@@ -159,7 +165,7 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
             <Flex {...pcBioStyle}>
               <Text>{` ${firstName} ${lastName}`}</Text>
               <Text>{bio}</Text>
-              <Text color={"blue.200"}>
+              <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
                 <Link to={portfolio}>{portfolio}</Link>
               </Text>
             </Flex>
@@ -189,8 +195,10 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
 
       <Flex {...mobileBioStyle}>
         <Text>{` ${firstName} ${lastName}`}</Text>
-        <Text>{bio}</Text>
-        <Text color={"blue.200"}>
+        <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
+          {bio}
+        </Text>
+        <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
           <Link to={portfolio}>{portfolio}</Link>
         </Text>
       </Flex>
@@ -268,5 +276,3 @@ const ProfileDetail = ({ selectedUser, currentUserCheck, userAllPost }) => {
     </>
   );
 };
-
-export default ProfileDetail;
