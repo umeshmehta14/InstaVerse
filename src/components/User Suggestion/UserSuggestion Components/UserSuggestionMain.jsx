@@ -29,7 +29,7 @@ const UserSuggestionMain = () => {
   return (
     suggestedUser?.length > 0 && (
       <>
-        <Box h="380px" overflow="hidden">
+        <Box maxH="370px" overflow="hidden">
           <Flex p="3" align="center">
             <Text fontWeight="semibold" mx={"auto"}>
               Suggested For You

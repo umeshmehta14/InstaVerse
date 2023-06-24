@@ -1,8 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { getLoginInformation, createUser } from "./AuthApi";
-import { useUser } from "../UserContext/UserContext";
-
-// import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 export const AuthContext = createContext();
 
@@ -29,10 +27,9 @@ export const AuthProvider = ({ children }) => {
         );
         setCurrentUser(foundUser);
         setToken(encodedToken);
-        // toast.success(`Welcome Back ${foundUser.firstName} To TechBay`, { containerId: 'A', theme: "colored" });
       }
     } catch (err) {
-      // toast.error(`Invalid Credentials`, { containerId: 'A', theme: "colored" });
+      console.log(err);
     } finally {
       setProgress(100);
     }
@@ -51,10 +48,9 @@ export const AuthProvider = ({ children }) => {
         );
         setCurrentUser(createdUser);
         setToken(encodedToken);
-        // toast.success(`Welcome ${createdUser.firstName} To TechBay`, { containerId: 'A', theme: "colored" });
       }
     } catch (err) {
-      // toast.error(`Email Already Exist`, { containerId: 'A', theme: "colored" });
+      toast.error(`Username Already Exist`);
     }
   };
 
