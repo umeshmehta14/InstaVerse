@@ -203,6 +203,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                       portfolio: e.target.value,
                     })
                   }
+                  color={colorMode === "dark" ? "blue.200" : "blue.500"}
                 />
               </FormControl>
             </VStack>

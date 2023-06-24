@@ -50,7 +50,8 @@ const CommentFooter = ({ post }) => {
     likes: { likedBy },
   } = post;
 
-  const { handlePostLike, handlePostUnLike, HandleCreateComment } = usePost();
+  const { handlePostLike, handlePostUnLike, HandleCreateComment, handleShare } =
+    usePost();
   const { currentUser } = useAuth();
   const {
     handleBookmark,
@@ -102,7 +103,7 @@ const CommentFooter = ({ post }) => {
             <Box
               as={IoPaperPlaneOutline}
               sx={IconHoverStyle}
-              onClick={() => navigator.clipboard.writeText("hello")}
+              onClick={() => handleShare(_id)}
               title="Share"
             />
           </HStack>
