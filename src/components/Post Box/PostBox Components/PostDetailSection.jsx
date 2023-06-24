@@ -49,7 +49,8 @@ const PostDetailSection = ({
   const location = useLocation();
   const { colorMode } = useColorMode();
 
-  const { handlePostLike, handlePostUnLike, HandleCreateComment } = usePost();
+  const { handlePostLike, handlePostUnLike, HandleCreateComment, handleShare } =
+    usePost();
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
 
@@ -80,18 +81,6 @@ const PostDetailSection = ({
   const handleCommentPost = () => {
     HandleCreateComment(commentValue, _id);
     setCommentValue("");
-  };
-
-  const handleShare = async () => {
-    try {
-      await navigator.share({
-        title: username,
-        text: "Check out this post",
-        url: `https://instaverse-um14.netlify.app/post/${_id}`,
-      });
-    } catch (error) {
-      console.error("Error sharing:", error);
-    }
   };
 
   return (
@@ -130,7 +119,7 @@ const PostDetailSection = ({
             <Box
               as={IoPaperPlaneOutline}
               sx={IconHoverStyle}
-              onClick={handleShare}
+              onClick={() => handleShare(_id)}
               title="Share"
             />
           </HStack>

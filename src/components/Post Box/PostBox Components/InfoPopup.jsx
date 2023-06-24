@@ -16,6 +16,7 @@ import { useAuth, usePost, useUser } from "../../../contexts";
 import { PostModal } from "../../Post Modal/PostModal";
 import { SET_EDIT_POST } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const InfoPopup = ({ onClose, isOpen, post, fromSinglePost, location }) => {
   const { colorMode } = useColorMode();
@@ -32,7 +33,7 @@ const InfoPopup = ({ onClose, isOpen, post, fromSinglePost, location }) => {
     handleFollow,
   } = useUser();
   const { _id, username } = post;
-  const { handleDeletePost, postDispatch } = usePost();
+  const { handleDeletePost, postDispatch, handleShare } = usePost();
 
   const checkBookmark = userBookmarks.find((bookmark) => bookmark === _id);
   const isFollowing = currentUser.following.find(
@@ -99,9 +100,18 @@ const InfoPopup = ({ onClose, isOpen, post, fromSinglePost, location }) => {
                 <Divider />
                 <Button
                   sx={simpleButton}
-                  onClick={() => console.log("link copy")}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `https://instaverse-um14.netlify.app/post/${_id}`
+                    );
+                    toast.success("Link copied to your clipboard");
+                  }}
                 >
                   Copy link
+                </Button>
+                <Divider />
+                <Button sx={simpleButton} onClick={() => handleShare(_id)}>
+                  Share to
                 </Button>
                 <Divider />
                 {isFollowing ? (

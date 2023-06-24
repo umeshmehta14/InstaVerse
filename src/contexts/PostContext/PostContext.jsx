@@ -178,6 +178,18 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const handleShare = async (_id) => {
+    try {
+      await navigator.share({
+        title: "Instaverse",
+        text: "Check out this post",
+        url: `https://instaverse-um14.netlify.app/post/${_id}`,
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -197,6 +209,7 @@ export const PostProvider = ({ children }) => {
         HandleSinglePost,
         HandleCreateComment,
         HandleDeleteComment,
+        handleShare,
       }}
     >
       {children}
