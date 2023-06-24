@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -9,21 +10,27 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
+import { toast } from "react-hot-toast";
 
 import { simpleButton } from "../../../styles/PostBoxStyles";
 import { UnfollowModal } from "../../index";
 import { useAuth, usePost, useUser } from "../../../contexts";
 import { PostModal } from "../../Post Modal/PostModal";
 import { SET_EDIT_POST } from "../../../utils/Constants";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
 
-const InfoPopup = ({ onClose, isOpen, post, fromSinglePost, location }) => {
+export const InfoPopup = ({
+  onClose,
+  isOpen,
+  post,
+  fromSinglePost,
+  location,
+}) => {
   const { colorMode } = useColorMode();
   const unfollowModalDisclosure = useDisclosure();
   const postModalDisclosure = useDisclosure();
 
   const navigate = useNavigate();
+  const mainLocation = useLocation();
 
   const { currentUser } = useAuth();
   const {
@@ -100,17 +107,33 @@ const InfoPopup = ({ onClose, isOpen, post, fromSinglePost, location }) => {
                 <Divider />
                 <Button
                   sx={simpleButton}
+                  onClick={() =>
+                    navigate(`/post/${_id}`, { state: { from: mainLocation } })
+                  }
+                >
+                  Go to post
+                </Button>
+                <Divider />
+                <Button
+                  sx={simpleButton}
                   onClick={() => {
                     navigator.clipboard.writeText(
                       `https://instaverse-um14.netlify.app/post/${_id}`
                     );
                     toast.success("Link copied to your clipboard");
+                    onClose();
                   }}
                 >
                   Copy link
                 </Button>
                 <Divider />
-                <Button sx={simpleButton} onClick={() => handleShare(_id)}>
+                <Button
+                  sx={simpleButton}
+                  onClick={() => {
+                    handleShare(_id);
+                    onClose();
+                  }}
+                >
                   Share to
                 </Button>
                 <Divider />
