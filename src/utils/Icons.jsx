@@ -23,7 +23,12 @@ import {
   AiOutlineDown,
   AiOutlineArrowLeft,
 } from "react-icons/ai";
-import { RxCross2, RxHamburgerMenu, RxCrossCircled } from "react-icons/rx";
+import {
+  RxCross2,
+  RxAvatar,
+  RxHamburgerMenu,
+  RxCrossCircled,
+} from "react-icons/rx";
 import { TbSquareRoundedPlus } from "react-icons/tb";
 import {
   FaInstalod,
@@ -63,6 +68,7 @@ export {
   MdOutlineExplore,
   MdFavorite,
   MdSearch,
+  RxAvatar,
   TbSquareRoundedPlus,
   BsFillSunFill,
   RxCross2,

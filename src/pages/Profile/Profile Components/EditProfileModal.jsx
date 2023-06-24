@@ -31,10 +31,11 @@ import {
 } from "@chakra-ui/react";
 
 import { useAuth, useUser } from "../../../contexts";
-import { AiOutlinePicture, SlTrash } from "../../../utils/Icons";
+import { AiOutlinePicture, SlTrash, RxAvatar } from "../../../utils/Icons";
 import { editFormInput, editFormLabel } from "../../../styles/ProfileStyles";
 import { simpleButton } from "../../../styles/PostBoxStyles";
 import { inputLengthReader } from "../../../styles/GlobalStyles";
+import AvatarModal from "./AvatarModal";
 
 const EditProfileModal = ({ isOpen, onClose }) => {
   const { currentUser } = useAuth();
@@ -44,6 +45,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
   const cancelRef = useRef();
 
   const discardDisclosure = useDisclosure();
+  const avatarDisclosure = useDisclosure();
 
   const [updateProfile, setUpdateProfile] = useState(currentUser);
   const { avatarURL, firstName, lastName, bio, portfolio } = updateProfile;
@@ -59,11 +61,18 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     fileInputRef.current.click();
   };
 
-  const handleAvatartChange = (event) => {
+  const handleAvatarChange = (event) => {
     const file = event.target.files[0];
     setUpdateProfile({
       ...updateProfile,
       avatarURL: URL.createObjectURL(file),
+    });
+  };
+
+  const handleCartoonAvatar = (url) => {
+    setUpdateProfile({
+      ...updateProfile,
+      avatarURL: url,
     });
   };
 
@@ -116,6 +125,24 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                         <Box as={AiOutlinePicture} fontSize={"1.5rem"} /> New
                         profile picture
                       </Button>
+                      <Divider />
+                      <Button
+                        w="100%"
+                        justifyContent={"flex-start"}
+                        gap={2}
+                        onClick={avatarDisclosure.onOpen}
+                      >
+                        <Box as={RxAvatar} fontSize={"1.5rem"} />
+                        Change Avatar
+                      </Button>
+                      <Divider />
+                      {avatarDisclosure.isOpen && (
+                        <AvatarModal
+                          isOpen={avatarDisclosure.isOpen}
+                          onClose={avatarDisclosure.onClose}
+                          handleCartoonAvatar={handleCartoonAvatar}
+                        />
+                      )}
                       {avatarURL?.length > 0 && (
                         <Button
                           w="100%"
@@ -141,7 +168,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   accept="image/*"
                   display="none"
                   ref={fileInputRef}
-                  onChange={handleAvatartChange}
+                  onChange={handleAvatarChange}
                 />
               </VStack>
 
