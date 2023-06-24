@@ -73,10 +73,3 @@ export const postContent = {
   overflowWrap: "break-word",
   textOverflow: "ellipsis",
 };
-
-export const simpleButton = {
-  w: "100%",
-  bg: "transparent",
-  _hover: { bg: "transparent", color: "inherit" },
-  fontWeight: "0",
-};
