@@ -12,3 +12,6 @@ export const SET_EDIT_USER_POST = "SET_EDIT_USER_POST";
 export const SET_EDIT_POST = "SET_EDIT_POST";
 export const SET_SINGLE_POST = "SET_SINGLE_POST";
 export const SET_PAGE = "SET_PAGE";
+export const SET_POSTVALUE = "SET_POSTVALUE";
+export const SET_UNFOLLOW_USER = "SET_UNFOLLOW_USER";
+export const SET_LOADING_USERS = "SET_LOADING_USERS";

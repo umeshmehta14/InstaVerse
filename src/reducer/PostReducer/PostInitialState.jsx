@@ -5,4 +5,8 @@ export const PostInitialState = {
   editPost: { content: "", mediaUrl: "" },
   singlePost: {},
   page: 1,
+  postValue: {
+    content: "",
+    mediaUrl: "",
+  },
 };

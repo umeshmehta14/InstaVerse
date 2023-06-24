@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -27,7 +27,7 @@ import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
 import { usePost } from "../../contexts";
 import { imageCrossButton, postTextarea } from "../../styles/PostModalStyles";
 import { useEffect } from "react";
-import { SET_EDIT_POST } from "../../utils/Constants";
+import { SET_EDIT_POST, SET_POSTVALUE } from "../../utils/Constants";
 import { inputLengthReader } from "../../styles/GlobalStyles";
 
 export const PostModal = ({ isOpen, onClose, edit }) => {
@@ -35,30 +35,35 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
   const {
     handleCreatePost,
     handleEditPost,
-    postState: { editPost },
+    postState: { editPost, postValue },
     postDispatch,
   } = usePost();
-  const [postValue, setPostValue] = useState({
-    content: "",
-    mediaUrl: "",
-  });
 
   const handleInputChange = (e) => {
     const { value } = e.target;
     if (value?.length <= 2200) {
-      setPostValue({ ...postValue, content: value });
+      postDispatch({
+        type: SET_POSTVALUE,
+        payload: { ...postValue, content: value },
+      });
     }
   };
 
   const handlePhotoChange = (event) => {
     const file = event.target.files[0];
-    setPostValue({ ...postValue, mediaUrl: URL.createObjectURL(file) });
+    postDispatch({
+      type: SET_POSTVALUE,
+      payload: { ...postValue, mediaUrl: URL.createObjectURL(file) },
+    });
   };
 
   useEffect(() => {
-    setPostValue({
-      content: editPost?.content,
-      mediaUrl: editPost?.mediaUrl,
+    postDispatch({
+      type: SET_POSTVALUE,
+      payload: {
+        content: editPost?.content,
+        mediaUrl: editPost?.mediaUrl,
+      },
     });
   }, [isOpen]);
 
@@ -73,7 +78,10 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
       } else {
         handleCreatePost(postValue);
       }
-      setPostValue({ content: "", mediaUrl: "" });
+      postDispatch({
+        type: SET_POSTVALUE,
+        payload: { content: "", mediaUrl: "" },
+      });
       postDispatch({
         type: SET_EDIT_POST,
         payload: { content: "", mediaUrl: "" },
@@ -88,7 +96,10 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
         isOpen={isOpen}
         onClose={() => {
           onClose();
-          setPostValue({ content: "", mediaUrl: "" });
+          postDispatch({
+            type: SET_POSTVALUE,
+            payload: { content: "", mediaUrl: "" },
+          });
           postDispatch({
             type: SET_EDIT_POST,
             payload: { content: "", mediaUrl: "" },
@@ -128,7 +139,12 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                   as={RxCross2}
                   {...imageCrossButton}
                   title="Remove"
-                  onClick={() => setPostValue({ ...postValue, mediaUrl: "" })}
+                  onClick={() =>
+                    postDispatch({
+                      type: SET_POSTVALUE,
+                      payload: { ...postValue, mediaUrl: "" },
+                    })
+                  }
                 />
               </Flex>
             )}
@@ -168,9 +184,12 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                     <Picker
                       data={data}
                       onEmojiSelect={(emoji) =>
-                        setPostValue({
-                          ...postValue,
-                          content: postValue.content + emoji.native,
+                        postDispatch({
+                          type: SET_POSTVALUE,
+                          payload: {
+                            ...postValue,
+                            content: postValue.content + emoji.native,
+                          },
                         })
                       }
                       theme={colorMode}

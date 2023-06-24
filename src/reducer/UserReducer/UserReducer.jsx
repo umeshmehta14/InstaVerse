@@ -4,8 +4,10 @@ import {
   SET_DEFAULT_TAB,
   SET_EDIT_USER,
   SET_FOLLOW_USER,
+  SET_LOADING_USERS,
   SET_SEARCH_VALUE,
   SET_SELECTED_USER,
+  SET_UNFOLLOW_USER,
 } from "../../utils/Constants";
 
 export const UserReducer = (
@@ -60,6 +62,12 @@ export const UserReducer = (
 
     case SET_DEFAULT_TAB:
       return { ...userState, defaultTab: payload };
+
+    case SET_UNFOLLOW_USER:
+      return { ...userState, unfollowUser: payload };
+
+    case SET_LOADING_USERS:
+      return { ...userState, loadingUsers: payload };
 
     default:
       break;

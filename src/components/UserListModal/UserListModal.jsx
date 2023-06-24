@@ -17,30 +17,37 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth, useUser } from "../../contexts";
 import { UnfollowModal, RotatingLoader } from "../index";
+import { SET_LOADING_USERS, SET_UNFOLLOW_USER } from "../../utils/Constants";
 
 export const UserListModal = ({ onClose, isOpen, users, heading }) => {
   const navigate = useNavigate();
 
   const { colorMode } = useColorMode();
   const unfollowDisclosure = useDisclosure();
-  const [unfollowUser, setUnfollowUser] = useState({
-    username: "",
-    avatarURL: "",
-  });
+
   const { currentUser } = useAuth();
-  const { handleFollow, handleUnfollow } = useUser();
-  const [loadingUsers, setLoadingUsers] = useState([]);
+  const {
+    handleFollow,
+    handleUnfollow,
+    userState: { unfollowUser, loadingUsers },
+    userDispatch,
+  } = useUser();
 
   const handleFollowUser = async (username, unfollow) => {
-    setLoadingUsers((prevLoadingUsers) => [...prevLoadingUsers, username]);
+    userDispatch({
+      type: SET_LOADING_USERS,
+      payload: [...loadingUsers, username],
+    });
     if (unfollow) {
       await handleUnfollow(username);
     } else {
       await handleFollow(username);
     }
-    setLoadingUsers((prevLoadingUsers) =>
-      prevLoadingUsers.filter((user) => user !== username)
-    );
+
+    userDispatch({
+      type: SET_LOADING_USERS,
+      payload: loadingUsers.filter((user) => user !== username),
+    });
   };
 
   return (
@@ -97,11 +104,14 @@ export const UserListModal = ({ onClose, isOpen, users, heading }) => {
                     <Button
                       variant={"following-button"}
                       onClick={() => {
-                        unfollowDisclosure.onOpen();
-                        setUnfollowUser({
-                          username: username,
-                          avatarURL: avatarURL,
+                        userDispatch({
+                          type: SET_UNFOLLOW_USER,
+                          payload: {
+                            username: username,
+                            avatarURL: avatarURL,
+                          },
                         });
+                        unfollowDisclosure.onOpen();
                       }}
                     >
                       {isLoading ? (

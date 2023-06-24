@@ -5,4 +5,9 @@ export const UserInitialState = {
   searchValue: "",
   searchedUsers: [],
   defaultTab: 0,
+  unfollowUser: {
+    username: "",
+    avatarURL: "",
+  },
+  loadingUsers: [],
 };
