@@ -10,7 +10,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useAuth, usePost } from "./contexts";
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
-import { PostFeed, Login, Profile, SignUp, SinglePost } from "./pages";
+import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
 import LoadingBar from "react-top-loading-bar";
 import { Toaster } from "react-hot-toast";
 
@@ -78,6 +78,8 @@ function App() {
                 </PrivateRoute>
               }
             />
+
+            <Route path={"/*"} element={<Error />} />
 
             <Route path={"/error"} element={<Login />} />
             <Route path={"/login"} element={<Login />} />

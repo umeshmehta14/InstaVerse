@@ -82,6 +82,18 @@ const PostDetailSection = ({
     setCommentValue("");
   };
 
+  const handleShare = async () => {
+    try {
+      await navigator.share({
+        title: username,
+        text: "Check out this post",
+        url: `https://instaverse-um14.netlify.app/post/${_id}`,
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
+
   return (
     <>
       <Flex {...iconPostStyles}>
@@ -118,7 +130,7 @@ const PostDetailSection = ({
             <Box
               as={IoPaperPlaneOutline}
               sx={IconHoverStyle}
-              onClick={() => navigator.clipboard.writeText("hello")}
+              onClick={handleShare}
               title="Share"
             />
           </HStack>
