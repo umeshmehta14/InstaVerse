@@ -75,7 +75,7 @@ export const Profile = () => {
     return () => {
       userDispatch({ type: SET_SELECTED_USER, payload: null });
     };
-  }, [paramUser.username, currentUser, posts]);
+  }, [paramUser.username, currentUser, posts, defaultTab]);
 
   return progress === 100 ? (
     <Flex {...profileMainBox}>

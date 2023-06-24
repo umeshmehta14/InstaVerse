@@ -128,26 +128,23 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             </Text>
           </HStack>
 
-          <NavLink
-            style={getStyle}
-            className="nav-links"
-            to={`/profile/${currentUser?.username}`}
-            onClick={() => userDispatch({ type: SET_DEFAULT_TAB, payload: 1 })}
+          <HStack
+            {...navlinkStyle}
+            _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
+            className="nav-item"
+            onClick={() => {
+              userDispatch({ type: SET_DEFAULT_TAB, payload: 1 });
+              navigate(`/profile/${currentUser?.username}`);
+            }}
           >
-            <HStack
-              {...navlinkStyle}
-              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-              className="nav-item"
+            <AiOutlineHeart className="nav-icon" />
+            <Text
+              display={{ base: "none", lg: "inline-block" }}
+              fontSize={"1rem"}
             >
-              <AiOutlineHeart className="nav-icon" />
-              <Text
-                display={{ base: "none", lg: "inline-block" }}
-                fontSize={"1rem"}
-              >
-                Likes
-              </Text>
-            </HStack>
-          </NavLink>
+              Likes
+            </Text>
+          </HStack>
 
           <NavLink
             style={getStyle}
