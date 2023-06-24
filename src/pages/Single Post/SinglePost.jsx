@@ -40,6 +40,7 @@ import {
   singlePostModalClose,
 } from "../../styles/SinglePostStyle";
 import { commentInput, emojiPickerButton } from "../../styles/GlobalStyles";
+import { SET_DEFAULT_TAB } from "../../utils/Constants";
 
 export const SinglePost = () => {
   const { postId } = useParams();
