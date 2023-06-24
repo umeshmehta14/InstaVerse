@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Box, Flex, Text, VStack, useColorMode } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { Box, Text, VStack, useColorMode } from "@chakra-ui/react";
 
 export const Error = () => {
   const { colorMode } = useColorMode();
