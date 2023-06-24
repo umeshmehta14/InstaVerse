@@ -28,7 +28,7 @@ export const profileDetailMain = {
   width: "100%",
   gap: { base: "1rem", md: "4rem" },
   p: "1rem",
-  ml: { base: 0, lg: "5rem" },
+  pl: { lg: "5rem" },
   pb: { lg: "0" },
 };
 

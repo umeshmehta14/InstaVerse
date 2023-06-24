@@ -1,9 +1,9 @@
 import "./App.css";
-import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, VStack, useColorModeValue } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 
 import { useAuth, usePost } from "./contexts";
-import { NavBar, PrivateRoute } from "./components";
+import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import { PostFeed, Login, Profile, SignUp, SinglePost } from "./pages";
 import LoadingBar from "react-top-loading-bar";
 import { Toaster } from "react-hot-toast";
@@ -18,7 +18,9 @@ function App() {
     <Box color={color} bg={bg} className="App">
       <Toaster position="top-center" reverseOrder={true} />
       {loading ? (
-        "Loading.."
+        <VStack h="100vh" w="100vw" justify={"center"}>
+          <RotatingLoader w="50" sw="6" />
+        </VStack>
       ) : (
         <Flex flexDir={{ base: "column", md: "row" }}>
           <NavBar />

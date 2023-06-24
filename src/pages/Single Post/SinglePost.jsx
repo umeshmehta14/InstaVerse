@@ -61,6 +61,7 @@ export const SinglePost = () => {
   } = usePost();
   const {
     userState: { users },
+    userDispatch,
   } = useUser();
 
   const { _id, comments, username, mediaUrl } = singlePost;
@@ -74,7 +75,8 @@ export const SinglePost = () => {
 
   useEffect(() => {
     HandleSinglePost(postId);
-  }, [postId, comments, HandleSinglePost]);
+    userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
+  }, [postId, comments, HandleSinglePost, singlePost]);
 
   return (
     <>

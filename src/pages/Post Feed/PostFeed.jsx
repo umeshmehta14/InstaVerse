@@ -112,7 +112,6 @@ export const PostFeed = () => {
               </React.Fragment>
             );
           })}
-
           {displayedPosts?.length === allPost?.length ||
             (isPostLoading && <RotatingLoader w={"50"} sw={"7"} />)}
           {displayedPosts?.length === allPost?.length && (
