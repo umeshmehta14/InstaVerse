@@ -16,6 +16,7 @@ export const emptyMessageStyle = {
   fontSize: "2xl",
   gap: "0.5rem",
   p: "1rem",
+  minW: { md: "468px" },
 };
 
 export const followedByUser = {

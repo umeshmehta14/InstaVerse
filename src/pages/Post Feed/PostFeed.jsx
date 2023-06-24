@@ -87,12 +87,14 @@ export const PostFeed = () => {
       <UserSuggestion />
       {displayedPosts?.length === 0 ? (
         <Flex {...emptyMessageStyle}>
-          <Text>
-            No posts yet. You can go
+          <Text w={"100%"}>
+            No posts yet. You can go to
             <Text
               onClick={() => navigate("/explore")}
               cursor={"pointer"}
               textDecor={"underline"}
+              display={"inline-block"}
+              ml={"2"}
             >
               Explore Feed
             </Text>
