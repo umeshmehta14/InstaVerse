@@ -7,6 +7,7 @@ import {
   SET_SINGLE_POST,
   SET_PAGE,
   SET_POSTVALUE,
+  SET_ISPOSTLOADING,
 } from "../../utils/Constants";
 
 export const PostReducer = (postState, { payload, type }) => {
@@ -48,6 +49,9 @@ export const PostReducer = (postState, { payload, type }) => {
 
     case SET_POSTVALUE:
       return { ...postState, postValue: payload };
+
+    case SET_ISPOSTLOADING:
+      return { ...postState, isPostLoading: payload };
 
     default:
       break;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Alert, AlertIcon, Flex, Text, VStack } from "@chakra-ui/react";
 
 import { PostBox, RotatingLoader, UserSuggestion } from "../../components";
@@ -6,11 +6,16 @@ import { useAuth, usePost, useUser } from "../../contexts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/PostFilter";
-import { SET_DEFAULT_TAB, SET_FILTER, SET_PAGE } from "../../utils/Constants";
+import {
+  SET_DEFAULT_TAB,
+  SET_FILTER,
+  SET_ISPOSTLOADING,
+  SET_PAGE,
+} from "../../utils/Constants";
 
 export const PostFeed = () => {
   const {
-    postState: { posts, filter, page },
+    postState: { posts, filter, page, isPostLoading },
     postDispatch,
   } = usePost();
   const { userDispatch } = useUser();
@@ -19,7 +24,6 @@ export const PostFeed = () => {
   const location = useLocation();
 
   const bottomRef = useRef(null);
-  const [isPostLoading, setIsPostLoading] = useState(false);
 
   const allPost =
     location?.pathname === "/explore"
@@ -37,10 +41,10 @@ export const PostFeed = () => {
   const handleObserver = (entries) => {
     const entry = entries[0];
     if (entry.isIntersecting) {
-      setIsPostLoading(true);
+      postDispatch({ type: SET_ISPOSTLOADING, payload: true });
       postDispatch({ type: SET_PAGE, payload: page + 1 });
     } else {
-      setIsPostLoading(false);
+      postDispatch({ type: SET_ISPOSTLOADING, payload: false });
     }
   };
 
@@ -61,7 +65,7 @@ export const PostFeed = () => {
 
     if (isPostLoading) {
       timeoutId = setTimeout(() => {
-        setIsPostLoading(false);
+        postDispatch({ type: SET_ISPOSTLOADING, payload: false });
       }, 1000);
     }
 

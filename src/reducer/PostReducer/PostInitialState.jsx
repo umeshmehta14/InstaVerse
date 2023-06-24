@@ -9,4 +9,5 @@ export const PostInitialState = {
     content: "",
     mediaUrl: "",
   },
+  isPostLoading: false,
 };
