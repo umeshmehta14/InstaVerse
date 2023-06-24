@@ -56,9 +56,7 @@ export const editUserHandler = function (schema, request) {
       );
     }
     const { userData } = JSON.parse(request.requestBody);
-    console.log(
-      userData && userData.username && userData.username !== user.username
-    );
+
     if (userData && userData.username && userData.username !== user.username) {
       return new Response(
         404,
@@ -305,7 +303,6 @@ export const unfollowUserHandler = function (schema, request) {
     const isFollowing = user.following.some(
       (currUser) => currUser.username === followUser.username
     );
-    console.log(isFollowing);
 
     if (!isFollowing) {
       return new Response(400, {}, { errors: ["User already not following"] });

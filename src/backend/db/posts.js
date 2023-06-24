@@ -2198,39 +2198,3 @@ export const posts = [
     ],
   },
 ];
-
-/* basic 
-  david - 1
-  kalu - 1
-  emily
-  basic
-  lizzie
-  sarah
-  michael
-  lizzie - 2
-  olivia 
-  jane doe 
-  basic
-  sarah - 2
-  basic
-  basic
-  michael
-  basic
-  emily- 2
-  michael
-  basic
-  michael
-  basic
-  basic
-  basic - 10
-  sophie - 1
-  olivia 
-  olivia 
-  olivia - 4
-  michael - 5
-  jane doe- 6
-  kalu
-  kalu - 3
-
-  = 35
-*/

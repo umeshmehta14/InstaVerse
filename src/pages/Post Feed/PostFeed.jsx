@@ -46,8 +46,6 @@ export const PostFeed = () => {
     if (entry.isIntersecting) {
       postDispatch({ type: SET_ISPOSTLOADING, payload: true });
       postDispatch({ type: SET_PAGE, payload: page + 1 });
-    } else {
-      postDispatch({ type: SET_ISPOSTLOADING, payload: false });
     }
   };
 
