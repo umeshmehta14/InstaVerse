@@ -186,9 +186,7 @@ export const ProfileDetail = ({
 
       <Flex {...mobileBioStyle}>
         <Text>{` ${firstName} ${lastName}`}</Text>
-        <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
-          {bio}
-        </Text>
+        <Text>{bio}</Text>
         <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
           <Link to={portfolio}>{portfolio}</Link>
         </Text>

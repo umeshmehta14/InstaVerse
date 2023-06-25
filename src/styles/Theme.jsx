@@ -60,12 +60,6 @@ const styles = {
 };
 
 export const components = {
-  Toast: {
-    baseStyle: (props) => ({
-      background: mode("white", "gray.800")(props),
-      color: mode("gray.800", "white")(props),
-    }),
-  },
   Button: {
     baseStyle: {
       p: "0.3rem",
