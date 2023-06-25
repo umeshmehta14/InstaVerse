@@ -102,75 +102,81 @@ export const DisplayComments = ({ post, location }) => {
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...displayCommentMainBox}
       >
-        {comments?.map((comment) => {
-          const { _id, avatarURL, text, createdAt, username } = comment;
-          return (
-            <Flex key={_id} gap={"1rem"} title={username}>
-              <Box pt={"4"} onClick={() => navigate(`/profile/${username}`)}>
-                <Avatar src={avatarURL} size={"sm"} cursor={"pointer"} />
-              </Box>
-              <VStack align={"flex-start"} gap={"0"}>
-                <Flex gap={"0.5rem"} align={"center"}>
+        {comments?.length === 0 ? (
+          <Text h="100px" textAlign="center" w="100%" pt="4rem" color="gray">
+            No Comments Yet
+          </Text>
+        ) : (
+          comments?.map((comment) => {
+            const { _id, avatarURL, text, createdAt, username } = comment;
+            return (
+              <Flex key={_id} gap={"1rem"} title={username}>
+                <Box pt={"4"} onClick={() => navigate(`/profile/${username}`)}>
+                  <Avatar src={avatarURL} size={"sm"} cursor={"pointer"} />
+                </Box>
+                <VStack align={"flex-start"} gap={"0"}>
+                  <Flex gap={"0.5rem"} align={"center"}>
+                    <Text
+                      fontWeight={"bold"}
+                      cursor={"pointer"}
+                      onClick={() => navigate(`/profile/${username}`)}
+                    >
+                      {username}
+                    </Text>
+                    <Text fontSize="sm" color={"#717171e0"}>
+                      {getRelativeTime(createdAt)}
+                    </Text>
+                    {currentUser.username === username && (
+                      <Box
+                        as={BsThreeDots}
+                        onClick={commentDeleteDisclosure.onOpen}
+                      />
+                    )}
+                  </Flex>
                   <Text
-                    fontWeight={"bold"}
-                    cursor={"pointer"}
-                    onClick={() => navigate(`/profile/${username}`)}
+                    {...commentTextStyle}
+                    color={colorMode === "dark" ? "#d7d7d7" : "black"}
                   >
-                    {username}
+                    {text}
                   </Text>
-                  <Text fontSize="sm" color={"#717171e0"}>
-                    {getRelativeTime(createdAt)}
-                  </Text>
-                  {currentUser.username === username && (
-                    <Box
-                      as={BsThreeDots}
-                      onClick={commentDeleteDisclosure.onOpen}
-                    />
-                  )}
-                </Flex>
-                <Text
-                  {...commentTextStyle}
-                  color={colorMode === "dark" ? "#d7d7d7" : "black"}
-                >
-                  {text}
-                </Text>
-              </VStack>
-              {commentDeleteDisclosure.isOpen && (
-                <Modal
-                  onClose={commentDeleteDisclosure.onClose}
-                  size={"xs"}
-                  isOpen={commentDeleteDisclosure.isOpen}
-                >
-                  <ModalOverlay />
-                  <ModalContent
-                    bg={colorMode === "dark" ? "black.700" : "white.500"}
-                    mt={"20rem"}
+                </VStack>
+                {commentDeleteDisclosure.isOpen && (
+                  <Modal
+                    onClose={commentDeleteDisclosure.onClose}
+                    size={"xs"}
+                    isOpen={commentDeleteDisclosure.isOpen}
                   >
-                    <ModalBody>
-                      <Button
-                        sx={simpleButton}
-                        color={"red.500"}
-                        onClick={() => {
-                          HandleDeleteComment(_id, post._id);
-                          commentDeleteDisclosure.onClose();
-                        }}
-                      >
-                        Delete
-                      </Button>
-                      <Divider />
-                      <Button
-                        sx={simpleButton}
-                        onClick={commentDeleteDisclosure.onClose}
-                      >
-                        Cancel
-                      </Button>
-                    </ModalBody>
-                  </ModalContent>
-                </Modal>
-              )}
-            </Flex>
-          );
-        })}
+                    <ModalOverlay />
+                    <ModalContent
+                      bg={colorMode === "dark" ? "black.700" : "white.500"}
+                      mt={"20rem"}
+                    >
+                      <ModalBody>
+                        <Button
+                          sx={simpleButton}
+                          color={"red.500"}
+                          onClick={() => {
+                            HandleDeleteComment(_id, post._id);
+                            commentDeleteDisclosure.onClose();
+                          }}
+                        >
+                          Delete
+                        </Button>
+                        <Divider />
+                        <Button
+                          sx={simpleButton}
+                          onClick={commentDeleteDisclosure.onClose}
+                        >
+                          Cancel
+                        </Button>
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
+                )}
+              </Flex>
+            );
+          })
+        )}
       </VStack>
       {infoPopupDisclosure.isOpen && (
         <InfoPopup
