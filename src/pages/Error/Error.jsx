@@ -21,6 +21,7 @@ export const Error = () => {
           color={colorMode === "dark" ? "blue.200" : "blue.500"}
           ml={"1"}
           display={"inline-block"}
+          cursor={"pointer"}
         >
           Go back to InstaVerse.
         </Text>

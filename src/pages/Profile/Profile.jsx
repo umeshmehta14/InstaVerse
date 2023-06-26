@@ -66,8 +66,6 @@ export const Profile = () => {
       ? posts?.filter(({ _id }) => userBookmarks?.includes(_id))
       : [];
 
-  console.log(userBookmarks);
-
   const currentUserCheck = currentUser.username === username;
 
   useEffect(() => {

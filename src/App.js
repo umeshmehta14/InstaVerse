@@ -7,12 +7,12 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
+import LoadingBar from "react-top-loading-bar";
+import { Toaster } from "react-hot-toast";
 
 import { useAuth, usePost } from "./contexts";
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
-import LoadingBar from "react-top-loading-bar";
-import { Toaster } from "react-hot-toast";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
