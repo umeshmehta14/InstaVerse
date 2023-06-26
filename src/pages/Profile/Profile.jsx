@@ -42,7 +42,7 @@ export const Profile = () => {
 
   const {
     handleSingleUser,
-    userState: { selectedUser, defaultTab },
+    userState: { selectedUser, defaultTab, userBookmarks },
     userDispatch,
   } = useUser();
   const {
@@ -51,8 +51,8 @@ export const Profile = () => {
   } = usePost();
   const { progress, currentUser } = useAuth();
 
-  const { username, bookmarks } = selectedUser;
-  document.title = `Profile @${username}`;
+  const { username } = selectedUser;
+  document.title = `@${username}`;
 
   const likedPosts =
     currentUser.username === username
@@ -63,8 +63,10 @@ export const Profile = () => {
 
   const bookmarkPosts =
     currentUser.username === username
-      ? posts?.filter(({ _id }) => bookmarks?.includes(_id))
+      ? posts?.filter(({ _id }) => userBookmarks?.includes(_id))
       : [];
+
+  console.log(userBookmarks);
 
   const currentUserCheck = currentUser.username === username;
 
