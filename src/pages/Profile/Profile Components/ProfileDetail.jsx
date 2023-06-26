@@ -167,7 +167,16 @@ export const ProfileDetail = ({
                 onClick={onOpen}
               >
                 {mutualFollowers && mutualFollowers?.length > 0 && (
-                  <Text p="0">
+                  <Text
+                    p="0"
+                    onClick={() => {
+                      onOpen();
+                      userDispatch({
+                        type: SET_USER_LIST,
+                        payload: "followers",
+                      });
+                    }}
+                  >
                     Followed by{" "}
                     {mutualFollowers
                       ?.slice(0, 2)
