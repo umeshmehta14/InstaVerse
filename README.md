@@ -61,7 +61,7 @@
 <hr/>
 
 ## **Usage -**
-- Open the application in your web browser at [https://techbay-um14.netlify.app](https://instaverse-um14.netlify.app/)
+- Open the application in your web browser at [https://instaverse-um14.netlify.app](https://instaverse-um14.netlify.app/)
 - Sign up for a new account or log in with existing credentials.
 - Navigate through the user feed, explore feed, and user profiles.
 - Create new posts, like and comment on posts, edit and delete your own posts.
