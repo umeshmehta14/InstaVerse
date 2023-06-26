@@ -121,7 +121,6 @@ export const PostBox = ({ post }) => {
           w={"100%"}
           maxH={"585px"}
           minH={"400px"}
-          objectFit={"cover"}
         />
         {showSavedPostBox && (
           <ScaleFade in={showSavedPostBox} initialScale={1}>
