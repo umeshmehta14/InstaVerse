@@ -1,4 +1,5 @@
 
+
 <div align="center">
   <img src="https://tse2.mm.bing.net/th?id=OIP.91kMUobMQ6lwJYCkJNdYgQAAAA&pid=Api&P=0&h=180" height="100" width="100" alt="logo"/>
   
@@ -61,7 +62,7 @@
 <hr/>
 
 ## **Usage -**
-- Open the application in your web browser at [https://techbay-um14.netlify.app](https://instaverse-um14.netlify.app/)
+- Open the application in your web browser at [https://instaverse-um14.netlify.app](https://instaverse-um14.netlify.app/)
 - Sign up for a new account or log in with existing credentials.
 - Navigate through the user feed, explore feed, and user profiles.
 - Create new posts, like and comment on posts, edit and delete your own posts.
@@ -87,6 +88,12 @@
 
 For any inquiries or feedback, please email at ishaanmehta782@gmail.com.
 <hr/>
+
+## **Demo -**
+
+
+https://github.com/umeshmehta14/InstaVerse/assets/109593000/f4016a59-4e50-49d8-91d5-aa0ff77bfa49
+
 
 
 
