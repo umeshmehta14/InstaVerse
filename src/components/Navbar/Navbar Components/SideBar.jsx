@@ -60,12 +60,16 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             <FaInstalod />
           </Text>
 
-          <Text {...sideBarLogoMain} onClick={() => navigate("/")}>
+          <Text
+            {...sideBarLogoMain}
+            onClick={() => navigate("/")}
+            title="Instaverse | Home"
+          >
             InstaVerse
           </Text>
         </HStack>
         <Flex {...navRoutesStyle}>
-          <NavLink style={getStyle} className="nav-links" to="/">
+          <NavLink style={getStyle} className="nav-links" to="/" title="Home">
             <HStack
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
@@ -87,6 +91,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             onClick={searchDrawerDisclosure.onOpen}
             className="nav-item"
+            title="Search"
           >
             <MdSearch className="nav-icon" />
             <Text
@@ -97,7 +102,12 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             </Text>
           </HStack>
 
-          <NavLink style={getStyle} className="nav-links" to="/explore">
+          <NavLink
+            style={getStyle}
+            className="nav-links"
+            to="/explore"
+            title="Explore"
+          >
             <HStack
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
@@ -118,6 +128,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             onClick={postModalDisclosure.onOpen}
             className="nav-item"
+            title="Create Post"
           >
             <TbSquareRoundedPlus className="nav-icon" />
             <Text
@@ -132,6 +143,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             {...navlinkStyle}
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             className="nav-item"
+            title="Likes"
             onClick={() => {
               userDispatch({ type: SET_DEFAULT_TAB, payload: 1 });
               navigate(`/profile/${currentUser?.username}`);
@@ -150,6 +162,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             style={getStyle}
             className="nav-links"
             to={`/profile/${currentUser?.username}`}
+            title="Profile"
           >
             <HStack
               {...navlinkStyle}
@@ -173,6 +186,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             <HStack
               {...navlinkStyle}
               fontSize={"2rem"}
+              title="More"
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             >
               <RxHamburgerMenu className="nav-icon" />

@@ -47,7 +47,7 @@ export const NavBar = () => {
         <Text
           fontFamily={"Pacifico, cursive"}
           fontSize={"1.2rem"}
-          title="InstaVerse"
+          title="Instaverse | Home"
           onClick={() => navigate("/")}
         >
           InstaVerse
