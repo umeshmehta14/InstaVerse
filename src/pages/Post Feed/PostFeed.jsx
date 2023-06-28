@@ -50,7 +50,7 @@ export const PostFeed = () => {
   };
 
   useEffect(() => {
-    if (displayedPosts.length > 0) {
+    if (displayedPosts?.length > 0) {
       const elementRef = bottomRef?.current;
       const observer = new IntersectionObserver(handleObserver);
       if (elementRef) observer?.observe(elementRef);

@@ -53,20 +53,17 @@ export const Profile = () => {
 
   const { username } = selectedUser;
   document.title = `@${username}`;
-
-  const likedPosts =
-    currentUser.username === username
-      ? posts?.filter(({ likes }) =>
-          likes.likedBy?.some((user) => user.username === username)
-        )
-      : [];
-
-  const bookmarkPosts =
-    currentUser.username === username
-      ? posts?.filter(({ _id }) => userBookmarks?.includes(_id))
-      : [];
-
   const currentUserCheck = currentUser.username === username;
+
+  const likedPosts = currentUserCheck
+    ? posts?.filter(({ likes }) =>
+        likes.likedBy?.some((user) => user.username === username)
+      )
+    : [];
+
+  const bookmarkPosts = currentUserCheck
+    ? posts?.filter(({ _id }) => userBookmarks?.includes(_id))
+    : [];
 
   useEffect(() => {
     getAllUserPosts(paramUser.username);
