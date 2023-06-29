@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import { getLoginInformation, createUser } from "./AuthApi";
@@ -63,16 +63,6 @@ export const AuthProvider = ({ children }) => {
 
   const handleGuestLogin = (user) =>
     loginHandler(user?.username, user?.password);
-
-  useEffect(() => {
-    console.log(token, currentUser);
-    if (token) {
-      if (currentUser.username) {
-      } else {
-        loginHandler();
-      }
-    }
-  }, [currentUser, token]);
 
   return (
     <AuthContext.Provider

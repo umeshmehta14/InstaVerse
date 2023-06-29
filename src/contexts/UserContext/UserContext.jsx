@@ -29,7 +29,8 @@ export const UserProvider = ({ children }) => {
   const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
   const { users, loadingUsers } = userState;
   const { postDispatch } = usePost();
-  const { token, currentUser, setCurrentUser, setProgress } = useAuth();
+  const { token, currentUser, setCurrentUser, setProgress, logoutHandler } =
+    useAuth();
 
   const getUsers = async () => {
     try {
@@ -164,7 +165,15 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     getUsers();
-  }, [users]);
+    const checkUser = users?.find(
+      ({ username }) => username === currentUser?.username
+    );
+    if (!checkUser) {
+      if (token) {
+        logoutHandler(true);
+      }
+    }
+  }, []);
 
   return (
     <UserContext.Provider
