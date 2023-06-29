@@ -5,6 +5,7 @@ import {
   useReducer,
   useState,
 } from "react";
+import { toast } from "react-hot-toast";
 
 import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
@@ -46,6 +47,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (err) {
       console.error(err);
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -62,6 +64,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -76,6 +79,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -90,6 +94,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -104,6 +109,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -118,6 +124,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -132,6 +139,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -146,6 +154,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
       postDispatch({ type: SET_SINGLE_POST, payload: {} });
     }
   };
@@ -161,6 +170,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -175,6 +185,7 @@ export const PostProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -187,6 +198,7 @@ export const PostProvider = ({ children }) => {
       });
     } catch (error) {
       console.error("Error sharing:", error);
+      toast.error("Something went wrong");
     }
   };
 

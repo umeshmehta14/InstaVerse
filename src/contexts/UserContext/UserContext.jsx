@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
+import { toast } from "react-hot-toast";
 
 import {
   UnfollowUser,
@@ -11,7 +12,7 @@ import {
 } from "./UserApi";
 import { UserReducer } from "../../reducer/UserReducer/UserReducer";
 import { UserInitialState } from "../../reducer/UserReducer/UserInitialState";
-import { useAuth } from "../AuthContext/AuthContext";
+import { useAuth, usePost } from "../index";
 import {
   ALL_USERS,
   SET_BOOKMARK,
@@ -21,7 +22,6 @@ import {
   SET_LOADING_USERS,
   SET_SELECTED_USER,
 } from "../../utils/Constants";
-import { usePost } from "../PostContext/PostContext";
 
 export const UserContext = createContext();
 
@@ -42,6 +42,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (err) {
       console.error(err);
+      toast.error("Something went wrong");
     }
   };
 
@@ -58,6 +59,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     } finally {
       setProgress(100);
     }
@@ -76,6 +78,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -90,6 +93,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
   const handleRemoveBookmark = async (postId) => {
@@ -103,6 +107,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -120,6 +125,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
   const handleUnfollow = async (unfollowUserId) => {
@@ -135,6 +141,7 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
