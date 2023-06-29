@@ -27,10 +27,9 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
-  const { users, loadingUsers } = userState;
+  const { loadingUsers } = userState;
   const { postDispatch } = usePost();
-  const { token, currentUser, setCurrentUser, setProgress, logoutHandler } =
-    useAuth();
+  const { token, currentUser, setCurrentUser, setProgress } = useAuth();
 
   const getUsers = async () => {
     try {
@@ -165,14 +164,6 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     getUsers();
-    const checkUser = users?.find(
-      ({ username }) => username === currentUser?.username
-    );
-    if (!checkUser) {
-      if (token) {
-        logoutHandler(true);
-      }
-    }
   }, []);
 
   return (
