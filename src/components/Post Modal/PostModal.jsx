@@ -115,7 +115,7 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
           border={"1px solid gray"}
           bg={colorMode === "light" ? "white.500" : "black.900"}
         >
-          <ModalHeader>Create New Post</ModalHeader>
+          <ModalHeader>{edit ? "Edit Post" : "Create New Post"}</ModalHeader>
           <ModalCloseButton
             color={colorMode === "light" ? "black" : "white"}
             _hover={{ bg: "red" }}
