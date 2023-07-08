@@ -198,7 +198,6 @@ export const PostProvider = ({ children }) => {
       });
     } catch (error) {
       console.error("Error sharing:", error);
-      toast.error("Something went wrong");
     }
   };
 
