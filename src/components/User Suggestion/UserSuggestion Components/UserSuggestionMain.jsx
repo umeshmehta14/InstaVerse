@@ -7,7 +7,7 @@ import {
   allSuggestedProfileBox,
   userSuggestionAllProfileBox,
 } from "../../../styles/UserSuggestionStyles";
-import { getMutualFollowers } from "../../../utils/MutualFollowers";
+import { getMutualFollowers } from "../../../utils/Utils";
 
 const UserSuggestionMain = () => {
   const navigate = useNavigate();

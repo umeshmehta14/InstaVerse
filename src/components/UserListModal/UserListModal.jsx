@@ -68,14 +68,7 @@ export const UserListModal = ({ onClose, isOpen, users, heading }) => {
                       onClose();
                     }}
                   >
-                    <Avatar
-                      size="sm"
-                      name={firstName}
-                      src={
-                        avatarURL ||
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                      }
-                    />
+                    <Avatar size="sm" name={firstName} src={avatarURL} />
                     <Text>{username}</Text>
                   </Flex>
                   {currentUser?.username === username ? (

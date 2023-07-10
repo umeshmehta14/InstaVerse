@@ -22,7 +22,7 @@ import { RxCrossCircled, BsDot } from "../../../utils/Icons";
 import { useAuth, useUser } from "../../../contexts";
 import { SET_SEARCH_VALUE } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
-import { getMutualFollowers } from "../../../utils/MutualFollowers";
+import { getMutualFollowers } from "../../../utils/Utils";
 
 const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
@@ -50,10 +50,10 @@ const SearchBox = ({ isOpen, onClose }) => {
         >
           <DrawerCloseButton title="Close" />
           <DrawerHeader>Search</DrawerHeader>
-          <DrawerBody p={"1rem 0.5rem"}>
+          <DrawerBody p={"1rem 0.5rem"} overflow="hidden">
             <InputGroup mb={"1rem"}>
               <Input
-                placeholder="Search..."
+                placeholder="Search User..."
                 onChange={(e) =>
                   userDispatch({
                     type: SET_SEARCH_VALUE,
@@ -106,14 +106,7 @@ const SearchBox = ({ isOpen, onClose }) => {
                     }}
                   >
                     <Flex alignItems={"center"} gap={"2"}>
-                      <Avatar
-                        size="md"
-                        name={firstName}
-                        src={
-                          avatarURL ||
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnAeY_IFrsiUIvvfnSvAcmrdoNUprysMGfCQ&usqp=CAU"
-                        }
-                      />
+                      <Avatar size="md" name={firstName} src={avatarURL} />
                     </Flex>
                     <VStack
                       align={"flex-start"}
@@ -122,7 +115,9 @@ const SearchBox = ({ isOpen, onClose }) => {
                     >
                       <Text>{username}</Text>
                       <Flex fontSize={"0.8rem"} color={"gray"}>
-                        <Text>{`${firstName} ${lastName}`}</Text>
+                        <Text>
+                          {firstName} {lastName}
+                        </Text>
                         {mutualFollower.length > 0 && (
                           <Flex alignItems={"center"}>
                             <BsDot />

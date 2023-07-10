@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { toast } from "react-hot-toast";
 
 import {
-  UnfollowUser,
+  unfollowUser,
   addToBookmark,
   editUser,
   followUser,
@@ -130,7 +130,7 @@ export const UserProvider = ({ children }) => {
   };
   const handleUnfollow = async (unfollowUserId) => {
     try {
-      const { status, data } = await UnfollowUser(unfollowUserId, token);
+      const { status, data } = await unfollowUser(unfollowUserId, token);
       if (status === 200 || status === 201) {
         userDispatch({
           type: SET_FOLLOW_USER,

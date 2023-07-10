@@ -5,7 +5,7 @@ import { PostBox, RotatingLoader, UserSuggestion } from "../../components";
 import { useAuth, usePost, useUser } from "../../contexts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
-import { postFilter } from "../../utils/PostFilter";
+import { postFilter } from "../../utils/Utils";
 import {
   SET_DEFAULT_TAB,
   SET_FILTER,

@@ -35,7 +35,7 @@ export const SwitchAccountModal = ({ onClose, isOpen }) => {
         </ModalHeader>
         <ModalCloseButton _hover={{ bg: "red", color: "white" }} />
         <ModalBody>
-          {users.map((user) => {
+          {users?.map((user) => {
             const { _id, firstName, username, avatarURL } = user;
             return (
               <Flex

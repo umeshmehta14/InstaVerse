@@ -42,9 +42,9 @@ export const InfoPopup = ({
   const { _id, username } = post;
   const { handleDeletePost, postDispatch, handleShare } = usePost();
 
-  const checkBookmark = userBookmarks.find((bookmark) => bookmark === _id);
-  const isFollowing = currentUser.following.find(
-    (user) => user.username === username
+  const checkBookmark = userBookmarks?.find((bookmark) => bookmark === _id);
+  const isFollowing = currentUser?.following?.find(
+    (user) => user?.username === username
   );
 
   return (
@@ -56,7 +56,7 @@ export const InfoPopup = ({
           mt={"15rem"}
         >
           <ModalBody>
-            {currentUser.username === username ? (
+            {currentUser?.username === username ? (
               <>
                 <Button
                   sx={simpleButton}

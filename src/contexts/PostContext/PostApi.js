@@ -45,7 +45,7 @@ export const deletePost = async (postId, token) =>
     },
   });
 
-export const EditPost = async (postData, token) =>
+export const editPost = async (postData, token) =>
   await axios.post(
     `/api/posts/edit/${postData._id}`,
     { postData },

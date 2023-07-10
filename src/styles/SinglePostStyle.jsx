@@ -57,7 +57,8 @@ export const mobilePostMainBoxStyle = {
   pos: "fixed",
   top: "0",
   align: "flex-start",
-  gap: "1rem",
+  gap: "0.3rem",
+  w: "100vw",
 };
 
 export const mobileSinglePostHeading = {

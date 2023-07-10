@@ -50,7 +50,7 @@ export const CommentFooter = ({ post }) => {
     likes: { likedBy },
   } = post;
 
-  const { handlePostLike, handlePostUnLike, HandleCreateComment, handleShare } =
+  const { handlePostLike, handlePostUnLike, handleCreateComment, handleShare } =
     usePost();
   const { currentUser } = useAuth();
   const {
@@ -71,7 +71,7 @@ export const CommentFooter = ({ post }) => {
   );
 
   const handleCommentPost = () => {
-    HandleCreateComment(commentValue, _id);
+    handleCreateComment(commentValue, _id);
     setCommentValue("");
   };
   return (

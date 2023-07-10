@@ -38,7 +38,7 @@ import {
   singlePostModalClose,
 } from "../../styles/SinglePostStyle";
 import { commentInput, emojiPickerButton } from "../../styles/GlobalStyles";
-import { SET_DEFAULT_TAB } from "../../utils/Constants";
+import { SET_DEFAULT_TAB, fallBackImg } from "../../utils/Constants";
 
 export const SinglePost = () => {
   const { postId } = useParams();
@@ -54,8 +54,8 @@ export const SinglePost = () => {
   const [commentValue, setCommentValue] = useState("");
 
   const {
-    HandleSinglePost,
-    HandleCreateComment,
+    handleSinglePost,
+    handleCreateComment,
     postState: { singlePost },
   } = usePost();
   const {
@@ -69,14 +69,14 @@ export const SinglePost = () => {
   const profileUser = users.find((user) => user.username === username);
 
   const handleCommentPost = () => {
-    HandleCreateComment(commentValue, _id);
+    handleCreateComment(commentValue, _id);
     setCommentValue("");
   };
 
   useEffect(() => {
-    HandleSinglePost(postId);
+    handleSinglePost(postId);
     userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
-  }, [postId, comments, HandleSinglePost, singlePost]);
+  }, [postId, comments, handleSinglePost, singlePost]);
 
   return (
     <>
@@ -104,7 +104,7 @@ export const SinglePost = () => {
                 <Flex {...mediaPostBox}>
                   <Image
                     src={mediaUrl}
-                    fallbackSrc="https://tse4.mm.bing.net/th?id=OIP.y0vjVCLBEYW5ANsy2YHhGgHaCe&pid=Api&P=0&h=180"
+                    fallbackSrc={fallBackImg}
                     w={"100%"}
                     height={"100%"}
                   />

@@ -22,7 +22,7 @@ import {
 } from "../../styles/PostBoxStyles";
 import { BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
-import { SET_DEFAULT_TAB } from "../../utils/Constants";
+import { SET_DEFAULT_TAB, fallBackImg } from "../../utils/Constants";
 import { InfoPopup } from "../index";
 
 export const PostBox = ({ post }) => {
@@ -117,7 +117,7 @@ export const PostBox = ({ post }) => {
       <Box pos={"relative"}>
         <Image
           src={mediaUrl}
-          fallbackSrc="https://tse4.mm.bing.net/th?id=OIP.y0vjVCLBEYW5ANsy2YHhGgHaCe&pid=Api&P=0&h=180"
+          fallbackSrc={fallBackImg}
           w={"100%"}
           maxH={"585px"}
           minH={"400px"}

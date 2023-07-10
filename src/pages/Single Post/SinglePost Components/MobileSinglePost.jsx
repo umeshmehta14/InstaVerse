@@ -29,7 +29,9 @@ export const MobileSinglePost = ({ post }) => {
         />
         <Text>Post</Text>
       </HStack>
-      <PostBox post={post} />
+      <Box m="auto">
+        <PostBox post={post} />
+      </Box>
     </VStack>
   );
 };

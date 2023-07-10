@@ -35,3 +35,6 @@ export const avatarUrls = [
   "https://tse1.mm.bing.net/th?id=OIP.5CYXZ2aEryUVopAJxKE9aQHaHa&pid=Api&P=0&h=180",
   "https://tse4.mm.bing.net/th?id=OIP.7tTAo8gFMfyI-o-EjaaxKQHaHa&pid=Api&P=0&h=180",
 ];
+
+export const fallBackImg =
+  "https://tse4.mm.bing.net/th?id=OIP.y0vjVCLBEYW5ANsy2YHhGgHaCe&pid=Api&P=0&h=180";

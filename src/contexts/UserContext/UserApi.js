@@ -38,7 +38,7 @@ export const followUser = async (followUserId, token) =>
     }
   );
 
-export const UnfollowUser = async (unfollowUserId, token) =>
+export const unfollowUser = async (unfollowUserId, token) =>
   await axios.post(
     `/api/users/unfollow/${unfollowUserId}`,
     {},

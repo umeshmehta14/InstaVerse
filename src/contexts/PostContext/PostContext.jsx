@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 import { PostInitialState } from "../../reducer/PostReducer/PostInitialState";
 import { PostReducer } from "../../reducer/PostReducer/PostReducer";
 import {
-  EditPost,
+  editPost,
   createComment,
   createPost,
   deleteComment,
@@ -133,7 +133,7 @@ export const PostProvider = ({ children }) => {
       const {
         status,
         data: { posts },
-      } = await EditPost(postData, token);
+      } = await editPost(postData, token);
       if (status === 201 || status === 200) {
         postDispatch({ type: ALL_POSTS, payload: posts });
       }
@@ -143,7 +143,7 @@ export const PostProvider = ({ children }) => {
     }
   };
 
-  const HandleSinglePost = async (postId) => {
+  const handleSinglePost = async (postId) => {
     try {
       const {
         status,
@@ -159,7 +159,7 @@ export const PostProvider = ({ children }) => {
     }
   };
 
-  const HandleCreateComment = async (commentData, postId) => {
+  const handleCreateComment = async (commentData, postId) => {
     try {
       const {
         status,
@@ -174,7 +174,7 @@ export const PostProvider = ({ children }) => {
     }
   };
 
-  const HandleDeleteComment = async (commentId, postId) => {
+  const handleDeleteComment = async (commentId, postId) => {
     try {
       const {
         status,
@@ -217,9 +217,9 @@ export const PostProvider = ({ children }) => {
         getAllUserPosts,
         handleDeletePost,
         handleEditPost,
-        HandleSinglePost,
-        HandleCreateComment,
-        HandleDeleteComment,
+        handleSinglePost,
+        handleCreateComment,
+        handleDeleteComment,
         handleShare,
       }}
     >

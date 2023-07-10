@@ -18,7 +18,7 @@ import {
   UnfollowModal,
   UserListModal,
 } from "../../../components";
-import { getMutualFollowers } from "../../../utils/MutualFollowers";
+import { getMutualFollowers } from "../../../utils/Utils";
 import { EditProfileModal } from "../../index";
 import {
   mobileBioStyle,

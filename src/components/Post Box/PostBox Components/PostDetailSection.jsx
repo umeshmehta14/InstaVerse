@@ -18,7 +18,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 import { useAuth, usePost, useUser } from "../../../contexts";
-import { getRelativeTime } from "../../../utils/GetRelativeTime";
+import { getRelativeTime } from "../../../utils/Utils";
 import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
 import {
   IconHoverStyle,
@@ -49,7 +49,7 @@ const PostDetailSection = ({
   const location = useLocation();
   const { colorMode } = useColorMode();
 
-  const { handlePostLike, handlePostUnLike, HandleCreateComment, handleShare } =
+  const { handlePostLike, handlePostUnLike, handleCreateComment, handleShare } =
     usePost();
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
@@ -79,7 +79,7 @@ const PostDetailSection = ({
   };
 
   const handleCommentPost = () => {
-    HandleCreateComment(commentValue, _id);
+    handleCreateComment(commentValue, _id);
     setCommentValue("");
   };
 
@@ -210,9 +210,9 @@ const PostDetailSection = ({
           }
         >
           {comments?.length > 0 &&
-            `View ${comments.length > 1 ? "all" : ""} ${
-              comments.length
-            }  comment${comments.length > 1 ? "s" : ""}`}
+            `View ${comments?.length > 1 ? "all" : ""} ${
+              comments?.length
+            }  comment${comments?.length > 1 ? "s" : ""}`}
         </Text>
         <Text fontSize="xs" color={"#717171e0"}>
           {getRelativeTime(createdAt)}
@@ -238,7 +238,6 @@ const PostDetailSection = ({
                 }
                 theme={colorMode}
                 title="Pick an Emoji"
-                emoji=""
               />
             </PopoverBody>
           </PopoverContent>

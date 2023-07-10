@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useAuth, usePost, useUser } from "../../../contexts";
-import { getRelativeTime } from "../../../utils/GetRelativeTime";
+import { getRelativeTime } from "../../../utils/Utils";
 import { InfoPopup } from "../../../components/index";
 import {
   commentTextStyle,
@@ -38,7 +38,7 @@ export const DisplayComments = ({ post, location }) => {
 
   const { currentUser } = useAuth();
   const { handleFollow } = useUser();
-  const { HandleDeleteComment } = usePost();
+  const { handleDeleteComment } = usePost();
   const postFollow = currentUser?.following?.find(
     (user) => user?.username === username
   );
@@ -156,7 +156,7 @@ export const DisplayComments = ({ post, location }) => {
                           sx={simpleButton}
                           color={"red.500"}
                           onClick={() => {
-                            HandleDeleteComment(_id, post._id);
+                            handleDeleteComment(_id, post._id);
                             commentDeleteDisclosure.onClose();
                           }}
                         >
