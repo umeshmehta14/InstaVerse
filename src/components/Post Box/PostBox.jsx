@@ -121,6 +121,8 @@ export const PostBox = ({ post }) => {
           w={"100%"}
           maxH={"585px"}
           minH={"400px"}
+          border={"0.5px solid #838383"}
+          borderRadius={"6px"}
         />
         {showSavedPostBox && (
           <ScaleFade in={showSavedPostBox} initialScale={1}>

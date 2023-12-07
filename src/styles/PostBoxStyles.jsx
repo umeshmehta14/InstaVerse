@@ -9,11 +9,10 @@ export const postNavStyles = {
   py: "1",
   align: "center",
   justifyContent: "space-between",
-  borderBottom: "0.5px solid #e0e0e0",
 };
 
 export const postThreeDot = {
-  fontSize: "1.5rem",
+  fontSize: "1.2rem",
   pr: 0,
   bg: "transparent",
   borderRadius: "40%",
