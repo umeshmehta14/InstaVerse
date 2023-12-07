@@ -85,7 +85,7 @@ export const PostBox = ({ post }) => {
             onClick={() => navigate(`/profile/${username}`)}
           >
             <Avatar size="sm" src={avatarURL} />
-            <Text ml="2" fontWeight="semibold">
+            <Text ml="2" fontWeight="medium">
               {username}
             </Text>
           </Flex>

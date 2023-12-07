@@ -1,10 +1,7 @@
 export const mainPostBoxStyles = {
   w: "100%",
   maxW: "468px",
-  borderWidth: "1px",
-  borderRadius: "lg",
   h: "fit-content",
-  outline: "0.5px solid #6e6e6e4f",
 };
 
 export const postNavStyles = {
