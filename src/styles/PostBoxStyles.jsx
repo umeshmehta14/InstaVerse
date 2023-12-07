@@ -7,6 +7,7 @@ export const mainPostBoxStyles = {
 export const postNavStyles = {
   px: "3",
   py: "1",
+  p: { base: "8px", md: "4px 0px" },
   align: "center",
   justifyContent: "space-between",
 };
@@ -21,10 +22,11 @@ export const postThreeDot = {
 
 export const iconPostStyles = {
   flexDir: "column",
-  rowGap: "0.5rem",
+  rowGap: "0.3rem",
   px: "3",
   pb: "2",
   pt: "2",
+  p: { base: "8px 12px", md: "8px 0px" },
 };
 
 export const IconHoverStyle = {
