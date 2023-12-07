@@ -117,7 +117,7 @@ export const users = [
         lastName: "Taylor",
         username: "sophiet",
         avatarURL:
-          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+          "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
       },
       {
         _id: "dfgDF456",

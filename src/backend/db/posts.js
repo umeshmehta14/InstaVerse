@@ -282,7 +282,7 @@ export const posts = [
         lastName: "Taylor",
         username: "sophiet",
         avatarURL:
-          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+          "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         text: "so cuteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         createdAt: "2023-06-02T12:31:25Z",
       },
@@ -455,7 +455,7 @@ export const posts = [
           lastName: "Taylor",
           username: "sophiet",
           avatarURL:
-            "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+            "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         },
         {
           _id: uuid(),
@@ -482,7 +482,7 @@ export const posts = [
         lastName: "Taylor",
         username: "sophiet",
         avatarURL:
-          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+          "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         text: "Enjoy the show!",
         createdAt: "2023-06-10T19:10:00Z",
       },
@@ -571,7 +571,7 @@ export const posts = [
           lastName: "Taylor",
           username: "sophiet",
           avatarURL:
-            "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+            "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         },
         {
           _id: uuid(),
@@ -609,7 +609,7 @@ export const posts = [
         lastName: "Taylor",
         username: "sophiet",
         avatarURL:
-          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+          "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         text: "Cooking classes are always so much fun! Let me know when you're serving that pasta. 😋",
         createdAt: "2023-06-14T17:15:00Z",
       },
@@ -774,7 +774,7 @@ export const posts = [
           lastName: "Taylor",
           username: "sophiet",
           avatarURL:
-            "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+            "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         },
         {
           _id: uuid(),
@@ -976,7 +976,7 @@ export const posts = [
         lastName: "Taylor",
         username: "sophiet",
         avatarURL:
-          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+          "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         text: "I heard it was an amazing event. Can't wait to hear about your experience!",
         createdAt: "2023-06-15T13:00:00Z",
       },
@@ -1390,7 +1390,7 @@ export const posts = [
         lastName: "Taylor",
         username: "sophiet",
         avatarURL:
-          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+          "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         text: "I'm glad you're enjoying it!",
         createdAt: "2023-06-08T12:15:00Z",
       },
@@ -1524,7 +1524,7 @@ export const posts = [
         lastName: "Taylor",
         username: "sophiet",
         avatarURL:
-          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+          "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         text: "I love hiking too!",
         createdAt: "2023-06-10T16:30:00Z",
       },
@@ -1545,7 +1545,7 @@ export const posts = [
           lastName: "Taylor",
           username: "sophiet",
           avatarURL:
-            "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+            "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         },
         {
           _id: uuid(),
@@ -1604,7 +1604,7 @@ export const posts = [
           lastName: "Taylor",
           username: "sophiet",
           avatarURL:
-            "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+            "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         },
         {
           _id: uuid(),
@@ -1700,7 +1700,7 @@ export const posts = [
         lastName: "Taylor",
         username: "sophiet",
         avatarURL:
-          "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+          "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         text: "Let me know if you find any hidden gems! I'm always up for a good cup of coffee.",
         createdAt: "2023-06-06T15:00:00Z",
       },
@@ -1849,7 +1849,7 @@ export const posts = [
           lastName: "Taylor",
           username: "sophiet",
           avatarURL:
-            "https://tse1.mm.bing.net/th?id=OIP.sWEjM58oebkZoo9RYmdUAgHaHa&pid=Api&P=0&h=180",
+            "https://tse1.mm.bing.net/th?id=OIP.WauRP0HU5Stj3RNcJcL3kwHaHa&pid=Api&P=0&h=220",
         },
         {
           _id: uuid(),

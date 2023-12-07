@@ -16,7 +16,7 @@ import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
-  const bg = useColorModeValue("white.500", "black.700");
+  const bg = useColorModeValue("white.500", "black.900");
   const { colorMode } = useColorMode();
   const { loading } = usePost();
   const { progress } = useAuth();
