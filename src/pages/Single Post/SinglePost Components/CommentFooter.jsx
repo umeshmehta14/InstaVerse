@@ -183,6 +183,7 @@ export const CommentFooter = ({ post }) => {
           value={commentValue}
           onChange={(e) => setCommentValue(e.target.value)}
           {...commentInput}
+          px={"2"}
         />
         <Button
           fontSize={"1rem"}

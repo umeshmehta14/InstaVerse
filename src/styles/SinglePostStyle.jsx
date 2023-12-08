@@ -45,7 +45,7 @@ export const mobileFooterStyle = {
 
 export const addCommentMainBox = {
   pos: "relative",
-  py: "1",
+  p: "4px 8px",
   borderTop: "1px solid gray",
   alignItems: "center",
   w: "100%",

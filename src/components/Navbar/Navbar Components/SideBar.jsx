@@ -62,7 +62,10 @@ const SideBar = ({ searchDrawerDisclosure }) => {
 
           <Text
             {...sideBarLogoMain}
-            onClick={() => navigate("/")}
+            onClick={() => {
+              window.location.reload();
+              navigate("/");
+            }}
             title="Instaverse | Home"
           >
             InstaVerse

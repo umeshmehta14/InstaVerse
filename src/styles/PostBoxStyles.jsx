@@ -2,12 +2,11 @@ export const mainPostBoxStyles = {
   w: "100%",
   maxW: "468px",
   h: "fit-content",
+  borderBottom: "0.5px solid #323232",
 };
 
 export const postNavStyles = {
-  px: "3",
-  py: "1",
-  p: { base: "8px", md: "4px 0px" },
+  p: { base: "8px 12px", md: "4px 0px" },
   align: "center",
   justifyContent: "space-between",
 };
@@ -26,7 +25,7 @@ export const iconPostStyles = {
   px: "3",
   pb: "2",
   pt: "2",
-  p: { base: "8px 12px", md: "8px 0px" },
+  p: { base: "12px 12px 0px 12px", md: "12px 0px 0px 0px" },
 };
 
 export const IconHoverStyle = {

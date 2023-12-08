@@ -166,15 +166,17 @@ export const SinglePost = () => {
                   value={commentValue}
                   onChange={(e) => setCommentValue(e.target.value)}
                   {...commentInput}
+                  px={"2"}
                 />
                 <Button
-                  fontSize={"1rem"}
+                  fontSize={"0.8rem"}
                   variant={"link-button"}
                   size="sm"
                   onClick={() =>
                     commentValue !== "" ? handleCommentPost() : ""
                   }
                   color={commentValue === "" ? "gray" : undefined}
+                  p="0"
                 >
                   Post
                 </Button>

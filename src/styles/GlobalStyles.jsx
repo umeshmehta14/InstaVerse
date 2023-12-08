@@ -26,15 +26,17 @@ export const followedByUser = {
 };
 
 export const emojiPickerButton = {
-  fontSize: "1.8rem",
+  fontSize: "1.2rem",
   cursor: "pointer",
-  ml: "2",
+  color: "gray",
+  _hover: { color: "#464646" },
 };
 
 export const commentInput = {
   border: "none",
   flex: "1",
-  mr: "2",
+  fontSize: "0.8rem",
+  p: 0,
   _focus: {
     outline: "none",
     boxShadow: "none",

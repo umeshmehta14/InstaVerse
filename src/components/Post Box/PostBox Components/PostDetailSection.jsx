@@ -219,17 +219,22 @@ const PostDetailSection = ({
         </Text>
       </Flex>
 
-      <Flex
-        py="1"
-        borderTop="1px solid gray"
-        alignItems={"center"}
-        pos={"relative"}
-      >
+      <Flex p={{ base: "0 12px", md: 0 }} alignItems={"center"}>
         <Popover>
           <PopoverTrigger>
-            <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
+            <Button
+              background="transparent"
+              fontSize={"1.1rem"}
+              minW={"30px"}
+              justifyContent="flex-start"
+              p="0"
+              color={"gray"}
+              _hover={{ background: "transparent", color: "#464646" }}
+            >
+              <BsEmojiSunglasses />
+            </Button>
           </PopoverTrigger>
-          <PopoverContent bottom={"27rem"} bg={"transparent"}>
+          <PopoverContent bg={"transparent"}>
             <PopoverBody p={0}>
               <Picker
                 data={data}
@@ -250,11 +255,11 @@ const PostDetailSection = ({
           {...commentInput}
         />
         <Button
-          fontSize={"1rem"}
+          fontSize={"0.8rem"}
           variant={"link-button"}
           size="sm"
           onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
-          color={commentValue === "" ? "gray" : undefined}
+          visibility={commentValue.length === 0 ? "hidden" : "visible"}
         >
           Post
         </Button>
