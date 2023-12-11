@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useAuth, useUser } from "../../contexts";
+import { useAuth, usePost, useUser } from "../../contexts";
 import { UserListModal } from "../index";
 import {
   bookmarkPopup,
@@ -24,6 +24,7 @@ import { BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
 import { SET_DEFAULT_TAB, fallBackImg } from "../../utils/Constants";
 import { InfoPopup } from "../index";
+import HeartPopup from "./PostBox Components/HeartPopup";
 
 export const PostBox = ({ post }) => {
   const navigate = useNavigate();
@@ -38,6 +39,8 @@ export const PostBox = ({ post }) => {
   } = useUser();
 
   const { currentUser } = useAuth();
+
+  const { handlePostLike } = usePost();
 
   const [showSavedPostBox, setShowSavedPostBox] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -55,6 +58,33 @@ export const PostBox = ({ post }) => {
   const postFollow = currentUser.following.find(
     (user) => user.username === username
   );
+
+  const userLike = likedBy.find(
+    ({ username }) => username === currentUser.username
+  );
+
+  const [doubleTap, setDoubleTap] = useState(false);
+  const lastTapRef = useRef(0);
+
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    const DOUBLE_TAP_THRESHOLD = 300;
+
+    if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
+      setDoubleTap(true);
+      if (userLike) {
+      } else {
+        handlePostLike(_id);
+      }
+      setTimeout(() => {
+        setDoubleTap(false);
+      }, 800);
+    } else {
+      setDoubleTap(false);
+    }
+
+    lastTapRef.current = now;
+  };
 
   const handleBookmarkClick = () => {
     if (bookmarked && clicked) {
@@ -123,7 +153,9 @@ export const PostBox = ({ post }) => {
           minH={"400px"}
           border={{ base: "none", md: "0.5px solid #838383" }}
           borderRadius={{ base: "0", md: "6px" }}
+          onClick={() => handleDoubleTap()}
         />
+        {doubleTap && <HeartPopup />}
         {showSavedPostBox && (
           <ScaleFade in={showSavedPostBox} initialScale={1}>
             <Flex
@@ -153,6 +185,7 @@ export const PostBox = ({ post }) => {
         post={post}
         setClicked={setClicked}
         clicked={clicked}
+        userLike={userLike}
       />
 
       {isOpen && (

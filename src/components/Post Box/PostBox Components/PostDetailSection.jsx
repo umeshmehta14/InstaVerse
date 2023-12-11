@@ -19,7 +19,10 @@ import Picker from "@emoji-mart/react";
 
 import { useAuth, usePost, useUser } from "../../../contexts";
 import { getRelativeTime } from "../../../utils/Utils";
-import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
+import {
+  commentInput,
+  emojiPickerButtonNew,
+} from "../../../styles/GlobalStyles";
 import {
   IconHoverStyle,
   friendLikeUserStyle,
@@ -44,6 +47,7 @@ const PostDetailSection = ({
   bookmarked,
   setClicked,
   clicked,
+  userLike,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -66,10 +70,6 @@ const PostDetailSection = ({
     likes: { likedBy },
   } = post;
 
-  const userLike = likedBy.find(
-    ({ username }) => username === currentUser.username
-  );
-
   const friendLike = currentUser.following.find(({ username }) =>
     likedBy.some((likeUser) => likeUser.username === username)
   );
@@ -81,6 +81,16 @@ const PostDetailSection = ({
   const handleCommentPost = () => {
     handleCreateComment(commentValue, _id);
     setCommentValue("");
+  };
+
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleLike = () => {
+    setIsLiked(true);
+    handlePostLike(post._id);
+    setTimeout(() => {
+      setIsLiked(false);
+    }, 1000);
   };
 
   return (
@@ -105,7 +115,8 @@ const PostDetailSection = ({
                 as={AiOutlineHeart}
                 {...IconHoverStyle}
                 title="Like"
-                onClick={() => handlePostLike(_id)}
+                onClick={() => handleLike()}
+                className={isLiked ? "like-animation" : ""}
               />
             )}
             <Box
@@ -222,15 +233,7 @@ const PostDetailSection = ({
       <Flex p={{ base: "0 12px", md: 0 }} alignItems={"center"}>
         <Popover>
           <PopoverTrigger>
-            <Button
-              background="transparent"
-              fontSize={"1.1rem"}
-              minW={"30px"}
-              justifyContent="flex-start"
-              p="0"
-              color={"gray"}
-              _hover={{ background: "transparent", color: "#464646" }}
-            >
+            <Button {...emojiPickerButtonNew}>
               <BsEmojiSunglasses />
             </Button>
           </PopoverTrigger>

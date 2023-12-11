@@ -36,7 +36,10 @@ import {
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
 import { UserListModal } from "../../../components";
-import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
+import {
+  commentInput,
+  emojiPickerButtonNew,
+} from "../../../styles/GlobalStyles";
 import { commentFooterInputMain } from "../../../styles/SinglePostStyle";
 
 export const CommentFooter = ({ post }) => {
@@ -161,7 +164,11 @@ export const CommentFooter = ({ post }) => {
       >
         <Popover>
           <PopoverTrigger>
-            <Box as={BsEmojiSunglasses} {...emojiPickerButton} title="Emoji" />
+            <Box
+              as={BsEmojiSunglasses}
+              {...emojiPickerButtonNew}
+              title="Emoji"
+            />
           </PopoverTrigger>
           <PopoverContent bottom={"27rem"} bg={"transparent"}>
             <PopoverBody p={0}>

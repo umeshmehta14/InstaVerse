@@ -32,6 +32,16 @@ export const emojiPickerButton = {
   _hover: { color: "#464646" },
 };
 
+export const emojiPickerButtonNew = {
+  background: "transparent",
+  fontSize: "1.1rem",
+  minW: "30px",
+  justifyContent: "flex-start",
+  p: "0",
+  color: "gray",
+  _hover: { background: "transparent", color: "#464646" },
+};
+
 export const commentInput = {
   border: "none",
   flex: "1",

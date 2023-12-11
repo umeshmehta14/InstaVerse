@@ -29,7 +29,7 @@ export const MobileSinglePost = ({ post }) => {
         />
         <Text>Post</Text>
       </HStack>
-      <Box m="auto">
+      <Box m="auto" w="100%">
         <PostBox post={post} />
       </Box>
     </VStack>

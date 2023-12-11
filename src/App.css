@@ -16,6 +16,114 @@
     bottom: 27rem !important;
 }
 
+.like-animation {
+    animation: likeAnimation 1s ease-in-out;
+    -webkit-animation: likeAnimation 0.8s ease-in-out;
+}
+
+@keyframes likeAnimation {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.2);
+        -webkit-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        -o-transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(1.4);
+        -webkit-transform: scale(1.4);
+        -moz-transform: scale(1.4);
+        -ms-transform: scale(1.4);
+        -o-transform: scale(1.4);
+    }
+
+    75% {
+        transform: scale(1.2);
+        -webkit-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        -o-transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.heart {
+    position: absolute;
+    top: -3rem;
+    left: -3rem;
+    animation: popUpAnimation 1s ease-in-out;
+    -webkit-animation: popUpAnimation 1s ease-in-out;
+    transition: top 0.5s ease;
+    -webkit-transition: top 0.5s ease;
+    -moz-transition: top 0.5s ease;
+    -ms-transition: top 0.5s ease;
+    -o-transition: top 0.5s ease;
+}
+
+@keyframes popUpAnimation {
+    0% {
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        -o-transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.2);
+        top: -2rem;
+    }
+
+    50% {
+        transform: scale(0.8);
+        -webkit-transform: scale(0.8);
+        -moz-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+        -o-transform: scale(0.8);
+        top: -3rem;
+    }
+
+    75% {
+        transform: scale(1.2);
+        -webkit-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        -o-transform: scale(1.2);
+        top: -2rem;
+    }
+
+    100% {
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        -o-transform: scale(1);
+        top: -3rem;
+    }
+}
+
+.heartPopup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(242, 0, 255, 0.687);
+    opacity: 0;
+    transition: opacity 0.5s;
+    font-size: 6rem;
+}
+
+.animate {
+    opacity: 1;
+}
 
 @media (min-width: 768px) {
 
