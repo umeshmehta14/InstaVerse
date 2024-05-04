@@ -10,16 +10,17 @@ import { Route, Routes } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { Toaster } from "react-hot-toast";
 
-import { useAuth, usePost } from "./contexts";
+import { usePost } from "./contexts";
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
+import { useSelector } from "react-redux";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.900");
   const { colorMode } = useColorMode();
   const { loading } = usePost();
-  const { progress } = useAuth();
+  const { progress } = useSelector((state) => state.authentication);
 
   return (
     <Box color={color} bg={bg} className="App">

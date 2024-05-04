@@ -27,6 +27,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 import { SET_LOGIN_FORM, SET_SHOW_PASSWORD } from "../../utils/Constants";
+import { loginHandler } from "./authenticationSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Login = () => {
   document.title = "InstaVerse | Login";
@@ -37,12 +39,19 @@ export const Login = () => {
     userState: { users, loginForm, showPassword },
     userDispatch,
   } = useUser();
-  const { loginHandler, token, handleGuestLogin } = useAuth();
+  const { handleGuestLogin } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.authentication);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    loginHandler(loginForm?.username, loginForm?.password);
+    dispatch(
+      loginHandler({
+        identifier: loginForm?.username,
+        password: loginForm?.password,
+      })
+    );
   };
 
   useEffect(() => {

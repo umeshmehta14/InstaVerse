@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useAuth, usePost } from "../../contexts";
+import { usePost } from "../../contexts";
 import {
   filterButton,
   userSuggestionContainer,
@@ -24,6 +24,7 @@ import { SwitchAccountModal } from "../index";
 import UserSuggestionMain from "./UserSuggestion Components/UserSuggestionMain";
 import { SET_FILTER } from "../../utils/Constants";
 import { LuFilter } from "../../utils/Icons";
+import { useSelector } from "react-redux";
 
 export const UserSuggestion = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export const UserSuggestion = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const { postDispatch } = usePost();
 
   return (
@@ -48,7 +49,7 @@ export const UserSuggestion = () => {
           cursor={"pointer"}
           onClick={() => navigate(`/profile/${currentUser.username}`)}
         >
-          <Avatar size="lg" src={currentUser.avatarURL} />
+          <Avatar size="lg" src={currentUser.avatar?.url} />
           <Text fontWeight={"normal"} justifySelf={"flex-end"}>
             {currentUser.username}
           </Text>

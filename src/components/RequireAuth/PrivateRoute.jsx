@@ -1,16 +1,13 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
-import { useAuth } from "../../contexts";
+import { useSelector } from "react-redux";
 
 export const PrivateRoute = ({ children }) => {
-  const { token } = useAuth();
+  const { token } = useSelector((state) => state.authentication);
+
+  console.log("token", token);
   const location = useLocation();
 
-  return token ? (
-     children
-  ) : (
-    <Navigate to="/login" state={{ from: location }} />
-  );
+  return token ? children : <Navigate to="/login" state={{ from: location }} />;
 };
-
