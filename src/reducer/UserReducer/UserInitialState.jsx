@@ -16,8 +16,8 @@ export const UserInitialState = {
   },
   showPassword: false,
   signupForm: {
-    fistName: "",
-    lastName: "",
+    fullName: "",
+    email: "",
     username: "",
     password: "",
     Cpassword: "",

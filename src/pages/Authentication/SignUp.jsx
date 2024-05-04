@@ -17,23 +17,27 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, useUser } from "../../contexts";
+import { useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 import { toast } from "react-hot-toast";
 import { SET_SHOW_PASSWORD, SET_SIGNUP_FORM } from "../../utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { signupHandler } from "./authenticationSlice";
 
 export const SignUp = () => {
   document.title = "InstaVerse | SignUp";
   const { colorMode } = useColorMode();
+  const { token } = useSelector((state) => state.authentication);
 
-  const { signUpHandler, token } = useAuth();
+  const dispatch = useDispatch();
+
   const {
     userState: { showPassword, signupForm },
     userDispatch,
   } = useUser();
   const navigate = useNavigate();
 
-  const { firstName, lastName, username, password, Cpassword } = signupForm;
+  const { fullName, email, username, password, Cpassword } = signupForm;
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -41,7 +45,7 @@ export const SignUp = () => {
       if (password.length < 8) {
         toast.error("Password Have Atleast 8 Characters");
       } else {
-        signUpHandler(firstName, lastName, username, password);
+        dispatch(signupHandler({ fullName, email, username, password }));
       }
     } else {
       toast.error("Password Does'nt Match");
@@ -68,52 +72,52 @@ export const SignUp = () => {
         </Heading>
         <form onSubmit={handleSignup}>
           <HStack>
-            <FormControl id="firstname" mb={4}>
-              <FormLabel mb={"1"}>First Name:</FormLabel>
+            <FormControl id="fullname" mb={4}>
+              <FormLabel mb={"1"}>Full Name:</FormLabel>
               <Input
                 type="text"
                 placeholder="First name"
-                value={firstName}
+                value={fullName}
                 required
                 onChange={(event) =>
                   userDispatch({
                     type: SET_SIGNUP_FORM,
                     payload: {
                       ...signupForm,
-                      firstName: event.target.value,
+                      fullName: event.target.value,
                     },
                   })
                 }
               />
             </FormControl>
-            <FormControl id="lastname" mb={4}>
-              <FormLabel mb={"1"}>Last Name:</FormLabel>
+            <FormControl id="username" mb={4}>
+              <FormLabel mb={"1"}>User Name:</FormLabel>
               <Input
                 type="text"
-                placeholder="Last name"
-                value={lastName}
+                placeholder="Enter your username"
+                value={username}
                 required
                 onChange={(event) =>
                   userDispatch({
                     type: SET_SIGNUP_FORM,
-                    payload: { ...signupForm, lastName: event.target.value },
+                    payload: { ...signupForm, username: event.target.value },
                   })
                 }
               />
             </FormControl>
           </HStack>
 
-          <FormControl id="username" mb={4}>
-            <FormLabel mb={"1"}>User Name:</FormLabel>
+          <FormControl id="email" mb={4}>
+            <FormLabel mb={"1"}>Email:</FormLabel>
             <Input
               type="text"
-              placeholder="Enter your username"
-              value={username}
+              placeholder="Enter your email"
+              value={email}
               required
               onChange={(event) =>
                 userDispatch({
                   type: SET_SIGNUP_FORM,
-                  payload: { ...signupForm, username: event.target.value },
+                  payload: { ...signupForm, email: event.target.value },
                 })
               }
             />

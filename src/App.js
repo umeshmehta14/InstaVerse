@@ -1,4 +1,5 @@
 import "./App.css";
+import { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -14,13 +15,20 @@ import { usePost } from "./contexts";
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
 import { useSelector } from "react-redux";
+import { refreshTokens } from "./pages/Authentication/authenticationSlice";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.900");
   const { colorMode } = useColorMode();
   const { loading } = usePost();
-  const { progress } = useSelector((state) => state.authentication);
+  const { progress, token } = useSelector((state) => state.authentication);
+
+  useEffect(() => {
+    if (token) {
+      refreshTokens();
+    }
+  }, []);
 
   return (
     <Box color={color} bg={bg} className="App">

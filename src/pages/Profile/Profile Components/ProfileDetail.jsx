@@ -33,6 +33,8 @@ import {
 import { followedByUser } from "../../../styles/GlobalStyles";
 import { FiLogOut } from "../../../utils/Icons";
 import { SET_USER_LIST } from "../../../utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutHandler } from "../../Authentication/authenticationSlice";
 
 export const ProfileDetail = ({
   selectedUser,
@@ -44,7 +46,8 @@ export const ProfileDetail = ({
   const unfollowModalDisclosure = useDisclosure();
   const { colorMode } = useColorMode();
 
-  const { logoutHandler, currentUser } = useAuth();
+  const { currentUser, token } = useSelector((state) => state.authentication);
+  const dispatch = useDispatch();
   const {
     userState: { loadingUsers, userList },
     handleFollowUser,
@@ -55,7 +58,7 @@ export const ProfileDetail = ({
     username,
     firstName,
     lastName,
-    avatarURL,
+    avatar: { url },
     bio,
     following,
     followers,
@@ -78,7 +81,7 @@ export const ProfileDetail = ({
   return (
     <>
       <Flex {...profileDetailMain}>
-        <Avatar size={{ base: "xl", md: "2xl" }} src={avatarURL} />
+        <Avatar size={{ base: "xl", md: "2xl" }} src={url} />
         <Flex {...profileButtonMain}>
           <Flex {...profileUsernameStyle}>
             <Text>{username}</Text>
@@ -87,7 +90,7 @@ export const ProfileDetail = ({
                 as={FiLogOut}
                 fontSize={"1.4rem"}
                 cursor={"pointer"}
-                onClick={logoutHandler}
+                onClick={() => dispatch(logoutHandler(token))}
                 title="Logout"
               />
             )}

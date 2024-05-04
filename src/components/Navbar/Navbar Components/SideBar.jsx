@@ -36,18 +36,22 @@ import {
   FaRegBookmark,
   FiLogOut,
 } from "../../../utils/Icons";
-import { useAuth, useUser } from "../../../contexts";
+import { useUser } from "../../../contexts";
 import SearchBox from "./SearchBox";
 import { SET_DEFAULT_TAB } from "../../../utils/Constants";
 import { SwitchAccountModal } from "../../index";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutHandler } from "../../../pages/Authentication/authenticationSlice";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const postModalDisclosure = useDisclosure();
   const SwitchUserDisclosure = useDisclosure();
-  const { logoutHandler, currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const { userDispatch } = useUser();
+
+  const dispatch = useDispatch();
 
   const getStyle = ({ isActive }) =>
     isActive ? { fontWeight: "bold", fontSize: "2.08rem" } : {};
@@ -228,7 +232,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             <Button
               justifyContent={"flex-start"}
               gap={2}
-              onClick={logoutHandler}
+              onClick={() => dispatch(logoutHandler())}
               color={"red.500"}
             >
               LogOut <FiLogOut />

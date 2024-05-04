@@ -36,12 +36,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUpHandler = async (firstName, lastName, username, password) => {
+  const signUpHandler = async (fullName, username, password, email) => {
     try {
       const {
         status,
         data: { createdUser, encodedToken },
-      } = await createUser(firstName, lastName, username, password);
+      } = await createUser(fullName, email, username, password);
       if (status === 201 || status === 200) {
         localStorage.setItem(
           "userDetails",

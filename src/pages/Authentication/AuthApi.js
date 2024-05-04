@@ -7,10 +7,22 @@ export const getLoginInformation = async (identifier, password) =>
     password,
   });
 
-export const createUser = async (firstName, lastName, username, password) =>
-  await axios.post("/api/auth/signup", {
+export const createUser = async (fullName, username, password, email) =>
+  await axios.post(`${API_URL}/user/sign-up`, {
+    fullName,
     username,
     password,
-    firstName,
-    lastName,
+    email,
+  });
+
+export const userLogout = async (token) =>
+  await axios.get(`${API_URL}/user/logout`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const refreshUserToken = async (refreshToken) =>
+  await axios.post(`${API_URL}/user/refresh-token`, {
+    refreshToken,
   });
