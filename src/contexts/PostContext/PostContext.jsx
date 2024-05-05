@@ -26,13 +26,13 @@ import {
   SET_ALL_USER_POSTS,
   SET_SINGLE_POST,
 } from "../../utils/Constants";
-import { useAuth } from "../index";
+import { useSelector } from "react-redux";
 
 export const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
   const [postState, postDispatch] = useReducer(PostReducer, PostInitialState);
-  const { token } = useAuth();
+  const { token } = useSelector((state) => state.authentication);
 
   const [loading, setLoading] = useState(true);
 

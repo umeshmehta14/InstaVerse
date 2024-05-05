@@ -2,12 +2,13 @@ import React from "react";
 import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, useUser } from "../../../contexts";
+import { useUser } from "../../../contexts";
 import {
   allSuggestedProfileBox,
   userSuggestionAllProfileBox,
 } from "../../../styles/UserSuggestionStyles";
 import { getMutualFollowers } from "../../../utils/Utils";
+import { useSelector } from "react-redux";
 
 const UserSuggestionMain = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const UserSuggestionMain = () => {
     handleFollow,
     userState: { users },
   } = useUser();
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
 
   const suggestedUser = users?.filter(
     (user) =>

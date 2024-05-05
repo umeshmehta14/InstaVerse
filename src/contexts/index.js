@@ -1,9 +1,4 @@
 export {
-  AuthContext,
-  AuthProvider,
-  useAuth,
-} from "./AuthContext/AuthContext.jsx";
-export {
   PostProvider,
   PostContext,
   usePost,

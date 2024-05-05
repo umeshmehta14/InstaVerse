@@ -19,8 +19,9 @@ import {
   BsMoon,
   AiOutlineDown,
 } from "../../utils/Icons";
-import { useAuth, useUser } from "../../contexts";
+import { useUser } from "../../contexts";
 import { SwitchAccountModal } from "../index";
+import { useSelector } from "react-redux";
 
 export const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -32,7 +33,7 @@ export const NavBar = () => {
   const {
     userState: { selectedUser },
   } = useUser();
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
 
   if (location?.pathname === "/login" || location?.pathname === "/signup") {
     return null;

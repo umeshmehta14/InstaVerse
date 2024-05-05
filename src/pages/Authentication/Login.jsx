@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, useUser } from "../../contexts";
+import { useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 import { SET_LOGIN_FORM, SET_SHOW_PASSWORD } from "../../utils/Constants";
 import { loginHandler } from "./authenticationSlice";
@@ -39,7 +39,7 @@ export const Login = () => {
     userState: { users, loginForm, showPassword },
     userDispatch,
   } = useUser();
-  const { handleGuestLogin } = useAuth();
+  // const { handleGuestLogin } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authentication);

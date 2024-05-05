@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useAuth, usePost, useUser } from "../../../contexts";
+import { usePost, useUser } from "../../../contexts";
 import { getRelativeTime } from "../../../utils/Utils";
 import { InfoPopup } from "../../../components/index";
 import {
@@ -26,6 +26,7 @@ import {
 import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
 import { BsThreeDots } from "../../../utils/Icons";
 import { simpleButton } from "../../../styles/GlobalStyles";
+import { useSelector } from "react-redux";
 
 export const DisplayComments = ({ post, location }) => {
   const { username, avatarURL, comments, createdAt, content } = post;
@@ -36,7 +37,7 @@ export const DisplayComments = ({ post, location }) => {
   const commentDeleteDisclosure = useDisclosure();
   const { colorMode } = useColorMode();
 
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const { handleFollow } = useUser();
   const { handleDeleteComment } = usePost();
   const postFollow = currentUser?.following?.find(

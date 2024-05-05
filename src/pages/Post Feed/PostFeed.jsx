@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Alert, AlertIcon, Flex, Text, VStack } from "@chakra-ui/react";
 
 import { PostBox, RotatingLoader, UserSuggestion } from "../../components";
-import { useAuth, usePost, useUser } from "../../contexts";
+import { usePost, useUser } from "../../contexts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { postFilter } from "../../utils/Utils";
@@ -12,6 +12,7 @@ import {
   SET_ISPOSTLOADING,
   SET_PAGE,
 } from "../../utils/Constants";
+import { useSelector } from "react-redux";
 
 export const PostFeed = () => {
   const {
@@ -19,7 +20,7 @@ export const PostFeed = () => {
     postDispatch,
   } = usePost();
   const { userDispatch } = useUser();
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const navigate = useNavigate();
   const location = useLocation();
 

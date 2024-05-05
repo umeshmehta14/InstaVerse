@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useAuth, usePost, useUser } from "../../contexts";
+import { usePost, useUser } from "../../contexts";
 import { UserListModal } from "../index";
 import {
   bookmarkPopup,
@@ -25,6 +25,7 @@ import PostDetailSection from "./PostBox Components/PostDetailSection";
 import { SET_DEFAULT_TAB, fallBackImg } from "../../utils/Constants";
 import { InfoPopup } from "../index";
 import HeartPopup from "./PostBox Components/HeartPopup";
+import { useSelector } from "react-redux";
 
 export const PostBox = ({ post }) => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export const PostBox = ({ post }) => {
     handleFollow,
   } = useUser();
 
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
 
   const { handlePostLike } = usePost();
 

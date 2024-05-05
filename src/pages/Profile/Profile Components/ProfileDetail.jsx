@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-import { useAuth, useUser } from "../../../contexts";
+import { useUser } from "../../../contexts";
 import {
   RotatingLoader,
   UnfollowModal,

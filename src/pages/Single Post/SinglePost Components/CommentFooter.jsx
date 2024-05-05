@@ -19,7 +19,7 @@ import {
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-import { useAuth, usePost, useUser } from "../../../contexts";
+import { usePost, useUser } from "../../../contexts";
 import {
   AiFillHeart,
   AiOutlineHeart,
@@ -41,6 +41,7 @@ import {
   emojiPickerButtonNew,
 } from "../../../styles/GlobalStyles";
 import { commentFooterInputMain } from "../../../styles/SinglePostStyle";
+import { useSelector } from "react-redux";
 
 export const CommentFooter = ({ post }) => {
   const { colorMode } = useColorMode();
@@ -55,7 +56,7 @@ export const CommentFooter = ({ post }) => {
 
   const { handlePostLike, handlePostUnLike, handleCreateComment, handleShare } =
     usePost();
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const {
     handleBookmark,
     handleRemoveBookmark,

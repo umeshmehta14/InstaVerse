@@ -12,11 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
 
-import { useAuth, usePost, useUser } from "../../contexts";
+import { usePost, useUser } from "../../contexts";
 import { UnfollowModal } from "../index";
 import { PostModal } from "../index";
 import { simpleButton } from "../../styles/GlobalStyles";
 import { SET_EDIT_POST } from "../../utils/Constants";
+import { useSelector } from "react-redux";
 
 export const InfoPopup = ({
   onClose,
@@ -32,7 +33,7 @@ export const InfoPopup = ({
   const navigate = useNavigate();
   const mainLocation = useLocation();
 
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const {
     userState: { userBookmarks },
     handleBookmark,

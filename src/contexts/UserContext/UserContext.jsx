@@ -12,7 +12,7 @@ import {
 } from "./UserApi";
 import { UserReducer } from "../../reducer/UserReducer/UserReducer";
 import { UserInitialState } from "../../reducer/UserReducer/UserInitialState";
-import { useAuth, usePost } from "../index";
+import { usePost } from "../index";
 import {
   ALL_USERS,
   SET_BOOKMARK,
@@ -22,6 +22,7 @@ import {
   SET_LOADING_USERS,
   SET_SELECTED_USER,
 } from "../../utils/Constants";
+import { useSelector } from "react-redux";
 
 export const UserContext = createContext();
 
@@ -29,7 +30,7 @@ export const UserProvider = ({ children }) => {
   const [userState, userDispatch] = useReducer(UserReducer, UserInitialState);
   const { loadingUsers } = userState;
   const { postDispatch } = usePost();
-  const { token, currentUser, setCurrentUser, setProgress } = useAuth();
+  const { currentUser, token } = useSelector((state) => state.authentication);
 
   const getUsers = async () => {
     try {

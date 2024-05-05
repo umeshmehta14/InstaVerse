@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useAuth, usePost, useUser } from "../../contexts";
+import { usePost, useUser } from "../../contexts";
 import { GridBox, ProfileSkeleton, ProfileDetail } from "../index";
 import { PostModal } from "../../components";
 import {
@@ -33,6 +33,7 @@ import {
   BsFillHeartbreakFill,
   BsBookmarkX,
 } from "../../utils/Icons";
+import { useSelector } from "react-redux";
 
 export const Profile = () => {
   const paramUser = useParams();
@@ -49,7 +50,9 @@ export const Profile = () => {
     getAllUserPosts,
     postState: { posts, userAllPost },
   } = usePost();
-  const { progress, currentUser } = useAuth();
+  const { currentUser, progress } = useSelector(
+    (state) => state.authentication
+  );
 
   const { username } = selectedUser;
   document.title = `@${username}`;

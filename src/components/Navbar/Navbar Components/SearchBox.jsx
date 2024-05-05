@@ -19,10 +19,11 @@ import {
 import React from "react";
 
 import { RxCrossCircled, BsDot } from "../../../utils/Icons";
-import { useAuth, useUser } from "../../../contexts";
+import { useUser } from "../../../contexts";
 import { SET_SEARCH_VALUE } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
 import { getMutualFollowers } from "../../../utils/Utils";
+import { useSelector } from "react-redux";
 
 const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
@@ -31,7 +32,7 @@ const SearchBox = ({ isOpen, onClose }) => {
     userDispatch,
   } = useUser();
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
 
   return (
     <Box>

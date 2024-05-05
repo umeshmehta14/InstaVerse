@@ -30,7 +30,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useAuth, useUser } from "../../../contexts";
+import { useUser } from "../../../contexts";
 import { AvatarModal } from "../../index";
 import {
   inputLengthReader,
@@ -39,9 +39,10 @@ import {
   editFormLabel,
 } from "../../../styles/GlobalStyles";
 import { AiOutlinePicture, SlTrash, RxAvatar } from "../../../utils/Icons";
+import { useSelector } from "react-redux";
 
 export const EditProfileModal = ({ isOpen, onClose }) => {
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const { handleEditUser } = useUser();
   const { colorMode } = useColorMode();
   const fileInputRef = useRef(null);

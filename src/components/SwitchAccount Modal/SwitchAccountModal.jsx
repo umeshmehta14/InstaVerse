@@ -15,11 +15,12 @@ import {
 } from "@chakra-ui/react";
 
 import { userList } from "../../styles/SuggestionBoxStyle";
-import { useAuth, useUser } from "../../contexts";
+import { useUser } from "../../contexts";
 import { VscPassFilled } from "../../utils/Icons";
+import { logoutHandler } from "../../pages/Authentication/authenticationSlice";
 
 export const SwitchAccountModal = ({ onClose, isOpen }) => {
-  const { logoutHandler, handleGuestLogin, currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const { colorMode } = useColorMode();
 
   const {

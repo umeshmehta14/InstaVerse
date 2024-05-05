@@ -17,7 +17,7 @@ import {
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-import { useAuth, usePost, useUser } from "../../../contexts";
+import { usePost, useUser } from "../../../contexts";
 import { getRelativeTime } from "../../../utils/Utils";
 import {
   commentInput,
@@ -40,6 +40,7 @@ import {
   FaRegBookmark,
   BsEmojiSunglasses,
 } from "../../../utils/Icons";
+import { useSelector } from "react-redux";
 
 const PostDetailSection = ({
   onOpen,
@@ -58,7 +59,7 @@ const PostDetailSection = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
 
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
   const { handleBookmark, handleRemoveBookmark } = useUser();
 
   const {

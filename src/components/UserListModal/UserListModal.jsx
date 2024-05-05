@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, useUser } from "../../contexts";
+import {  useUser } from "../../contexts";
 import { UnfollowModal, RotatingLoader } from "../index";
 import { SET_UNFOLLOW_USER } from "../../utils/Constants";
 
@@ -25,7 +25,7 @@ export const UserListModal = ({ onClose, isOpen, users, heading }) => {
   const { colorMode } = useColorMode();
   const unfollowDisclosure = useDisclosure();
 
-  const { currentUser } = useAuth();
+  const { currentUser } = ();
   const {
     handleFollowUser,
     userState: { unfollowUser, loadingUsers },
