@@ -7,8 +7,6 @@ import "./index.css";
 import App from "./App";
 import theme from "./styles/Theme";
 import {
-  AuthProvider,
-  AuthContext,
   UserContext,
   UserProvider,
   PostContext,
@@ -23,17 +21,15 @@ root.render(
     <Router>
       <Provider store={store}>
         <ChakraProvider theme={theme}>
-          <AuthProvider>
-            <PostProvider>
-              <UserProvider>
-                <App />
-              </UserProvider>
-            </PostProvider>
-          </AuthProvider>
+          <PostProvider>
+            <UserProvider>
+              <App />
+            </UserProvider>
+          </PostProvider>
         </ChakraProvider>
       </Provider>
     </Router>
   </React.StrictMode>
 );
 
-export { AuthContext, PostContext, UserContext };
+export { PostContext, UserContext };

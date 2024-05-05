@@ -23,12 +23,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 import { SET_LOGIN_FORM, SET_SHOW_PASSWORD } from "../../utils/Constants";
 import { loginHandler } from "./authenticationSlice";
-import { useDispatch, useSelector } from "react-redux";
 
 export const Login = () => {
   document.title = "InstaVerse | Login";

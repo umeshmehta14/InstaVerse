@@ -13,6 +13,7 @@ import {
   ModalOverlay,
   useColorMode,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 import { userList } from "../../styles/SuggestionBoxStyle";
 import { useUser } from "../../contexts";
