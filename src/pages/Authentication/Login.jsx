@@ -33,6 +33,7 @@ import {
   SET_SHOW_PASSWORD,
 } from "../../utils/Constants";
 import { loginHandler } from "./authenticationSlice";
+import TailSpinLoader from "../../components/Loader/TailSpinLoader";
 
 export const Login = () => {
   document.title = "InstaVerse | Login";
@@ -47,7 +48,7 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authentication);
-  const { guestUsers } = useSelector((state) => state.user);
+  const { guestUsers, isLoading } = useSelector((state) => state.user);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -132,36 +133,42 @@ export const Login = () => {
             <ModalOverlay />
             <ModalContent
               bg={colorMode === "light" ? "white.500" : "black.900"}
+              minH={"560px"}
+              border={"1px solid #5454548f"}
             >
               <ModalHeader>Guest Users</ModalHeader>
               <ModalCloseButton _hover={{ bg: "red", color: "white" }} />
               <ModalBody>
-                {guestUsers.map((user) => (
-                  <Flex
-                    key={user?._id}
-                    gap={"2"}
-                    cursor={"pointer"}
-                    align={"center"}
-                    p="2"
-                    onClick={() =>
-                      dispatch(
-                        loginHandler({
-                          identifier: user?.username,
-                          password: GUEST_USER_PASSWORD,
-                        })
-                      )
-                    }
-                    borderRadius={"12px"}
-                    _hover={{ bg: "gray.100" }}
-                  >
-                    <Avatar
-                      size="sm"
-                      name={user?.fullName}
-                      src={user?.avatar?.url}
-                    />
-                    {user?.username}
-                  </Flex>
-                ))}
+                {isLoading ? (
+                  <TailSpinLoader />
+                ) : (
+                  guestUsers.map((user) => (
+                    <Flex
+                      key={user?._id}
+                      gap={"2"}
+                      cursor={"pointer"}
+                      align={"center"}
+                      p="2"
+                      onClick={() =>
+                        dispatch(
+                          loginHandler({
+                            identifier: user?.username,
+                            password: GUEST_USER_PASSWORD,
+                          })
+                        )
+                      }
+                      borderRadius={"12px"}
+                      _hover={{ bg: "gray.100" }}
+                    >
+                      <Avatar
+                        size="sm"
+                        name={user?.fullName}
+                        src={user?.avatar?.url}
+                      />
+                      {user?.username}
+                    </Flex>
+                  ))
+                )}
               </ModalBody>
             </ModalContent>
           </Modal>

@@ -33,7 +33,8 @@ import {
   BsFillHeartbreakFill,
   BsBookmarkX,
 } from "../../utils/Icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserByUsername } from "../Post Feed/userSlice";
 
 export const Profile = () => {
   const paramUser = useParams();
@@ -42,8 +43,7 @@ export const Profile = () => {
   const postModalDisclosure = useDisclosure();
 
   const {
-    handleSingleUser,
-    userState: { selectedUser, defaultTab, userBookmarks },
+    userState: { defaultTab, userBookmarks },
     userDispatch,
   } = useUser();
   const {
@@ -53,6 +53,9 @@ export const Profile = () => {
   const { currentUser, progress } = useSelector(
     (state) => state.authentication
   );
+  const { selectedUser } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
 
   const { username } = selectedUser;
   document.title = `@${username}`;
@@ -70,19 +73,20 @@ export const Profile = () => {
 
   useEffect(() => {
     getAllUserPosts(paramUser.username);
-    handleSingleUser(paramUser.username);
+    if (selectedUser?.username !== paramUser.username) {
+      dispatch(getUserByUsername({ username: paramUser?.username }));
+    }
 
     return () => {
       userDispatch({ type: SET_SELECTED_USER, payload: null });
     };
-  }, [paramUser.username, currentUser, posts, defaultTab]);
+  }, [paramUser.username, currentUser, posts, defaultTab, selectedUser]);
 
   return progress === 100 ? (
     <Flex {...profileMainBox}>
       <ProfileDetail
         selectedUser={selectedUser}
         currentUserCheck={currentUserCheck}
-        userAllPost={userAllPost}
       />
       <Divider />
       <Tabs isLazy defaultIndex={defaultTab} w={"100%"}>
@@ -106,7 +110,7 @@ export const Profile = () => {
         </TabList>
         <TabPanels>
           <TabPanel p="0">
-            {userAllPost?.length === 0 ? (
+            {selectedUser?.posts?.length === 0 ? (
               <VStack justifyContent="center" height="300px" gap={"4"}>
                 <Box as={CiCamera} {...emptyCameraStyles} />
                 <Heading>Share photos</Heading>
@@ -121,7 +125,7 @@ export const Profile = () => {
                 </Button>
               </VStack>
             ) : (
-              <GridBox showingPost={userAllPost} />
+              <GridBox showingPost={selectedUser?.posts} />
             )}
           </TabPanel>
           <TabPanel p="0">

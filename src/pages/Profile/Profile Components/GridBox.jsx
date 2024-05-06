@@ -25,13 +25,7 @@ export const GridBox = ({ showingPost }) => {
       gap={"1"}
     >
       {showingPost?.map((post) => {
-        const {
-          mediaUrl,
-          _id,
-          comments,
-          username,
-          likes: { likedBy },
-        } = post;
+        const { url, _id, comments, username, likes } = post;
         const [isHovered, setIsHovered] = useState(false);
 
         return (
@@ -50,7 +44,7 @@ export const GridBox = ({ showingPost }) => {
             }
           >
             <AspectRatio ratio={1}>
-              <Image src={mediaUrl} alt={username} {...profileImageStyle} />
+              <Image src={url} alt={username} {...profileImageStyle} />
             </AspectRatio>
             <Flex display={isHovered ? "flex" : "none"} {...profileHoverStyle}>
               <Flex align={"center"} gap={"2"}>
@@ -59,7 +53,7 @@ export const GridBox = ({ showingPost }) => {
               </Flex>
               <Flex align={"center"} gap={"2"}>
                 <Box as={AiFillHeart} fontSize={"1.5rem"} />
-                {likedBy?.length}
+                {likes?.length}
               </Flex>
             </Flex>
           </GridItem>

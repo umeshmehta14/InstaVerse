@@ -22,10 +22,11 @@ import {
   logoutHandler,
 } from "../../pages/Authentication/authenticationSlice";
 import { GUEST_USER_PASSWORD } from "../../utils/Constants";
+import TailSpinLoader from "../Loader/TailSpinLoader";
 
 export const SwitchAccountModal = ({ onClose, isOpen }) => {
   const { currentUser } = useSelector((state) => state.authentication);
-  const { guestUsers } = useSelector((state) => state.user);
+  const { guestUsers, isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { colorMode } = useColorMode();
 
@@ -38,37 +39,41 @@ export const SwitchAccountModal = ({ onClose, isOpen }) => {
         </ModalHeader>
         <ModalCloseButton _hover={{ bg: "red", color: "white" }} />
         <ModalBody>
-          {guestUsers?.map((user) => {
-            const {
-              _id,
-              fullName,
-              username,
-              avatar: { url },
-            } = user;
-            return (
-              <Flex
-                key={_id}
-                {...userList}
-                onClick={() => {
-                  dispatch(logoutHandler());
-                  dispatch(loginHandler({ username, GUEST_USER_PASSWORD }));
-                  onClose();
-                }}
-              >
-                <Flex alignItems={"center"} gap={"2"}>
-                  <Avatar size="sm" name={fullName} src={url} />
-                  <Text>{username}</Text>
+          {isLoading ? (
+            <TailSpinLoader />
+          ) : (
+            guestUsers?.map((user) => {
+              const {
+                _id,
+                fullName,
+                username,
+                avatar: { url },
+              } = user;
+              return (
+                <Flex
+                  key={_id}
+                  {...userList}
+                  onClick={() => {
+                    dispatch(logoutHandler());
+                    dispatch(loginHandler({ username, GUEST_USER_PASSWORD }));
+                    onClose();
+                  }}
+                >
+                  <Flex alignItems={"center"} gap={"2"}>
+                    <Avatar size="sm" name={fullName} src={url} />
+                    <Text>{username}</Text>
+                  </Flex>
+                  {currentUser?.username === username ? (
+                    <Box
+                      as={VscPassFilled}
+                      fontSize={"1.4rem"}
+                      color="blue.500"
+                    />
+                  ) : null}
                 </Flex>
-                {currentUser?.username === username ? (
-                  <Box
-                    as={VscPassFilled}
-                    fontSize={"1.4rem"}
-                    color="blue.500"
-                  />
-                ) : null}
-              </Flex>
-            );
-          })}
+              );
+            })
+          )}
           <Button
             variant={"link-button"}
             w="100%"

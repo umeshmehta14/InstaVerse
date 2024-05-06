@@ -36,34 +36,31 @@ import { SET_USER_LIST } from "../../../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../Authentication/authenticationSlice";
 
-export const ProfileDetail = ({
-  selectedUser,
-  currentUserCheck,
-  userAllPost,
-}) => {
+export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const editModalDisclosure = useDisclosure();
   const unfollowModalDisclosure = useDisclosure();
   const { colorMode } = useColorMode();
 
-  const { currentUser, token } = useSelector((state) => state.authentication);
+  const { currentUser } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
   const {
     userState: { loadingUsers, userList },
     handleFollowUser,
     userDispatch,
   } = useUser();
+  console.log("selected user ", selectedUser);
 
   const {
     username,
-    firstName,
-    lastName,
+    fullName,
     avatar: { url },
     bio,
+    posts,
     following,
     followers,
     portfolio,
-  } = selectedUser;
+  } = selectedUser || {};
 
   const mutualFollowers =
     !currentUserCheck && getMutualFollowers(followers, currentUser);
@@ -72,7 +69,7 @@ export const ProfileDetail = ({
     !currentUserCheck &&
     currentUser.following.find((user) => user.username === username);
 
-  const checkFollowing = currentUser.followers.find(
+  const checkFollowing = currentUser?.followers?.find(
     (user) => user.username === username
   );
 
@@ -90,7 +87,7 @@ export const ProfileDetail = ({
                 as={FiLogOut}
                 fontSize={"1.4rem"}
                 cursor={"pointer"}
-                onClick={() => dispatch(logoutHandler(token))}
+                onClick={() => dispatch(logoutHandler())}
                 title="Logout"
               />
             )}
@@ -136,7 +133,7 @@ export const ProfileDetail = ({
           </Flex>
           <Flex flexDir={"column"} display={{ base: "none", md: "flex" }}>
             <HStack {...userPostLengthStyle}>
-              <Text>{userAllPost?.length} posts</Text>
+              <Text>{posts?.length} posts</Text>
               <Text
                 cursor={"pointer"}
                 onClick={() => {
@@ -157,7 +154,7 @@ export const ProfileDetail = ({
               </Text>
             </HStack>
             <Flex {...pcBioStyle}>
-              <Text>{` ${firstName} ${lastName}`}</Text>
+              <Text>{` ${fullName}`}</Text>
               <Text>{bio}</Text>
               <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
                 <Link to={portfolio}>{portfolio}</Link>
@@ -197,7 +194,7 @@ export const ProfileDetail = ({
       </Flex>
 
       <Flex {...mobileBioStyle}>
-        <Text>{` ${firstName} ${lastName}`}</Text>
+        <Text>{` ${fullName}`}</Text>
         <Text>{bio}</Text>
         <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
           <Link to={portfolio}>{portfolio}</Link>
@@ -232,7 +229,7 @@ export const ProfileDetail = ({
 
       <Divider />
       <HStack {...mobileUserLength}>
-        <Text>{userAllPost?.length} posts</Text>
+        <Text>{posts?.length} posts</Text>
         <Text
           cursor={"pointer"}
           onClick={() => {

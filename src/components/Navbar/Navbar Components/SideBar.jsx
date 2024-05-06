@@ -175,7 +175,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             >
-              <Avatar size={"sm"} src={currentUser?.avatarURL} />
+              <Avatar size={"sm"} src={currentUser?.avatar?.url} />
               <Text
                 display={{ base: "none", lg: "inline-block" }}
                 fontSize={"1rem"}
