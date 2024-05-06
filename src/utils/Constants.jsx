@@ -21,6 +21,7 @@ export const SET_SIGNUP_FORM = "SET_SIGNUP_FORM";
 export const SET_ISPOSTLOADING = "SET_ISPOSTLOADING";
 export const SET_USER_LIST = "SET_USER_LIST";
 export const API_URL = "https://instaverse-backend.onrender.com/api/v1";
+export const GUEST_USER_PASSWORD = "12345678";
 
 export const avatarUrls = [
   "https://tse1.mm.bing.net/th?id=OIP.BFzFHuNVf8BaHZYsvnYoyQAAAA&pid=Api&P=0&h=180",

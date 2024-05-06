@@ -14,8 +14,9 @@ import { Toaster } from "react-hot-toast";
 import { usePost } from "./contexts";
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { refreshTokens } from "./pages/Authentication/authenticationSlice";
+import { getGuestUsers } from "./pages/Post Feed/userSlice";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
@@ -23,12 +24,17 @@ function App() {
   const { colorMode } = useColorMode();
   const { loading } = usePost();
   const { progress, token } = useSelector((state) => state.authentication);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (token) {
-      refreshTokens();
+      dispatch(refreshTokens());
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(getGuestUsers());
+  }, [token]);
 
   return (
     <Box color={color} bg={bg} className="App">

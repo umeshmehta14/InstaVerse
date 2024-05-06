@@ -27,7 +27,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
-import { SET_LOGIN_FORM, SET_SHOW_PASSWORD } from "../../utils/Constants";
+import {
+  GUEST_USER_PASSWORD,
+  SET_LOGIN_FORM,
+  SET_SHOW_PASSWORD,
+} from "../../utils/Constants";
 import { loginHandler } from "./authenticationSlice";
 
 export const Login = () => {
@@ -36,13 +40,14 @@ export const Login = () => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    userState: { users, loginForm, showPassword },
+    userState: { loginForm, showPassword },
     userDispatch,
   } = useUser();
   // const { handleGuestLogin } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authentication);
+  const { guestUsers } = useSelector((state) => state.user);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -74,10 +79,10 @@ export const Login = () => {
         </Heading>
         <form onSubmit={handleLogin}>
           <FormControl id="username" mb={4}>
-            <FormLabel mb={"1"}>User Name:</FormLabel>
+            <FormLabel mb={"1"}>User Name or Email:</FormLabel>
             <Input
               type="text"
-              placeholder="Enter your username"
+              placeholder="Enter your username or email"
               value={loginForm.username}
               required
               onChange={(event) =>
@@ -131,20 +136,28 @@ export const Login = () => {
               <ModalHeader>Guest Users</ModalHeader>
               <ModalCloseButton _hover={{ bg: "red", color: "white" }} />
               <ModalBody>
-                {users.map((user) => (
+                {guestUsers.map((user) => (
                   <Flex
+                    key={user?._id}
                     gap={"2"}
                     cursor={"pointer"}
                     align={"center"}
                     p="2"
-                    onClick={() => handleGuestLogin(user)}
+                    onClick={() =>
+                      dispatch(
+                        loginHandler({
+                          identifier: user?.username,
+                          password: GUEST_USER_PASSWORD,
+                        })
+                      )
+                    }
                     borderRadius={"12px"}
                     _hover={{ bg: "gray.100" }}
                   >
                     <Avatar
                       size="sm"
-                      name={user?.firstName}
-                      src={user?.avatarURL}
+                      name={user?.fullName}
+                      src={user?.avatar?.url}
                     />
                     {user?.username}
                   </Flex>

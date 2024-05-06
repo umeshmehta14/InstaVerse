@@ -4,7 +4,7 @@ import {
   getLoginInformation,
   refreshUserToken,
   userLogout,
-} from "./AuthApi";
+} from "../../service/authService.js";
 import toast from "react-hot-toast";
 
 const initialState = {
@@ -42,6 +42,7 @@ export const signupHandler = createAsyncThunk(
 export const logoutHandler = createAsyncThunk(
   "authentication/logout",
   async (_, thunkAPI) => {
+    console.log("logout accessed");
     const { token } = thunkAPI.getState().authentication;
     const res = await userLogout(token);
     return res;
@@ -56,7 +57,6 @@ export const refreshTokens = createAsyncThunk(
     } = await refreshUserToken(
       JSON.parse(localStorage.getItem("instaverseUser"))?.refreshToken
     );
-
     if (statusCode === 200) {
       return data;
     }
@@ -65,7 +65,7 @@ export const refreshTokens = createAsyncThunk(
 
 export const updateProgress = createAction("authentication/updateProgress");
 
-const authentication = createSlice({
+const authenticationSlice = createSlice({
   name: "authentication",
   initialState,
   reducers: {},
@@ -91,7 +91,8 @@ const authentication = createSlice({
 
     builder.addCase(loginHandler.rejected, (state, action) => {
       state.progress = 100;
-      console.log(action.payload);
+      toast.error("Something went wrong");
+      console.log(action.error);
     });
 
     builder.addCase(signupHandler.pending, (state) => {
@@ -111,6 +112,7 @@ const authentication = createSlice({
 
     builder.addCase(signupHandler.rejected, (state, action) => {
       state.progress = 100;
+      toast.error("Something went wrong");
       console.log(action.error);
     });
 
@@ -118,10 +120,14 @@ const authentication = createSlice({
       localStorage.removeItem("instaverseUser");
       state.token = null;
       state.currentUser = null;
-      toast.success("Logout Successfull");
     });
 
-    builder.addCase(refreshTokens.fulfilled, (action, state) => {
+    builder.addCase(logoutHandler.rejected, (_, action) => {
+      toast.error("Something went wrong");
+      console.log(action.error);
+    });
+
+    builder.addCase(refreshTokens.fulfilled, (state, action) => {
       const { accessToken, refreshToken, user } = action.payload;
       state.currentUser = user;
       state.token = accessToken;
@@ -131,12 +137,12 @@ const authentication = createSlice({
       );
     });
 
-    builder.addCase(refreshTokens.rejected, (_, action) => {
-      thunkAPI.dispatch(logoutHandler());
+    builder.addCase(refreshTokens.rejected, () => {
+      logoutHandler();
       toast.error(`Session Expired Login Again`);
-      console.log(action.error);
+      console.error("refrsh token error");
     });
   },
 });
 
-export const authenticationReducer = authentication.reducer;
+export const authenticationReducer = authenticationSlice.reducer;
