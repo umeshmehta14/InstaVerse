@@ -16,23 +16,25 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useCallback } from "react";
 
 import { RxCrossCircled, BsDot } from "../../../utils/Icons";
-import { useUser } from "../../../contexts";
-import { SET_SEARCH_VALUE } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
 import { getMutualFollowers } from "../../../utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  getSearchedUsers,
+  updateSearchValue,
+} from "../../../pages/Post Feed/userSlice";
+import SearchSkeleton from "./SearchSkeleton";
 
 const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
-  const {
-    userState: { searchValue, searchedUsers },
-    userDispatch,
-  } = useUser();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.authentication);
+  const { searchedUsers, searchValue, isLoading } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
 
   const debounce = (func, delay) => {
@@ -45,8 +47,8 @@ const SearchBox = ({ isOpen, onClose }) => {
     };
   };
 
-  const debouncedFetchData = useCallback(debounce(getSearchProducts, 500), [
-    getSearchProducts,
+  const debouncedFetchData = useCallback(debounce(getSearchedUsers, 500), [
+    getSearchedUsers,
   ]);
 
   return (
@@ -54,7 +56,7 @@ const SearchBox = ({ isOpen, onClose }) => {
       <Drawer
         isOpen={isOpen}
         onClose={() => {
-          userDispatch({ type: SET_SEARCH_VALUE, payload: "" });
+          dispatch(updateSearchValue(""));
           onClose();
         }}
         placement="left"
@@ -70,7 +72,10 @@ const SearchBox = ({ isOpen, onClose }) => {
             <InputGroup mb={"1rem"}>
               <Input
                 placeholder="Search User..."
-                onChange={(e) => debouncedFetchData(e.target.value)}
+                onChange={(e) => {
+                  dispatch(updateSearchValue(e.target.value));
+                  debouncedFetchData(e.target.value);
+                }}
                 value={searchValue}
               />
               {searchValue && (
@@ -78,9 +83,7 @@ const SearchBox = ({ isOpen, onClose }) => {
                   <Box
                     as={RxCrossCircled}
                     cursor={"pointer"}
-                    onClick={() =>
-                      userDispatch({ type: SET_SEARCH_VALUE, payload: "" })
-                    }
+                    onClick={() => dispatch(updateSearchValue(""))}
                     title="Clear"
                   />
                 </InputRightElement>
@@ -89,68 +92,72 @@ const SearchBox = ({ isOpen, onClose }) => {
             <Divider />
 
             {searchValue &&
-              searchedUsers?.map((user) => {
-                const {
-                  _id,
-                  avatarURL,
-                  username,
-                  firstName,
-                  lastName,
-                  followers,
-                } = user;
-                const mutualFollower = getMutualFollowers(
-                  followers,
-                  currentUser
-                );
-                return (
-                  <Flex
-                    key={_id}
-                    gap={"2"}
-                    my={"4"}
-                    cursor={"pointer"}
-                    _hover={{ bg: "#1f1f1f6a" }}
-                    title={username}
-                    onClick={() => {
-                      navigate(`/profile/${username}`);
-                      onClose();
-                    }}
-                  >
-                    <Flex alignItems={"center"} gap={"2"}>
-                      <Avatar size="md" name={firstName} src={avatarURL} />
-                    </Flex>
-                    <VStack
-                      align={"flex-start"}
-                      gap={"0"}
-                      whiteSpace={"nowrap"}
+              (isLoading ? (
+                <SearchSkeleton />
+              ) : (
+                searchedUsers?.map((user) => {
+                  const {
+                    _id,
+                    avatarURL,
+                    username,
+                    firstName,
+                    lastName,
+                    followers,
+                  } = user;
+                  const mutualFollower = getMutualFollowers(
+                    followers,
+                    currentUser
+                  );
+                  return (
+                    <Flex
+                      key={_id}
+                      gap={"2"}
+                      my={"4"}
+                      cursor={"pointer"}
+                      _hover={{ bg: "#1f1f1f6a" }}
+                      title={username}
+                      onClick={() => {
+                        navigate(`/profile/${username}`);
+                        onClose();
+                      }}
                     >
-                      <Text>{username}</Text>
-                      <Flex fontSize={"0.8rem"} color={"gray"}>
-                        <Text>
-                          {firstName} {lastName}
-                        </Text>
-                        {mutualFollower.length > 0 && (
-                          <Flex alignItems={"center"}>
-                            <BsDot />
-                            <Text
-                              whiteSpace="nowrap"
-                              overflow="hidden"
-                              textOverflow="ellipsis"
-                              w="150px"
-                            >
-                              Followed By {mutualFollower[0].username}{" "}
-                              {mutualFollower.length > 1 && (
-                                <>+{mutualFollower.length - 1} more</>
-                              )}
-                            </Text>
-                          </Flex>
-                        )}
+                      <Flex alignItems={"center"} gap={"2"}>
+                        <Avatar size="md" name={firstName} src={avatarURL} />
                       </Flex>
-                    </VStack>
-                  </Flex>
-                );
-              })}
+                      <VStack
+                        align={"flex-start"}
+                        gap={"0"}
+                        whiteSpace={"nowrap"}
+                      >
+                        <Text>{username}</Text>
+                        <Flex fontSize={"0.8rem"} color={"gray"}>
+                          <Text>
+                            {firstName} {lastName}
+                          </Text>
+                          {mutualFollower.length > 0 && (
+                            <Flex alignItems={"center"}>
+                              <BsDot />
+                              <Text
+                                whiteSpace="nowrap"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                w="150px"
+                              >
+                                Followed By {mutualFollower[0].username}{" "}
+                                {mutualFollower.length > 1 && (
+                                  <>+{mutualFollower.length - 1} more</>
+                                )}
+                              </Text>
+                            </Flex>
+                          )}
+                        </Flex>
+                      </VStack>
+                    </Flex>
+                  );
+                })
+              ))}
             <Flex align={"center"} w={"100%"} justify={"center"} py={"3rem"}>
-              {searchValue && searchedUsers.length === 0 && "No Results Found"}
+              {searchValue && searchedUsers?.length === 0 && "No Results Found"}
             </Flex>
           </DrawerBody>
         </DrawerContent>

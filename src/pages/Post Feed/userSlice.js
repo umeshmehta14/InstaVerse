@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getByUsername, guestUsers } from "../../service/userService";
+import {
+  getByUsername,
+  guestUsers,
+  searchUser,
+} from "../../service/userService";
 import toast from "react-hot-toast";
 import { updateProgress } from "../Authentication/authenticationSlice";
 
@@ -7,6 +11,8 @@ const initialState = {
   guestUsers: [],
   isLoading: false,
   selectedUser: {},
+  searchValue: "",
+  searchedUsers: [],
 };
 
 export const getGuestUsers = createAsyncThunk(
@@ -22,6 +28,7 @@ export const getGuestUsers = createAsyncThunk(
     }
   }
 );
+
 export const getUserByUsername = createAsyncThunk(
   "user/getByusername",
   async ({ username }, { getState, dispatch }) => {
@@ -41,6 +48,20 @@ export const getUserByUsername = createAsyncThunk(
   }
 );
 
+export const getSearchedUsers = createAsyncThunk(
+  "user/search",
+  async ({ searchValue }, { getState }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await searchUser(searchValue, token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -48,13 +69,17 @@ const userSlice = createSlice({
     updateSelectedUser: (state) => {
       state.selectedUser = {};
     },
+
+    updateSearchValue: (state, action) => {
+      state.searchValue = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getGuestUsers.pending, (state) => {
       state.isLoading = true;
     });
 
-    builder.addCase(getGuestUsers.rejected, (_, action) => {
+    builder.addCase(getGuestUsers.rejected, (state, action) => {
       toast.error("Something went wrong");
       state.isLoading = false;
       console.log(action.error);
@@ -74,9 +99,24 @@ const userSlice = createSlice({
       toast.error("Something went wrong");
       console.log(action.error);
     });
+
+    builder.addCase(getSearchedUsers.pending, (state) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(getSearchedUsers.fulfilled, (state, action) => {
+      // state.searchedUsers = action.payload;
+      state.isLoading = true;
+    });
+
+    builder.addCase(getSearchedUsers.rejected, (_, action) => {
+      toast.error("Something went wrong");
+      console.log(action.error);
+      state.isLoading = false;
+    });
   },
 });
 
-export const { updateSelectedUser } = userSlice.actions;
+export const { updateSelectedUser, updateSearchValue } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
