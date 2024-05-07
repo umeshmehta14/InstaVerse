@@ -49,7 +49,6 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
     handleFollowUser,
     userDispatch,
   } = useUser();
-  console.log("selected user ", selectedUser);
 
   const {
     username,

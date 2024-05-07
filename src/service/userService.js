@@ -61,3 +61,10 @@ export const clearSearchList = async (token) =>
       },
     }
   );
+
+export const getBookmark = async (token) =>
+  await axios.get(`${API_URL}/user/bookmark`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addSearchList,
   clearSearchList,
+  getBookmark,
   getByUsername,
   getSearchList,
   guestUsers,
@@ -19,6 +20,7 @@ const initialState = {
   searchedUsers: [],
   isSearchUserFetched: false,
   searchList: [],
+  bookmarks: [],
 };
 
 export const getGuestUsers = createAsyncThunk(
@@ -130,6 +132,21 @@ export const clearUserSearchList = createAsyncThunk(
   }
 );
 
+export const getUserBookmark = createAsyncThunk(
+  "user/get/bookmark",
+  async (_, { getState }) => {
+    const { token } = getState().authentication;
+
+    const {
+      data: { statusCode, data },
+    } = await getBookmark(token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -224,6 +241,21 @@ const userSlice = createSlice({
     builder.addCase(clearUserSearchList.rejected, (_, action) => {
       toast.error("Something went wrong");
       console.error(action.error);
+    });
+
+    builder.addCase(getUserBookmark.pending, (state) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(getUserBookmark.fulfilled, (state, action) => {
+      state.bookmarks = action.payload;
+      // state.isLoading = false;
+    });
+
+    builder.addCase(getUserBookmark.rejected, (state, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+      state.isLoading = false;
     });
   },
 });

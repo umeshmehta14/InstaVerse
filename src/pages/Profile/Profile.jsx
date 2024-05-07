@@ -18,7 +18,7 @@ import {
 
 import { usePost, useUser } from "../../contexts";
 import { GridBox, ProfileSkeleton, ProfileDetail } from "../index";
-import { PostModal } from "../../components";
+import { PostModal, RotatingLoader } from "../../components";
 import {
   emptyCameraStyles,
   profileMainBox,
@@ -34,7 +34,7 @@ import {
   BsBookmarkX,
 } from "../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserByUsername, updateSelectedUser } from "../Post Feed/userSlice";
+import { getUserBookmark, getUserByUsername } from "../Post Feed/userSlice";
 
 export const Profile = () => {
   const paramUser = useParams();
@@ -43,7 +43,7 @@ export const Profile = () => {
   const postModalDisclosure = useDisclosure();
 
   const {
-    userState: { defaultTab, userBookmarks },
+    userState: { defaultTab },
   } = useUser();
   const {
     postState: { posts },
@@ -51,7 +51,9 @@ export const Profile = () => {
   const { currentUser, progress } = useSelector(
     (state) => state.authentication
   );
-  const { selectedUser } = useSelector((state) => state.user);
+  const { selectedUser, bookmarks, isLoading } = useSelector(
+    (state) => state.user
+  );
 
   const dispatch = useDispatch();
 
@@ -65,19 +67,11 @@ export const Profile = () => {
       )
     : [];
 
-  const bookmarkPosts = currentUserCheck
-    ? posts?.filter(({ _id }) => userBookmarks?.includes(_id))
-    : [];
-
-  useMemo(() => {
-    dispatch(getUserByUsername({ username: paramUser?.username }));
-  }, [paramUser.username]);
-
-  // useEffect(() => {
-  //   getAllUserPosts(paramUser.username);
-  //   if (selectedUser?.username !== paramUser.username) {
-  //   }
-  // }, [paramUser.username, currentUser, posts, defaultTab, selectedUser]);
+  useEffect(() => {
+    if (selectedUser?.username !== paramUser.username) {
+      dispatch(getUserByUsername({ username: paramUser?.username }));
+    }
+  }, [dispatch, getUserByUsername, selectedUser?.username, paramUser.username]);
 
   return progress === 100 ? (
     <Flex {...profileMainBox}>
@@ -98,7 +92,11 @@ export const Profile = () => {
                 <Box as={AiOutlineHeart} fontSize={"1.7rem"} />
                 <Text display={{ base: "none", md: "block" }}>Likes</Text>
               </Tab>
-              <Tab flexGrow={1} gap={2}>
+              <Tab
+                flexGrow={1}
+                gap={2}
+                onClick={() => dispatch(getUserBookmark())}
+              >
                 <Box as={FaRegBookmark} fontSize={"1.5rem"} />
                 <Text display={{ base: "none", md: "block" }}>Saved</Text>
               </Tab>
@@ -140,6 +138,14 @@ export const Profile = () => {
                   Start Liking
                 </Button>
               </VStack>
+            ) : isLoading ? (
+              <Flex
+                justifyContent={"center"}
+                alignItems={"center"}
+                minH={"30vh"}
+              >
+                <RotatingLoader w={"50"} sw={"3"} />
+              </Flex>
             ) : (
               <GridBox showingPost={likedPosts} />
             )}
@@ -148,7 +154,7 @@ export const Profile = () => {
             <Flex justify={"center"} fontSize={"sm"} p="0.5rem" color="gray">
               Only you can see what you've saved
             </Flex>
-            {bookmarkPosts?.length === 0 ? (
+            {bookmarks?.length === 0 ? (
               <VStack height={"300px"} gap={"4"} my={"1rem"}>
                 <Box as={BsBookmarkX} color={"gray"} fontSize="5rem" />
                 <Text w="100%" maxW={"90%"} textAlign={"center"}>
@@ -162,8 +168,16 @@ export const Profile = () => {
                   Begin Saving
                 </Button>
               </VStack>
+            ) : isLoading ? (
+              <Flex
+                justifyContent={"center"}
+                alignItems={"center"}
+                minH={"30vh"}
+              >
+                <RotatingLoader w={"50"} sw={"3"} />
+              </Flex>
             ) : (
-              <GridBox showingPost={bookmarkPosts} />
+              <GridBox showingPost={bookmarks} />
             )}
           </TabPanel>
         </TabPanels>
