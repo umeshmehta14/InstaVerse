@@ -14,3 +14,10 @@ export const getByUsername = async (username, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const searchUser = async (searchValue, token) =>
+  await axios.get(`${API_URL}/user/search?query=${searchValue}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

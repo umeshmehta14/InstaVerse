@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import { toast } from "react-hot-toast";
 
 import {
@@ -6,21 +6,17 @@ import {
   addToBookmark,
   editUser,
   followUser,
-  getAllUser,
-  getSingleUser,
   removeFromBookmark,
 } from "./UserApi";
 import { UserReducer } from "../../reducer/UserReducer/UserReducer";
 import { UserInitialState } from "../../reducer/UserReducer/UserInitialState";
 import { usePost } from "../index";
 import {
-  ALL_USERS,
   SET_BOOKMARK,
   SET_EDIT_USER,
   SET_EDIT_USER_POST,
   SET_FOLLOW_USER,
   SET_LOADING_USERS,
-  SET_SELECTED_USER,
 } from "../../utils/Constants";
 import { useSelector } from "react-redux";
 
@@ -31,40 +27,6 @@ export const UserProvider = ({ children }) => {
   const { loadingUsers } = userState;
   const { postDispatch } = usePost();
   const { currentUser, token } = useSelector((state) => state.authentication);
-
-  const getUsers = async () => {
-    try {
-      const {
-        status,
-        data: { users },
-      } = await getAllUser();
-      if (status === 200 || status === 201) {
-        userDispatch({ type: ALL_USERS, payload: users });
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong");
-    }
-  };
-
-  const handleSingleUser = async (username) => {
-    setProgress(20);
-    try {
-      const {
-        status,
-        data: { user },
-      } = await getSingleUser(username);
-      setProgress(40);
-      if (status === 200 || status === 201) {
-        userDispatch({ type: SET_SELECTED_USER, payload: user });
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong");
-    } finally {
-      setProgress(100);
-    }
-  };
 
   const handleEditUser = async (userData) => {
     try {
@@ -163,10 +125,6 @@ export const UserProvider = ({ children }) => {
     });
   };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
-
   return (
     <UserContext.Provider
       value={{
@@ -176,7 +134,6 @@ export const UserProvider = ({ children }) => {
         handleFollow,
         handleBookmark,
         handleRemoveBookmark,
-        handleSingleUser,
         handleEditUser,
         handleFollowUser,
       }}

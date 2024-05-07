@@ -23,7 +23,7 @@ import { useUser } from "../../../contexts";
 import { SET_SEARCH_VALUE } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
 import { getMutualFollowers } from "../../../utils/Utils";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
@@ -33,6 +33,21 @@ const SearchBox = ({ isOpen, onClose }) => {
   } = useUser();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.authentication);
+  const dispatch = useDispatch();
+
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        dispatch(func(args));
+      }, delay);
+    };
+  };
+
+  const debouncedFetchData = useCallback(debounce(getSearchProducts, 500), [
+    getSearchProducts,
+  ]);
 
   return (
     <Box>
@@ -55,13 +70,7 @@ const SearchBox = ({ isOpen, onClose }) => {
             <InputGroup mb={"1rem"}>
               <Input
                 placeholder="Search User..."
-                onChange={(e) =>
-                  userDispatch({
-                    type: SET_SEARCH_VALUE,
-                    payload: e.target.value,
-                    currentUser,
-                  })
-                }
+                onChange={(e) => debouncedFetchData(e.target.value)}
                 value={searchValue}
               />
               {searchValue && (
