@@ -16,8 +16,9 @@ import {
   Text,
   VStack,
   Button,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import { RxCrossCircled, BsDot, RxCross2 } from "../../../utils/Icons";
 import { useNavigate } from "react-router-dom";
@@ -31,15 +32,27 @@ import {
   updateSearchValue,
 } from "../../../pages/Post Feed/userSlice";
 import SearchSkeleton from "./SearchSkeleton";
+import { ClearRecentModal } from "./ClearRecentModal";
 
 const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
+  const clearRecentDisclosure = useDisclosure();
   const { currentUser } = useSelector((state) => state.authentication);
-  const { searchedUsers, searchValue, isLoading, searchList } = useSelector(
-    (state) => state.user
-  );
+  const {
+    searchedUsers,
+    searchValue,
+    isLoading,
+    searchList,
+    isSearchUserFetched,
+  } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (searchValue?.length === 0) {
+      dispatch(updateSearchedUsers());
+    }
+  }, [searchValue]);
 
   const debounce = (delay) => {
     let timeoutId;
@@ -155,67 +168,87 @@ const SearchBox = ({ isOpen, onClose }) => {
                 })
               ))}
 
-            {searchValue && isLoading && searchedUsers?.length === 0 && (
-              <Flex align={"center"} w={"100%"} justify={"center"} py={"3rem"}>
-                No Results Found
-              </Flex>
-            )}
+            {searchValue?.length > 0 &&
+              !isLoading &&
+              searchedUsers?.length === 0 &&
+              isSearchUserFetched && (
+                <Flex align="center" justify="center" w="100%" py="3rem">
+                  No Results Found
+                </Flex>
+              )}
             <Box>
               {searchValue?.length === 0 &&
-                searchedUsers?.length === 0 &&
-                searchList?.length > 0 && (
-                  <Box>
-                    <Flex
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                      py={"1rem"}
+              searchedUsers?.length === 0 &&
+              searchList?.length > 0 ? (
+                <Box>
+                  <Flex
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    py={"1rem"}
+                  >
+                    <Text>Recent</Text>
+                    <Button
+                      variant={"link-button"}
+                      onClick={() => clearRecentDisclosure.onOpen()}
                     >
-                      <Text>Recent</Text>
-                      <Button variant={"link-button"}>Clear All</Button>
-                    </Flex>
-                    {searchList?.map(({ _id, avatar, username, fullName }) => (
-                      <Flex
-                        key={_id}
-                        my={"4"}
-                        cursor={"pointer"}
-                        alignItems={"center"}
-                        justifyContent={"space-between"}
-                        _hover={{ bg: "#1f1f1f6a" }}
-                        title={username}
-                        onClick={() => {
-                          navigate(`/profile/${username}`);
-                          onClose();
-                        }}
-                      >
-                        <Flex gap={"3"} alignItems={"center"}>
-                          <Avatar size="md" name={fullName} src={avatar?.url} />
-                          <VStack align={"flex-start"} gap={"0"}>
-                            <Text>{username}</Text>
-                            <Text fontSize={"0.8rem"} color={"gray"}>
-                              {fullName}
-                            </Text>
-                          </VStack>
-                        </Flex>
-                        <Box
-                          as={RxCross2}
-                          fontSize={"1.5rem"}
-                          color={"gray"}
-                          title="remove"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            dispatch(removeUserFromSearchList({ _id }));
-                          }}
-                          pos={"relative"}
-                          zIndex={"3"}
-                        />
+                      Clear All
+                    </Button>
+                  </Flex>
+                  {searchList?.map(({ _id, avatar, username, fullName }) => (
+                    <Flex
+                      key={_id}
+                      my={"4"}
+                      cursor={"pointer"}
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                      _hover={{ bg: "#1f1f1f6a" }}
+                      title={username}
+                      onClick={() => {
+                        navigate(`/profile/${username}`);
+                        onClose();
+                      }}
+                    >
+                      <Flex gap={"3"} alignItems={"center"}>
+                        <Avatar size="md" name={fullName} src={avatar?.url} />
+                        <VStack align={"flex-start"} gap={"0"}>
+                          <Text>{username}</Text>
+                          <Text fontSize={"0.8rem"} color={"gray"}>
+                            {fullName}
+                          </Text>
+                        </VStack>
                       </Flex>
-                    ))}
-                  </Box>
-                )}
+                      <Box
+                        as={RxCross2}
+                        fontSize={"1.5rem"}
+                        color={"gray"}
+                        title="remove"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          dispatch(removeUserFromSearchList({ _id }));
+                        }}
+                        pos={"relative"}
+                        zIndex={"3"}
+                      />
+                    </Flex>
+                  ))}
+                </Box>
+              ) : (
+                searchValue?.length === 0 && (
+                  <Flex align="center" justify="center" w="100%" py="3rem">
+                    No recent searches.
+                  </Flex>
+                )
+              )}
             </Box>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+      {clearRecentDisclosure.isOpen && (
+        <ClearRecentModal
+          isOpen={clearRecentDisclosure.isOpen}
+          onClose={clearRecentDisclosure.onClose}
+        />
+      )}
     </Box>
   );
 };

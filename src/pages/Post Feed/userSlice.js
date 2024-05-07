@@ -17,6 +17,7 @@ const initialState = {
   selectedUser: {},
   searchValue: "",
   searchedUsers: [],
+  isSearchUserFetched: false,
   searchList: [],
 };
 
@@ -143,6 +144,7 @@ const userSlice = createSlice({
 
     updateSearchedUsers: (state) => {
       state.searchedUsers = [];
+      state.isSearchUserFetched = false;
     },
   },
   extraReducers: (builder) => {
@@ -172,22 +174,24 @@ const userSlice = createSlice({
 
     builder.addCase(getSearchedUsers.pending, (state) => {
       state.isLoading = true;
+      state.isSearchUserFetched = false;
     });
 
     builder.addCase(getSearchedUsers.fulfilled, (state, action) => {
       state.searchedUsers = action.payload?.users;
       state.isLoading = false;
+      state.isSearchUserFetched = true;
     });
 
     builder.addCase(getSearchedUsers.rejected, (state, action) => {
       toast.error("Something went wrong");
       console.error(action.error);
       state.isLoading = false;
+      state.isSearchUserFetched = false;
     });
 
     builder.addCase(getUserSearchList.fulfilled, (state, action) => {
       state.searchList = action.payload;
-      console.log("get searchList", action.payload);
     });
 
     builder.addCase(getUserSearchList.rejected, (_, action) => {
@@ -197,7 +201,6 @@ const userSlice = createSlice({
 
     builder.addCase(addUserToSearchList.fulfilled, (state, action) => {
       state.searchList = action.payload;
-      console.log("add searchList", action.payload);
     });
 
     builder.addCase(addUserToSearchList.rejected, (_, action) => {
@@ -207,7 +210,6 @@ const userSlice = createSlice({
 
     builder.addCase(removeUserFromSearchList.fulfilled, (state, action) => {
       state.searchList = action.payload;
-      console.log("remove searchList", action.payload);
     });
 
     builder.addCase(removeUserFromSearchList.rejected, (_, action) => {
@@ -215,9 +217,8 @@ const userSlice = createSlice({
       console.error(action.error);
     });
 
-    builder.addCase(clearUserSearchList.fulfilled, (_, action) => {
+    builder.addCase(clearUserSearchList.fulfilled, (state, action) => {
       state.searchList = action.payload;
-      console.log("clear searchList", action.payload);
     });
 
     builder.addCase(clearUserSearchList.rejected, (_, action) => {

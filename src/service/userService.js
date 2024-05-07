@@ -23,7 +23,7 @@ export const searchUser = async (searchValue, token) =>
   });
 
 export const getSearchList = async (token) =>
-  await axios.get(`http://localhost:8000/api/v1/user/searchList`, {
+  await axios.get(`${API_URL}/user/searchList`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
