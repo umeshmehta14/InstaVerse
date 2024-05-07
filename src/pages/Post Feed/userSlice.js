@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  addSearchList,
+  clearSearchList,
   getByUsername,
+  getSearchList,
   guestUsers,
+  removeSearchList,
   searchUser,
 } from "../../service/userService";
 import toast from "react-hot-toast";
@@ -13,6 +17,7 @@ const initialState = {
   selectedUser: {},
   searchValue: "",
   searchedUsers: [],
+  searchList: [],
 };
 
 export const getGuestUsers = createAsyncThunk(
@@ -64,6 +69,66 @@ export const getSearchedUsers = createAsyncThunk(
   }
 );
 
+export const getUserSearchList = createAsyncThunk(
+  "user/searchList",
+  async (_, { getState }) => {
+    const { token } = getState().authentication;
+
+    const {
+      data: { statusCode, data },
+    } = await getSearchList(token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const addUserToSearchList = createAsyncThunk(
+  "user/add/searchList",
+  async ({ _id }, { getState }) => {
+    const { token } = getState().authentication;
+
+    const {
+      data: { statusCode, data },
+    } = await addSearchList(_id, token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const removeUserFromSearchList = createAsyncThunk(
+  "user/remove/searchList",
+  async ({ _id }, { getState }) => {
+    const { token } = getState().authentication;
+
+    const {
+      data: { statusCode, data },
+    } = await removeSearchList(_id, token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const clearUserSearchList = createAsyncThunk(
+  "user/searchList/clear",
+  async (_, { getState }) => {
+    const { token } = getState().authentication;
+
+    const {
+      data: { statusCode, data },
+    } = await clearSearchList(token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -88,7 +153,7 @@ const userSlice = createSlice({
     builder.addCase(getGuestUsers.rejected, (state, action) => {
       toast.error("Something went wrong");
       state.isLoading = false;
-      console.log(action.error);
+      console.error(action.error);
     });
 
     builder.addCase(getGuestUsers.fulfilled, (state, action) => {
@@ -97,13 +162,12 @@ const userSlice = createSlice({
     });
 
     builder.addCase(getUserByUsername.fulfilled, (state, action) => {
-      console.log("action.fulfilled", action.payload);
       state.selectedUser = action.payload;
     });
 
     builder.addCase(getUserByUsername.rejected, (_, action) => {
       toast.error("Something went wrong");
-      console.log(action.error);
+      console.error(action.error);
     });
 
     builder.addCase(getSearchedUsers.pending, (state) => {
@@ -117,8 +181,48 @@ const userSlice = createSlice({
 
     builder.addCase(getSearchedUsers.rejected, (state, action) => {
       toast.error("Something went wrong");
-      console.log(action.error);
+      console.error(action.error);
       state.isLoading = false;
+    });
+
+    builder.addCase(getUserSearchList.fulfilled, (state, action) => {
+      state.searchList = action.payload;
+      console.log("get searchList", action.payload);
+    });
+
+    builder.addCase(getUserSearchList.rejected, (_, action) => {
+      console.error(action.error);
+      toast.error("Something went wrong");
+    });
+
+    builder.addCase(addUserToSearchList.fulfilled, (state, action) => {
+      state.searchList = action.payload;
+      console.log("add searchList", action.payload);
+    });
+
+    builder.addCase(addUserToSearchList.rejected, (_, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+    });
+
+    builder.addCase(removeUserFromSearchList.fulfilled, (state, action) => {
+      state.searchList = action.payload;
+      console.log("remove searchList", action.payload);
+    });
+
+    builder.addCase(removeUserFromSearchList.rejected, (_, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+    });
+
+    builder.addCase(clearUserSearchList.fulfilled, (_, action) => {
+      state.searchList = action.payload;
+      console.log("clear searchList", action.payload);
+    });
+
+    builder.addCase(clearUserSearchList.rejected, (_, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
     });
   },
 });

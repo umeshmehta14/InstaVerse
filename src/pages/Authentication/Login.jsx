@@ -142,7 +142,7 @@ export const Login = () => {
                 {isLoading ? (
                   <TailSpinLoader />
                 ) : (
-                  guestUsers.map((user) => (
+                  guestUsers?.map((user) => (
                     <Flex
                       key={user?._id}
                       gap={"2"}

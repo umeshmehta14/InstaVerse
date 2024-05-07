@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Flex,
@@ -44,11 +44,9 @@ export const Profile = () => {
 
   const {
     userState: { defaultTab, userBookmarks },
-    userDispatch,
   } = useUser();
   const {
-    getAllUserPosts,
-    postState: { posts, userAllPost },
+    postState: { posts },
   } = usePost();
   const { currentUser, progress } = useSelector(
     (state) => state.authentication
@@ -71,12 +69,15 @@ export const Profile = () => {
     ? posts?.filter(({ _id }) => userBookmarks?.includes(_id))
     : [];
 
-  useEffect(() => {
-    getAllUserPosts(paramUser.username);
-    if (selectedUser?.username !== paramUser.username) {
-      dispatch(getUserByUsername({ username: paramUser?.username }));
-    }
-  }, [paramUser.username, currentUser, posts, defaultTab, selectedUser]);
+  useMemo(() => {
+    dispatch(getUserByUsername({ username: paramUser?.username }));
+  }, [paramUser.username]);
+
+  // useEffect(() => {
+  //   getAllUserPosts(paramUser.username);
+  //   if (selectedUser?.username !== paramUser.username) {
+  //   }
+  // }, [paramUser.username, currentUser, posts, defaultTab, selectedUser]);
 
   return progress === 100 ? (
     <Flex {...profileMainBox}>

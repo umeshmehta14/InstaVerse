@@ -16,7 +16,7 @@ import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshTokens } from "./pages/Authentication/authenticationSlice";
-import { getGuestUsers } from "./pages/Post Feed/userSlice";
+import { getGuestUsers, getUserSearchList } from "./pages/Post Feed/userSlice";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
@@ -30,10 +30,11 @@ function App() {
     if (token) {
       dispatch(refreshTokens());
     }
+    dispatch(getGuestUsers());
   }, []);
 
   useEffect(() => {
-    dispatch(getGuestUsers());
+    dispatch(getUserSearchList());
   }, [token]);
 
   return (

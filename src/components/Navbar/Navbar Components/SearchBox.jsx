@@ -15,15 +15,18 @@ import {
   Avatar,
   Text,
   VStack,
+  Button,
 } from "@chakra-ui/react";
 import React, { useCallback } from "react";
 
-import { RxCrossCircled, BsDot } from "../../../utils/Icons";
+import { RxCrossCircled, BsDot, RxCross2 } from "../../../utils/Icons";
 import { useNavigate } from "react-router-dom";
 import { getMutualFollowers } from "../../../utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addUserToSearchList,
   getSearchedUsers,
+  removeUserFromSearchList,
   updateSearchedUsers,
   updateSearchValue,
 } from "../../../pages/Post Feed/userSlice";
@@ -33,7 +36,7 @@ const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.authentication);
-  const { searchedUsers, searchValue, isLoading } = useSelector(
+  const { searchedUsers, searchValue, isLoading, searchList } = useSelector(
     (state) => state.user
   );
   const dispatch = useDispatch();
@@ -114,6 +117,7 @@ const SearchBox = ({ isOpen, onClose }) => {
                       title={username}
                       onClick={() => {
                         navigate(`/profile/${username}`);
+                        dispatch(addUserToSearchList({ _id }));
                         onClose();
                       }}
                     >
@@ -150,12 +154,65 @@ const SearchBox = ({ isOpen, onClose }) => {
                   );
                 })
               ))}
-            <Flex align={"center"} w={"100%"} justify={"center"} py={"3rem"}>
-              {searchValue &&
-                isLoading &&
+
+            {searchValue && isLoading && searchedUsers?.length === 0 && (
+              <Flex align={"center"} w={"100%"} justify={"center"} py={"3rem"}>
+                No Results Found
+              </Flex>
+            )}
+            <Box>
+              {searchValue?.length === 0 &&
                 searchedUsers?.length === 0 &&
-                "No Results Found"}
-            </Flex>
+                searchList?.length > 0 && (
+                  <Box>
+                    <Flex
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      py={"1rem"}
+                    >
+                      <Text>Recent</Text>
+                      <Button variant={"link-button"}>Clear All</Button>
+                    </Flex>
+                    {searchList?.map(({ _id, avatar, username, fullName }) => (
+                      <Flex
+                        key={_id}
+                        my={"4"}
+                        cursor={"pointer"}
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                        _hover={{ bg: "#1f1f1f6a" }}
+                        title={username}
+                        onClick={() => {
+                          navigate(`/profile/${username}`);
+                          onClose();
+                        }}
+                      >
+                        <Flex gap={"3"} alignItems={"center"}>
+                          <Avatar size="md" name={fullName} src={avatar?.url} />
+                          <VStack align={"flex-start"} gap={"0"}>
+                            <Text>{username}</Text>
+                            <Text fontSize={"0.8rem"} color={"gray"}>
+                              {fullName}
+                            </Text>
+                          </VStack>
+                        </Flex>
+                        <Box
+                          as={RxCross2}
+                          fontSize={"1.5rem"}
+                          color={"gray"}
+                          title="remove"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            dispatch(removeUserFromSearchList({ _id }));
+                          }}
+                          pos={"relative"}
+                          zIndex={"3"}
+                        />
+                      </Flex>
+                    ))}
+                  </Box>
+                )}
+            </Box>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

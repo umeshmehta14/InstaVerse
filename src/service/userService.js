@@ -21,3 +21,43 @@ export const searchUser = async (searchValue, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const getSearchList = async (token) =>
+  await axios.get(`http://localhost:8000/api/v1/user/searchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const addSearchList = async (userId, token) =>
+  await axios.patch(
+    `${API_URL}/user/searchList/add/${userId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+export const removeSearchList = async (userId, token) =>
+  await axios.patch(
+    `${API_URL}/user/searchList/remove/${userId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+export const clearSearchList = async (token) =>
+  await axios.patch(
+    `${API_URL}/user/searchList/clear`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
