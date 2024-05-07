@@ -54,7 +54,7 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   const {
     username,
     fullName,
-    avatar: { url },
+    avatar,
     bio,
     posts,
     following,
@@ -78,7 +78,7 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   return (
     <>
       <Flex {...profileDetailMain}>
-        <Avatar size={{ base: "xl", md: "2xl" }} src={url} />
+        <Avatar size={{ base: "xl", md: "2xl" }} src={avatar?.url} />
         <Flex {...profileButtonMain}>
           <Flex {...profileUsernameStyle}>
             <Text>{username}</Text>

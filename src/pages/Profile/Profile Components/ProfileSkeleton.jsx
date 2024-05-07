@@ -19,7 +19,7 @@ export const ProfileSkeleton = () => {
       {...profileMainBox}
       w={"100%"}
       h={"100vh"}
-      bg={colorMode === "dark" ? "black.700" : "white.500"}
+      bg={colorMode === "dark" ? "black.900" : "white.500"}
     >
       <Box padding="6" boxShadow="lg">
         <SkeletonCircle size="20" />

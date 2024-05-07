@@ -34,7 +34,7 @@ import {
   BsBookmarkX,
 } from "../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserByUsername } from "../Post Feed/userSlice";
+import { getUserByUsername, updateSelectedUser } from "../Post Feed/userSlice";
 
 export const Profile = () => {
   const paramUser = useParams();
@@ -76,10 +76,6 @@ export const Profile = () => {
     if (selectedUser?.username !== paramUser.username) {
       dispatch(getUserByUsername({ username: paramUser?.username }));
     }
-
-    return () => {
-      userDispatch({ type: SET_SELECTED_USER, payload: null });
-    };
   }, [paramUser.username, currentUser, posts, defaultTab, selectedUser]);
 
   return progress === 100 ? (
