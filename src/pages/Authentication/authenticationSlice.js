@@ -137,8 +137,10 @@ const authenticationSlice = createSlice({
       );
     });
 
-    builder.addCase(refreshTokens.rejected, () => {
-      logoutHandler();
+    builder.addCase(refreshTokens.rejected, (state) => {
+      localStorage.removeItem("instaverseUser");
+      state.token = null;
+      state.currentUser = null;
       toast.error(`Session Expired Login Again`);
       console.error("refrsh token error");
     });

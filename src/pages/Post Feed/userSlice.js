@@ -50,8 +50,10 @@ export const getUserByUsername = createAsyncThunk(
 
 export const getSearchedUsers = createAsyncThunk(
   "user/search",
-  async ({ searchValue }, { getState }) => {
+  async (_, { getState }) => {
     const { token } = getState().authentication;
+    const { searchValue } = getState().user;
+
     const {
       data: { statusCode, data },
     } = await searchUser(searchValue, token);
@@ -72,6 +74,10 @@ const userSlice = createSlice({
 
     updateSearchValue: (state, action) => {
       state.searchValue = action.payload;
+    },
+
+    updateSearchedUsers: (state) => {
+      state.searchedUsers = [];
     },
   },
   extraReducers: (builder) => {
@@ -105,11 +111,11 @@ const userSlice = createSlice({
     });
 
     builder.addCase(getSearchedUsers.fulfilled, (state, action) => {
-      // state.searchedUsers = action.payload;
-      state.isLoading = true;
+      state.searchedUsers = action.payload?.users;
+      state.isLoading = false;
     });
 
-    builder.addCase(getSearchedUsers.rejected, (_, action) => {
+    builder.addCase(getSearchedUsers.rejected, (state, action) => {
       toast.error("Something went wrong");
       console.log(action.error);
       state.isLoading = false;
@@ -117,6 +123,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateSelectedUser, updateSearchValue } = userSlice.actions;
+export const { updateSelectedUser, updateSearchValue, updateSearchedUsers } =
+  userSlice.actions;
 
 export const userReducer = userSlice.reducer;

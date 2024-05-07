@@ -24,6 +24,7 @@ import { getMutualFollowers } from "../../../utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getSearchedUsers,
+  updateSearchedUsers,
   updateSearchValue,
 } from "../../../pages/Post Feed/userSlice";
 import SearchSkeleton from "./SearchSkeleton";
@@ -37,19 +38,17 @@ const SearchBox = ({ isOpen, onClose }) => {
   );
   const dispatch = useDispatch();
 
-  const debounce = (func, delay) => {
+  const debounce = (delay) => {
     let timeoutId;
-    return (args) => {
+    return () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
-        dispatch(func(args));
+        dispatch(getSearchedUsers());
       }, delay);
     };
   };
 
-  const debouncedFetchData = useCallback(debounce(getSearchedUsers, 500), [
-    getSearchedUsers,
-  ]);
+  const debouncedFetchData = useCallback(debounce(500), [getSearchedUsers]);
 
   return (
     <Box>
@@ -57,6 +56,7 @@ const SearchBox = ({ isOpen, onClose }) => {
         isOpen={isOpen}
         onClose={() => {
           dispatch(updateSearchValue(""));
+          dispatch(updateSearchedUsers());
           onClose();
         }}
         placement="left"
@@ -74,7 +74,7 @@ const SearchBox = ({ isOpen, onClose }) => {
                 placeholder="Search User..."
                 onChange={(e) => {
                   dispatch(updateSearchValue(e.target.value));
-                  debouncedFetchData(e.target.value);
+                  debouncedFetchData();
                 }}
                 value={searchValue}
               />
@@ -83,7 +83,10 @@ const SearchBox = ({ isOpen, onClose }) => {
                   <Box
                     as={RxCrossCircled}
                     cursor={"pointer"}
-                    onClick={() => dispatch(updateSearchValue(""))}
+                    onClick={() => {
+                      dispatch(updateSearchValue(""));
+                      dispatch(updateSearchedUsers());
+                    }}
                     title="Clear"
                   />
                 </InputRightElement>
@@ -96,14 +99,7 @@ const SearchBox = ({ isOpen, onClose }) => {
                 <SearchSkeleton />
               ) : (
                 searchedUsers?.map((user) => {
-                  const {
-                    _id,
-                    avatarURL,
-                    username,
-                    firstName,
-                    lastName,
-                    followers,
-                  } = user;
+                  const { _id, avatar, username, fullName, followers } = user;
                   const mutualFollower = getMutualFollowers(
                     followers,
                     currentUser
@@ -122,7 +118,7 @@ const SearchBox = ({ isOpen, onClose }) => {
                       }}
                     >
                       <Flex alignItems={"center"} gap={"2"}>
-                        <Avatar size="md" name={firstName} src={avatarURL} />
+                        <Avatar size="md" name={fullName} src={avatar?.url} />
                       </Flex>
                       <VStack
                         align={"flex-start"}
@@ -131,10 +127,8 @@ const SearchBox = ({ isOpen, onClose }) => {
                       >
                         <Text>{username}</Text>
                         <Flex fontSize={"0.8rem"} color={"gray"}>
-                          <Text>
-                            {firstName} {lastName}
-                          </Text>
-                          {mutualFollower.length > 0 && (
+                          <Text>{fullName}</Text>
+                          {mutualFollower?.length > 0 && (
                             <Flex alignItems={"center"}>
                               <BsDot />
                               <Text
@@ -143,9 +137,9 @@ const SearchBox = ({ isOpen, onClose }) => {
                                 textOverflow="ellipsis"
                                 w="150px"
                               >
-                                Followed By {mutualFollower[0].username}{" "}
-                                {mutualFollower.length > 1 && (
-                                  <>+{mutualFollower.length - 1} more</>
+                                Followed By {mutualFollower[0]?.username}{" "}
+                                {mutualFollower?.length > 1 && (
+                                  <>+{mutualFollower?.length - 1} more</>
                                 )}
                               </Text>
                             </Flex>
@@ -157,7 +151,10 @@ const SearchBox = ({ isOpen, onClose }) => {
                 })
               ))}
             <Flex align={"center"} w={"100%"} justify={"center"} py={"3rem"}>
-              {searchValue && searchedUsers?.length === 0 && "No Results Found"}
+              {searchValue &&
+                isLoading &&
+                searchedUsers?.length === 0 &&
+                "No Results Found"}
             </Flex>
           </DrawerBody>
         </DrawerContent>
