@@ -30,7 +30,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useUser } from "../../../contexts";
 import { AvatarModal } from "../../index";
 import {
   inputLengthReader,
@@ -40,7 +39,7 @@ import {
 } from "../../../styles/GlobalStyles";
 import { AiOutlinePicture, SlTrash, RxAvatar } from "../../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
-import { editUserProfile, getUserByUsername } from "../../Post Feed/userSlice";
+import { editUserProfile } from "../../Post Feed/userSlice";
 
 export const EditProfileModal = ({ isOpen, onClose }) => {
   const { currentUser } = useSelector((state) => state.authentication);

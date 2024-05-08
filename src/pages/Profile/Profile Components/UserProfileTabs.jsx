@@ -39,6 +39,7 @@ const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
   const {
     userState: { defaultTab },
   } = useUser();
+
   return (
     <Tabs isLazy defaultIndex={defaultTab} w={"100%"}>
       <TabList {...tabListStyle}>
@@ -69,24 +70,22 @@ const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
       </TabList>
       <TabPanels>
         <TabPanel p="0">
-          {currentUserCheck ? (
-            selectedUser?.posts?.length === 0 ? (
-              <VStack justifyContent="center" height="300px" gap={"4"}>
-                <Box as={CiCamera} {...emptyCameraStyles} />
-                <Heading>Share photos</Heading>
-                <Text textAlign={"center"}>
-                  When you share photos, they will appear on your profile.
-                </Text>
-                <Button
-                  variant={"link-button"}
-                  onClick={postModalDisclosure.onOpen}
-                >
-                  Share your first photo
-                </Button>
-              </VStack>
-            ) : (
-              <GridBox showingPost={selectedUser?.posts} />
-            )
+          {selectedUser?.posts?.length === 0 && currentUserCheck ? (
+            <VStack justifyContent="center" height="300px" gap={"4"}>
+              <Box as={CiCamera} {...emptyCameraStyles} />
+              <Heading>Share photos</Heading>
+              <Text textAlign={"center"}>
+                When you share photos, they will appear on your profile.
+              </Text>
+              <Button
+                variant={"link-button"}
+                onClick={postModalDisclosure.onOpen}
+              >
+                Share your first photo
+              </Button>
+            </VStack>
+          ) : selectedUser?.posts?.length > 0 ? (
+            <GridBox showingPost={selectedUser?.posts} />
           ) : (
             <VStack minH={"30vh"} fontSize={"4rem"} gap={"2rem"}>
               <Box as={CiCamera} {...emptyCameraStyles} />
