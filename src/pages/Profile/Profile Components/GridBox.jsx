@@ -18,25 +18,26 @@ import { FaComment, AiFillHeart } from "../../../utils/Icons";
 export const GridBox = ({ showingPost }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   return (
     <Grid
       templateColumns="repeat(3, minmax(104px, 1fr))"
       width={"100%"}
       gap={"1"}
     >
-      {showingPost?.map((post) => {
+      {showingPost?.map((post, index) => {
         const { url, _id, comments, username, likes } = post;
-        const [isHovered, setIsHovered] = useState(false);
-
+        const isHovered = hoveredIndex === index;
         return (
           <GridItem
             key={_id}
             pos={"relative"}
             onMouseEnter={() => {
-              setIsHovered(true);
+              setHoveredIndex(index);
             }}
             onMouseLeave={() => {
-              setIsHovered(false);
+              setHoveredIndex(null);
             }}
             cursor={"pointer"}
             onClick={() =>

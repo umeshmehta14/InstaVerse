@@ -68,3 +68,10 @@ export const getBookmark = async (token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const getLikedPosts = async (token) =>
+  await axios.get(`${API_URL}/user/liked-posts`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

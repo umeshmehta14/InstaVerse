@@ -4,6 +4,7 @@ import {
   clearSearchList,
   getBookmark,
   getByUsername,
+  getLikedPosts,
   getSearchList,
   guestUsers,
   removeSearchList,
@@ -21,6 +22,7 @@ const initialState = {
   isSearchUserFetched: false,
   searchList: [],
   bookmarks: [],
+  likedPosts: [],
 };
 
 export const getGuestUsers = createAsyncThunk(
@@ -147,6 +149,21 @@ export const getUserBookmark = createAsyncThunk(
   }
 );
 
+export const getUserLikedPosts = createAsyncThunk(
+  "user/get/likedPosts",
+  async (_, { getState }) => {
+    const { token } = getState().authentication;
+
+    const {
+      data: { statusCode, data },
+    } = await getLikedPosts(token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -249,10 +266,25 @@ const userSlice = createSlice({
 
     builder.addCase(getUserBookmark.fulfilled, (state, action) => {
       state.bookmarks = action.payload;
-      // state.isLoading = false;
+      state.isLoading = false;
     });
 
     builder.addCase(getUserBookmark.rejected, (state, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+      state.isLoading = false;
+    });
+
+    builder.addCase(getUserLikedPosts.pending, (state) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(getUserLikedPosts.fulfilled, (state, action) => {
+      state.likedPosts = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(getUserLikedPosts.rejected, (state, action) => {
       toast.error("Something went wrong");
       console.error(action.error);
       state.isLoading = false;

@@ -25,6 +25,7 @@ export const ClearRecentModal = ({ isOpen, onClose }) => {
         bg={colorMode === "dark" ? "black.600" : "white.500"}
         mt={"15rem"}
         maxWidth={"390px"}
+        borderRadius={"1.5rem"}
       >
         <VStack pt={"1.5rem"} pb={"0.5rem"}>
           <Text mt="0.5rem" fontSize={"1.2rem"}>
@@ -44,7 +45,7 @@ export const ClearRecentModal = ({ isOpen, onClose }) => {
           <Divider />
           <Button
             sx={simpleButton}
-            color={"red"}
+            color={"#ed4956"}
             onClick={() => {
               dispatch(clearUserSearchList());
               onClose();
