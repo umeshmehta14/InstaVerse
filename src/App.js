@@ -24,7 +24,6 @@ function App() {
   const { colorMode } = useColorMode();
   const { loading } = usePost();
   const { progress, token } = useSelector((state) => state.authentication);
-  const { selectedUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {

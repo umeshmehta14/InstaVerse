@@ -69,22 +69,29 @@ const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
       </TabList>
       <TabPanels>
         <TabPanel p="0">
-          {selectedUser?.posts?.length === 0 ? (
-            <VStack justifyContent="center" height="300px" gap={"4"}>
-              <Box as={CiCamera} {...emptyCameraStyles} />
-              <Heading>Share photos</Heading>
-              <Text textAlign={"center"}>
-                When you share photos, they will appear on your profile.
-              </Text>
-              <Button
-                variant={"link-button"}
-                onClick={postModalDisclosure.onOpen}
-              >
-                Share your first photo
-              </Button>
-            </VStack>
+          {currentUserCheck ? (
+            selectedUser?.posts?.length === 0 ? (
+              <VStack justifyContent="center" height="300px" gap={"4"}>
+                <Box as={CiCamera} {...emptyCameraStyles} />
+                <Heading>Share photos</Heading>
+                <Text textAlign={"center"}>
+                  When you share photos, they will appear on your profile.
+                </Text>
+                <Button
+                  variant={"link-button"}
+                  onClick={postModalDisclosure.onOpen}
+                >
+                  Share your first photo
+                </Button>
+              </VStack>
+            ) : (
+              <GridBox showingPost={selectedUser?.posts} />
+            )
           ) : (
-            <GridBox showingPost={selectedUser?.posts} />
+            <VStack minH={"30vh"} fontSize={"4rem"} gap={"2rem"}>
+              <Box as={CiCamera} {...emptyCameraStyles} />
+              <Heading>No posts yet</Heading>
+            </VStack>
           )}
         </TabPanel>
         <TabPanel p="0">

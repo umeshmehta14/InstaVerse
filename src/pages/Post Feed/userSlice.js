@@ -286,7 +286,6 @@ const userSlice = createSlice({
 
     builder.addCase(getUserSearchList.rejected, (_, action) => {
       console.error(action.error);
-      toast.error("Something went wrong");
     });
 
     builder.addCase(addUserToSearchList.fulfilled, (state, action) => {
@@ -371,16 +370,6 @@ const userSlice = createSlice({
       console.error(action.error);
       state.isLoading = false;
     });
-
-    // builder.addCase(editUserProfile.pending, (state) => {
-    //   state.isLoading = false;
-    // });
-
-    // builder.addCase(editUserProfile.fulfilled, (state, action) => {
-    //   toast.error("Something went wrong");
-    //   console.error(action.error);
-    //   state.isLoading = false;
-    // });
 
     builder.addCase(editUserProfile.rejected, (state, action) => {
       toast.error("Something went wrong");
