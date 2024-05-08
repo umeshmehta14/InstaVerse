@@ -24,9 +24,8 @@ export const Profile = () => {
 
   const dispatch = useDispatch();
 
-  const { username } = selectedUser;
-  document.title = `@${username}`;
-  const currentUserCheck = currentUser.username === username;
+  document.title = `@${selectedUser?.username || "Instaverse | Profile"}`;
+  const currentUserCheck = currentUser.username === selectedUser?.username;
 
   useEffect(() => {
     if (paramUser.username !== prevUsername) {
@@ -42,7 +41,10 @@ export const Profile = () => {
         currentUserCheck={currentUserCheck}
       />
       <Divider />
-      <UserProfileTabs currentUserCheck={currentUserCheck} />
+      <UserProfileTabs
+        currentUserCheck={currentUserCheck}
+        postModalDisclosure
+      />
       {postModalDisclosure.isOpen && (
         <PostModal
           isOpen={postModalDisclosure.isOpen}

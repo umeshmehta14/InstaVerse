@@ -29,7 +29,7 @@ import {
 import { RotatingLoader } from "../../../components";
 import { GridBox } from "./GridBox";
 
-const UserProfileTabs = ({ currentUserCheck }) => {
+const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
   const { selectedUser, bookmarks, isLoading, likedPosts } = useSelector(
     (state) => state.user
   );

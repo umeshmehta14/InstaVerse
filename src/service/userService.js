@@ -69,8 +69,37 @@ export const getBookmark = async (token) =>
     },
   });
 
+export const addBookmark = async (postId, token) =>
+  await axios.patch(
+    `${API_URL}/user/bookmark/add/${postId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+export const removeBookmark = async (postId, token) =>
+  await axios.patch(
+    `${API_URL}/user/bookmark/${postId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
 export const getLikedPosts = async (token) =>
   await axios.get(`${API_URL}/user/liked-posts`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const editProfile = async ({ updateData }, token) =>
+  await axios.post(`${API_URL}/user/update-profile`, updateData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

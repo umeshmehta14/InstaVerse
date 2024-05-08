@@ -1,17 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  addBookmark,
   addSearchList,
   clearSearchList,
+  editProfile,
   getBookmark,
   getByUsername,
   getLikedPosts,
   getSearchList,
   guestUsers,
+  removeBookmark,
   removeSearchList,
   searchUser,
 } from "../../service/userService";
 import toast from "react-hot-toast";
-import { updateProgress } from "../Authentication/authenticationSlice";
+import {
+  updateCurrentUser,
+  updateProgress,
+} from "../Authentication/authenticationSlice";
 
 const initialState = {
   guestUsers: [],
@@ -23,6 +29,7 @@ const initialState = {
   searchList: [],
   bookmarks: [],
   likedPosts: [],
+  avatarImages: [],
 };
 
 export const getGuestUsers = createAsyncThunk(
@@ -149,6 +156,36 @@ export const getUserBookmark = createAsyncThunk(
   }
 );
 
+export const addUserBookmark = createAsyncThunk(
+  "user/add/bookmark",
+  async ({ postId }, { getState }) => {
+    const { token } = getState().authentication;
+
+    const {
+      data: { statusCode, data },
+    } = await addBookmark(postId, token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const removeUserBookmark = createAsyncThunk(
+  "user/remove/bookmark",
+  async ({ postId }, { getState }) => {
+    const { token } = getState().authentication;
+
+    const {
+      data: { statusCode, data },
+    } = await removeBookmark(postId, token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
 export const getUserLikedPosts = createAsyncThunk(
   "user/get/likedPosts",
   async (_, { getState }) => {
@@ -164,12 +201,31 @@ export const getUserLikedPosts = createAsyncThunk(
   }
 );
 
+export const editUserProfile = createAsyncThunk(
+  "user/editProfile",
+  async ({ data: updateData }, { getState, dispatch }) => {
+    dispatch(updateProgress(20));
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await editProfile({ updateData }, token);
+    dispatch(updateProgress(50));
+    if (statusCode === 200) {
+      dispatch(updateProgress(100));
+      dispatch(updateSelectedUser(data));
+      dispatch(updateCurrentUser(data));
+      return data;
+    }
+    dispatch(updateProgress(100));
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateSelectedUser: (state) => {
-      state.selectedUser = {};
+    updateSelectedUser: (state, action) => {
+      state.selectedUser = action.payload;
     },
 
     updateSearchValue: (state, action) => {
@@ -275,6 +331,32 @@ const userSlice = createSlice({
       state.isLoading = false;
     });
 
+    builder.addCase(addUserBookmark.pending, () => {
+      document.body.style.cursor = "progress";
+    });
+
+    builder.addCase(addUserBookmark.fulfilled, () => {
+      state.bookmarks = action.payload;
+    });
+
+    builder.addCase(addUserBookmark.rejected, () => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+    });
+
+    builder.addCase(removeUserBookmark.pending, () => {
+      document.body.style.cursor = "progress";
+    });
+
+    builder.addCase(removeUserBookmark.fulfilled, () => {
+      state.bookmarks = action.payload;
+    });
+
+    builder.addCase(removeUserBookmark.rejected, () => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+    });
+
     builder.addCase(getUserLikedPosts.pending, (state) => {
       state.isLoading = true;
     });
@@ -285,6 +367,22 @@ const userSlice = createSlice({
     });
 
     builder.addCase(getUserLikedPosts.rejected, (state, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+      state.isLoading = false;
+    });
+
+    // builder.addCase(editUserProfile.pending, (state) => {
+    //   state.isLoading = false;
+    // });
+
+    // builder.addCase(editUserProfile.fulfilled, (state, action) => {
+    //   toast.error("Something went wrong");
+    //   console.error(action.error);
+    //   state.isLoading = false;
+    // });
+
+    builder.addCase(editUserProfile.rejected, (state, action) => {
       toast.error("Something went wrong");
       console.error(action.error);
       state.isLoading = false;

@@ -39,20 +39,30 @@ import {
   editFormLabel,
 } from "../../../styles/GlobalStyles";
 import { AiOutlinePicture, SlTrash, RxAvatar } from "../../../utils/Icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { editUserProfile, getUserByUsername } from "../../Post Feed/userSlice";
 
 export const EditProfileModal = ({ isOpen, onClose }) => {
   const { currentUser } = useSelector((state) => state.authentication);
-  const { handleEditUser } = useUser();
   const { colorMode } = useColorMode();
   const fileInputRef = useRef(null);
   const cancelRef = useRef();
+  const dispatch = useDispatch();
 
   const discardDisclosure = useDisclosure();
   const avatarDisclosure = useDisclosure();
 
-  const [updateProfile, setUpdateProfile] = useState(currentUser);
-  const { avatarURL, firstName, lastName, bio, portfolio } = updateProfile;
+  const editData = {
+    avatar: currentUser?.avatar.url,
+    fullName: currentUser?.fullName,
+    portfolio: currentUser?.portfolio,
+    bio: currentUser?.bio,
+    picture: "",
+  };
+
+  const [updateProfile, setUpdateProfile] = useState(editData);
+  const [selectedPicture, setSelectedPicture] = useState("");
+  const { avatar, fullName, bio, portfolio } = updateProfile;
 
   const handleBioChange = (e) => {
     const { value } = e.target;
@@ -69,24 +79,33 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
     const file = event.target.files[0];
     setUpdateProfile({
       ...updateProfile,
-      avatarURL: URL.createObjectURL(file),
+      picture: file,
+      avatar: "",
     });
+    setSelectedPicture(URL.createObjectURL(file));
   };
 
   const handleCartoonAvatar = (url) => {
     setUpdateProfile({
       ...updateProfile,
-      avatarURL: url,
+      avatar: url,
+      picture: "",
     });
   };
 
   const handleEditSubmission = () => {
-    handleEditUser(updateProfile);
+    const data = new FormData();
+    data.append("bio", updateProfile.bio);
+    data.append("fullName", updateProfile.fullName);
+    data.append("portfolio", updateProfile.portfolio);
+    data.append("avatar", updateProfile.avatar);
+    data.append("picture", updateProfile.picture);
+    dispatch(editUserProfile({ data }));
     onClose();
   };
 
   useEffect(() => {
-    setUpdateProfile(currentUser);
+    setUpdateProfile(editData);
   }, [isOpen]);
 
   return (
@@ -106,7 +125,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
           <ModalBody pb={6}>
             <VStack gap={"1rem"}>
               <VStack gap={"0.5rem"}>
-                <Avatar size={"lg"} src={avatarURL} />
+                <Avatar size={"lg"} src={avatar || selectedPicture} />
                 <Popover>
                   <PopoverTrigger>
                     <Button variant={"link-button"} fontSize={"1rem"}>
@@ -147,7 +166,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
                           handleCartoonAvatar={handleCartoonAvatar}
                         />
                       )}
-                      {avatarURL?.length > 0 && (
+                      {avatar?.length > 0 && (
                         <Button
                           w="100%"
                           justifyContent={"flex-start"}
@@ -156,7 +175,8 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
                           onClick={() =>
                             setUpdateProfile({
                               ...updateProfile,
-                              avatarURL: "",
+                              avatar: "",
+                              picture: "",
                             })
                           }
                         >
@@ -177,36 +197,21 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
               </VStack>
 
               <FormControl>
-                <FormLabel sx={editFormLabel}>First name</FormLabel>
+                <FormLabel sx={editFormLabel}>Full Name</FormLabel>
                 <Input
-                  placeholder="First name"
-                  value={firstName}
+                  placeholder="Full Name"
+                  value={fullName}
                   sx={editFormInput}
                   maxLength={25}
                   onChange={(e) =>
                     setUpdateProfile({
                       ...updateProfile,
-                      firstName: e.target.value,
+                      fullName: e.target.value,
                     })
                   }
                 />
               </FormControl>
 
-              <FormControl>
-                <FormLabel sx={editFormLabel}>Last name</FormLabel>
-                <Input
-                  placeholder="Last name"
-                  value={lastName}
-                  sx={editFormInput}
-                  maxLength={25}
-                  onChange={(e) =>
-                    setUpdateProfile({
-                      ...updateProfile,
-                      lastName: e.target.value,
-                    })
-                  }
-                />
-              </FormControl>
               <FormControl pos={"relative"}>
                 <FormLabel sx={editFormLabel}>Bio</FormLabel>
                 <Input
