@@ -19,8 +19,6 @@ export const GridBox = ({ showingPost }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(showingPost);
-
   const [hoveredIndex, setHoveredIndex] = useState(null);
   return (
     <Grid

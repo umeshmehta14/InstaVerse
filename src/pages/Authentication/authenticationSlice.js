@@ -72,6 +72,10 @@ const authenticationSlice = createSlice({
     updateCurrentUser: (state, action) => {
       state.currentUser = action.payload;
     },
+
+    updateCurrentUserFollowing: (state, action) => {
+      state.currentUser.following = action.payload.following;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(updateProgress, (state, action) => {
@@ -151,6 +155,7 @@ const authenticationSlice = createSlice({
   },
 });
 
-export const { updateCurrentUser } = authenticationSlice.actions;
+export const { updateCurrentUser, updateCurrentUserFollowing } =
+  authenticationSlice.actions;
 
 export const authenticationReducer = authenticationSlice.reducer;

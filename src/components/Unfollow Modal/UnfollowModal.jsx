@@ -12,18 +12,19 @@ import {
 } from "@chakra-ui/react";
 
 import { simpleButton } from "../../styles/GlobalStyles";
-import { useUser } from "../../contexts";
+import { useDispatch } from "react-redux";
+import { handleFollowUnfollowUser } from "../../pages/Post Feed/userSlice";
 
 export const UnfollowModal = ({
   isOpen,
   onClose,
+  _id,
   username,
-  avatarURL,
-  handleFollowUser,
+  avatar,
   fromInfoPop,
 }) => {
   const { colorMode } = useColorMode();
-  const { handleUnfollow } = useUser();
+  const dispatch = useDispatch();
 
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
@@ -34,16 +35,14 @@ export const UnfollowModal = ({
         maxWidth={"390px"}
       >
         <VStack pt={"1.5rem"} pb={"0.5rem"}>
-          <Avatar size={"xl"} src={avatarURL} />
+          <Avatar size={"xl"} src={avatar?.url} />
           <Text m="0.5rem">unfollow @{username}?</Text>
           <Divider />
           <Button
             sx={simpleButton}
             color={"red"}
             onClick={() => {
-              fromInfoPop
-                ? handleUnfollow(username)
-                : handleFollowUser(username, true);
+              dispatch(handleFollowUnfollowUser({ _id, follow: false }));
               onClose();
             }}
           >

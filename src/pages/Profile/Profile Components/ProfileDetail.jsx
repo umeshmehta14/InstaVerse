@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Avatar,
   Box,
@@ -35,6 +34,8 @@ import { FiLogOut } from "../../../utils/Icons";
 import { SET_USER_LIST } from "../../../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../Authentication/authenticationSlice";
+import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
+import { useEffect } from "react";
 
 export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,36 +44,39 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   const { colorMode } = useColorMode();
 
   const { currentUser } = useSelector((state) => state.authentication);
+  const { loadingUsers } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const {
-    userState: { loadingUsers, userList },
-    handleFollowUser,
+    userState: { userList },
     userDispatch,
   } = useUser();
 
   const {
+    _id,
     username,
     fullName,
     avatar,
     bio,
     posts,
     following,
-    followers,
+    follower,
     portfolio,
   } = selectedUser || {};
 
   const mutualFollowers =
-    !currentUserCheck && getMutualFollowers(followers, currentUser);
+    !currentUserCheck && getMutualFollowers(follower, currentUser);
 
   const isFollowing =
     !currentUserCheck &&
-    currentUser.following.find((user) => user.username === username);
+    currentUser.following?.some((user) => user?._id === _id || user === _id);
 
-  const checkFollowing = currentUser?.followers?.find(
-    (user) => user.username === username
+  const checkFollowing = currentUser?.follower?.some(
+    (user) => user?._id === _id || user === _id
   );
 
-  const isLoading = loadingUsers.includes(username);
+  const isLoading = loadingUsers.includes(_id);
+
+  useEffect(() => {}, [currentUser, selectedUser]);
 
   return (
     <>
@@ -105,7 +109,9 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
                 <Button
                   variant={"follow-button"}
                   title="Follow"
-                  onClick={() => handleFollowUser(username)}
+                  onClick={() =>
+                    dispatch(handleFollowUnfollowUser({ _id, follow: true }))
+                  }
                 >
                   {isLoading ? (
                     <RotatingLoader w="20" sw={"7"} />
@@ -140,7 +146,7 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
                   userDispatch({ type: SET_USER_LIST, payload: "followers" });
                 }}
               >
-                {followers?.length} follower
+                {follower?.length} follower
               </Text>
               <Text
                 cursor={"pointer"}
@@ -236,7 +242,7 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
             userDispatch({ type: SET_USER_LIST, payload: "followers" });
           }}
         >
-          {followers?.length} follower
+          {follower?.length} follower
         </Text>
         <Text
           cursor={"pointer"}
@@ -252,7 +258,7 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
         <UserListModal
           onClose={onClose}
           isOpen={isOpen}
-          users={userList === "followers" ? followers : following}
+          users={userList === "followers" ? follower : following}
           heading={userList === "followers" ? "Followers" : "Following"}
         />
       )}
@@ -267,7 +273,6 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
           isOpen={unfollowModalDisclosure.isOpen}
           onClose={unfollowModalDisclosure.onClose}
           {...selectedUser}
-          handleFollowUser={handleFollowUser}
         />
       )}
     </>

@@ -104,3 +104,25 @@ export const editProfile = async ({ updateData }, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const followUser = async (userId, token) =>
+  await axios.patch(
+    `${API_URL}/user/follow/${userId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+export const unfollowUser = async (userId, token) =>
+  await axios.patch(
+    `${API_URL}/user/unfollow/${userId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );

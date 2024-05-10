@@ -4,6 +4,7 @@ import {
   addSearchList,
   clearSearchList,
   editProfile,
+  followUser,
   getBookmark,
   getByUsername,
   getLikedPosts,
@@ -12,10 +13,12 @@ import {
   removeBookmark,
   removeSearchList,
   searchUser,
+  unfollowUser,
 } from "../../service/userService";
 import toast from "react-hot-toast";
 import {
   updateCurrentUser,
+  updateCurrentUserFollowing,
   updateProgress,
 } from "../Authentication/authenticationSlice";
 
@@ -30,6 +33,7 @@ const initialState = {
   bookmarks: [],
   likedPosts: [],
   avatarImages: [],
+  loadingUsers: [],
 };
 
 export const getGuestUsers = createAsyncThunk(
@@ -220,6 +224,26 @@ export const editUserProfile = createAsyncThunk(
   }
 );
 
+export const handleFollowUnfollowUser = createAsyncThunk(
+  "user/follow-unfollow",
+  async ({ _id, follow }, { getState, dispatch }) => {
+    const { token } = getState().authentication;
+    const { loadingUsers } = getState().user;
+    dispatch(updateLoadingUsers([...loadingUsers, _id]));
+
+    const {
+      data: { statusCode, data },
+    } = follow ? await followUser(_id, token) : await unfollowUser(_id, token);
+
+    if (statusCode === 200) {
+      const removeLoadingUsers = loadingUsers.filter((user) => user !== _id);
+      dispatch(updateLoadingUsers(removeLoadingUsers));
+      dispatch(updateCurrentUserFollowing(data));
+      return data;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -235,6 +259,10 @@ const userSlice = createSlice({
     updateSearchedUsers: (state) => {
       state.searchedUsers = [];
       state.isSearchUserFetched = false;
+    },
+
+    updateLoadingUsers: (state, action) => {
+      state.loadingUsers = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -376,10 +404,19 @@ const userSlice = createSlice({
       console.error(action.error);
       state.isLoading = false;
     });
+
+    builder.addCase(handleFollowUnfollowUser.rejected, (_, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+    });
   },
 });
 
-export const { updateSelectedUser, updateSearchValue, updateSearchedUsers } =
-  userSlice.actions;
+export const {
+  updateSelectedUser,
+  updateSearchValue,
+  updateSearchedUsers,
+  updateLoadingUsers,
+} = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
