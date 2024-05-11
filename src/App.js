@@ -27,9 +27,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (token) {
-      dispatch(refreshTokens());
-    }
+    // if (token) {
+    //   dispatch(refreshTokens());
+    // }
     dispatch(getGuestUsers());
   }, []);
 

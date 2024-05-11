@@ -110,7 +110,9 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
                   variant={"follow-button"}
                   title="Follow"
                   onClick={() =>
-                    dispatch(handleFollowUnfollowUser({ _id, follow: true }))
+                    dispatch(
+                      handleFollowUnfollowUser({ _id, follow: true, username })
+                    )
                   }
                 >
                   {isLoading ? (

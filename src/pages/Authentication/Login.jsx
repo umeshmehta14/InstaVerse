@@ -25,37 +25,36 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
-import {
-  GUEST_USER_PASSWORD,
-  SET_LOGIN_FORM,
-  SET_SHOW_PASSWORD,
-} from "../../utils/Constants";
+import { GUEST_USER_PASSWORD } from "../../utils/Constants";
 import { loginHandler } from "./authenticationSlice";
 import TailSpinLoader from "../../components/Loader/TailSpinLoader";
+import { updateLoginForm, updateShowPassword } from "../Post Feed/userSlice";
 
 export const Login = () => {
   document.title = "InstaVerse | Login";
 
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    userState: { loginForm, showPassword },
-    userDispatch,
-  } = useUser();
-  // const { handleGuestLogin } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authentication);
-  const { guestUsers, isLoading } = useSelector((state) => state.user);
+  const { guestUsers, isLoading, loginForm, showPassword } = useSelector(
+    (state) => state.user
+  );
 
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(
       loginHandler({
-        identifier: loginForm?.username,
+        identifier: loginForm?.identifier,
         password: loginForm?.password,
+      })
+    );
+    dispatch(
+      updateLoginForm({
+        identifier: "",
+        password: "",
       })
     );
   };
@@ -79,18 +78,20 @@ export const Login = () => {
           InstaVerse
         </Heading>
         <form onSubmit={handleLogin}>
-          <FormControl id="username" mb={4}>
+          <FormControl id="identifier" mb={4}>
             <FormLabel mb={"1"}>User Name or Email:</FormLabel>
             <Input
               type="text"
               placeholder="Enter your username or email"
-              value={loginForm.username}
+              value={loginForm.identifier}
               required
               onChange={(event) =>
-                userDispatch({
-                  type: SET_LOGIN_FORM,
-                  payload: { ...loginForm, username: event.target.value },
-                })
+                dispatch(
+                  updateLoginForm({
+                    ...loginForm,
+                    identifier: event.target.value,
+                  })
+                )
               }
             />
           </FormControl>
@@ -103,17 +104,19 @@ export const Login = () => {
                 value={loginForm.password}
                 required
                 onChange={(event) =>
-                  userDispatch({
-                    type: SET_LOGIN_FORM,
-                    payload: { ...loginForm, password: event.target.value },
-                  })
+                  dispatch(
+                    updateLoginForm({
+                      ...loginForm,
+                      password: event.target.value,
+                    })
+                  )
                 }
               />
               {loginForm.password && (
                 <InputRightElement
                   cursor={"pointer"}
                   fontSize={"sm"}
-                  onClick={() => userDispatch({ type: SET_SHOW_PASSWORD })}
+                  onClick={() => dispatch(updateShowPassword())}
                 >
                   {showPassword ? "Hide" : "Show"}
                 </InputRightElement>

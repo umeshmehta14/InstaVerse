@@ -23,6 +23,11 @@ import {
 } from "../Authentication/authenticationSlice";
 
 const initialState = {
+  loginForm: {
+    identifier: "",
+    password: "",
+  },
+  showPassword: false,
   guestUsers: [],
   isLoading: false,
   selectedUser: {},
@@ -52,8 +57,8 @@ export const getGuestUsers = createAsyncThunk(
 
 export const getUserByUsername = createAsyncThunk(
   "user/getByusername",
-  async ({ username }, { getState, dispatch }) => {
-    dispatch(updateProgress(40));
+  async ({ username, noLoading }, { getState, dispatch }) => {
+    !noLoading && dispatch(updateProgress(40));
 
     const { token } = getState().authentication;
     const {
@@ -61,10 +66,10 @@ export const getUserByUsername = createAsyncThunk(
     } = await getByUsername(username, token);
 
     if (statusCode === 200) {
-      dispatch(updateProgress(100));
+      !noLoading && dispatch(updateProgress(100));
       return data;
     } else {
-      dispatch(updateProgress(100));
+      !noLoading && dispatch(updateProgress(100));
     }
   }
 );
@@ -226,7 +231,7 @@ export const editUserProfile = createAsyncThunk(
 
 export const handleFollowUnfollowUser = createAsyncThunk(
   "user/follow-unfollow",
-  async ({ _id, follow }, { getState, dispatch }) => {
+  async ({ _id, follow, username }, { getState, dispatch }) => {
     const { token } = getState().authentication;
     const { loadingUsers } = getState().user;
     dispatch(updateLoadingUsers([...loadingUsers, _id]));
@@ -236,6 +241,7 @@ export const handleFollowUnfollowUser = createAsyncThunk(
     } = follow ? await followUser(_id, token) : await unfollowUser(_id, token);
 
     if (statusCode === 200) {
+      dispatch(getUserByUsername({ username, noLoading: true }));
       const removeLoadingUsers = loadingUsers.filter((user) => user !== _id);
       dispatch(updateLoadingUsers(removeLoadingUsers));
       dispatch(updateCurrentUserFollowing(data));
@@ -248,6 +254,13 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    updateLoginForm: (state, action) => {
+      state.loginForm = action.payload;
+    },
+
+    updateShowPassword: (state) => {
+      state.showPassword = !state.showPassword;
+    },
     updateSelectedUser: (state, action) => {
       state.selectedUser = action.payload;
     },
@@ -417,6 +430,8 @@ export const {
   updateSearchValue,
   updateSearchedUsers,
   updateLoadingUsers,
+  updateLoginForm,
+  updateShowPassword,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

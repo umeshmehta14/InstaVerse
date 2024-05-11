@@ -42,7 +42,9 @@ export const UnfollowModal = ({
             sx={simpleButton}
             color={"red"}
             onClick={() => {
-              dispatch(handleFollowUnfollowUser({ _id, follow: false }));
+              dispatch(
+                handleFollowUnfollowUser({ _id, follow: false, username })
+              );
               onClose();
             }}
           >

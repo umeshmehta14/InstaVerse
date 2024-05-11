@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_URL } from "../utils/Constants";
 
 export const getLoginInformation = async (identifier, password) =>
-  await axios.post(`${API_URL}/user/log-in`, {
+  await axios.post(`http://localhost:8000/api/v1/user/log-in`, {
     identifier,
     password,
   });
@@ -16,7 +16,7 @@ export const createUser = async (fullName, username, password, email) =>
   });
 
 export const userLogout = async (token) =>
-  await axios.get(`${API_URL}/user/logout`, {
+  await axios.get(`http://localhost:8000/api/v1/user/logout`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
