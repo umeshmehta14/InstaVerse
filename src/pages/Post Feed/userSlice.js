@@ -326,7 +326,6 @@ const userSlice = createSlice({
     });
 
     builder.addCase(getSearchedUsers.rejected, (state, action) => {
-      toast.error("Something went wrong");
       console.error(action.error);
       state.isLoading = false;
       state.isSearchUserFetched = false;

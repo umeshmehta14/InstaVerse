@@ -16,7 +16,7 @@ export const createUser = async (fullName, username, password, email) =>
   });
 
 export const userLogout = async (token) =>
-  await axios.get(`http://localhost:8000/api/v1/user/logout`, {
+  await axios.get(`${API_URL}}/user/logout`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

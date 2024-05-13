@@ -1,10 +1,10 @@
-import { Flex, SkeletonCircle, SkeletonText, VStack } from "@chakra-ui/react";
+import { Flex, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import React from "react";
 
 const SearchSkeleton = () => {
   return (
-    <VStack w={"100%"}>
-      {new Array(20).fill(null)?.map((_, index) => (
+    <>
+      {new Array(8).fill(null)?.map((_, index) => (
         <Flex gap={"2"} my={"2"} w={"100%"} key={index}>
           <SkeletonCircle size="12" />
           <SkeletonText
@@ -16,7 +16,7 @@ const SearchSkeleton = () => {
           />
         </Flex>
       ))}
-    </VStack>
+    </>
   );
 };
 
