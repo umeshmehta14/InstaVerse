@@ -23,18 +23,15 @@ import { toast } from "react-hot-toast";
 import { SET_SHOW_PASSWORD, SET_SIGNUP_FORM } from "../../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { signupHandler } from "./authenticationSlice";
+import { updateShowPassword, updateSignupForm } from "../Post Feed/userSlice";
 
 export const SignUp = () => {
   document.title = "InstaVerse | SignUp";
   const { colorMode } = useColorMode();
   const { token } = useSelector((state) => state.authentication);
+  const { signupForm, showPassword } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-
-  const {
-    userState: { showPassword, signupForm },
-    userDispatch,
-  } = useUser();
   const navigate = useNavigate();
 
   const { fullName, email, username, password, Cpassword } = signupForm;
@@ -42,11 +39,7 @@ export const SignUp = () => {
   const handleSignup = (e) => {
     e.preventDefault();
     if (password === Cpassword) {
-      if (password.length < 8) {
-        toast.error("Password Have Atleast 8 Characters");
-      } else {
-        dispatch(signupHandler({ fullName, email, username, password }));
-      }
+      dispatch(signupHandler({ fullName, email, username, password }));
     } else {
       toast.error("Password Does'nt Match");
     }
@@ -80,13 +73,12 @@ export const SignUp = () => {
                 value={fullName}
                 required
                 onChange={(event) =>
-                  userDispatch({
-                    type: SET_SIGNUP_FORM,
-                    payload: {
+                  dispatch(
+                    updateSignupForm({
                       ...signupForm,
                       fullName: event.target.value,
-                    },
-                  })
+                    })
+                  )
                 }
               />
             </FormControl>
@@ -98,10 +90,12 @@ export const SignUp = () => {
                 value={username}
                 required
                 onChange={(event) =>
-                  userDispatch({
-                    type: SET_SIGNUP_FORM,
-                    payload: { ...signupForm, username: event.target.value },
-                  })
+                  dispatch(
+                    updateSignupForm({
+                      ...signupForm,
+                      username: event.target.value,
+                    })
+                  )
                 }
               />
             </FormControl>
@@ -115,10 +109,9 @@ export const SignUp = () => {
               value={email}
               required
               onChange={(event) =>
-                userDispatch({
-                  type: SET_SIGNUP_FORM,
-                  payload: { ...signupForm, email: event.target.value },
-                })
+                dispatch(
+                  updateSignupForm({ ...signupForm, email: event.target.value })
+                )
               }
             />
           </FormControl>
@@ -131,17 +124,19 @@ export const SignUp = () => {
                 value={password}
                 required
                 onChange={(event) =>
-                  userDispatch({
-                    type: SET_SIGNUP_FORM,
-                    payload: { ...signupForm, password: event.target.value },
-                  })
+                  dispatch(
+                    updateSignupForm({
+                      ...signupForm,
+                      password: event.target.value,
+                    })
+                  )
                 }
               />
               {password && (
                 <InputRightElement
                   cursor={"pointer"}
                   fontSize={"sm"}
-                  onClick={() => userDispatch({ type: SET_SHOW_PASSWORD })}
+                  onClick={() => dispatch(updateShowPassword())}
                 >
                   {showPassword ? "Hide" : "Show"}
                 </InputRightElement>
@@ -157,10 +152,12 @@ export const SignUp = () => {
                 value={Cpassword}
                 required
                 onChange={(event) =>
-                  userDispatch({
-                    type: SET_SIGNUP_FORM,
-                    payload: { ...signupForm, Cpassword: event.target.value },
-                  })
+                  dispatch(
+                    updateSignupForm({
+                      ...signupForm,
+                      Cpassword: event.target.value,
+                    })
+                  )
                 }
               />
             </InputGroup>

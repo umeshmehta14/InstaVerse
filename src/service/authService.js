@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_URL } from "../utils/Constants";
 
 export const getLoginInformation = async (identifier, password) =>
-  await axios.post(`http://localhost:8000/api/v1/user/log-in`, {
+  await axios.post(`${API_URL}/user/log-in`, {
     identifier,
     password,
   });

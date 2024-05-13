@@ -52,6 +52,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
   const avatarDisclosure = useDisclosure();
 
   const editData = {
+    username: currentUser?.username,
     avatar: currentUser?.avatar.url,
     fullName: currentUser?.fullName,
     portfolio: currentUser?.portfolio,
@@ -61,7 +62,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
 
   const [updateProfile, setUpdateProfile] = useState(editData);
   const [selectedPicture, setSelectedPicture] = useState("");
-  const { avatar, fullName, bio, portfolio } = updateProfile;
+  const { avatar, fullName, bio, portfolio, username, picture } = updateProfile;
 
   const handleBioChange = (e) => {
     const { value } = e.target;
@@ -93,14 +94,27 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
   };
 
   const handleEditSubmission = () => {
-    const data = new FormData();
-    data.append("bio", updateProfile.bio);
-    data.append("fullName", updateProfile.fullName);
-    data.append("portfolio", updateProfile.portfolio);
-    data.append("avatar", updateProfile.avatar);
-    data.append("picture", updateProfile.picture);
-    dispatch(editUserProfile({ data }));
-    onClose();
+    if (
+      username === currentUser?.username &&
+      avatar === currentUser?.avatar.url &&
+      fullName === currentUser?.fullName &&
+      portfolio === currentUser?.portfolio &&
+      bio === currentUser?.bio &&
+      picture === ""
+    ) {
+      onClose();
+      return;
+    } else {
+      const data = new FormData();
+      data.append("bio", bio);
+      data.append("fullName", fullName);
+      data.append("portfolio", portfolio);
+      data.append("avatar", avatar);
+      data.append("picture", picture);
+      data.append("username", username);
+      dispatch(editUserProfile({ data }));
+      onClose();
+    }
   };
 
   useEffect(() => {
@@ -196,12 +210,27 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
               </VStack>
 
               <FormControl>
+                <FormLabel sx={editFormLabel}>Username</FormLabel>
+                <Input
+                  placeholder="username"
+                  value={username}
+                  sx={editFormInput}
+                  maxLength={20}
+                  onChange={(e) =>
+                    setUpdateProfile({
+                      ...updateProfile,
+                      username: e.target.value,
+                    })
+                  }
+                />
+              </FormControl>
+              <FormControl>
                 <FormLabel sx={editFormLabel}>Full Name</FormLabel>
                 <Input
                   placeholder="Full Name"
                   value={fullName}
                   sx={editFormInput}
-                  maxLength={25}
+                  maxLength={20}
                   onChange={(e) =>
                     setUpdateProfile({
                       ...updateProfile,

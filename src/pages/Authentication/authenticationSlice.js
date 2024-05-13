@@ -15,26 +15,37 @@ const initialState = {
 
 export const loginHandler = createAsyncThunk(
   "authentication/login",
-  async ({ identifier, password }, thunkAPI) => {
-    thunkAPI.dispatch(updateProgress(20));
-    const {
-      data: { statusCode, data },
-    } = await getLoginInformation(identifier, password);
-    if (statusCode === 200) {
-      return data;
+  async ({ identifier, password }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(updateProgress(20));
+      const {
+        data: { statusCode, data },
+      } = await getLoginInformation(identifier, password);
+      if (statusCode === 200) {
+        return data;
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const signupHandler = createAsyncThunk(
   "authentication/signup",
-  async ({ fullName, username, password, email }, thunkAPI) => {
-    thunkAPI.dispatch(updateProgress(20));
-    const {
-      data: { statusCode, data },
-    } = await createUser(fullName, username, password, email);
-    if (statusCode === 201) {
-      return data;
+  async (
+    { fullName, username, password, email },
+    { rejectWithValue, dispatch }
+  ) => {
+    try {
+      dispatch(updateProgress(20));
+      const {
+        data: { statusCode, data },
+      } = await createUser(fullName, username, password, email);
+      if (statusCode === 201) {
+        return data;
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -99,8 +110,8 @@ const authenticationSlice = createSlice({
 
     builder.addCase(loginHandler.rejected, (state, action) => {
       state.progress = 100;
-      toast.error("Something went wrong");
-      console.log(action.error);
+      toast.error(action.payload.error);
+      console.error(action.payload.error);
     });
 
     builder.addCase(signupHandler.pending, (state) => {
@@ -120,8 +131,8 @@ const authenticationSlice = createSlice({
 
     builder.addCase(signupHandler.rejected, (state, action) => {
       state.progress = 100;
-      toast.error("Something went wrong");
-      console.log(action.error);
+      toast.error(action.payload.error);
+      console.error(action.payload.error);
     });
 
     builder.addCase(logoutHandler.fulfilled, (state) => {

@@ -27,6 +27,13 @@ const initialState = {
     identifier: "",
     password: "",
   },
+  signupForm: {
+    username: "",
+    password: "",
+    Cpassword: "",
+    fullName: "",
+    email: "",
+  },
   showPassword: false,
   guestUsers: [],
   isLoading: false,
@@ -258,6 +265,10 @@ const userSlice = createSlice({
       state.loginForm = action.payload;
     },
 
+    updateSignupForm: (state, action) => {
+      state.signupForm = action.payload;
+    },
+
     updateShowPassword: (state) => {
       state.showPassword = !state.showPassword;
     },
@@ -432,6 +443,7 @@ export const {
   updateLoadingUsers,
   updateLoginForm,
   updateShowPassword,
+  updateSignupForm,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
