@@ -55,7 +55,12 @@ export const SwitchAccountModal = ({ onClose, isOpen }) => {
                   {...userList}
                   onClick={() => {
                     dispatch(logoutHandler());
-                    dispatch(loginHandler({ username, GUEST_USER_PASSWORD }));
+                    dispatch(
+                      loginHandler({
+                        identifier: username,
+                        password: GUEST_USER_PASSWORD,
+                      })
+                    );
                     onClose();
                   }}
                 >

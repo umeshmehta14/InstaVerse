@@ -110,17 +110,18 @@ const SearchBox = ({ isOpen, onClose }) => {
             </InputGroup>
             <Divider />
 
-            <VStack
-              overflowY="scroll"
-              h="80vh"
-              scroll-behavior="smooth"
-              w={"100%"}
-            >
-              {searchValue &&
-                (isLoading ? (
-                  <SearchSkeleton />
-                ) : (
-                  searchedUsers?.map((user) => {
+            {searchValue &&
+              (isLoading ? (
+                <SearchSkeleton />
+              ) : (
+                <VStack
+                  overflowY="scroll"
+                  maxH={"80vh"}
+                  overflowX={"hidden"}
+                  scroll-behavior="smooth"
+                  w={"100%"}
+                >
+                  {searchedUsers?.map((user) => {
                     const { _id, avatar, username, fullName, follower } = user;
                     const mutualFollower = getMutualFollowers(
                       follower,
@@ -172,10 +173,9 @@ const SearchBox = ({ isOpen, onClose }) => {
                         </VStack>
                       </Flex>
                     );
-                  })
-                ))}
-            </VStack>
-
+                  })}
+                </VStack>
+              ))}
             {searchValue?.length > 0 &&
               !isLoading &&
               searchedUsers?.length === 0 &&
@@ -202,43 +202,52 @@ const SearchBox = ({ isOpen, onClose }) => {
                       Clear All
                     </Button>
                   </Flex>
-                  {searchList?.map(({ _id, avatar, username, fullName }) => (
-                    <Flex
-                      key={_id}
-                      my={"4"}
-                      cursor={"pointer"}
-                      alignItems={"center"}
-                      justifyContent={"space-between"}
-                      _hover={{ bg: "#1f1f1f6a" }}
-                      title={username}
-                      onClick={() => {
-                        navigate(`/profile/${username}`);
-                        onClose();
-                      }}
-                    >
-                      <Flex gap={"3"} alignItems={"center"}>
-                        <Avatar size="md" name={fullName} src={avatar?.url} />
-                        <VStack align={"flex-start"} gap={"0"}>
-                          <Text>{username}</Text>
-                          <Text fontSize={"0.8rem"} color={"gray"}>
-                            {fullName}
-                          </Text>
-                        </VStack>
-                      </Flex>
-                      <Box
-                        as={RxCross2}
-                        fontSize={"1.5rem"}
-                        color={"gray"}
-                        title="remove"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          dispatch(removeUserFromSearchList({ _id }));
+                  <VStack
+                    overflowY="scroll"
+                    h={"80vh"}
+                    overflowX={"hidden"}
+                    scroll-behavior="smooth"
+                    w={"100%"}
+                  >
+                    {searchList?.map(({ _id, avatar, username, fullName }) => (
+                      <Flex
+                        key={_id}
+                        my={"1"}
+                        w="100%"
+                        cursor={"pointer"}
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                        _hover={{ bg: "#1f1f1f6a" }}
+                        title={username}
+                        onClick={() => {
+                          navigate(`/profile/${username}`);
+                          onClose();
                         }}
-                        pos={"relative"}
-                        zIndex={"3"}
-                      />
-                    </Flex>
-                  ))}
+                      >
+                        <Flex gap={"3"} alignItems={"center"}>
+                          <Avatar size="md" name={fullName} src={avatar?.url} />
+                          <VStack align={"flex-start"} gap={"0"}>
+                            <Text>{username}</Text>
+                            <Text fontSize={"0.8rem"} color={"gray"}>
+                              {fullName}
+                            </Text>
+                          </VStack>
+                        </Flex>
+                        <Box
+                          as={RxCross2}
+                          fontSize={"1.5rem"}
+                          color={"gray"}
+                          title="remove"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            dispatch(removeUserFromSearchList({ _id }));
+                          }}
+                          pos={"relative"}
+                          zIndex={"3"}
+                        />
+                      </Flex>
+                    ))}
+                  </VStack>
                 </Box>
               ) : (
                 searchValue?.length === 0 && (

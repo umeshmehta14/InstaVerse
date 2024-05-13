@@ -16,14 +16,20 @@ import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshTokens } from "./pages/Authentication/authenticationSlice";
-import { getGuestUsers, getUserSearchList } from "./pages/Post Feed/userSlice";
+import {
+  getGuestUsers,
+  getUserByUsername,
+  getUserSearchList,
+} from "./pages/Post Feed/userSlice";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.900");
   const { colorMode } = useColorMode();
   const { loading } = usePost();
-  const { progress, token } = useSelector((state) => state.authentication);
+  const { progress, token, currentUser } = useSelector(
+    (state) => state.authentication
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,6 +37,13 @@ function App() {
     //   dispatch(refreshTokens());
     // }
     dispatch(getGuestUsers());
+    dispatch(
+      getUserByUsername({
+        username: currentUser?.username,
+        noLoading: true,
+        currentUser: true,
+      })
+    );
   }, []);
 
   useEffect(() => {

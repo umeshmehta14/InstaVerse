@@ -68,10 +68,10 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
 
   const isFollowing =
     !currentUserCheck &&
-    currentUser.following?.some((user) => user?._id === _id || user === _id);
+    currentUser.following?.some((user) => user?._id === _id);
 
   const checkFollowing = currentUser?.follower?.some(
-    (user) => user?._id === _id || user === _id
+    (user) => user?._id === _id
   );
 
   const isLoading = loadingUsers.includes(_id);

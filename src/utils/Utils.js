@@ -17,7 +17,5 @@ export const postFilter = (posts, filter) =>
 
 export const getMutualFollowers = (follower, currentUser) =>
   follower?.filter((followId) =>
-    currentUser?.following?.some(
-      (user) => user?._id === followId._id || user === followId
-    )
+    currentUser?.following?.some((user) => user?._id === followId._id)
   );

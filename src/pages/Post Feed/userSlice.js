@@ -64,7 +64,7 @@ export const getGuestUsers = createAsyncThunk(
 
 export const getUserByUsername = createAsyncThunk(
   "user/getByusername",
-  async ({ username, noLoading }, { getState, dispatch }) => {
+  async ({ username, noLoading, currentUser }, { getState, dispatch }) => {
     !noLoading && dispatch(updateProgress(40));
 
     const { token } = getState().authentication;
@@ -73,6 +73,10 @@ export const getUserByUsername = createAsyncThunk(
     } = await getByUsername(username, token);
 
     if (statusCode === 200) {
+      if (currentUser) {
+        dispatch(updateCurrentUser(data));
+        return [];
+      }
       !noLoading && dispatch(updateProgress(100));
       return data;
     } else {
