@@ -17,10 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { useUser } from "../../contexts";
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 import { toast } from "react-hot-toast";
-import { SET_SHOW_PASSWORD, SET_SIGNUP_FORM } from "../../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { signupHandler } from "./authenticationSlice";
 import { updateShowPassword, updateSignupForm } from "../Post Feed/userSlice";
@@ -40,6 +38,14 @@ export const SignUp = () => {
     e.preventDefault();
     if (password === Cpassword) {
       dispatch(signupHandler({ fullName, email, username, password }));
+      dispatch(
+        updateSignupForm({
+          fullName: "",
+          email: "",
+          username: "",
+          password: "",
+        })
+      );
     } else {
       toast.error("Password Does'nt Match");
     }
