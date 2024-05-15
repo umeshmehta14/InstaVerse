@@ -11,18 +11,16 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import { simpleButton } from "../../styles/GlobalStyles";
+import { simpleButton } from "../../../styles/GlobalStyles";
 import { useDispatch } from "react-redux";
-import { handleFollowUnfollowUser } from "../../pages/Post Feed/userSlice";
+import { handleRemoveFollower } from "../../../pages/Post Feed/userSlice";
 
-export const UnfollowModal = ({
+export const RemoveFollowerModal = ({
   isOpen,
   onClose,
   _id,
   username,
   avatar,
-  notSelectedUser,
-  fromInfoPop,
 }) => {
   const { colorMode } = useColorMode();
   const dispatch = useDispatch();
@@ -37,24 +35,26 @@ export const UnfollowModal = ({
       >
         <VStack pt={"1.5rem"} pb={"0.5rem"}>
           <Avatar size={"xl"} src={avatar?.url} />
-          <Text m="0.5rem">unfollow @{username}?</Text>
+          <Text m="0.5rem">Remove follower?</Text>
+          <Text
+            textAlign={"center"}
+            color={"gray"}
+            fontSize={"14px"}
+            p={"0 1rem 0.5rem 1rem"}
+          >
+            Instaverse won't tell {username} that they were removed from your
+            followers.
+          </Text>
           <Divider />
           <Button
             sx={simpleButton}
             color={"red"}
             onClick={() => {
-              dispatch(
-                handleFollowUnfollowUser({
-                  _id,
-                  follow: false,
-                  username,
-                  notSelectedUser,
-                })
-              );
+              dispatch(handleRemoveFollower({ _id }));
               onClose();
             }}
           >
-            Unfollow
+            Remove
           </Button>
           <Divider />
           <Button sx={simpleButton} onClick={onClose}>

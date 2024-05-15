@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-import { useUser } from "../../../contexts";
 import {
   RotatingLoader,
   UnfollowModal,
@@ -31,11 +30,13 @@ import {
 } from "../../../styles/ProfileStyles";
 import { followedByUser } from "../../../styles/GlobalStyles";
 import { FiLogOut } from "../../../utils/Icons";
-import { SET_USER_LIST } from "../../../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../Authentication/authenticationSlice";
-import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
-import { useEffect } from "react";
+import {
+  handleFollowUnfollowUser,
+  handleGetFollower,
+} from "../../Post Feed/userSlice";
+import { useEffect, useState } from "react";
 
 export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -46,10 +47,7 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   const { currentUser } = useSelector((state) => state.authentication);
   const { loadingUsers } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const {
-    userState: { userList },
-    userDispatch,
-  } = useUser();
+  const [heading, setHeading] = useState("");
 
   const {
     _id,
@@ -125,17 +123,15 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
                 </Button>
               ))}
             {currentUserCheck && (
-              <>
-                <Button
-                  variant="following-button"
-                  mr={2}
-                  w="100%"
-                  title="Edit Profile"
-                  onClick={editModalDisclosure.onOpen}
-                >
-                  Edit Profile
-                </Button>
-              </>
+              <Button
+                variant="following-button"
+                mr={2}
+                w="100%"
+                title="Edit Profile"
+                onClick={editModalDisclosure.onOpen}
+              >
+                Edit Profile
+              </Button>
             )}
           </Flex>
           <Flex flexDir={"column"} display={{ base: "none", md: "flex" }}>
@@ -145,7 +141,8 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
                 cursor={"pointer"}
                 onClick={() => {
                   onOpen();
-                  userDispatch({ type: SET_USER_LIST, payload: "followers" });
+                  setHeading("Followers");
+                  dispatch(handleGetFollower({ _id, type: "follower" }));
                 }}
               >
                 {follower?.length} follower
@@ -154,7 +151,8 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
                 cursor={"pointer"}
                 onClick={() => {
                   onOpen();
-                  userDispatch({ type: SET_USER_LIST, payload: "following" });
+                  setHeading("Following");
+                  dispatch(handleGetFollower({ _id, type: "following" }));
                 }}
               >
                 {following?.length} following
@@ -178,10 +176,8 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
                     p="0"
                     onClick={() => {
                       onOpen();
-                      userDispatch({
-                        type: SET_USER_LIST,
-                        payload: "followers",
-                      });
+                      setHeading("Followers");
+                      dispatch(handleGetFollower({ _id, type: "follower" }));
                     }}
                   >
                     Followed by{" "}
@@ -218,7 +214,8 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
             <Text
               onClick={() => {
                 onOpen();
-                userDispatch({ type: SET_USER_LIST, payload: "followers" });
+                setHeading("Followers");
+                dispatch(handleGetFollower({ _id, type: "follower" }));
               }}
             >
               Followed by{" "}
@@ -241,7 +238,8 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
           cursor={"pointer"}
           onClick={() => {
             onOpen();
-            userDispatch({ type: SET_USER_LIST, payload: "followers" });
+            setHeading("Followers");
+            dispatch(handleGetFollower({ _id, type: "follower" }));
           }}
         >
           {follower?.length} follower
@@ -250,19 +248,15 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
           cursor={"pointer"}
           onClick={() => {
             onOpen();
-            userDispatch({ type: SET_USER_LIST, payload: "following" });
+            setHeading("Following");
+            dispatch(handleGetFollower({ _id, type: "following" }));
           }}
         >
           {following?.length} following
         </Text>
       </HStack>
       {isOpen && (
-        <UserListModal
-          onClose={onClose}
-          isOpen={isOpen}
-          users={userList === "followers" ? follower : following}
-          heading={userList === "followers" ? "Followers" : "Following"}
-        />
+        <UserListModal onClose={onClose} isOpen={isOpen} heading={heading} />
       )}
       {editModalDisclosure.isOpen && (
         <EditProfileModal

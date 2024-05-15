@@ -108,6 +108,17 @@ export const components = {
         borderRadius: "8px",
         _hover: { bg: "rgb(206, 206, 206)", color: "gray.900" },
       },
+      "removeFollower-button": {
+        bg: "#474747",
+        color: "white.900",
+        fontSize: "sm",
+        py: "0.4rem",
+        px: "1rem",
+        minW: "95px",
+        h: "fit-content",
+        borderRadius: "8px",
+        _hover: { bg: "#383838", color: "white.900" },
+      },
     },
     outline: {
       background: "none",

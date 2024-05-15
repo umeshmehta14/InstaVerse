@@ -126,3 +126,35 @@ export const unfollowUser = async (userId, token) =>
       },
     }
   );
+
+export const getFollower = async (userId, token) =>
+  await axios.get(`${API_URL}/user/follower/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const getFollowing = async (userId, token) =>
+  await axios.get(`${API_URL}/user/following/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const removeFollower = async (userId, token) =>
+  await axios.patch(
+    `${API_URL}/user/remove-follower/${userId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+export const getSuggestedUser = async (token) =>
+  await axios.get(`${API_URL}/user/suggested-user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

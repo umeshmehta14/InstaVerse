@@ -60,7 +60,7 @@ export const UserSuggestion = () => {
         <SwitchAccountModal onClose={onClose} isOpen={isOpen} />
       </Flex>
 
-      {location?.pathname !== "/explore" && (
+      {/* {location?.pathname !== "/explore" && (
         <Menu closeOnSelect={false}>
           <MenuButton
             width="fit-content"
@@ -92,7 +92,7 @@ export const UserSuggestion = () => {
             </MenuOptionGroup>
           </MenuList>
         </Menu>
-      )}
+      )} */}
       <UserSuggestionMain />
     </Box>
   );

@@ -7,10 +7,14 @@ import {
   followUser,
   getBookmark,
   getByUsername,
+  getFollower,
+  getFollowing,
   getLikedPosts,
   getSearchList,
+  getSuggestedUser,
   guestUsers,
   removeBookmark,
+  removeFollower,
   removeSearchList,
   searchUser,
   unfollowUser,
@@ -46,6 +50,9 @@ const initialState = {
   likedPosts: [],
   avatarImages: [],
   loadingUsers: [],
+  userList: [],
+  removeFollowerUser: [],
+  suggestedUsers: [],
 };
 
 export const getGuestUsers = createAsyncThunk(
@@ -75,7 +82,7 @@ export const getUserByUsername = createAsyncThunk(
     if (statusCode === 200) {
       if (currentUser) {
         dispatch(updateCurrentUser(data));
-        return [];
+        return data;
       }
       !noLoading && dispatch(updateProgress(100));
       return data;
@@ -223,28 +230,36 @@ export const getUserLikedPosts = createAsyncThunk(
 
 export const editUserProfile = createAsyncThunk(
   "user/editProfile",
-  async ({ data: updateData }, { getState, dispatch }) => {
-    dispatch(updateProgress(20));
-    const { token } = getState().authentication;
-    const {
-      data: { statusCode, data },
-    } = await editProfile({ updateData }, token);
-    dispatch(updateProgress(50));
-    if (statusCode === 200) {
+  async ({ data: updateData }, { getState, dispatch, rejectWithValue }) => {
+    try {
+      dispatch(updateProgress(20));
+      const { token } = getState().authentication;
+      const {
+        data: { statusCode, data },
+      } = await editProfile({ updateData }, token);
+      dispatch(updateProgress(50));
+      if (statusCode === 200) {
+        dispatch(updateProgress(100));
+        dispatch(updateSelectedUser(data));
+        dispatch(updateCurrentUser(data));
+        return data;
+      }
       dispatch(updateProgress(100));
-      dispatch(updateSelectedUser(data));
-      dispatch(updateCurrentUser(data));
-      return data;
+    } catch (error) {
+      dispatch(updateProgress(100));
+      return rejectWithValue(error.response.data);
     }
-    dispatch(updateProgress(100));
   }
 );
 
 export const handleFollowUnfollowUser = createAsyncThunk(
   "user/follow-unfollow",
-  async ({ _id, follow, username }, { getState, dispatch }) => {
-    const { token } = getState().authentication;
-    const { loadingUsers } = getState().user;
+  async (
+    { _id, follow, username, notSelectedUser },
+    { getState, dispatch }
+  ) => {
+    const { token, currentUser } = getState().authentication;
+    const { loadingUsers, selectedUser } = getState().user;
     dispatch(updateLoadingUsers([...loadingUsers, _id]));
 
     const {
@@ -252,10 +267,83 @@ export const handleFollowUnfollowUser = createAsyncThunk(
     } = follow ? await followUser(_id, token) : await unfollowUser(_id, token);
 
     if (statusCode === 200) {
-      dispatch(getUserByUsername({ username, noLoading: true }));
+      if (!notSelectedUser) {
+        dispatch(getUserByUsername({ username, noLoading: true }));
+      }
+      if (currentUser.username === selectedUser.username) {
+        dispatch(
+          getUserByUsername({
+            username: currentUser?.username,
+            noLoading: true,
+            currentUser: true,
+          })
+        );
+      }
       const removeLoadingUsers = loadingUsers.filter((user) => user !== _id);
       dispatch(updateLoadingUsers(removeLoadingUsers));
       dispatch(updateCurrentUserFollowing(data));
+      return data;
+    }
+  }
+);
+
+export const handleGetFollower = createAsyncThunk(
+  "user/get-follower",
+  async ({ _id, type }, { getState }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } =
+      type === "follower"
+        ? await getFollower(_id, token)
+        : await getFollowing(_id, token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const handleRemoveFollower = createAsyncThunk(
+  "user/remove-follower",
+  async ({ _id }, { getState, dispatch, rejectWithValue }) => {
+    try {
+      const { token, currentUser } = getState().authentication;
+      const { removeFollowerUser } = getState().user;
+      dispatch(updateRemoveFollowerUser([...removeFollowerUser, _id]));
+      const {
+        data: { statusCode, data },
+      } = await removeFollower(_id, token);
+
+      if (statusCode === 200) {
+        dispatch(
+          getUserByUsername({
+            username: currentUser?.username,
+            noLoading: true,
+            currentUser: true,
+          })
+        );
+        const removeLoadingUsers = removeFollowerUser.filter(
+          (user) => user !== _id
+        );
+        dispatch(updateRemoveFollowerUser(removeLoadingUsers));
+        return data;
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const handleGetSuggestedUsers = createAsyncThunk(
+  "user/get-suggested-users",
+  async (_, { getState }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = getSuggestedUser(token);
+
+    if (statusCode === 200) {
       return data;
     }
   }
@@ -291,6 +379,10 @@ const userSlice = createSlice({
 
     updateLoadingUsers: (state, action) => {
       state.loadingUsers = action.payload;
+    },
+
+    updateRemoveFollowerUser: (state, action) => {
+      state.removeFollowerUser = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -427,14 +519,43 @@ const userSlice = createSlice({
     });
 
     builder.addCase(editUserProfile.rejected, (state, action) => {
-      toast.error("Something went wrong");
-      console.error(action.error);
+      toast.error(action.payload.error);
+      console.error(action.payload.error);
       state.isLoading = false;
     });
 
     builder.addCase(handleFollowUnfollowUser.rejected, (_, action) => {
       toast.error("Something went wrong");
       console.error(action.error);
+    });
+
+    builder.addCase(handleGetFollower.pending, (state) => {
+      state.userList = [];
+      state.isLoading = true;
+    });
+
+    builder.addCase(handleGetFollower.fulfilled, (state, action) => {
+      state.userList = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(handleGetFollower.rejected, (state, action) => {
+      state.userList = [];
+      state.isLoading = false;
+      console.error(action.error);
+    });
+
+    builder.addCase(handleRemoveFollower.fulfilled, (state, action) => {
+      state.userList = action.payload.follower;
+    });
+
+    builder.addCase(handleRemoveFollower.rejected, (_, action) => {
+      toast.error("Something went wrong");
+      console.error(action.payload);
+    });
+
+    builder.addCase(handleGetSuggestedUsers.fulfilled, (state, action) => {
+      state.suggestedUsers = action.payload;
     });
   },
 });
@@ -447,6 +568,7 @@ export const {
   updateLoginForm,
   updateShowPassword,
   updateSignupForm,
+  updateRemoveFollowerUser,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

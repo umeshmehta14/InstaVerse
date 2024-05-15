@@ -20,6 +20,7 @@ import {
   getGuestUsers,
   getUserByUsername,
   getUserSearchList,
+  handleGetSuggestedUsers,
 } from "./pages/Post Feed/userSlice";
 
 function App() {
@@ -37,13 +38,7 @@ function App() {
     //   dispatch(refreshTokens());
     // }
     dispatch(getGuestUsers());
-    dispatch(
-      getUserByUsername({
-        username: currentUser?.username,
-        noLoading: true,
-        currentUser: true,
-      })
-    );
+    dispatch(handleGetSuggestedUsers());
   }, []);
 
   useEffect(() => {

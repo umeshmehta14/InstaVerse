@@ -54,7 +54,9 @@ export const SwitchAccountModal = ({ onClose, isOpen }) => {
                   key={_id}
                   {...userList}
                   onClick={() => {
-                    dispatch(logoutHandler());
+                    currentUser?.username === username
+                      ? null
+                      : dispatch(logoutHandler());
                     dispatch(
                       loginHandler({
                         identifier: username,

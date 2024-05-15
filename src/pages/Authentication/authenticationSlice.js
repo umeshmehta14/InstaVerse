@@ -81,6 +81,7 @@ const authenticationSlice = createSlice({
   initialState,
   reducers: {
     updateCurrentUser: (state, action) => {
+      console.log(action.payload);
       state.currentUser = action.payload;
       const instaverseUserData =
         JSON.parse(localStorage.getItem("instaverseUser")) || {};
