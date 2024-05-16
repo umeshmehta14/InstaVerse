@@ -42,12 +42,14 @@ import { SET_DEFAULT_TAB } from "../../../utils/Constants";
 import { SwitchAccountModal } from "../../index";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../../pages/Authentication/authenticationSlice";
+import Notifications from "./Notifications";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const postModalDisclosure = useDisclosure();
   const SwitchUserDisclosure = useDisclosure();
+  const notificationDisclosure = useDisclosure();
   const { currentUser } = useSelector((state) => state.authentication);
   const { userDispatch } = useUser();
 
@@ -151,10 +153,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             className="nav-item"
             title="Likes"
-            onClick={() => {
-              userDispatch({ type: SET_DEFAULT_TAB, payload: 1 });
-              navigate(`/profile/${currentUser?.username}`);
-            }}
+            onClick={notificationDisclosure.onOpen}
           >
             <AiOutlineHeart className="nav-icon" />
             <Text
@@ -257,6 +256,12 @@ const SideBar = ({ searchDrawerDisclosure }) => {
         <SwitchAccountModal
           isOpen={SwitchUserDisclosure.isOpen}
           onClose={SwitchUserDisclosure.onClose}
+        />
+      )}
+      {notificationDisclosure.isOpen && (
+        <Notifications
+          isOpen={notificationDisclosure.isOpen}
+          onClose={notificationDisclosure.onClose}
         />
       )}
     </Flex>

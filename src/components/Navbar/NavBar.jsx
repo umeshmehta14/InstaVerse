@@ -28,6 +28,7 @@ export const NavBar = () => {
   const location = useLocation();
   const searchDrawerDisclosure = useDisclosure();
   const switchUserDisclosure = useDisclosure();
+  const notificationDisclosure = useDisclosure();
   const navigate = useNavigate();
 
   const {
