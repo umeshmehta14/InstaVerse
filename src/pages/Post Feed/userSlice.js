@@ -303,8 +303,6 @@ export const handleGetFollower = createAsyncThunk(
         ? await getFollower(_id, token)
         : await getFollowing(_id, token);
 
-    console.log(data.length);
-
     if (statusCode === 200) {
       return data;
     }
