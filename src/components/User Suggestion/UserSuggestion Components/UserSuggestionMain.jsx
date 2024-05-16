@@ -13,9 +13,8 @@ import { handleFollowUnfollowUser } from "../../../pages/Post Feed/userSlice";
 const UserSuggestionMain = () => {
   const navigate = useNavigate();
 
-  const { currentUser, suggestedUsers } = useSelector(
-    (state) => state.authentication
-  );
+  const { currentUser } = useSelector((state) => state.authentication);
+  const { suggestedUsers } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   // const suggestedUser = users?.filter(
@@ -29,7 +28,7 @@ const UserSuggestionMain = () => {
   return (
     suggestedUsers?.length > 0 && (
       <>
-        <Box maxH="360px" overflow="hidden">
+        <Box overflow="hidden">
           <Flex p="3" align="center">
             <Text fontWeight="semibold" mx={"auto"}>
               Suggested For You
@@ -38,8 +37,6 @@ const UserSuggestionMain = () => {
 
           <Flex {...allSuggestedProfileBox}>
             {suggestedUsers?.map(({ _id, username, avatar, follower }) => {
-              const mutualFollowers = getMutualFollowers(follower, currentUser);
-
               const isFollowing = currentUser.follower.find(
                 (user) => user.username === username
               );
@@ -56,31 +53,16 @@ const UserSuggestionMain = () => {
                     title={username}
                     onClick={() => navigate(`/profile/${username}`)}
                   >
-                    <Avatar size={{ base: "md", md: "sm" }} src={avatar.url} />
+                    <Avatar size={"md"} src={avatar.url} />
                     <Flex flexDir={"column"}>
                       <Text fontSize="sm">{username}</Text>
-                      {mutualFollowers.length > 0 ? (
-                        <Flex
-                          fontSize={"12px"}
-                          color={"gray"}
-                          display={{ base: "none", lg: "flex" }}
-                        >
-                          Followed by {mutualFollowers[0].username}
-                          {mutualFollowers?.length > 1 && (
-                            <> and +{mutualFollowers?.length - 1} more</>
-                          )}
-                        </Flex>
-                      ) : (
-                        isFollowing && (
-                          <Flex
-                            fontSize={"12px"}
-                            color={"gray"}
-                            display={{ base: "none", lg: "flex" }}
-                          >
-                            Follows you
-                          </Flex>
-                        )
-                      )}
+                      <Flex
+                        fontSize={"12px"}
+                        color={"gray"}
+                        display={{ base: "none", lg: "flex" }}
+                      >
+                        {isFollowing ? "Follows you" : "Suggested for you"}
+                      </Flex>
                     </Flex>
                   </Flex>
                   <Button

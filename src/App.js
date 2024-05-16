@@ -15,10 +15,8 @@ import { usePost } from "./contexts";
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
 import { useDispatch, useSelector } from "react-redux";
-import { refreshTokens } from "./pages/Authentication/authenticationSlice";
 import {
   getGuestUsers,
-  getUserByUsername,
   getUserSearchList,
   handleGetSuggestedUsers,
 } from "./pages/Post Feed/userSlice";
@@ -38,10 +36,10 @@ function App() {
     //   dispatch(refreshTokens());
     // }
     dispatch(getGuestUsers());
-    dispatch(handleGetSuggestedUsers());
   }, []);
 
   useEffect(() => {
+    dispatch(handleGetSuggestedUsers());
     dispatch(getUserSearchList());
   }, [token]);
 

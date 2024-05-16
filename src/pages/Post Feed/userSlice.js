@@ -279,6 +279,7 @@ export const handleFollowUnfollowUser = createAsyncThunk(
           })
         );
       }
+      dispatch(handleGetSuggestedUsers());
       const removeLoadingUsers = loadingUsers.filter((user) => user !== _id);
       dispatch(updateLoadingUsers(removeLoadingUsers));
       dispatch(updateCurrentUserFollowing(data));
@@ -327,6 +328,7 @@ export const handleRemoveFollower = createAsyncThunk(
           (user) => user !== _id
         );
         dispatch(updateRemoveFollowerUser(removeLoadingUsers));
+        dispatch(handleGetSuggestedUsers());
         return data;
       }
     } catch (error) {
@@ -341,7 +343,7 @@ export const handleGetSuggestedUsers = createAsyncThunk(
     const { token } = getState().authentication;
     const {
       data: { statusCode, data },
-    } = getSuggestedUser(token);
+    } = await getSuggestedUser(token);
 
     if (statusCode === 200) {
       return data;

@@ -30,13 +30,13 @@ export const userSuggestionAllProfileBox = {
   cursor: "pointer",
 };
 
-export const filterButton = {
-  display: "flex",
-  alignItems: "center",
-  gap: "0.5rem",
-  justify: "center",
-  padding: "0.3rem 0.5rem",
-  outline: "0.5px solid gray",
-  width: "fit-content",
-  margin: "0.5rem auto",
-};
+// export const filterButton = {
+//   display: "flex",
+//   alignItems: "center",
+//   gap: "0.5rem",
+//   justify: "center",
+//   padding: "0.3rem 0.5rem",
+//   outline: "0.5px solid gray",
+//   width: "fit-content",
+//   margin: "0.5rem auto",
+// };
