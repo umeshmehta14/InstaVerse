@@ -225,7 +225,7 @@ const SearchBox = ({ isOpen, onClose }) => {
                         }}
                       >
                         <Flex gap={"3"} alignItems={"center"}>
-                          <Avatar size="md" name={fullName} src={avatar?.url} />
+                          <Avatar size="md" src={avatar?.url} />
                           <VStack align={"flex-start"} gap={"0"}>
                             <Text>{username}</Text>
                             <Text fontSize={"0.8rem"} color={"gray"}>

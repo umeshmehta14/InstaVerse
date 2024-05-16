@@ -255,7 +255,7 @@ export const editUserProfile = createAsyncThunk(
 export const handleFollowUnfollowUser = createAsyncThunk(
   "user/follow-unfollow",
   async (
-    { _id, follow, username, notSelectedUser },
+    { _id, follow, username, notSelectedUser, unFollow },
     { getState, dispatch }
   ) => {
     const { token, currentUser } = getState().authentication;
@@ -279,6 +279,10 @@ export const handleFollowUnfollowUser = createAsyncThunk(
           })
         );
       }
+      unFollow &&
+        dispatch(
+          handleGetFollower({ _id: selectedUser._id, type: "following" })
+        );
       dispatch(handleGetSuggestedUsers());
       const removeLoadingUsers = loadingUsers.filter((user) => user !== _id);
       dispatch(updateLoadingUsers(removeLoadingUsers));
@@ -298,6 +302,8 @@ export const handleGetFollower = createAsyncThunk(
       type === "follower"
         ? await getFollower(_id, token)
         : await getFollowing(_id, token);
+
+    console.log(data.length);
 
     if (statusCode === 200) {
       return data;

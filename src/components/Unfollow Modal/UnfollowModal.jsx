@@ -49,8 +49,10 @@ export const UnfollowModal = ({
                   follow: false,
                   username,
                   notSelectedUser,
+                  unFollow: true,
                 })
               );
+
               onClose();
             }}
           >

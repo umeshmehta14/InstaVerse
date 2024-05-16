@@ -6,24 +6,16 @@ import {
   allSuggestedProfileBox,
   userSuggestionAllProfileBox,
 } from "../../../styles/UserSuggestionStyles";
-import { getMutualFollowers } from "../../../utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../../pages/Post Feed/userSlice";
+import { RotatingLoader } from "../../Loader/RotatingLoader";
 
 const UserSuggestionMain = () => {
   const navigate = useNavigate();
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { suggestedUsers } = useSelector((state) => state.user);
+  const { suggestedUsers, loadingUsers } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  // const suggestedUser = users?.filter(
-  //   (user) =>
-  //     user._id !== currentUser?._id &&
-  //     !currentUser?.following?.some(
-  //       ({ username }) => username === user.username
-  //     )
-  // );
 
   return (
     suggestedUsers?.length > 0 && (
@@ -36,10 +28,11 @@ const UserSuggestionMain = () => {
           </Flex>
 
           <Flex {...allSuggestedProfileBox}>
-            {suggestedUsers?.map(({ _id, username, avatar, follower }) => {
+            {suggestedUsers?.map(({ _id, username, avatar }) => {
               const isFollowing = currentUser.follower.find(
                 (user) => user.username === username
               );
+              const isLoading = loadingUsers.includes(_id);
               return (
                 <Flex
                   key={_id}
@@ -79,7 +72,7 @@ const UserSuggestionMain = () => {
                       )
                     }
                   >
-                    Follow
+                    {isLoading ? <RotatingLoader w="20" sw={"7"} /> : "Follow"}
                   </Button>
                 </Flex>
               );

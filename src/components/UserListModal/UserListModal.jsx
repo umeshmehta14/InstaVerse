@@ -105,36 +105,38 @@ export const UserListModal = ({ onClose, isOpen, heading }) => {
                         onClose();
                       }}
                     >
-                      <Avatar size="md" name={fullName} src={avatar.url} />
+                      <Avatar size="md" src={avatar.url} />
                       <Flex flexDir={"column"} justifyContent={"center"}>
                         <Flex alignItems={"center"}>
                           {username}
-                          {!isFollowing && currentUserCheck && (
-                            <Flex alignItems={"center"}>
-                              <Box as={BsDot} />
-                              {isLoading ? (
-                                <RotatingLoader w={"20px"} />
-                              ) : (
-                                <Button
-                                  variant={"link-button"}
-                                  p={0}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    dispatch(
-                                      handleFollowUnfollowUser({
-                                        _id,
-                                        follow: true,
-                                        username,
-                                        notSelectedUser: true,
-                                      })
-                                    );
-                                  }}
-                                >
-                                  Follow
-                                </Button>
-                              )}
-                            </Flex>
-                          )}
+                          {!isFollowing &&
+                            currentUserCheck &&
+                            heading === "Followers" && (
+                              <Flex alignItems={"center"}>
+                                <Box as={BsDot} />
+                                {isLoading ? (
+                                  <RotatingLoader w={"20px"} />
+                                ) : (
+                                  <Button
+                                    variant={"link-button"}
+                                    p={0}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      dispatch(
+                                        handleFollowUnfollowUser({
+                                          _id,
+                                          follow: true,
+                                          username,
+                                          notSelectedUser: true,
+                                        })
+                                      );
+                                    }}
+                                  >
+                                    Follow
+                                  </Button>
+                                )}
+                              </Flex>
+                            )}
                         </Flex>
                         <Text
                           fontWeight={"100"}
