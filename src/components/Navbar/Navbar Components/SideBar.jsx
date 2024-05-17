@@ -43,6 +43,7 @@ import { SwitchAccountModal } from "../../index";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../../pages/Authentication/authenticationSlice";
 import Notifications from "./Notifications";
+import { getUserNotifications } from "../../../pages/Post Feed/postSlice";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -153,14 +154,17 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
             className="nav-item"
             title="Likes"
-            onClick={notificationDisclosure.onOpen}
+            onClick={() => {
+              dispatch(getUserNotifications());
+              notificationDisclosure.onOpen();
+            }}
           >
             <AiOutlineHeart className="nav-icon" />
             <Text
               display={{ base: "none", lg: "inline-block" }}
               fontSize={"1rem"}
             >
-              Likes
+              Notifications
             </Text>
           </HStack>
 

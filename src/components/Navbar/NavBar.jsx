@@ -19,7 +19,6 @@ import {
   BsMoon,
   AiOutlineDown,
 } from "../../utils/Icons";
-import { useUser } from "../../contexts";
 import { SwitchAccountModal } from "../index";
 import { useSelector } from "react-redux";
 
@@ -28,13 +27,10 @@ export const NavBar = () => {
   const location = useLocation();
   const searchDrawerDisclosure = useDisclosure();
   const switchUserDisclosure = useDisclosure();
-  const notificationDisclosure = useDisclosure();
   const navigate = useNavigate();
 
-  const {
-    userState: { selectedUser },
-  } = useUser();
   const { currentUser } = useSelector((state) => state.authentication);
+  const { selectedUser } = useSelector((state) => state.user);
 
   if (location?.pathname === "/login" || location?.pathname === "/signup") {
     return null;
