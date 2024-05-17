@@ -433,12 +433,18 @@ const userSlice = createSlice({
       state.isSearchUserFetched = false;
     });
 
+    builder.addCase(getUserSearchList.pending, (state) => {
+      state.isLoading = true;
+    });
+
     builder.addCase(getUserSearchList.fulfilled, (state, action) => {
       state.searchList = action.payload;
+      state.isLoading = false;
     });
 
     builder.addCase(getUserSearchList.rejected, (_, action) => {
       console.error(action.error);
+      state.isLoading = false;
     });
 
     builder.addCase(addUserToSearchList.fulfilled, (state, action) => {

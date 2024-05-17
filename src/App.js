@@ -38,7 +38,7 @@ function App() {
 
   useEffect(() => {
     dispatch(handleGetSuggestedUsers());
-    dispatch(getUserSearchList());
+    // dispatch(getUserSearchList());
   }, [token]);
 
   return (

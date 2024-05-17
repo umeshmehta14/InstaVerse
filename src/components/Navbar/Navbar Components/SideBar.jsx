@@ -44,6 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../../pages/Authentication/authenticationSlice";
 import Notifications from "./Notifications";
 import { getUserNotifications } from "../../../pages/Post Feed/postSlice";
+import { getUserSearchList } from "../../../pages/Post Feed/userSlice";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -99,7 +100,10 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             id="md-search-nav"
             {...navlinkStyle}
             _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-            onClick={searchDrawerDisclosure.onOpen}
+            onClick={() => {
+              dispatch(getUserSearchList());
+              searchDrawerDisclosure.onOpen();
+            }}
             className="nav-item"
             title="Search"
           >

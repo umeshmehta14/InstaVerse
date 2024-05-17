@@ -249,6 +249,8 @@ const SearchBox = ({ isOpen, onClose }) => {
                     ))}
                   </VStack>
                 </Box>
+              ) : isLoading ? (
+                <SearchSkeleton />
               ) : (
                 searchValue?.length === 0 && (
                   <Flex align="center" justify="center" w="100%" py="3rem">
