@@ -2,96 +2,63 @@ import React, { useEffect, useRef } from "react";
 import { Alert, AlertIcon, Flex, Text, VStack } from "@chakra-ui/react";
 
 import { PostBox, RotatingLoader, UserSuggestion } from "../../components";
-import { usePost, useUser } from "../../contexts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
-import { postFilter } from "../../utils/Utils";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  SET_DEFAULT_TAB,
-  SET_FILTER,
-  SET_ISPOSTLOADING,
-  SET_PAGE,
-} from "../../utils/Constants";
-import { useSelector } from "react-redux";
+  getHomePosts,
+  updateCurrentPage,
+  updateNewPostLoading,
+} from "./postSlice";
 
 export const PostFeed = () => {
-  const {
-    postState: { posts, filter, page, isPostLoading },
-    postDispatch,
-  } = usePost();
-  const { userDispatch } = useUser();
-  const { currentUser } = useSelector((state) => state.authentication);
+  const { posts, totalPages, currentPage, newPostLoading } = useSelector(
+    (state) => state.post
+  );
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   document.title = `InstaVerse | ${
     location?.pathname === "/explore" ? "Explore" : "Home"
   }`;
+
   const bottomRef = useRef(null);
-
-  const allPost =
-    location?.pathname === "/explore"
-      ? posts
-      : posts?.filter(
-          ({ username }) =>
-            currentUser.username === username ||
-            currentUser.following?.some(
-              (followingUser) => followingUser.username === username
-            )
-        );
-
-  const displayedPosts = postFilter(allPost, filter).slice(0, page * 5);
 
   const handleObserver = (entries) => {
     const entry = entries[0];
     if (entry.isIntersecting) {
-      postDispatch({ type: SET_ISPOSTLOADING, payload: true });
-      postDispatch({ type: SET_PAGE, payload: page + 1 });
+      dispatch(updateNewPostLoading());
+      dispatch(getHomePosts({ page: currentPage + 1 }));
     }
   };
 
   useEffect(() => {
-    if (displayedPosts?.length > 0) {
+    console.log("before hitted");
+    if (posts?.length > 0 && currentPage !== totalPages) {
+      console.log("hitted");
       const elementRef = bottomRef?.current;
       const observer = new IntersectionObserver(handleObserver);
       if (elementRef) observer?.observe(elementRef);
 
       return () => {
-        observer?.unobserve(elementRef);
+        if (elementRef) observer.unobserve(elementRef);
       };
     }
-  }, [page]);
+  }, [posts, currentPage, totalPages]);
 
   useEffect(() => {
-    let timeoutId;
-
-    if (isPostLoading) {
-      timeoutId = setTimeout(() => {
-        postDispatch({ type: SET_ISPOSTLOADING, payload: false });
-      }, 1000);
+    dispatch(getHomePosts({ page: 1 }));
+    if (!location?.pathname.includes("/post/")) {
+      dispatch(updateCurrentPage(1));
     }
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [isPostLoading, displayedPosts]);
-
-  useEffect(() => {
-    if (location?.pathname.includes("/post/")) {
-    } else {
-      window.scrollTo({ top: 0 });
-      postDispatch({ type: SET_PAGE, payload: 1 });
-    }
-    if (location?.pathname === "/explore") {
-      postDispatch({ type: SET_FILTER, payload: "latest" });
-    }
-    userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
-  }, [location?.pathname, userDispatch]);
+    window.scrollTo({ top: 0 });
+  }, [location?.pathname, dispatch]);
 
   return (
     <Flex sx={heroContentBox}>
       <UserSuggestion />
-      {displayedPosts?.length === 0 ? (
+      {posts?.length === 0 ? (
         <Flex {...emptyMessageStyle}>
           <Text w={"100%"}>
             No posts yet. You can go to
@@ -112,19 +79,19 @@ export const PostFeed = () => {
           alignItems={"center"}
           minW={{ md: "468px" }}
         >
-          {displayedPosts?.map((post, index) => {
+          {posts?.map((post, index) => {
             return (
               <React.Fragment key={post?._id}>
                 <PostBox post={post} />
-                {index === displayedPosts?.length - 1 && (
+                {index === posts?.length - 1 && (
                   <div ref={bottomRef} style={{ height: 0 }} />
                 )}
               </React.Fragment>
             );
           })}
-          {displayedPosts?.length === allPost?.length ||
-            (isPostLoading && <RotatingLoader w={"50"} sw={"7"} />)}
-          {displayedPosts?.length === allPost?.length && (
+          {currentPage === totalPages ||
+            (newPostLoading && <RotatingLoader w={"50"} sw={"4"} />)}
+          {currentPage === totalPages && (
             <Alert
               status="info"
               variant="subtle"

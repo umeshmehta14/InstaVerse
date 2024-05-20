@@ -17,15 +17,15 @@ import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getGuestUsers,
-  getUserSearchList,
   handleGetSuggestedUsers,
 } from "./pages/Post Feed/userSlice";
+import { refreshTokens } from "./pages/Authentication/authenticationSlice";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.900");
   const { colorMode } = useColorMode();
-  const { loading } = usePost();
+  const { postLoading } = usePost((state) => state.post);
   const { progress, token } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
 
@@ -56,7 +56,7 @@ function App() {
               : { backgroundColor: "#fff", color: "#000" },
         }}
       />
-      {loading ? (
+      {postLoading ? (
         <VStack h="100vh" w="100vw" justify={"center"}>
           <RotatingLoader w="50" sw="6" />
         </VStack>

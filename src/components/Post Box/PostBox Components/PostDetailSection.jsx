@@ -64,15 +64,15 @@ const PostDetailSection = ({
 
   const {
     _id,
-    username,
-    comments,
-    content,
+    owner: { username },
+    totalComments,
+    caption,
     createdAt,
-    likes: { likedBy },
+    likes,
   } = post;
 
   const friendLike = currentUser.following.find(({ username }) =>
-    likedBy.some((likeUser) => likeUser.username === username)
+    likes.some((likeUser) => likeUser?.username === username)
   );
 
   const toggleExpanded = () => {
@@ -167,19 +167,19 @@ const PostDetailSection = ({
               <Avatar
                 size="2xs"
                 title={friendLike?.username}
-                src={friendLike?.avatarURL}
+                src={friendLike?.avatar?.url}
               />
               {friendLike?.username}
             </Flex>
             <Text mx={"1"}>and</Text>
             <Text sx={userBoldStyle} onClick={onOpen}>
-              {likedBy?.length - 1} others
+              {likes?.length - 1} others
             </Text>
           </Flex>
         ) : (
-          likedBy?.length !== 0 && (
+          likes?.length !== 0 && (
             <Text onClick={onOpen} cursor={"pointer"}>
-              {likedBy?.length} likes
+              {likes?.length} likes
             </Text>
           )
         )}
@@ -197,10 +197,10 @@ const PostDetailSection = ({
               overflow={isExpanded ? "unset" : "hidden"}
               whiteSpace={isExpanded ? "unset" : "nowrap"}
             >
-              {content}
+              {caption}
             </Text>
           </Flex>
-          {content?.length > 56 && (
+          {caption?.length > 56 && (
             <Button
               variant={"link-button"}
               fontSize={"0.8rem"}
@@ -221,10 +221,10 @@ const PostDetailSection = ({
             navigate(`/post/${_id}`, { state: { from: location } })
           }
         >
-          {comments?.length > 0 &&
-            `View ${comments?.length > 1 ? "all" : ""} ${
-              comments?.length
-            }  comment${comments?.length > 1 ? "s" : ""}`}
+          {totalComments > 0 &&
+            `View ${totalComments > 1 ? "all" : ""} ${totalComments}  comment${
+              totalComments > 1 ? "s" : ""
+            }`}
         </Text>
         <Text fontSize="xs" color={"#717171e0"}>
           {getRelativeTime(createdAt)}

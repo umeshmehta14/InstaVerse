@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import { usePost, useUser } from "../../contexts";
-import { UserListModal } from "../index";
+import { RotatingLoader, UserListModal } from "../index";
 import {
   bookmarkPopup,
   postThreeDot,
@@ -25,7 +25,8 @@ import PostDetailSection from "./PostBox Components/PostDetailSection";
 import { SET_DEFAULT_TAB, fallBackImg } from "../../utils/Constants";
 import { InfoPopup } from "../index";
 import HeartPopup from "./PostBox Components/HeartPopup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { handleFollowUnfollowUser } from "../../pages/Post Feed/userSlice";
 
 export const PostBox = ({ post }) => {
   const navigate = useNavigate();
@@ -39,7 +40,10 @@ export const PostBox = ({ post }) => {
     handleFollow,
   } = useUser();
 
+  const dispatch = useDispatch();
+
   const { currentUser } = useSelector((state) => state.authentication);
+  const { isLoading } = useSelector((state) => state.user);
 
   const { handlePostLike } = usePost();
 
@@ -48,10 +52,9 @@ export const PostBox = ({ post }) => {
 
   const {
     _id,
-    username,
-    mediaUrl,
-    avatarURL,
-    likes: { likedBy },
+    owner: { username, avatar },
+    url,
+    likes,
   } = post;
 
   const bookmarked = userBookmarks?.includes(_id);
@@ -60,7 +63,7 @@ export const PostBox = ({ post }) => {
     (user) => user.username === username
   );
 
-  const userLike = likedBy.find(
+  const userLike = likes.find(
     ({ username }) => username === currentUser.username
   );
 
@@ -105,7 +108,6 @@ export const PostBox = ({ post }) => {
     <Box
       {...mainPostBoxStyles}
       bg={colorMode === "light" ? "white.500" : "black.900"}
-      boxShadow={colorMode === "light" ? "1px 1px 8px #8080805e" : ""}
     >
       <Flex {...postNavStyles}>
         <Flex alignItems={"center"} gap={2}>
@@ -115,19 +117,27 @@ export const PostBox = ({ post }) => {
             title={username}
             onClick={() => navigate(`/profile/${username}`)}
           >
-            <Avatar size="sm" src={avatarURL} />
+            <Avatar size="sm" src={avatar?.url} />
             <Text ml="2" fontWeight="medium">
               {username}
             </Text>
           </Flex>
-          {!postFollow && !(currentUser.username === username) && (
+          {!postFollow && !(currentUser?.username === username) && (
             <Button
-              alignItems={"center"}
               variant={"link-button"}
-              justifyContent="flex-start"
-              onClick={() => handleFollow(username)}
+              size="sm"
+              p={0}
+              onClick={() =>
+                dispatch(
+                  handleFollowUnfollowUser({
+                    _id,
+                    follow: true,
+                    username,
+                  })
+                )
+              }
             >
-              Follow
+              {isLoading ? <RotatingLoader w="20" sw={"7"} /> : "Follow"}
             </Button>
           )}
         </Flex>
@@ -147,8 +157,8 @@ export const PostBox = ({ post }) => {
 
       <Box pos={"relative"}>
         <Image
-          src={mediaUrl}
-          fallbackSrc={fallBackImg}
+          src={url}
+          // fallbackSrc={fallBackImg}
           w={"100%"}
           maxH={"585px"}
           minH={"400px"}
@@ -193,7 +203,7 @@ export const PostBox = ({ post }) => {
         <UserListModal
           onClose={onClose}
           isOpen={isOpen}
-          users={likedBy}
+          users={likes}
           heading={"Liked By"}
         />
       )}

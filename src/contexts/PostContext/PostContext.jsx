@@ -201,10 +201,6 @@ export const PostProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getPosts();
-  }, []);
-
   return (
     <PostContext.Provider
       value={{

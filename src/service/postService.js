@@ -7,3 +7,10 @@ export const getNotifications = async (token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const homePosts = async (page, token) =>
+  await axios.get(`${API_URL}/post/home?page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
