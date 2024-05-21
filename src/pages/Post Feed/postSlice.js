@@ -19,6 +19,7 @@ const initialState = {
     posts: [],
     totalPages: 0,
     currentPage: 1,
+    postFetched: false,
   },
   newPostLoading: false,
 };
@@ -74,6 +75,10 @@ const postSlice = createSlice({
     updateCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
+    updatePosts: (state) => {
+      state.homePosts.posts = [];
+      state.explorePosts.posts = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserNotifications.pending, (state) => {
@@ -115,9 +120,35 @@ const postSlice = createSlice({
       state.newPostLoading = false;
       state.homePosts.postFetched = true;
     });
+
+    builder.addCase(getExplorePosts.pending, (state) => {
+      state.explorePosts.postFetched = false;
+    });
+
+    builder.addCase(getExplorePosts.fulfilled, (state, action) => {
+      const { posts, totalPages, currentPage } = action.payload;
+      const existingPostIds = new Set(
+        state.explorePosts.posts.map((post) => post._id)
+      );
+      const newPosts = posts.filter((post) => !existingPostIds.has(post._id));
+
+      state.explorePosts.posts = [...state.explorePosts.posts, ...newPosts];
+      state.explorePosts.totalPages = totalPages;
+      state.explorePosts.currentPage = currentPage;
+      state.newPostLoading = false;
+      state.explorePosts.postFetched = true;
+    });
+
+    builder.addCase(getExplorePosts.rejected, (state, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
+      state.newPostLoading = false;
+      state.explorePosts.postFetched = true;
+    });
   },
 });
 
-export const { updateNewPostLoading, updateCurrentPage } = postSlice.actions;
+export const { updateNewPostLoading, updateCurrentPage, updatePosts } =
+  postSlice.actions;
 
 export const postReducer = postSlice.reducer;

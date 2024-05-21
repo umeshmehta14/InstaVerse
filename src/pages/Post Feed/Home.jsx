@@ -6,12 +6,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePosts, updateNewPostLoading } from "./postSlice";
+import { PostAlert } from "./Post Components/PostAlert";
 
 export const Home = () => {
   const {
     homePosts: { posts, totalPages, currentPage, postFetched },
     newPostLoading,
   } = useSelector((state) => state.post);
+  const { currentUser } = useSelector((state) => state.authentication);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -45,6 +47,10 @@ export const Home = () => {
     if (posts.length > 0) return;
     dispatch(getHomePosts({ page: 1 }));
   }, [location?.pathname, dispatch]);
+
+  useEffect(() => {
+    dispatch(getHomePosts({ page: 1 }));
+  }, [currentUser]);
 
   return (
     <Flex sx={heroContentBox}>
@@ -92,20 +98,7 @@ export const Home = () => {
           })}
           {currentPage === totalPages ||
             (newPostLoading && <RotatingLoader w={"50"} sw={"4"} />)}
-          {currentPage === totalPages && (
-            <Alert
-              status="info"
-              variant="subtle"
-              flexDirection="column"
-              alignItems="center"
-            >
-              <AlertIcon boxSize={6} />
-              <Text fontSize="lg" fontWeight="bold" mt={2}>
-                All Caught Up!
-              </Text>
-              <Text fontSize="sm">You have seen all the posts.</Text>
-            </Alert>
-          )}
+          {currentPage === totalPages && <PostAlert />}
         </VStack>
       )}
     </Flex>

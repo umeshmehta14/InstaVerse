@@ -25,6 +25,7 @@ import {
   updateCurrentUserFollowing,
   updateProgress,
 } from "../Authentication/authenticationSlice";
+import { getExplorePosts, getHomePosts, updatePosts } from "./postSlice";
 
 const initialState = {
   loginForm: {
@@ -267,6 +268,9 @@ export const handleFollowUnfollowUser = createAsyncThunk(
     } = follow ? await followUser(_id, token) : await unfollowUser(_id, token);
 
     if (statusCode === 200) {
+      dispatch(updatePosts());
+      dispatch(getHomePosts({ page: 1 }));
+      dispatch(getExplorePosts({ page: 1 }));
       if (!notSelectedUser) {
         dispatch(getUserByUsername({ username, noLoading: true }));
       }
