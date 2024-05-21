@@ -21,13 +21,11 @@ export const Explore = () => {
   const handleObserver = useCallback(
     _.throttle((entries) => {
       const entry = entries[0];
-      console.log("Intersection entry:", entry);
       if (entry.isIntersecting && currentPage < totalPages && !newPostLoading) {
-        console.log("Fetching new posts");
         dispatch(updateNewPostLoading());
         dispatch(getExplorePosts({ page: currentPage + 1 }));
       }
-    }, 1000), // throttle to 1 second
+    }, 1000),
     [dispatch, currentPage, totalPages, newPostLoading]
   );
 
