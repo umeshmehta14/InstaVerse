@@ -28,3 +28,10 @@ export const uploadPost = async (postData, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const deletePost = async (postId, token) =>
+  await axios.delete(`${API_URL}/post/delete/${postId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

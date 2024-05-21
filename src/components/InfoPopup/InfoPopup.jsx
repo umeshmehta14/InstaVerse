@@ -17,7 +17,8 @@ import { UnfollowModal } from "../index";
 import { PostModal } from "../index";
 import { simpleButton } from "../../styles/GlobalStyles";
 import { SET_EDIT_POST } from "../../utils/Constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { handleDeletePost } from "../../pages/Post Feed/postSlice";
 
 export const InfoPopup = ({
   onClose,
@@ -40,8 +41,13 @@ export const InfoPopup = ({
     handleRemoveBookmark,
     handleFollow,
   } = useUser();
-  const { _id, username } = post;
-  const { handleDeletePost, postDispatch, handleShare } = usePost();
+
+  const dispatch = useDispatch();
+  const {
+    _id,
+    owner: { username },
+  } = post;
+  const { postDispatch, handleShare } = usePost();
 
   const checkBookmark = userBookmarks?.find((bookmark) => bookmark === _id);
   const isFollowing = currentUser?.following?.find(
@@ -73,7 +79,7 @@ export const InfoPopup = ({
                   sx={simpleButton}
                   color={"red"}
                   onClick={() => {
-                    handleDeletePost(_id);
+                    dispatch(handleDeletePost({ _id }));
                     fromSinglePost ? navigate(location) : "";
                     onClose();
                   }}

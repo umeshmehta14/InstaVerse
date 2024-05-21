@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  deletePost,
   explorePosts,
   getNotifications,
   homePosts,
@@ -85,6 +86,21 @@ export const handleUploadPost = createAsyncThunk(
       }
     } catch (error) {
       return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const handleDeletePost = createAsyncThunk(
+  "post/delete",
+  async ({ _id }, { getState, dispatch }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await deletePost(_id, token);
+    if (statusCode === 200) {
+      dispatch(getHomePosts({ page: 1 }));
+      dispatch(getExplorePosts({ page: 1 }));
+      return data;
     }
   }
 );
@@ -187,6 +203,10 @@ const postSlice = createSlice({
       toast.error(action.payload?.message);
       console.error(action.payload?.message);
       state.isUploading = false;
+    });
+
+    builder.addCase(handleDeletePost.fulfilled, (state, action) => {
+      console.log("post deleted");
     });
   },
 });
