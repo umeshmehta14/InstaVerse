@@ -48,6 +48,7 @@ export const getUserNotifications = createAsyncThunk(
 export const getHomePosts = createAsyncThunk(
   "post/home",
   async ({ page }, { getState }) => {
+    console.log("hitted home", page);
     const { token } = getState().authentication;
     const {
       data: { statusCode, data },
@@ -80,8 +81,6 @@ export const handleUploadPost = createAsyncThunk(
         data: { statusCode, data },
       } = await uploadPost(postData, token);
       if (statusCode === 200) {
-        dispatch(getHomePosts({ page: 1 }));
-        dispatch(getExplorePosts({ page: 1 }));
         return data;
       }
     } catch (error) {
@@ -100,7 +99,7 @@ export const handleDeletePost = createAsyncThunk(
     if (statusCode === 200) {
       dispatch(getHomePosts({ page: 1 }));
       dispatch(getExplorePosts({ page: 1 }));
-      return data;
+      return _id;
     }
   }
 );
@@ -195,7 +194,9 @@ const postSlice = createSlice({
       state.isUploading = true;
     });
 
-    builder.addCase(handleUploadPost.fulfilled, (state) => {
+    builder.addCase(handleUploadPost.fulfilled, (state, action) => {
+      state.homePosts.posts = [action.payload, ...state.homePosts.posts];
+      state.explorePosts.posts = [action.payload, ...state.explorePosts.posts];
       state.isUploading = false;
     });
 
@@ -206,7 +207,12 @@ const postSlice = createSlice({
     });
 
     builder.addCase(handleDeletePost.fulfilled, (state, action) => {
-      console.log("post deleted");
+      state.homePosts.posts = state.homePosts.posts?.filter(
+        (post) => post._id !== action.payload
+      );
+      state.explorePosts.posts = state.explorePosts.posts?.filter(
+        (post) => post._id !== action.payload
+      );
     });
   },
 });

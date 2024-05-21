@@ -43,7 +43,10 @@ import { SwitchAccountModal } from "../../index";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../../pages/Authentication/authenticationSlice";
 import Notifications from "./Notifications";
-import { getUserNotifications } from "../../../pages/Post Feed/postSlice";
+import {
+  getHomePosts,
+  getUserNotifications,
+} from "../../../pages/Post Feed/postSlice";
 import { getUserSearchList } from "../../../pages/Post Feed/userSlice";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
@@ -85,7 +88,10 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             className="nav-links"
             to="/"
             title="Home"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => {
+              dispatch(getHomePosts({ page: 1 }));
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           >
             <HStack
               {...navlinkStyle}
