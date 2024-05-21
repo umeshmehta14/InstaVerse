@@ -3,6 +3,7 @@ import {
   explorePosts,
   getNotifications,
   homePosts,
+  uploadPost,
 } from "../../service/postService";
 import toast from "react-hot-toast";
 
@@ -22,6 +23,11 @@ const initialState = {
     postFetched: false,
   },
   newPostLoading: false,
+  uploadPost: {
+    caption: "",
+    url: "",
+  },
+  isUploading: false,
 };
 
 export const getUserNotifications = createAsyncThunk(
@@ -64,6 +70,25 @@ export const getExplorePosts = createAsyncThunk(
   }
 );
 
+export const handleUploadPost = createAsyncThunk(
+  "post/upload",
+  async ({ postData }, { getState, dispatch, rejectWithValue }) => {
+    try {
+      const { token } = getState().authentication;
+      const {
+        data: { statusCode, data },
+      } = await uploadPost(postData, token);
+      if (statusCode === 200) {
+        dispatch(getHomePosts({ page: 1 }));
+        dispatch(getExplorePosts({ page: 1 }));
+        return data;
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -75,9 +100,13 @@ const postSlice = createSlice({
     updateCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
-    updatePosts: (state) => {
-      state.homePosts.posts = [];
-      state.explorePosts.posts = [];
+
+    updatePosts: () => {
+      return initialState;
+    },
+
+    updateUploadPost: (state, action) => {
+      state.uploadPost = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -145,10 +174,28 @@ const postSlice = createSlice({
       state.newPostLoading = false;
       state.explorePosts.postFetched = true;
     });
+
+    builder.addCase(handleUploadPost.pending, (state) => {
+      state.isUploading = true;
+    });
+
+    builder.addCase(handleUploadPost.fulfilled, (state) => {
+      state.isUploading = false;
+    });
+
+    builder.addCase(handleUploadPost.rejected, (state, action) => {
+      toast.error(action.payload?.message);
+      console.error(action.payload?.message);
+      state.isUploading = false;
+    });
   },
 });
 
-export const { updateNewPostLoading, updateCurrentPage, updatePosts } =
-  postSlice.actions;
+export const {
+  updateNewPostLoading,
+  updateCurrentPage,
+  updatePosts,
+  updateUploadPost,
+} = postSlice.actions;
 
 export const postReducer = postSlice.reducer;

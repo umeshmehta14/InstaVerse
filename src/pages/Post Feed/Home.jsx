@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Alert, AlertIcon, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 
 import { PostBox, RotatingLoader, UserSuggestion } from "../../components";
 import { useLocation, useNavigate } from "react-router-dom";

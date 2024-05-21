@@ -21,3 +21,10 @@ export const explorePosts = async (page, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const uploadPost = async (postData, token) =>
+  await axios.post(`${API_URL}/post/upload`, postData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

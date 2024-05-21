@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -26,9 +26,14 @@ import Picker from "@emoji-mart/react";
 import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
 import { usePost } from "../../contexts";
 import { imageCrossButton, postTextarea } from "../../styles/PostModalStyles";
-import { useEffect } from "react";
 import { SET_EDIT_POST, SET_POSTVALUE } from "../../utils/Constants";
 import { inputLengthReader } from "../../styles/GlobalStyles";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleUploadPost,
+  updateUploadPost,
+} from "../../pages/Post Feed/postSlice";
+import { Vortex } from "react-loader-spinner";
 
 export const PostModal = ({ isOpen, onClose, edit }) => {
   const { colorMode } = useColorMode();
@@ -39,22 +44,33 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
     postDispatch,
   } = usePost();
 
+  const [selectedPost, setSelectedPost] = useState("");
+
+  const { uploadPost, isUploading } = useSelector((state) => state.post);
+  const { caption, url } = uploadPost;
+  const dispatch = useDispatch();
+
   const handleInputChange = (e) => {
     const { value } = e.target;
     if (value?.length <= 2200) {
-      postDispatch({
-        type: SET_POSTVALUE,
-        payload: { ...postValue, content: value },
-      });
+      dispatch(updateUploadPost({ ...uploadPost, caption: value }));
     }
   };
 
   const handlePhotoChange = (event) => {
     const file = event.target.files[0];
-    postDispatch({
-      type: SET_POSTVALUE,
-      payload: { ...postValue, mediaUrl: URL.createObjectURL(file) },
-    });
+    const fileSizeLimit = 10 * 1024 * 1024;
+
+    if (file) {
+      if (file.size > fileSizeLimit) {
+        toast.error("File size exceeds 10MB. Please select a smaller file.");
+        return;
+      }
+      setSelectedPost(file);
+      dispatch(
+        updateUploadPost({ ...uploadPost, url: URL.createObjectURL(file) })
+      );
+    }
   };
 
   useEffect(() => {
@@ -68,26 +84,13 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
   }, [isOpen]);
 
   const handlePost = () => {
-    if (postValue.mediaUrl === "") {
-      toast.error("Please select a picture");
-    } else if (postValue.content === "") {
-      toast.error("Please write caption for your post");
-    } else {
-      if (edit) {
-        handleEditPost({ ...postValue, _id: editPost._id });
-      } else {
-        handleCreatePost(postValue);
-      }
-      postDispatch({
-        type: SET_POSTVALUE,
-        payload: { content: "", mediaUrl: "" },
-      });
-      postDispatch({
-        type: SET_EDIT_POST,
-        payload: { content: "", mediaUrl: "" },
-      });
+    const data = new FormData();
+    data.append("caption", caption);
+    data.append("post", selectedPost);
+    dispatch(handleUploadPost({ postData: data })).then(() => {
+      dispatch(updateUploadPost({ caption: "", url: "" }));
       onClose();
-    }
+    });
   };
 
   return (
@@ -95,17 +98,18 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
       <Modal
         isOpen={isOpen}
         onClose={() => {
-          onClose();
-          postDispatch({
-            type: SET_POSTVALUE,
-            payload: { content: "", mediaUrl: "" },
-          });
-          postDispatch({
-            type: SET_EDIT_POST,
-            payload: { content: "", mediaUrl: "" },
-          });
+          if (!isUploading) {
+            onClose();
+            dispatch(updateUploadPost({ caption: "", url: "" }));
+            postDispatch({
+              type: SET_EDIT_POST,
+              payload: { content: "", mediaUrl: "" },
+            });
+          }
         }}
         size="xl"
+        closeOnOverlayClick={!isUploading}
+        isClosable={!isUploading}
       >
         <ModalOverlay
           bg="blackAlpha.300"
@@ -115,101 +119,133 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
           border={"1px solid gray"}
           bg={colorMode === "light" ? "white.500" : "black.900"}
         >
-          <ModalHeader>{edit ? "Edit Post" : "Create New Post"}</ModalHeader>
-          <ModalCloseButton
-            color={colorMode === "light" ? "black" : "white"}
-            _hover={{ bg: "red" }}
-          />
+          <ModalHeader>
+            {isUploading ? "Sharing" : edit ? "Edit Post" : "Create New Post"}
+          </ModalHeader>
+          {!isUploading && (
+            <ModalCloseButton
+              color={colorMode === "light" ? "black" : "white"}
+              _hover={{ bg: "red" }}
+              isDisabled={isUploading}
+            />
+          )}
           <ModalBody>
-            <Flex align="center" mb={4} pos={"relative"}>
-              <Textarea
-                {...postTextarea}
-                onChange={handleInputChange}
-                value={postValue.content}
-              />
-              <Text
-                {...inputLengthReader}
-                color={postValue?.content?.length >= 2190 ? "red" : ""}
-              >{`${postValue?.content?.length || 0}/2200`}</Text>
-            </Flex>
-            {postValue?.mediaUrl && (
-              <Flex mt={"2rem"} justifyContent={"center"} pos={"relative"}>
-                <Img src={postValue?.mediaUrl} alt="Selected" width="200px" />
-                <Box
-                  as={RxCross2}
-                  {...imageCrossButton}
-                  title="Remove"
-                  onClick={() =>
-                    postDispatch({
-                      type: SET_POSTVALUE,
-                      payload: { ...postValue, mediaUrl: "" },
-                    })
-                  }
+            {isUploading ? (
+              <Flex
+                justifyContent={"center"}
+                alignItems={"center"}
+                minH={"30vh"}
+              >
+                <Vortex
+                  visible={true}
+                  height="80"
+                  width="80"
+                  ariaLabel="vortex-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="vortex-wrapper"
+                  colors={[
+                    "red",
+                    "green",
+                    "blue",
+                    "yellow",
+                    "orange",
+                    "purple",
+                  ]}
                 />
               </Flex>
+            ) : (
+              <>
+                <Flex align="center" mb={4} pos={"relative"}>
+                  <Textarea
+                    {...postTextarea}
+                    onChange={handleInputChange}
+                    value={caption}
+                  />
+                  <Text
+                    {...inputLengthReader}
+                    color={caption?.length >= 2190 ? "red" : ""}
+                  >{`${caption?.length || 0}/2200`}</Text>
+                </Flex>
+                {url && (
+                  <Flex mt={"2rem"} justifyContent={"center"} pos={"relative"}>
+                    <Img src={url} alt="Selected" width="200px" />
+                    <Box
+                      as={RxCross2}
+                      {...imageCrossButton}
+                      title="Remove"
+                      onClick={() =>
+                        dispatch(updateUploadPost({ ...uploadPost, url: "" }))
+                      }
+                    />
+                  </Flex>
+                )}
+                <ModalFooter
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                  pos={"relative"}
+                >
+                  <Flex justify="flex-start" gap={"1rem"}>
+                    <label htmlFor="photo-upload">
+                      <input
+                        id="photo-upload"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handlePhotoChange}
+                        disabled={isUploading}
+                      />
+                      <FcAddImage
+                        fontSize={"2rem"}
+                        cursor={"pointer"}
+                        title="Add Photo"
+                      />
+                    </label>
+
+                    <Popover>
+                      <PopoverTrigger>
+                        <Box
+                          as={BsEmojiSunglasses}
+                          fontSize={"1.8rem"}
+                          cursor="pointer"
+                          title="Emoji"
+                        />
+                      </PopoverTrigger>
+                      <PopoverContent top={"4rem"} bg={"transparent"}>
+                        <PopoverBody p={0}>
+                          <Picker
+                            data={data}
+                            onEmojiSelect={(emoji) =>
+                              dispatch(
+                                updateUploadPost({
+                                  ...uploadPost,
+                                  caption: caption + emoji.native,
+                                })
+                              )
+                            }
+                            theme={colorMode}
+                            title="Pick an Emoji"
+                            emoji=""
+                          />
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
+                  </Flex>
+
+                  <Button
+                    variant={"link-button"}
+                    disabled={
+                      isUploading || caption.length === 0 || url.length === 0
+                    }
+                    onClick={handlePost}
+                    fontSize={"1rem"}
+                    title="Share"
+                  >
+                    Share
+                  </Button>
+                </ModalFooter>
+              </>
             )}
           </ModalBody>
-          <ModalFooter
-            display={"flex"}
-            justifyContent={"space-between"}
-            pos={"relative"}
-          >
-            <Flex justify="flex-start" gap={"1rem"}>
-              <label htmlFor="photo-upload">
-                <input
-                  id="photo-upload"
-                  type="file"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={handlePhotoChange}
-                />
-                <FcAddImage
-                  fontSize={"2rem"}
-                  cursor={"pointer"}
-                  title="Add Photo"
-                />
-              </label>
-
-              <Popover>
-                <PopoverTrigger>
-                  <Box
-                    as={BsEmojiSunglasses}
-                    fontSize={"1.8rem"}
-                    cursor="pointer"
-                    title="Emoji"
-                  />
-                </PopoverTrigger>
-                <PopoverContent top={"4rem"} bg={"transparent"}>
-                  <PopoverBody p={0}>
-                    <Picker
-                      data={data}
-                      onEmojiSelect={(emoji) =>
-                        postDispatch({
-                          type: SET_POSTVALUE,
-                          payload: {
-                            ...postValue,
-                            content: postValue.content + emoji.native,
-                          },
-                        })
-                      }
-                      theme={colorMode}
-                      title="Pick an Emoji"
-                      emoji=""
-                    />
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
-            </Flex>
-
-            <Button
-              variant={"link-button"}
-              onClick={handlePost}
-              fontSize={"1rem"}
-              title="Share"
-            >
-              Share
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>

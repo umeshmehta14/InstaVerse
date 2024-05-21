@@ -57,6 +57,7 @@ export const Explore = () => {
 
   return (
     <Box
+      minH={"100vh"}
       w={"100%"}
       p={{ base: 0, md: "1rem" }}
       maxW={"975px"}
@@ -73,9 +74,7 @@ export const Explore = () => {
           <RotatingLoader w={"50"} sw={"3"} />
         </Flex>
       ) : (
-        <>
-          <GridBox showingPost={posts} />
-        </>
+        <GridBox showingPost={posts} />
       )}
       <div ref={bottomRef} style={{ height: 20 }} />
       {newPostLoading && (
