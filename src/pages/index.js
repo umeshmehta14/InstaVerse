@@ -1,4 +1,5 @@
-export { PostFeed } from "./Post Feed/PostFeed.jsx";
+export { Home } from "./Post Feed/Home.jsx";
+export { Explore } from "./Post Feed/Explore.jsx";
 export { Login } from "./Authentication/Login.jsx";
 export { SignUp } from "./Authentication/SignUp.jsx";
 export { Profile } from "./Profile/Profile.jsx";

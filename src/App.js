@@ -11,9 +11,16 @@ import { Route, Routes } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { Toaster } from "react-hot-toast";
 
-import { usePost } from "./contexts";
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
-import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
+import {
+  Home,
+  Login,
+  Profile,
+  SignUp,
+  SinglePost,
+  Error,
+  Explore,
+} from "./pages";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getGuestUsers,
@@ -25,7 +32,7 @@ function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.900");
   const { colorMode } = useColorMode();
-  const { postLoading } = usePost((state) => state.post);
+  const { guestUsers } = useSelector((state) => state.user);
   const { progress, token } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
 
@@ -38,7 +45,6 @@ function App() {
 
   useEffect(() => {
     dispatch(handleGetSuggestedUsers());
-    // dispatch(getUserSearchList());
   }, [token]);
 
   return (
@@ -56,9 +62,9 @@ function App() {
               : { backgroundColor: "#fff", color: "#000" },
         }}
       />
-      {postLoading ? (
+      {guestUsers?.length === 0 ? (
         <VStack h="100vh" w="100vw" justify={"center"}>
-          <RotatingLoader w="50" sw="6" />
+          <RotatingLoader w="50" sw="5" />
         </VStack>
       ) : (
         <Flex flexDir={{ base: "column", md: "row" }}>
@@ -69,7 +75,7 @@ function App() {
               path={"/"}
               element={
                 <PrivateRoute>
-                  <PostFeed />
+                  <Home />
                 </PrivateRoute>
               }
             />
@@ -77,7 +83,7 @@ function App() {
               path={"/explore"}
               element={
                 <PrivateRoute>
-                  <PostFeed />
+                  <Explore />
                 </PrivateRoute>
               }
             />

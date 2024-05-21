@@ -1,14 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getNotifications, homePosts } from "../../service/postService";
+import {
+  explorePosts,
+  getNotifications,
+  homePosts,
+} from "../../service/postService";
 import toast from "react-hot-toast";
 
 const initialState = {
   notifications: [],
   notificationLoader: false,
-  posts: [],
-  totalPages: 0,
-  currentPage: 1,
-  postLoading: false,
+  homePosts: {
+    posts: [],
+    totalPages: 0,
+    currentPage: 1,
+    postFetched: false,
+  },
+  explorePosts: {
+    posts: [],
+    totalPages: 0,
+    currentPage: 1,
+  },
   newPostLoading: false,
 };
 
@@ -29,11 +40,23 @@ export const getUserNotifications = createAsyncThunk(
 export const getHomePosts = createAsyncThunk(
   "post/home",
   async ({ page }, { getState }) => {
-    console.log("postAssced", page);
     const { token } = getState().authentication;
     const {
       data: { statusCode, data },
     } = await homePosts(page, token);
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const getExplorePosts = createAsyncThunk(
+  "post/explore",
+  async ({ page }, { getState }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await explorePosts(page, token);
     if (statusCode === 200) {
       return data;
     }
@@ -69,24 +92,28 @@ const postSlice = createSlice({
     });
 
     builder.addCase(getHomePosts.pending, (state) => {
-      state.postLoading = true;
+      state.homePosts.postFetched = false;
     });
 
     builder.addCase(getHomePosts.fulfilled, (state, action) => {
       const { posts, totalPages, currentPage } = action.payload;
-      const existingPostIds = new Set(state.posts.map((post) => post._id));
+      const existingPostIds = new Set(
+        state.homePosts.posts.map((post) => post._id)
+      );
       const newPosts = posts.filter((post) => !existingPostIds.has(post._id));
 
-      state.posts = [...state.posts, ...newPosts];
-      state.totalPages = totalPages;
-      state.currentPage = currentPage;
-      state.postLoading = false;
+      state.homePosts.posts = [...state.homePosts.posts, ...newPosts];
+      state.homePosts.totalPages = totalPages;
+      state.homePosts.currentPage = currentPage;
+      state.newPostLoading = false;
+      state.homePosts.postFetched = true;
     });
 
     builder.addCase(getHomePosts.rejected, (state, action) => {
       toast.error("Something went wrong");
       console.error(action.error);
-      state.postLoading = false;
+      state.newPostLoading = false;
+      state.homePosts.postFetched = true;
     });
   },
 });

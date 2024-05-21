@@ -80,7 +80,13 @@ const SideBar = ({ searchDrawerDisclosure }) => {
           </Text>
         </HStack>
         <Flex {...navRoutesStyle}>
-          <NavLink style={getStyle} className="nav-links" to="/" title="Home">
+          <NavLink
+            style={getStyle}
+            className="nav-links"
+            to="/"
+            title="Home"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
             <HStack
               {...navlinkStyle}
               _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}

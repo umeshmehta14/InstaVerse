@@ -14,3 +14,10 @@ export const homePosts = async (page, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const explorePosts = async (page, token) =>
+  await axios.get(`${API_URL}/post?page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

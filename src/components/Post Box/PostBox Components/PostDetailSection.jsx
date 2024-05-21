@@ -171,10 +171,14 @@ const PostDetailSection = ({
               />
               {friendLike?.username}
             </Flex>
-            <Text mx={"1"}>and</Text>
-            <Text sx={userBoldStyle} onClick={onOpen}>
-              {likes?.length - 1} others
-            </Text>
+            {likes?.length !== 1 && (
+              <>
+                <Text mx={"1"}>and</Text>
+                <Text sx={userBoldStyle} onClick={onOpen}>
+                  {likes?.length - 1} others
+                </Text>
+              </>
+            )}
           </Flex>
         ) : (
           likes?.length !== 0 && (

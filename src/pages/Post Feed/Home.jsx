@@ -5,23 +5,18 @@ import { PostBox, RotatingLoader, UserSuggestion } from "../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getHomePosts,
-  updateCurrentPage,
-  updateNewPostLoading,
-} from "./postSlice";
+import { getHomePosts, updateNewPostLoading } from "./postSlice";
 
-export const PostFeed = () => {
-  const { posts, totalPages, currentPage, newPostLoading } = useSelector(
-    (state) => state.post
-  );
+export const Home = () => {
+  const {
+    homePosts: { posts, totalPages, currentPage, postFetched },
+    newPostLoading,
+  } = useSelector((state) => state.post);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  document.title = `InstaVerse | ${
-    location?.pathname === "/explore" ? "Explore" : "Home"
-  }`;
+  document.title = `InstaVerse | "Home" `;
 
   const bottomRef = useRef(null);
 
@@ -34,9 +29,7 @@ export const PostFeed = () => {
   };
 
   useEffect(() => {
-    console.log("before hitted");
     if (posts?.length > 0 && currentPage !== totalPages) {
-      console.log("hitted");
       const elementRef = bottomRef?.current;
       const observer = new IntersectionObserver(handleObserver);
       if (elementRef) observer?.observe(elementRef);
@@ -48,17 +41,25 @@ export const PostFeed = () => {
   }, [posts, currentPage, totalPages]);
 
   useEffect(() => {
-    dispatch(getHomePosts({ page: 1 }));
-    if (!location?.pathname.includes("/post/")) {
-      dispatch(updateCurrentPage(1));
-    }
     window.scrollTo({ top: 0 });
+    if (posts.length > 0) return;
+    dispatch(getHomePosts({ page: 1 }));
   }, [location?.pathname, dispatch]);
 
   return (
     <Flex sx={heroContentBox}>
       <UserSuggestion />
-      {posts?.length === 0 ? (
+      {!postFetched && currentPage === 1 && !newPostLoading ? (
+        <VStack
+          w={{ base: "100%", lg: "auto" }}
+          alignItems={"center"}
+          minW={{ md: "468px" }}
+          justifyContent={"center"}
+          h={{ base: "50vh", md: "90vh" }}
+        >
+          <RotatingLoader w={"70"} sw={"4"} />
+        </VStack>
+      ) : posts?.length === 0 ? (
         <Flex {...emptyMessageStyle}>
           <Text w={"100%"}>
             No posts yet. You can go to

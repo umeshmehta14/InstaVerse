@@ -27,7 +27,7 @@ export const GridBox = ({ showingPost }) => {
       gap={"1"}
     >
       {showingPost?.map((post, index) => {
-        const { url, _id, comments, username, likes } = post;
+        const { url, _id, comments, likes } = post;
         const isHovered = hoveredIndex === index;
         return (
           <GridItem
@@ -45,7 +45,7 @@ export const GridBox = ({ showingPost }) => {
             }
           >
             <AspectRatio ratio={1}>
-              <Image src={url} alt={username} {...profileImageStyle} />
+              <Image src={url} {...profileImageStyle} />
             </AspectRatio>
             <Flex display={isHovered ? "flex" : "none"} {...profileHoverStyle}>
               <Flex align={"center"} gap={"2"}>
