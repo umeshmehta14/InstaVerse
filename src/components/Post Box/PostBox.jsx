@@ -22,11 +22,12 @@ import {
 } from "../../styles/PostBoxStyles";
 import { BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
-import { SET_DEFAULT_TAB, fallBackImg } from "../../utils/Constants";
+import { SET_DEFAULT_TAB } from "../../utils/Constants";
 import { InfoPopup } from "../index";
 import HeartPopup from "./PostBox Components/HeartPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../pages/Post Feed/userSlice";
+import { handleLikes } from "../../pages/Post Feed/postSlice";
 
 export const PostBox = ({ post }) => {
   const navigate = useNavigate();
@@ -44,8 +45,6 @@ export const PostBox = ({ post }) => {
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { isLoading } = useSelector((state) => state.user);
-
-  const { handlePostLike } = usePost();
 
   const [showSavedPostBox, setShowSavedPostBox] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -76,9 +75,8 @@ export const PostBox = ({ post }) => {
 
     if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
       setDoubleTap(true);
-      if (userLike) {
-      } else {
-        handlePostLike(_id);
+      if (!userLike) {
+        dispatch(handleLikes({ _id }));
       }
       setTimeout(() => {
         setDoubleTap(false);

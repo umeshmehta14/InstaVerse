@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  addLike,
   deletePost,
   explorePosts,
   getNotifications,
   homePosts,
+  removeLike,
   uploadPost,
 } from "../../service/postService";
 import toast from "react-hot-toast";
@@ -74,7 +76,7 @@ export const getExplorePosts = createAsyncThunk(
 
 export const handleUploadPost = createAsyncThunk(
   "post/upload",
-  async ({ postData }, { getState, dispatch, rejectWithValue }) => {
+  async ({ postData }, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().authentication;
       const {
@@ -94,7 +96,7 @@ export const handleDeletePost = createAsyncThunk(
   async ({ _id }, { getState, dispatch }) => {
     const { token } = getState().authentication;
     const {
-      data: { statusCode, data },
+      data: { statusCode },
     } = await deletePost(_id, token);
     if (statusCode === 200) {
       dispatch(getHomePosts({ page: 1 }));
@@ -103,6 +105,34 @@ export const handleDeletePost = createAsyncThunk(
     }
   }
 );
+
+export const handleLikes = createAsyncThunk(
+  "post/like",
+  async ({ _id, unlike }, { getState, dispatch }) => {
+    const { token, currentUser } = getState().authentication;
+    unlike
+      ? dispatch(removePostLike({ _id, currentUser }))
+      : dispatch(updatePostLikes({ _id, currentUser }));
+    const {
+      data: { statusCode, data },
+    } = unlike ? await removeLike(_id, token) : await addLike(_id, token);
+    if (statusCode === 200) {
+      return { data, _id };
+    }
+  }
+);
+
+const updatePostLike = (posts, _id, currentUser, addLike = true) =>
+  posts.map((post) =>
+    post._id === _id
+      ? {
+          ...post,
+          likes: addLike
+            ? [currentUser, ...post.likes]
+            : post.likes.filter((user) => user._id !== currentUser._id),
+        }
+      : post
+  );
 
 const postSlice = createSlice({
   name: "post",
@@ -122,6 +152,49 @@ const postSlice = createSlice({
 
     updateUploadPost: (state, action) => {
       state.uploadPost = action.payload;
+    },
+
+    updatePostLikes: (state, action) => {
+      const { currentUser, _id } = action.payload;
+
+      const { posts: homePosts } = state.homePosts;
+      const { posts: explorePosts } = state.explorePosts;
+
+      if (homePosts) {
+        state.homePosts.posts = updatePostLike(homePosts, _id, currentUser);
+      }
+
+      if (explorePosts) {
+        state.explorePosts.posts = updatePostLike(
+          explorePosts,
+          _id,
+          currentUser
+        );
+      }
+    },
+    removePostLike: (state, action) => {
+      const { currentUser, _id } = action.payload;
+
+      const { posts: homePosts } = state.homePosts;
+      const { posts: explorePosts } = state.explorePosts;
+
+      if (homePosts) {
+        state.homePosts.posts = updatePostLike(
+          homePosts,
+          _id,
+          currentUser,
+          false
+        );
+      }
+
+      if (explorePosts) {
+        state.explorePosts.posts = updatePostLike(
+          explorePosts,
+          _id,
+          currentUser,
+          false
+        );
+      }
     },
   },
   extraReducers: (builder) => {
@@ -214,6 +287,26 @@ const postSlice = createSlice({
         (post) => post._id !== action.payload
       );
     });
+
+    builder.addCase(handleLikes.fulfilled, (state, action) => {
+      const { data, _id } = action.payload;
+
+      const updateLikes = (posts) =>
+        posts.map((post) =>
+          post._id === _id ? { ...post, likes: data } : post
+        );
+
+      const { posts: homePosts } = state.homePosts;
+      const { posts: explorePosts } = state.explorePosts;
+
+      if (homePosts) {
+        state.homePosts.posts = updateLikes(homePosts);
+      }
+
+      if (explorePosts) {
+        state.explorePosts.posts = updateLikes(explorePosts);
+      }
+    });
   },
 });
 
@@ -222,6 +315,8 @@ export const {
   updateCurrentPage,
   updatePosts,
   updateUploadPost,
+  updatePostLikes,
+  removePostLike,
 } = postSlice.actions;
 
 export const postReducer = postSlice.reducer;

@@ -35,3 +35,25 @@ export const deletePost = async (postId, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const addLike = async (postId, token) =>
+  await axios.patch(
+    `${API_URL}/post/like/${postId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+export const removeLike = async (postId, token) =>
+  await axios.patch(
+    `${API_URL}/post/unlike/${postId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );

@@ -40,7 +40,8 @@ import {
   FaRegBookmark,
   BsEmojiSunglasses,
 } from "../../../utils/Icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { handleLikes } from "../../../pages/Post Feed/postSlice";
 
 const PostDetailSection = ({
   onOpen,
@@ -54,13 +55,13 @@ const PostDetailSection = ({
   const location = useLocation();
   const { colorMode } = useColorMode();
 
-  const { handlePostLike, handlePostUnLike, handleCreateComment, handleShare } =
-    usePost();
+  const { handlePostUnLike, handleCreateComment, handleShare } = usePost();
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { handleBookmark, handleRemoveBookmark } = useUser();
+  const dispatch = useDispatch();
 
   const {
     _id,
@@ -88,7 +89,7 @@ const PostDetailSection = ({
 
   const handleLike = () => {
     setIsLiked(true);
-    handlePostLike(post._id);
+    dispatch(handleLikes({ _id }));
     setTimeout(() => {
       setIsLiked(false);
     }, 1000);
@@ -109,7 +110,7 @@ const PostDetailSection = ({
                 cursor="pointer"
                 color={"red"}
                 title="Unlike"
-                onClick={() => handlePostUnLike(_id)}
+                onClick={() => dispatch(handleLikes({ _id, unlike: true }))}
               />
             ) : (
               <Box
