@@ -14,6 +14,7 @@ import {
   Avatar,
   useDisclosure,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -37,6 +38,8 @@ const Notifications = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
 
   const unfollowModalDisclosure = useDisclosure();
+
+  console.log(notifications);
 
   return (
     <Box>
@@ -72,7 +75,7 @@ const Notifications = ({ isOpen, onClose }) => {
               <SearchSkeleton />
             ) : (
               <VStack maxW={"100%"}>
-                {notifications?.map(({ type, actionBy, createdAt }) => {
+                {notifications?.map(({ type, actionBy, createdAt, post }) => {
                   const { _id, username, avatar } = actionBy;
                   const isFollowing = currentUser?.following?.some(
                     (user) => user?._id === _id
@@ -152,6 +155,47 @@ const Notifications = ({ isOpen, onClose }) => {
                               )}
                             </Button>
                           )}
+                        </Flex>
+                      </Flex>
+                    );
+                  } else if (type === "like") {
+                    const { url } = post;
+                    return (
+                      <Flex
+                        key={_id}
+                        gap={"2"}
+                        my={"2"}
+                        cursor={"pointer"}
+                        w={"100%"}
+                        title={username}
+                        onClick={() => {
+                          navigate(`/profile/${username}`);
+                          onClose();
+                        }}
+                      >
+                        <Flex alignItems={"center"} gap={"2"}>
+                          <Avatar size="md" src={avatar?.url} />
+                        </Flex>
+                        <Flex
+                          gap={{ base: "0.5rem", md: "1rem" }}
+                          alignItems={"center"}
+                          justifyContent={"space-between"}
+                        >
+                          <Flex flexWrap={"wrap"}>
+                            <Text wordBreak={"break-word"}>
+                              <strong>{`${username}`}</strong> liked your photo.
+                              <Text
+                                fontSize="xs"
+                                color={"#717171e0"}
+                                display={"inline"}
+                                ml={"0.2rem"}
+                                wordBreak={"break-word"}
+                              >
+                                {getRelativeTime(createdAt)}
+                              </Text>
+                            </Text>
+                          </Flex>
+                          <Image src={url} w={"50px"} h={"60px"} />
                         </Flex>
                       </Flex>
                     );
