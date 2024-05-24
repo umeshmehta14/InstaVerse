@@ -55,6 +55,7 @@ const initialState = {
   userList: [],
   removeFollowerUser: [],
   suggestedUsers: [],
+  tab: 1,
 };
 
 export const getGuestUsers = createAsyncThunk(
@@ -424,6 +425,10 @@ const userSlice = createSlice({
         (post) => post._id !== action.payload
       );
     },
+
+    updateTab: (state, action) => {
+      state.tab = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getGuestUsers.pending, (state) => {
@@ -625,6 +630,7 @@ export const {
   updateRemoveFollowerUser,
   updateAddBookmark,
   updateRemoveBookmark,
+  updateTab,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

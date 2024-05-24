@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Flex,
@@ -15,9 +15,12 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { getUserBookmark, getUserLikedPosts } from "../../Post Feed/userSlice";
+import {
+  getUserBookmark,
+  getUserLikedPosts,
+  updateTab,
+} from "../../Post Feed/userSlice";
 import { emptyCameraStyles, tabListStyle } from "../../../styles/ProfileStyles";
-import { useUser } from "../../../contexts";
 import {
   AiOutlineHeart,
   BsBookmarkX,
@@ -30,18 +33,23 @@ import { RotatingLoader } from "../../../components";
 import { GridBox } from "./GridBox";
 
 const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
-  const { selectedUser, bookmarks, isLoading, likedPosts } = useSelector(
+  const { selectedUser, bookmarks, isLoading, likedPosts, tab } = useSelector(
     (state) => state.user
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {
-    userState: { defaultTab },
-  } = useUser();
+  useEffect(() => {
+    !currentUserCheck && dispatch(updateTab(0));
+  });
 
   return (
-    <Tabs isLazy defaultIndex={defaultTab} w={"100%"}>
+    <Tabs
+      isLazy
+      index={tab}
+      onChange={(index) => dispatch(updateTab(index))}
+      w={"100%"}
+    >
       <TabList {...tabListStyle}>
         <Tab flexGrow={1} colorScheme="blue" gap={2}>
           <Box as={MdGridOn} fontSize={"1.7rem"} />
@@ -94,7 +102,11 @@ const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
           )}
         </TabPanel>
         <TabPanel p="0">
-          {likedPosts.length === 0 ? (
+          {isLoading ? (
+            <Flex justifyContent={"center"} alignItems={"center"} minH={"30vh"}>
+              <RotatingLoader w={"50"} sw={"3"} />
+            </Flex>
+          ) : likedPosts.length === 0 ? (
             <VStack height={"300px"} gap={"4"} my={"1rem"}>
               <Box as={BsFillHeartbreakFill} color={"gray"} fontSize="5rem" />
               <Text w="100%" maxW={"90%"} textAlign={"center"}>
@@ -108,10 +120,6 @@ const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
                 Start Liking
               </Button>
             </VStack>
-          ) : isLoading ? (
-            <Flex justifyContent={"center"} alignItems={"center"} minH={"30vh"}>
-              <RotatingLoader w={"50"} sw={"3"} />
-            </Flex>
           ) : (
             <GridBox showingPost={likedPosts} />
           )}

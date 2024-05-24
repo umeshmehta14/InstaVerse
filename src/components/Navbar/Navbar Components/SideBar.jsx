@@ -47,7 +47,10 @@ import {
   getHomePosts,
   getUserNotifications,
 } from "../../../pages/Post Feed/postSlice";
-import { getUserSearchList } from "../../../pages/Post Feed/userSlice";
+import {
+  getUserSearchList,
+  updateTab,
+} from "../../../pages/Post Feed/userSlice";
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -236,7 +239,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
               justifyContent={"flex-start"}
               gap={2}
               onClick={() => {
-                userDispatch({ type: SET_DEFAULT_TAB, payload: 2 });
+                dispatch(updateTab(2));
                 navigate(`/profile/${currentUser?.username}`);
               }}
             >

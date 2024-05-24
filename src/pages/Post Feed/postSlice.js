@@ -50,7 +50,6 @@ export const getUserNotifications = createAsyncThunk(
 export const getHomePosts = createAsyncThunk(
   "post/home",
   async ({ page, noLoading }, { getState }) => {
-    console.log({ page, noLoading });
     const { token } = getState().authentication;
     const {
       data: { statusCode, data },
@@ -215,8 +214,6 @@ const postSlice = createSlice({
 
     builder.addCase(getHomePosts.pending, (state, action) => {
       const { noLoading } = action.meta.arg;
-
-      console.log({ noLoading });
 
       if (!noLoading) {
         state.homePosts.postFetched = false;
