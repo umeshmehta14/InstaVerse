@@ -12,7 +12,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useUser } from "../../contexts";
 import { RotatingLoader, UserListModal } from "../index";
 import {
   bookmarkPopup,
@@ -22,11 +21,13 @@ import {
 } from "../../styles/PostBoxStyles";
 import { BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
-import { SET_DEFAULT_TAB } from "../../utils/Constants";
 import { InfoPopup } from "../index";
 import HeartPopup from "./PostBox Components/HeartPopup";
 import { useDispatch, useSelector } from "react-redux";
-import { handleFollowUnfollowUser } from "../../pages/Post Feed/userSlice";
+import {
+  handleFollowUnfollowUser,
+  updateTab,
+} from "../../pages/Post Feed/userSlice";
 import { handleLikes } from "../../pages/Post Feed/postSlice";
 
 export const PostBox = ({ post }) => {
@@ -34,11 +35,6 @@ export const PostBox = ({ post }) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const infoPopupDisclosure = useDisclosure();
-
-  const {
-    userState: { userBookmarks },
-    userDispatch,
-  } = useUser();
 
   const dispatch = useDispatch();
 
@@ -175,7 +171,7 @@ export const PostBox = ({ post }) => {
                 fontSize={"0.8rem"}
                 p="0"
                 onClick={() => {
-                  userDispatch({ type: SET_DEFAULT_TAB, payload: 2 });
+                  dispatch(updateTab(2));
                   navigate(`/profile/${currentUser.username}`);
                 }}
               >

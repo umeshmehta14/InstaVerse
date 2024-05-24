@@ -9,6 +9,7 @@ import {
   uploadPost,
 } from "../../service/postService";
 import toast from "react-hot-toast";
+import { getUserByUsername } from "./userSlice";
 
 const initialState = {
   notifications: [],
@@ -75,13 +76,23 @@ export const getExplorePosts = createAsyncThunk(
 
 export const handleUploadPost = createAsyncThunk(
   "post/upload",
-  async ({ postData }, { getState, rejectWithValue }) => {
+  async ({ postData }, { getState, rejectWithValue, dispatch }) => {
     try {
-      const { token } = getState().authentication;
+      const { token, currentUser } = getState().authentication;
+      const { selectedUser } = getState().user;
       const {
         data: { statusCode, data },
       } = await uploadPost(postData, token);
       if (statusCode === 200) {
+        if (currentUser.username === selectedUser.username) {
+          dispatch(
+            getUserByUsername({
+              username: currentUser?.username,
+              noLoading: true,
+              currentUser: true,
+            })
+          );
+        }
         return data;
       }
     } catch (error) {

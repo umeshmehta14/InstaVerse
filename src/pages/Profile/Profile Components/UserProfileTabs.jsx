@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Flex,
@@ -41,7 +41,7 @@ const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
 
   useEffect(() => {
     !currentUserCheck && dispatch(updateTab(0));
-  });
+  }, [currentUserCheck]);
 
   return (
     <Tabs

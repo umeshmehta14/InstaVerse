@@ -7,6 +7,7 @@ import {
 } from "../../service/authService.js";
 import toast from "react-hot-toast";
 import { updatePosts } from "../Post Feed/postSlice.js";
+import { updateUser } from "../Post Feed/userSlice.js";
 
 const initialState = {
   token: JSON.parse(localStorage.getItem("instaverseUser"))?.token,
@@ -53,11 +54,10 @@ export const signupHandler = createAsyncThunk(
 
 export const logoutHandler = createAsyncThunk(
   "authentication/logout",
-  async (_, thunkAPI) => {
-    console.log("logout accessed");
-    const { token } = thunkAPI.getState().authentication;
+  async (_, { getState, dispatch }) => {
+    const { token } = getState().authentication;
     const res = await userLogout(token);
-    thunkAPI.dispatch(updatePosts());
+    dispatch(updatePosts());
     return res;
   }
 );

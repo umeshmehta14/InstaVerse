@@ -7,6 +7,7 @@ import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePosts, updateNewPostLoading } from "./postSlice";
 import { PostAlert } from "./Post Components/PostAlert";
+import { getUserBookmark } from "./userSlice";
 
 export const Home = () => {
   const {
@@ -50,6 +51,7 @@ export const Home = () => {
 
   useEffect(() => {
     dispatch(getHomePosts({ page: 1, noLoading: true }));
+    dispatch(getUserBookmark());
   }, [currentUser]);
 
   return (

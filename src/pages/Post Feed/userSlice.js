@@ -631,6 +631,7 @@ export const {
   updateAddBookmark,
   updateRemoveBookmark,
   updateTab,
+  updateUser,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

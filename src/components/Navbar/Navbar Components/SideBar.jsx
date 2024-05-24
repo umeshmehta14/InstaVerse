@@ -59,8 +59,6 @@ const SideBar = ({ searchDrawerDisclosure }) => {
   const SwitchUserDisclosure = useDisclosure();
   const notificationDisclosure = useDisclosure();
   const { currentUser } = useSelector((state) => state.authentication);
-  const { userDispatch } = useUser();
-
   const dispatch = useDispatch();
 
   const getStyle = ({ isActive }) =>
@@ -190,6 +188,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
           <NavLink
             style={getStyle}
             className="nav-links"
+            onClick={() => dispatch(updateTab(0))}
             to={`/profile/${currentUser?.username}`}
             title="Profile"
           >
