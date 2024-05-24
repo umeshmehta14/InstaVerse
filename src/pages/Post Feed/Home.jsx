@@ -49,8 +49,14 @@ export const Home = () => {
   }, [location?.pathname, dispatch]);
 
   useEffect(() => {
-    dispatch(getHomePosts({ page: 1 }));
+    dispatch(getHomePosts({ page: 1, noLoading: true }));
   }, [currentUser]);
+
+  console.log({
+    postFetched: !postFetched,
+    currentPage: currentPage === 1,
+    newPostLoading: !newPostLoading,
+  });
 
   return (
     <Flex sx={heroContentBox}>

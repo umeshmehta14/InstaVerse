@@ -156,7 +156,6 @@ export const PostBox = ({ post }) => {
       <Box pos={"relative"}>
         <Image
           src={url}
-          // fallbackSrc={fallBackImg}
           w={"100%"}
           maxH={"585px"}
           minH={"400px"}
@@ -198,12 +197,7 @@ export const PostBox = ({ post }) => {
       />
 
       {isOpen && (
-        <UserListModal
-          onClose={onClose}
-          isOpen={isOpen}
-          users={likes}
-          heading={"Liked By"}
-        />
+        <UserListModal onClose={onClose} isOpen={isOpen} heading={"Liked By"} />
       )}
     </Box>
   );

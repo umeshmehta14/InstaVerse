@@ -42,6 +42,7 @@ import {
 } from "../../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLikes } from "../../../pages/Post Feed/postSlice";
+import { getPostLikeUsers } from "../../../pages/Post Feed/userSlice";
 
 const PostDetailSection = ({
   onOpen,
@@ -55,7 +56,7 @@ const PostDetailSection = ({
   const location = useLocation();
   const { colorMode } = useColorMode();
 
-  const { handlePostUnLike, handleCreateComment, handleShare } = usePost();
+  const { handleCreateComment, handleShare } = usePost();
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
 
@@ -175,7 +176,13 @@ const PostDetailSection = ({
             {likes?.length !== 1 && (
               <>
                 <Text mx={"1"}>and</Text>
-                <Text sx={userBoldStyle} onClick={onOpen}>
+                <Text
+                  sx={userBoldStyle}
+                  onClick={() => {
+                    dispatch(getPostLikeUsers({ _id }));
+                    onOpen();
+                  }}
+                >
                   {likes?.length - 1} others
                 </Text>
               </>
@@ -183,7 +190,13 @@ const PostDetailSection = ({
           </Flex>
         ) : (
           likes?.length !== 0 && (
-            <Text onClick={onOpen} cursor={"pointer"}>
+            <Text
+              onClick={() => {
+                dispatch(getPostLikeUsers({ _id }));
+                onOpen();
+              }}
+              cursor={"pointer"}
+            >
               {likes?.length} likes
             </Text>
           )

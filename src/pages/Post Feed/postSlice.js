@@ -49,14 +49,14 @@ export const getUserNotifications = createAsyncThunk(
 
 export const getHomePosts = createAsyncThunk(
   "post/home",
-  async ({ page }, { getState }) => {
-    console.log("hitted home", page);
+  async ({ page, noLoading }, { getState }) => {
+    console.log({ page, noLoading });
     const { token } = getState().authentication;
     const {
       data: { statusCode, data },
     } = await homePosts(page, token);
     if (statusCode === 200) {
-      return data;
+      return { data, noLoading };
     }
   }
 );
@@ -213,12 +213,21 @@ const postSlice = createSlice({
       state.notificationLoader = false;
     });
 
-    builder.addCase(getHomePosts.pending, (state) => {
-      state.homePosts.postFetched = false;
+    builder.addCase(getHomePosts.pending, (state, action) => {
+      const { noLoading } = action.meta.arg;
+
+      console.log({ noLoading });
+
+      if (!noLoading) {
+        state.homePosts.postFetched = false;
+      }
     });
 
     builder.addCase(getHomePosts.fulfilled, (state, action) => {
-      const { posts, totalPages, currentPage } = action.payload;
+      const {
+        data: { posts, totalPages, currentPage },
+        noLoading,
+      } = action.payload;
       const existingPostIds = new Set(
         state.homePosts.posts.map((post) => post._id)
       );
@@ -227,8 +236,10 @@ const postSlice = createSlice({
       state.homePosts.posts = [...state.homePosts.posts, ...newPosts];
       state.homePosts.totalPages = totalPages;
       state.homePosts.currentPage = currentPage;
-      state.newPostLoading = false;
-      state.homePosts.postFetched = true;
+      if (!noLoading) {
+        state.newPostLoading = false;
+        state.homePosts.postFetched = true;
+      }
     });
 
     builder.addCase(getHomePosts.rejected, (state, action) => {

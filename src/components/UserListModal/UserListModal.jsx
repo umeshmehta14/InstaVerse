@@ -181,14 +181,24 @@ export const UserListModal = ({ onClose, isOpen, heading }) => {
                       <Button
                         variant={"follow-button"}
                         onClick={() => {
-                          dispatch(
-                            handleFollowUnfollowUser({
-                              _id,
-                              follow: true,
-                              username,
-                              notSelectedUser: true,
-                            })
-                          );
+                          heading === "Liked By"
+                            ? dispatch(
+                                handleFollowUnfollowUser({
+                                  _id,
+                                  follow: true,
+                                  username,
+                                  notSelectedUser: true,
+                                  noPostLoading: true,
+                                })
+                              )
+                            : dispatch(
+                                handleFollowUnfollowUser({
+                                  _id,
+                                  follow: true,
+                                  username,
+                                  notSelectedUser: true,
+                                })
+                              );
                         }}
                       >
                         {isLoading ? (
@@ -208,6 +218,7 @@ export const UserListModal = ({ onClose, isOpen, heading }) => {
       {unfollowDisclosure.isOpen && (
         <UnfollowModal
           {...unfollowUser}
+          fromLiked={heading === "Liked By"}
           notSelectedUser={true}
           isOpen={unfollowDisclosure.isOpen}
           onClose={unfollowDisclosure.onClose}

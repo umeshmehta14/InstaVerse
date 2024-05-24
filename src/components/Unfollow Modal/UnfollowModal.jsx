@@ -22,6 +22,7 @@ export const UnfollowModal = ({
   username,
   avatar,
   notSelectedUser,
+  fromLiked,
   fromInfoPop,
 }) => {
   const { colorMode } = useColorMode();
@@ -43,15 +44,25 @@ export const UnfollowModal = ({
             sx={simpleButton}
             color={"red"}
             onClick={() => {
-              dispatch(
-                handleFollowUnfollowUser({
-                  _id,
-                  follow: false,
-                  username,
-                  notSelectedUser,
-                  unFollow: true,
-                })
-              );
+              fromLiked
+                ? dispatch(
+                    handleFollowUnfollowUser({
+                      _id,
+                      follow: false,
+                      username,
+                      notSelectedUser,
+                      noPostLoading: true,
+                    })
+                  )
+                : dispatch(
+                    handleFollowUnfollowUser({
+                      _id,
+                      follow: false,
+                      username,
+                      notSelectedUser,
+                      unFollow: true,
+                    })
+                  );
 
               onClose();
             }}

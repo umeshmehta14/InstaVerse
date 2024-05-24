@@ -13,6 +13,7 @@ import {
   getSearchList,
   getSuggestedUser,
   guestUsers,
+  postLikeUsers,
   removeBookmark,
   removeFollower,
   removeSearchList,
@@ -256,7 +257,7 @@ export const editUserProfile = createAsyncThunk(
 export const handleFollowUnfollowUser = createAsyncThunk(
   "user/follow-unfollow",
   async (
-    { _id, follow, username, notSelectedUser, unFollow },
+    { _id, follow, username, notSelectedUser, unFollow, noPostLoading },
     { getState, dispatch }
   ) => {
     const { token, currentUser } = getState().authentication;
@@ -268,8 +269,10 @@ export const handleFollowUnfollowUser = createAsyncThunk(
     } = follow ? await followUser(_id, token) : await unfollowUser(_id, token);
 
     if (statusCode === 200) {
-      dispatch(updatePosts());
-      dispatch(getHomePosts({ page: 1 }));
+      if (!noPostLoading) {
+        dispatch(updatePosts());
+        dispatch(getHomePosts({ page: 1 }));
+      }
       dispatch(getExplorePosts({ page: 1 }));
       if (!notSelectedUser) {
         dispatch(getUserByUsername({ username, noLoading: true }));
@@ -352,6 +355,22 @@ export const handleGetSuggestedUsers = createAsyncThunk(
     const {
       data: { statusCode, data },
     } = await getSuggestedUser(token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const getPostLikeUsers = createAsyncThunk(
+  "user/post/likedPost",
+  async ({ _id }, { getState }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await postLikeUsers(_id, token);
+
+    console.log({ data });
 
     if (statusCode === 200) {
       return data;
@@ -572,6 +591,22 @@ const userSlice = createSlice({
 
     builder.addCase(handleGetSuggestedUsers.fulfilled, (state, action) => {
       state.suggestedUsers = action.payload;
+    });
+
+    builder.addCase(getPostLikeUsers.pending, (state) => {
+      state.userList = [];
+      state.isLoading = true;
+    });
+
+    builder.addCase(getPostLikeUsers.fulfilled, (state, action) => {
+      state.userList = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(getPostLikeUsers.rejected, (state, action) => {
+      state.userList = [];
+      state.isLoading = false;
+      console.error(action.error);
     });
   },
 });

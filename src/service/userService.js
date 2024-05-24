@@ -158,3 +158,10 @@ export const getSuggestedUser = async (token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const postLikeUsers = async (postId, token) =>
+  await axios.get(`${API_URL}/post/liked-user/${postId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
