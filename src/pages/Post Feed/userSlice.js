@@ -187,12 +187,13 @@ export const getUserBookmark = createAsyncThunk(
 
 export const addUserBookmark = createAsyncThunk(
   "user/add/bookmark",
-  async ({ postId }, { getState }) => {
-    const { token } = getState().authentication;
+  async ({ _id }, { getState, dispatch }) => {
+    const { token, currentUser } = getState().authentication;
+    dispatch(updateAddBookmark(currentUser));
 
     const {
       data: { statusCode, data },
-    } = await addBookmark(postId, token);
+    } = await addBookmark(_id, token);
 
     if (statusCode === 200) {
       return data;
@@ -202,12 +203,12 @@ export const addUserBookmark = createAsyncThunk(
 
 export const removeUserBookmark = createAsyncThunk(
   "user/remove/bookmark",
-  async ({ postId }, { getState }) => {
+  async ({ _id }, { getState, dispatch }) => {
     const { token } = getState().authentication;
-
+    dispatch(updateRemoveBookmark(_id));
     const {
       data: { statusCode, data },
-    } = await removeBookmark(postId, token);
+    } = await removeBookmark(_id, token);
 
     if (statusCode === 200) {
       return data;
@@ -413,6 +414,16 @@ const userSlice = createSlice({
     updateRemoveFollowerUser: (state, action) => {
       state.removeFollowerUser = action.payload;
     },
+
+    updateAddBookmark: (state, action) => {
+      state.bookmarks = [action.payload, ...state.bookmarks];
+    },
+
+    updateRemoveBookmark: (state, action) => {
+      state.bookmarks = state.bookmarks?.filter(
+        (post) => post._id !== action.payload
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getGuestUsers.pending, (state) => {
@@ -512,28 +523,20 @@ const userSlice = createSlice({
       state.isLoading = false;
     });
 
-    builder.addCase(addUserBookmark.pending, () => {
-      document.body.style.cursor = "progress";
-    });
-
-    builder.addCase(addUserBookmark.fulfilled, () => {
+    builder.addCase(addUserBookmark.fulfilled, (state, action) => {
       state.bookmarks = action.payload;
     });
 
-    builder.addCase(addUserBookmark.rejected, () => {
+    builder.addCase(addUserBookmark.rejected, (_, action) => {
       toast.error("Something went wrong");
       console.error(action.error);
     });
 
-    builder.addCase(removeUserBookmark.pending, () => {
-      document.body.style.cursor = "progress";
-    });
-
-    builder.addCase(removeUserBookmark.fulfilled, () => {
+    builder.addCase(removeUserBookmark.fulfilled, (state, action) => {
       state.bookmarks = action.payload;
     });
 
-    builder.addCase(removeUserBookmark.rejected, () => {
+    builder.addCase(removeUserBookmark.rejected, (_, action) => {
       toast.error("Something went wrong");
       console.error(action.error);
     });
@@ -620,6 +623,8 @@ export const {
   updateShowPassword,
   updateSignupForm,
   updateRemoveFollowerUser,
+  updateAddBookmark,
+  updateRemoveBookmark,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

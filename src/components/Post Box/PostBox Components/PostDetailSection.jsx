@@ -42,7 +42,11 @@ import {
 } from "../../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLikes } from "../../../pages/Post Feed/postSlice";
-import { getPostLikeUsers } from "../../../pages/Post Feed/userSlice";
+import {
+  addUserBookmark,
+  getPostLikeUsers,
+  removeUserBookmark,
+} from "../../../pages/Post Feed/userSlice";
 
 const PostDetailSection = ({
   onOpen,
@@ -61,7 +65,6 @@ const PostDetailSection = ({
   const [commentValue, setCommentValue] = useState("");
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { handleBookmark, handleRemoveBookmark } = useUser();
   const dispatch = useDispatch();
 
   const {
@@ -143,7 +146,7 @@ const PostDetailSection = ({
                 as={FaBookmark}
                 sx={postIconStyle}
                 title="Remove"
-                onClick={() => handleRemoveBookmark(_id)}
+                onClick={() => dispatch(removeUserBookmark({ _id }))}
               />
             ) : (
               <Box
@@ -151,7 +154,7 @@ const PostDetailSection = ({
                 sx={postIconStyle}
                 title="Save"
                 onClick={() => {
-                  handleBookmark(_id);
+                  dispatch(addUserBookmark({ _id }));
                   setClicked(!clicked);
                 }}
               />

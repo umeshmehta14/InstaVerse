@@ -20,7 +20,8 @@ import {
   AiOutlineDown,
 } from "../../utils/Icons";
 import { SwitchAccountModal } from "../index";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserSearchList } from "../../pages/Post Feed/userSlice";
 
 export const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -28,6 +29,7 @@ export const NavBar = () => {
   const searchDrawerDisclosure = useDisclosure();
   const switchUserDisclosure = useDisclosure();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { selectedUser } = useSelector((state) => state.user);
@@ -79,7 +81,10 @@ export const NavBar = () => {
               variant={"link-button"}
               fontSize={"2rem"}
               color={colorMode === "light" ? "black" : "blue.900"}
-              onClick={searchDrawerDisclosure.onOpen}
+              onClick={() => {
+                dispatch(getUserSearchList());
+                searchDrawerDisclosure.onOpen();
+              }}
               title="Search"
             >
               <MdSearch />

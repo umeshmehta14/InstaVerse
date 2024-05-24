@@ -24,6 +24,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   getGuestUsers,
+  getUserBookmark,
   handleGetSuggestedUsers,
 } from "./pages/Post Feed/userSlice";
 import { refreshTokens } from "./pages/Authentication/authenticationSlice";
@@ -41,6 +42,7 @@ function App() {
     //   dispatch(refreshTokens());
     // }
     dispatch(getGuestUsers());
+    dispatch(getUserBookmark());
   }, []);
 
   useEffect(() => {

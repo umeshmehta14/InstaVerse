@@ -82,7 +82,7 @@ export const addBookmark = async (postId, token) =>
 
 export const removeBookmark = async (postId, token) =>
   await axios.patch(
-    `${API_URL}/user/bookmark/${postId}`,
+    `${API_URL}/user/bookmark/remove/${postId}`,
     {},
     {
       headers: {

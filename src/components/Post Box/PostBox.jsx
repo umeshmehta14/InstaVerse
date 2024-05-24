@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { usePost, useUser } from "../../contexts";
+import { useUser } from "../../contexts";
 import { RotatingLoader, UserListModal } from "../index";
 import {
   bookmarkPopup,
@@ -38,13 +38,12 @@ export const PostBox = ({ post }) => {
   const {
     userState: { userBookmarks },
     userDispatch,
-    handleFollow,
   } = useUser();
 
   const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { isLoading } = useSelector((state) => state.user);
+  const { isLoading, bookmarks } = useSelector((state) => state.user);
 
   const [showSavedPostBox, setShowSavedPostBox] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -56,7 +55,7 @@ export const PostBox = ({ post }) => {
     likes,
   } = post;
 
-  const bookmarked = userBookmarks?.includes(_id);
+  const bookmarked = bookmarks?.find((post) => post?._id === _id);
 
   const postFollow = currentUser.following.find(
     (user) => user.username === username
@@ -100,7 +99,7 @@ export const PostBox = ({ post }) => {
 
   useEffect(() => {
     handleBookmarkClick();
-  }, [bookmarked, userBookmarks]);
+  }, [bookmarked, bookmarks]);
 
   return (
     <Box
