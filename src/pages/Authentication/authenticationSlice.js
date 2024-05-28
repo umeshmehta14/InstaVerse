@@ -7,12 +7,22 @@ import {
 } from "../../service/authService.js";
 import toast from "react-hot-toast";
 import { updatePosts } from "../Post Feed/postSlice.js";
-import { updateUser } from "../Post Feed/userSlice.js";
 
 const initialState = {
   token: JSON.parse(localStorage.getItem("instaverseUser"))?.token,
   currentUser: JSON.parse(localStorage.getItem("instaverseUser"))?.user,
   progress: 0,
+  loginForm: {
+    identifier: "",
+    password: "",
+  },
+  signupForm: {
+    username: "",
+    password: "",
+    fullName: "",
+    email: "",
+  },
+  showPassword: false,
 };
 
 export const loginHandler = createAsyncThunk(
@@ -82,6 +92,18 @@ const authenticationSlice = createSlice({
   name: "authentication",
   initialState,
   reducers: {
+    updateLoginForm: (state, action) => {
+      state.loginForm = action.payload;
+    },
+
+    updateSignupForm: (state, action) => {
+      state.signupForm = action.payload;
+    },
+
+    updateShowPassword: (state) => {
+      state.showPassword = !state.showPassword;
+    },
+
     updateCurrentUser: (state, action) => {
       state.currentUser = action.payload;
       const instaverseUserData =
@@ -175,7 +197,12 @@ const authenticationSlice = createSlice({
   },
 });
 
-export const { updateCurrentUser, updateCurrentUserFollowing } =
-  authenticationSlice.actions;
+export const {
+  updateCurrentUser,
+  updateCurrentUserFollowing,
+  updateLoginForm,
+  updateShowPassword,
+  updateSignupForm,
+} = authenticationSlice.actions;
 
 export const authenticationReducer = authenticationSlice.reducer;

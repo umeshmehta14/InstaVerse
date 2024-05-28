@@ -1,9 +1,11 @@
 export const mainAuthContainer = {
   minHeight: "100vh",
   w: "100vw",
-  align: "center",
-  justify: "center",
+  alignItems: "center",
+  justifyContent: "center",
   overflowY: "hidden",
+  flexDirection: "column",
+  gap: "1rem",
 };
 
 export const authBox = {
@@ -13,7 +15,6 @@ export const authBox = {
   w: "90%",
   borderWidth: 1,
   borderRadius: "md",
-  boxShadow: "lg",
   overflow: "hidden",
   minW: "300px",
 };

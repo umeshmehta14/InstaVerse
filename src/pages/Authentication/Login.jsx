@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -29,9 +29,8 @@ import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 import { GUEST_USER_PASSWORD } from "../../utils/Constants";
 import { loginHandler } from "./authenticationSlice";
 import TailSpinLoader from "../../components/Loader/TailSpinLoader";
-import { updateLoginForm, updateShowPassword } from "../Post Feed/userSlice";
+import { updateLoginForm, updateShowPassword } from "./authenticationSlice.js";
 import "./auth.css";
-import { color } from "framer-motion";
 
 export const Login = () => {
   document.title = "InstaVerse | Login";
@@ -40,25 +39,29 @@ export const Login = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.authentication);
-  const { guestUsers, isLoading, loginForm, showPassword } = useSelector(
-    (state) => state.user
+  const { token, loginForm, showPassword } = useSelector(
+    (state) => state.authentication
   );
+  const { guestUsers, isLoading } = useSelector((state) => state.user);
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(
-      loginHandler({
-        identifier: loginForm?.identifier,
-        password: loginForm?.password,
-      })
-    );
-    dispatch(
-      updateLoginForm({
-        identifier: "",
-        password: "",
-      })
-    );
+    if (!isButtonDisabled) {
+      dispatch(
+        loginHandler({
+          identifier: loginForm?.identifier,
+          password: loginForm?.password,
+        })
+      );
+      dispatch(
+        updateLoginForm({
+          identifier: "",
+          password: "",
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -67,6 +70,14 @@ export const Login = () => {
     }
   }, [token]);
 
+  useEffect(() => {
+    if (loginForm.identifier && loginForm.password.length >= 8) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [loginForm.identifier, loginForm.password]);
+
   return (
     <Flex {...mainAuthContainer}>
       <Box {...authBox} bg={colorMode === "light" ? "white.500" : "black.900"}>
@@ -74,8 +85,8 @@ export const Login = () => {
           fontFamily={"Pacifico, cursive"}
           title="InstaVerse"
           align={"center"}
-          color={"gray"}
-          mb={"2"}
+          color={colorMode === "light" ? "#262626" : "gray"}
+          mb={"12"}
         >
           InstaVerse
         </Heading>
@@ -91,7 +102,6 @@ export const Login = () => {
             <Input
               type="text"
               value={loginForm.identifier}
-              required
               onChange={(event) =>
                 dispatch(
                   updateLoginForm({
@@ -115,7 +125,6 @@ export const Login = () => {
               <Input
                 type={showPassword ? "text" : "password"}
                 value={loginForm.password}
-                required
                 onChange={(event) =>
                   dispatch(
                     updateLoginForm({
@@ -139,10 +148,24 @@ export const Login = () => {
             </InputGroup>
           </FormControl>
           <VStack justifyContent={"space-between"}>
-            <Button bg={"blue.500"} size="md" type="submit" w={"50%"}>
+            <Button
+              size="md"
+              bg={isButtonDisabled ? "gray" : "blue.500"}
+              cursor={isButtonDisabled ? "default" : "pointer"}
+              type="submit"
+              w={"100%"}
+              color={"white"}
+              borderRadius={"12px"}
+              disabled={isButtonDisabled}
+            >
               Log In
             </Button>
-            <Button variant={"white-button"} onClick={onOpen}>
+            <Button
+              variant={"white-button"}
+              w={"100%"}
+              borderRadius={"12px"}
+              onClick={onOpen}
+            >
               Login As
             </Button>
           </VStack>
@@ -191,13 +214,18 @@ export const Login = () => {
             </ModalContent>
           </Modal>
         </form>
-        <Text mt={4} textAlign="center">
-          Don't have an account?{" "}
+        <Text mt={4} textAlign="center" fontSize={"12px"}>
           <Link color="blue.500" onClick={() => navigate("/signup")}>
-            Sign up
+            Forgot password?
           </Link>
         </Text>
       </Box>
+      <Text textAlign="center" {...authBox} padding={"1rem 2rem"}>
+        Don't have an account?{" "}
+        <Link color="blue.500" onClick={() => navigate("/signup")}>
+          Sign up
+        </Link>
+      </Text>
     </Flex>
   );
 };

@@ -29,18 +29,6 @@ import {
 import { getExplorePosts, getHomePosts, updatePosts } from "./postSlice";
 
 const initialState = {
-  loginForm: {
-    identifier: "",
-    password: "",
-  },
-  signupForm: {
-    username: "",
-    password: "",
-    Cpassword: "",
-    fullName: "",
-    email: "",
-  },
-  showPassword: false,
   guestUsers: [],
   isLoading: false,
   selectedUser: {},
@@ -384,17 +372,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateLoginForm: (state, action) => {
-      state.loginForm = action.payload;
-    },
-
-    updateSignupForm: (state, action) => {
-      state.signupForm = action.payload;
-    },
-
-    updateShowPassword: (state) => {
-      state.showPassword = !state.showPassword;
-    },
     updateSelectedUser: (state, action) => {
       state.selectedUser = action.payload;
     },
@@ -624,9 +601,6 @@ export const {
   updateSearchValue,
   updateSearchedUsers,
   updateLoadingUsers,
-  updateLoginForm,
-  updateShowPassword,
-  updateSignupForm,
   updateRemoveFollowerUser,
   updateAddBookmark,
   updateRemoveBookmark,

@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import "./auth.css";
 import {
   Box,
   Flex,
@@ -13,42 +14,38 @@ import {
   Text,
   useColorMode,
   VStack,
-  HStack,
+  Divider,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
-import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { signupHandler } from "./authenticationSlice";
-import { updateShowPassword, updateSignupForm } from "../Post Feed/userSlice";
+import { updateShowPassword, updateSignupForm } from "./authenticationSlice.js";
 
 export const SignUp = () => {
   document.title = "InstaVerse | SignUp";
   const { colorMode } = useColorMode();
-  const { token } = useSelector((state) => state.authentication);
-  const { signupForm, showPassword } = useSelector((state) => state.user);
-
+  const { token, signupForm, showPassword } = useSelector(
+    (state) => state.authentication
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { fullName, email, username, password, Cpassword } = signupForm;
+  const { fullName, email, username, password } = signupForm;
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const handleSignup = (e) => {
     e.preventDefault();
-    if (password === Cpassword) {
-      dispatch(signupHandler({ fullName, email, username, password }));
-      dispatch(
-        updateSignupForm({
-          fullName: "",
-          email: "",
-          username: "",
-          password: "",
-        })
-      );
-    } else {
-      toast.error("Password Does'nt Match");
-    }
+    dispatch(signupHandler({ fullName, email, username, password }));
+    dispatch(
+      updateSignupForm({
+        fullName: "",
+        email: "",
+        username: "",
+        password: "",
+      })
+    );
   };
 
   useEffect(() => {
@@ -56,6 +53,14 @@ export const SignUp = () => {
       navigate("/");
     }
   }, [token]);
+
+  useEffect(() => {
+    if (fullName && password.length >= 8 && email && username) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [fullName, email, username, password]);
 
   return (
     <Flex {...mainAuthContainer}>
@@ -65,68 +70,88 @@ export const SignUp = () => {
           title="InstaVerse"
           align={"center"}
           color={"gray"}
-          mb={"2"}
+          my={"4"}
         >
           InstaVerse
         </Heading>
+        <Text
+          textAlign={"center"}
+          margin={"1rem 0"}
+          padding={"0 1rem"}
+          color={"gray"}
+        >
+          Sign up to see photos and videos from your friends.
+        </Text>
+        <Divider mb={"1rem"} />
         <form onSubmit={handleSignup}>
-          <HStack>
-            <FormControl id="fullname" mb={4}>
-              <FormLabel mb={"1"}>Full Name:</FormLabel>
-              <Input
-                type="text"
-                placeholder="First name"
-                value={fullName}
-                required
-                onChange={(event) =>
-                  dispatch(
-                    updateSignupForm({
-                      ...signupForm,
-                      fullName: event.target.value,
-                    })
-                  )
-                }
-              />
-            </FormControl>
-            <FormControl id="username" mb={4}>
-              <FormLabel mb={"1"}>User Name:</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your username"
-                value={username}
-                required
-                onChange={(event) =>
-                  dispatch(
-                    updateSignupForm({
-                      ...signupForm,
-                      username: event.target.value,
-                    })
-                  )
-                }
-              />
-            </FormControl>
-          </HStack>
-
-          <FormControl id="email" mb={4}>
-            <FormLabel mb={"1"}>Email:</FormLabel>
+          <FormControl
+            id="email"
+            mb={4}
+            className={`floating-label-input ${email ? "filled" : ""}`}
+          >
+            <FormLabel className="floating-label">Email</FormLabel>
             <Input
               type="text"
-              placeholder="Enter your email"
               value={email}
-              required
               onChange={(event) =>
                 dispatch(
                   updateSignupForm({ ...signupForm, email: event.target.value })
                 )
               }
+              className="floating-input"
             />
           </FormControl>
-          <FormControl id="password" mb={6}>
-            <FormLabel>Password:</FormLabel>
+          <FormControl
+            id="fullname"
+            mb={4}
+            className={`floating-label-input ${fullName ? "filled" : ""}`}
+          >
+            <FormLabel className="floating-label">Full Name</FormLabel>
+            <Input
+              type="text"
+              value={fullName}
+              onChange={(event) =>
+                dispatch(
+                  updateSignupForm({
+                    ...signupForm,
+                    fullName: event.target.value,
+                  })
+                )
+              }
+              className="floating-input"
+            />
+          </FormControl>
+
+          <FormControl
+            id="username"
+            mb={4}
+            className={`floating-label-input ${username ? "filled" : ""}`}
+          >
+            <FormLabel className="floating-label">Username</FormLabel>
+            <Input
+              type="text"
+              value={username}
+              onChange={(event) =>
+                dispatch(
+                  updateSignupForm({
+                    ...signupForm,
+                    username: event.target.value,
+                  })
+                )
+              }
+              className="floating-input"
+            />
+          </FormControl>
+
+          <FormControl
+            id="password"
+            mb={6}
+            className={`floating-label-input ${password ? "filled" : ""}`}
+          >
+            <FormLabel className="floating-label">Password</FormLabel>
             <InputGroup>
               <Input
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
                 value={password}
                 required
                 onChange={(event) =>
@@ -137,6 +162,7 @@ export const SignUp = () => {
                     })
                   )
                 }
+                className="floating-input"
               />
               {password && (
                 <InputRightElement
@@ -149,38 +175,37 @@ export const SignUp = () => {
               )}
             </InputGroup>
           </FormControl>
-          <FormControl id="c-password" mb={6}>
-            <FormLabel>Confirm Password:</FormLabel>
-            <InputGroup>
-              <Input
-                type={"password"}
-                placeholder="Confirm password"
-                value={Cpassword}
-                required
-                onChange={(event) =>
-                  dispatch(
-                    updateSignupForm({
-                      ...signupForm,
-                      Cpassword: event.target.value,
-                    })
-                  )
-                }
-              />
-            </InputGroup>
-          </FormControl>
+          <Text
+            fontSize={"12px"}
+            color={"grey"}
+            textAlign={"center"}
+            margin={"1rem 0"}
+            padding={"0 1rem"}
+          >
+            People who use our service may have uploaded your contact
+            information to Instaverse.{" "}
+          </Text>
           <VStack justifyContent={"space-between"}>
-            <Button bg={"blue.500"} size="md" type="submit" w={"50%"}>
+            <Button
+              bg={isButtonDisabled ? "gray" : "blue.500"}
+              cursor={isButtonDisabled ? "default" : "pointer"}
+              type="submit"
+              w={"100%"}
+              color={"white"}
+              borderRadius={"12px"}
+              disabled={isButtonDisabled}
+            >
               Sign Up
             </Button>
           </VStack>
         </form>
-        <Text mt={4} textAlign="center">
-          Already have an account?{" "}
-          <Link color="blue.500" onClick={() => navigate("/login")}>
-            Log In
-          </Link>
-        </Text>
       </Box>
+      <Text textAlign="center" {...authBox} padding={"1rem 2rem"}>
+        Already have an account?{" "}
+        <Link color="blue.500" onClick={() => navigate("/login")}>
+          Log In
+        </Link>
+      </Text>
     </Flex>
   );
 };
