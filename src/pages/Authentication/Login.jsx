@@ -30,6 +30,8 @@ import { GUEST_USER_PASSWORD } from "../../utils/Constants";
 import { loginHandler } from "./authenticationSlice";
 import TailSpinLoader from "../../components/Loader/TailSpinLoader";
 import { updateLoginForm, updateShowPassword } from "../Post Feed/userSlice";
+import "./auth.css";
+import { color } from "framer-motion";
 
 export const Login = () => {
   document.title = "InstaVerse | Login";
@@ -78,11 +80,16 @@ export const Login = () => {
           InstaVerse
         </Heading>
         <form onSubmit={handleLogin}>
-          <FormControl id="identifier" mb={4}>
-            <FormLabel mb={"1"}>User Name or Email:</FormLabel>
+          <FormControl
+            id="identifier"
+            mb={4}
+            className={`floating-label-input ${
+              loginForm.identifier ? "filled" : ""
+            }`}
+          >
+            <FormLabel className="floating-label">Username or Email</FormLabel>
             <Input
               type="text"
-              placeholder="Enter your username or email"
               value={loginForm.identifier}
               required
               onChange={(event) =>
@@ -93,14 +100,20 @@ export const Login = () => {
                   })
                 )
               }
+              className="floating-input"
             />
           </FormControl>
-          <FormControl id="password" mb={6}>
-            <FormLabel>Password:</FormLabel>
+          <FormControl
+            id="password"
+            mb={6}
+            className={`floating-label-input ${
+              loginForm.password ? "filled" : ""
+            }`}
+          >
+            <FormLabel className="floating-label">Password</FormLabel>
             <InputGroup>
               <Input
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
                 value={loginForm.password}
                 required
                 onChange={(event) =>
@@ -111,11 +124,13 @@ export const Login = () => {
                     })
                   )
                 }
+                className="floating-input"
               />
               {loginForm.password && (
                 <InputRightElement
                   cursor={"pointer"}
                   fontSize={"sm"}
+                  _hover={{ color: "gray" }}
                   onClick={() => dispatch(updateShowPassword())}
                 >
                   {showPassword ? "Hide" : "Show"}
