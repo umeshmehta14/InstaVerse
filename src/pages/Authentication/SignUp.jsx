@@ -1,56 +1,33 @@
 import React, { useEffect, useState } from "react";
-import "./auth.css";
-import {
-  Box,
-  Flex,
-  Heading,
-  Input,
-  Button,
-  FormControl,
-  FormLabel,
-  InputGroup,
-  InputRightElement,
-  Link,
-  Text,
-  useColorMode,
-  VStack,
-  Divider,
-} from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
-import { useDispatch, useSelector } from "react-redux";
-import { signupHandler, validateFromDetails } from "./authenticationSlice";
-import { updateShowPassword, updateSignupForm } from "./authenticationSlice.js";
-import { IoCheckmarkCircleOutline } from "../../utils/Icons.jsx";
+import { SignupForm } from "./Signup/SignupForm.jsx";
+import { sendOtpToEmail } from "./authenticationSlice.js";
+import "./auth.css";
 
 export const SignUp = () => {
   document.title = "InstaVerse | SignUp";
-  const { colorMode } = useColorMode();
-  const { token, signupForm, showPassword } = useSelector(
+  const { token, formValidation } = useSelector(
     (state) => state.authentication
   );
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { fullName, email, username, password } = signupForm;
+  const [showNextPage, setShowNextPage] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [click, setClick] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    dispatch(signupHandler({ fullName, email, username, password }));
-    dispatch(
-      updateSignupForm({
-        fullName: "",
-        email: "",
-        username: "",
-        password: "",
-      })
-    );
-  };
-
-  const handleBlur = () => {
-    dispatch(validateFromDetails({ username, email, password }));
+    if (!isButtonDisabled) {
+      setClick(true);
+      if (!formValidation.errorText) {
+        dispatch(sendOtpToEmail(email));
+        setShowNextPage(true);
+      }
+    }
   };
 
   useEffect(() => {
@@ -58,179 +35,28 @@ export const SignUp = () => {
       navigate("/");
     }
   }, [token]);
-
-  useEffect(() => {
-    if (fullName && password.length >= 8 && email && username) {
-      setIsButtonDisabled(false);
-    } else {
-      setIsButtonDisabled(true);
-    }
-  }, [fullName, email, username, password]);
-
+  //   dispatch(signupHandler({ fullName, email, username: username.trim(), password }));
+  //   dispatch(
+  //     updateSignupForm({
+  //       fullName: "",
+  //       email: "",
+  //       username: "",
+  //       password: "",
+  //     })
+  //   );
   return (
     <Flex {...mainAuthContainer}>
-      <Box {...authBox} bg={colorMode === "light" ? "white.500" : "black.900"}>
-        <Heading
-          fontFamily={"Pacifico, cursive"}
-          title="InstaVerse"
-          align={"center"}
-          color={"gray"}
-          my={"4"}
-        >
-          InstaVerse
-        </Heading>
-        <Text
-          textAlign={"center"}
-          margin={"1rem 0"}
-          padding={"0 1rem"}
-          color={"gray"}
-        >
-          Sign up to see photos and videos from your friends.
-        </Text>
-        <Divider mb={"1rem"} />
-        <form onSubmit={handleSignup}>
-          <FormControl
-            id="email"
-            mb={4}
-            className={`floating-label-input ${email ? "filled" : ""}`}
-          >
-            <FormLabel className="floating-label">Email</FormLabel>
-            <Input
-              type="text"
-              value={email}
-              onChange={(event) =>
-                dispatch(
-                  updateSignupForm({ ...signupForm, email: event.target.value })
-                )
-              }
-              onBlur={handleBlur}
-              className="floating-input"
-            />
-            <Box
-              as={IoCheckmarkCircleOutline}
-              top={"4px"}
-              right={"4px"}
-              pos={"absolute"}
-              color={"gray"}
-              fontSize={"2rem"}
-            />
-          </FormControl>
-          <FormControl
-            id="fullname"
-            mb={4}
-            className={`floating-label-input ${fullName ? "filled" : ""}`}
-          >
-            <FormLabel className="floating-label">Full Name</FormLabel>
-            <Input
-              type="text"
-              value={fullName}
-              onChange={(event) =>
-                dispatch(
-                  updateSignupForm({
-                    ...signupForm,
-                    fullName: event.target.value,
-                  })
-                )
-              }
-              className="floating-input"
-            />
-          </FormControl>
-
-          <FormControl
-            id="username"
-            mb={4}
-            className={`floating-label-input ${username ? "filled" : ""}`}
-          >
-            <FormLabel className="floating-label">Username</FormLabel>
-            <Input
-              type="text"
-              value={username}
-              onChange={(event) =>
-                dispatch(
-                  updateSignupForm({
-                    ...signupForm,
-                    username: event.target.value,
-                  })
-                )
-              }
-              onBlur={handleBlur}
-              className="floating-input"
-            />
-            <Box
-              as={IoCheckmarkCircleOutline}
-              top={"4px"}
-              right={"4px"}
-              pos={"absolute"}
-              color={"gray"}
-              fontSize={"2rem"}
-            />
-          </FormControl>
-
-          <FormControl
-            id="password"
-            mb={6}
-            className={`floating-label-input ${password ? "filled" : ""}`}
-          >
-            <FormLabel className="floating-label">Password</FormLabel>
-            <InputGroup>
-              <Input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(event) =>
-                  dispatch(
-                    updateSignupForm({
-                      ...signupForm,
-                      password: event.target.value,
-                    })
-                  )
-                }
-                onBlur={handleBlur}
-                className="floating-input password-inp"
-              />
-              <Box
-                as={IoCheckmarkCircleOutline}
-                top={"4px"}
-                right={"2.7rem"}
-                pos={"absolute"}
-                color={"gray"}
-                fontSize={"2rem"}
-              />
-              {password && (
-                <InputRightElement
-                  cursor={"pointer"}
-                  fontSize={"sm"}
-                  onClick={() => dispatch(updateShowPassword())}
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </InputRightElement>
-              )}
-            </InputGroup>
-          </FormControl>
-          <Text
-            fontSize={"12px"}
-            color={"grey"}
-            textAlign={"center"}
-            margin={"1rem 0"}
-            padding={"0 1rem"}
-          >
-            People who use our service may have uploaded your contact
-            information to Instaverse.
-          </Text>
-          <VStack justifyContent={"space-between"}>
-            <Button
-              bg={isButtonDisabled ? "gray" : "blue.500"}
-              cursor={isButtonDisabled ? "default" : "pointer"}
-              type="submit"
-              w={"100%"}
-              color={"white"}
-              borderRadius={"12px"}
-              disabled={isButtonDisabled}
-            >
-              Sign Up
-            </Button>
-          </VStack>
-        </form>
-      </Box>
+      {!showNextPage ? (
+        <SignupForm
+          handleSignup={handleSignup}
+          isButtonDisabled={isButtonDisabled}
+          setIsButtonDisabled={setIsButtonDisabled}
+          click={click}
+          setClick={setClick}
+        />
+      ) : (
+        <Box>hello</Box>
+      )}
       <Text textAlign="center" {...authBox} padding={"1rem 2rem"}>
         Already have an account?
         <Link color="blue.500" onClick={() => navigate("/login")}>

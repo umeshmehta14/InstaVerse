@@ -31,3 +31,8 @@ export const validateUserDetails = async (userDetails) =>
   await axios.post(`${API_URL}/user/check-availablity`, {
     ...userDetails,
   });
+
+export const sendOtp = async (email) =>
+  await axios.post(`${API_URL}/user/send-otp`, {
+    email,
+  });

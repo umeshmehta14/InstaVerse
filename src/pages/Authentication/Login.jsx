@@ -160,16 +160,16 @@ export const Login = () => {
             >
               Log In
             </Button>
-            <Button
+            {/* <Button
               variant={"white-button"}
               w={"100%"}
               borderRadius={"12px"}
               onClick={onOpen}
             >
               Login As
-            </Button>
+            </Button> */}
           </VStack>
-
+          {/*
           <Modal onClose={onClose} size={"xs"} isOpen={isOpen}>
             <ModalOverlay />
             <ModalContent
@@ -212,7 +212,7 @@ export const Login = () => {
                 )}
               </ModalBody>
             </ModalContent>
-          </Modal>
+          </Modal> */}
         </form>
         <Text mt={4} textAlign="center" fontSize={"12px"}>
           <Link color="blue.500" onClick={() => navigate("/signup")}>

@@ -3,7 +3,9 @@ import {
   createUser,
   getLoginInformation,
   refreshUserToken,
+  sendOtp,
   userLogout,
+  validateUserDetails,
 } from "../../service/authService.js";
 import toast from "react-hot-toast";
 import { updatePosts } from "../Post Feed/postSlice.js";
@@ -29,6 +31,7 @@ const initialState = {
     errorText: "",
   },
   showPassword: false,
+  otp: false,
 };
 
 export const loginHandler = createAsyncThunk(
@@ -95,12 +98,23 @@ export const refreshTokens = createAsyncThunk(
 export const validateFromDetails = createAsyncThunk(
   "authentication/user/validation",
   async (userDetails) => {
-    console.log(userDetails);
     const {
       data: { statusCode, data },
-    } = await validateFromDetails(userDetails);
+    } = await validateUserDetails(userDetails);
     if (statusCode === 200) {
       return data;
+    }
+  }
+);
+
+export const sendOtpToEmail = createAsyncThunk(
+  "authentication/user/send-otp",
+  async (email) => {
+    const {
+      data: { statusCode },
+    } = await sendOtp(email);
+    if (statusCode === 200) {
+      return;
     }
   }
 );
@@ -216,7 +230,6 @@ const authenticationSlice = createSlice({
 
     builder.addCase(validateFromDetails.fulfilled, (state, action) => {
       const { username, password, text, email } = action.payload;
-
       state.formValidation.username = username;
       state.formValidation.password = password;
       state.formValidation.email = email;
@@ -225,7 +238,16 @@ const authenticationSlice = createSlice({
 
     builder.addCase(validateFromDetails.rejected, (state, action) => {
       toast.error("Something went wrong");
-      console.log(action.error);
+      console.error(action.error);
+    });
+
+    builder.addCase(sendOtpToEmail.fulfilled, (state) => {
+      state.otp = true;
+    });
+
+    builder.addCase(sendOtpToEmail.rejected, (state, action) => {
+      toast.error("Something went wrong");
+      console.error(action.error);
     });
   },
 });

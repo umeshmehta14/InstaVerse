@@ -42,11 +42,11 @@ function App() {
     //   dispatch(refreshTokens());
     // }
     dispatch(getGuestUsers());
-    dispatch(getUserBookmark());
   }, []);
 
   useEffect(() => {
     dispatch(handleGetSuggestedUsers());
+    dispatch(getUserBookmark());
   }, [token]);
 
   return (
