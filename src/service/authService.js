@@ -26,3 +26,8 @@ export const refreshUserToken = async (refreshToken) =>
   await axios.post(`${API_URL}/user/refresh-token`, {
     refreshToken,
   });
+
+export const validateUserDetails = async (userDetails) =>
+  await axios.post(`${API_URL}/user/check-availablity`, {
+    ...userDetails,
+  });

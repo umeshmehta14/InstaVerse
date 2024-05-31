@@ -24,6 +24,10 @@
     padding: 0 8px;
 }
 
+.floating-input {
+    position: relative;
+}
+
 .floating-label-input input {
     height: 2.5rem;
     padding: 0 8px;
@@ -34,6 +38,11 @@
 
 
 .floating-label-input.filled input {
-    padding: 10px 8px 0 8px;
+    padding: 10px 2.3rem 0 8px;
     font-size: 14px;
+}
+
+
+.password-inp {
+    padding-right: 4.9rem !important;
 }

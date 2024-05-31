@@ -38,7 +38,7 @@ import {
   FaComment,
 } from "react-icons/fa";
 import { FcAddImage } from "react-icons/fc";
-import { IoPaperPlaneOutline } from "react-icons/io5";
+import { IoPaperPlaneOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import { BiChevronDown } from "react-icons/bi";
 import { VscPassFilled } from "react-icons/vsc";
 import { LuFilter } from "react-icons/lu";
@@ -84,4 +84,5 @@ export {
   FaComment,
   CiCamera,
   BsBookmarkX,
+  IoCheckmarkCircleOutline,
 };

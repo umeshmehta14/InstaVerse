@@ -22,6 +22,12 @@ const initialState = {
     fullName: "",
     email: "",
   },
+  formValidation: {
+    username: false,
+    password: false,
+    email: false,
+    errorText: "",
+  },
   showPassword: false,
 };
 
@@ -80,6 +86,19 @@ export const refreshTokens = createAsyncThunk(
     } = await refreshUserToken(
       JSON.parse(localStorage.getItem("instaverseUser"))?.refreshToken
     );
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const validateFromDetails = createAsyncThunk(
+  "authentication/user/validation",
+  async (userDetails) => {
+    console.log(userDetails);
+    const {
+      data: { statusCode, data },
+    } = await validateFromDetails(userDetails);
     if (statusCode === 200) {
       return data;
     }
@@ -193,6 +212,20 @@ const authenticationSlice = createSlice({
       state.currentUser = null;
       toast.error(`Session Expired Login Again`);
       console.error("refrsh token error");
+    });
+
+    builder.addCase(validateFromDetails.fulfilled, (state, action) => {
+      const { username, password, text, email } = action.payload;
+
+      state.formValidation.username = username;
+      state.formValidation.password = password;
+      state.formValidation.email = email;
+      state.formValidation.errorText = text;
+    });
+
+    builder.addCase(validateFromDetails.rejected, (state, action) => {
+      toast.error("Something went wrong");
+      console.log(action.error);
     });
   },
 });

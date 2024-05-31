@@ -20,8 +20,9 @@ import { useNavigate } from "react-router-dom";
 
 import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
 import { useDispatch, useSelector } from "react-redux";
-import { signupHandler } from "./authenticationSlice";
+import { signupHandler, validateFromDetails } from "./authenticationSlice";
 import { updateShowPassword, updateSignupForm } from "./authenticationSlice.js";
+import { IoCheckmarkCircleOutline } from "../../utils/Icons.jsx";
 
 export const SignUp = () => {
   document.title = "InstaVerse | SignUp";
@@ -46,6 +47,10 @@ export const SignUp = () => {
         password: "",
       })
     );
+  };
+
+  const handleBlur = () => {
+    dispatch(validateFromDetails({ username, email, password }));
   };
 
   useEffect(() => {
@@ -98,7 +103,16 @@ export const SignUp = () => {
                   updateSignupForm({ ...signupForm, email: event.target.value })
                 )
               }
+              onBlur={handleBlur}
               className="floating-input"
+            />
+            <Box
+              as={IoCheckmarkCircleOutline}
+              top={"4px"}
+              right={"4px"}
+              pos={"absolute"}
+              color={"gray"}
+              fontSize={"2rem"}
             />
           </FormControl>
           <FormControl
@@ -139,7 +153,16 @@ export const SignUp = () => {
                   })
                 )
               }
+              onBlur={handleBlur}
               className="floating-input"
+            />
+            <Box
+              as={IoCheckmarkCircleOutline}
+              top={"4px"}
+              right={"4px"}
+              pos={"absolute"}
+              color={"gray"}
+              fontSize={"2rem"}
             />
           </FormControl>
 
@@ -153,7 +176,6 @@ export const SignUp = () => {
               <Input
                 type={showPassword ? "text" : "password"}
                 value={password}
-                required
                 onChange={(event) =>
                   dispatch(
                     updateSignupForm({
@@ -162,7 +184,16 @@ export const SignUp = () => {
                     })
                   )
                 }
-                className="floating-input"
+                onBlur={handleBlur}
+                className="floating-input password-inp"
+              />
+              <Box
+                as={IoCheckmarkCircleOutline}
+                top={"4px"}
+                right={"2.7rem"}
+                pos={"absolute"}
+                color={"gray"}
+                fontSize={"2rem"}
               />
               {password && (
                 <InputRightElement
@@ -183,7 +214,7 @@ export const SignUp = () => {
             padding={"0 1rem"}
           >
             People who use our service may have uploaded your contact
-            information to Instaverse.{" "}
+            information to Instaverse.
           </Text>
           <VStack justifyContent={"space-between"}>
             <Button
@@ -201,7 +232,7 @@ export const SignUp = () => {
         </form>
       </Box>
       <Text textAlign="center" {...authBox} padding={"1rem 2rem"}>
-        Already have an account?{" "}
+        Already have an account?
         <Link color="blue.500" onClick={() => navigate("/login")}>
           Log In
         </Link>
