@@ -19,12 +19,12 @@ import {
   validateFromDetails,
   updateShowPassword,
   updateSignupForm,
-} from "../authenticationSlice";
+} from "../../authenticationSlice.js";
 import {
   IoCheckmarkCircleOutline,
   RxCrossCircled,
-} from "../../../utils/Icons.jsx";
-import { authBox } from "../../../styles/AuthenticationStyles";
+} from "../../../../utils/Icons.jsx";
+import { authBox } from "../../../../styles/AuthenticationStyles.jsx";
 
 export const SignupForm = ({
   handleSignup,

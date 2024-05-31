@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
-import { SignupForm } from "./Signup/SignupForm.jsx";
-import { sendOtpToEmail } from "./authenticationSlice.js";
-import "./auth.css";
+import {
+  authBox,
+  mainAuthContainer,
+} from "../../../styles/AuthenticationStyles.jsx";
+import { SignupForm } from "./Signup components/SignupForm.jsx";
+import { sendOtpToEmail } from "../authenticationSlice.js";
+import "../auth.css";
 
 export const SignUp = () => {
   document.title = "InstaVerse | SignUp";
