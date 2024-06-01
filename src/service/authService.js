@@ -36,3 +36,8 @@ export const sendOtp = async (email) =>
   await axios.post(`${API_URL}/user/send-otp`, {
     email,
   });
+
+export const verifyOtp = async (data) =>
+  await axios.post(`${API_URL}/user/verify-otp`, {
+    ...data,
+  });

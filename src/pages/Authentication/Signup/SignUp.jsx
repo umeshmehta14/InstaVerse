@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { Flex, Link, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -8,14 +8,17 @@ import {
   mainAuthContainer,
 } from "../../../styles/AuthenticationStyles.jsx";
 import { SignupForm } from "./Signup components/SignupForm.jsx";
-import { sendOtpToEmail } from "../authenticationSlice.js";
+import { sendOtpToEmail, updateSignupForm } from "../authenticationSlice.js";
 import "../auth.css";
+import { SignupConfirmation } from "./Signup components/SignupConfirmation.jsx";
 
 export const SignUp = () => {
   document.title = "InstaVerse | SignUp";
-  const { token, formValidation } = useSelector(
-    (state) => state.authentication
-  );
+  const {
+    token,
+    formValidation,
+    signupForm: { email },
+  } = useSelector((state) => state.authentication);
   const navigate = useNavigate();
   const [showNextPage, setShowNextPage] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -38,15 +41,7 @@ export const SignUp = () => {
       navigate("/");
     }
   }, [token]);
-  //   dispatch(signupHandler({ fullName, email, username: username.trim(), password }));
-  //   dispatch(
-  //     updateSignupForm({
-  //       fullName: "",
-  //       email: "",
-  //       username: "",
-  //       password: "",
-  //     })
-  //   );
+
   return (
     <Flex {...mainAuthContainer}>
       {!showNextPage ? (
@@ -58,11 +53,24 @@ export const SignUp = () => {
           setClick={setClick}
         />
       ) : (
-        <Box>hello</Box>
+        <SignupConfirmation setShowNextPage={setShowNextPage} />
       )}
       <Text textAlign="center" {...authBox} padding={"1rem 2rem"}>
-        Already have an account?
-        <Link color="blue.500" onClick={() => navigate("/login")}>
+        Have an account?{" "}
+        <Link
+          color="blue.500"
+          onClick={() => {
+            dispatch(
+              updateSignupForm({
+                fullName: "",
+                email: "",
+                username: "",
+                password: "",
+              })
+            );
+            navigate("/login");
+          }}
+        >
           Log In
         </Link>
       </Text>

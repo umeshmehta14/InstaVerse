@@ -45,8 +45,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    dispatch(handleGetSuggestedUsers());
-    dispatch(getUserBookmark());
+    if (token) {
+      dispatch(handleGetSuggestedUsers());
+      dispatch(getUserBookmark());
+    }
   }, [token]);
 
   return (

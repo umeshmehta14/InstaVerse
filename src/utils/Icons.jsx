@@ -29,7 +29,7 @@ import {
   RxHamburgerMenu,
   RxCrossCircled,
 } from "react-icons/rx";
-import { TbSquareRoundedPlus } from "react-icons/tb";
+import { TbSquareRoundedPlus, TbMailHeart } from "react-icons/tb";
 import {
   FaInstalod,
   FaRegComment,
@@ -70,6 +70,7 @@ export {
   MdSearch,
   RxAvatar,
   TbSquareRoundedPlus,
+  TbMailHeart,
   BsFillSunFill,
   RxCross2,
   BiChevronDown,

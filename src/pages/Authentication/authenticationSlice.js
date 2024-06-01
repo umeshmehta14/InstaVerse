@@ -6,6 +6,7 @@ import {
   sendOtp,
   userLogout,
   validateUserDetails,
+  verifyOtp,
 } from "../../service/authService.js";
 import toast from "react-hot-toast";
 import { updatePosts } from "../Post Feed/postSlice.js";
@@ -31,7 +32,12 @@ const initialState = {
     errorText: "",
   },
   showPassword: false,
-  otp: false,
+  otpDetails: {
+    otpSent: false,
+    errorMessage: "",
+    verified: false,
+  },
+  btnLoader: false,
 };
 
 export const loginHandler = createAsyncThunk(
@@ -119,6 +125,22 @@ export const sendOtpToEmail = createAsyncThunk(
   }
 );
 
+export const verifyUserOtp = createAsyncThunk(
+  "authentication/user/verify-otp",
+  async ({ email, otp }, { rejectWithValue }) => {
+    try {
+      const {
+        data: { statusCode },
+      } = await verifyOtp({ email, otp });
+      if (statusCode === 200) {
+        return;
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const updateProgress = createAction("authentication/updateProgress");
 
 const authenticationSlice = createSlice({
@@ -191,6 +213,7 @@ const authenticationSlice = createSlice({
         "instaverseUser",
         JSON.stringify({ user: createdUser, token: accessToken, refreshToken })
       );
+      state.otpDetails.verified = false;
     });
 
     builder.addCase(signupHandler.rejected, (state, action) => {
@@ -236,18 +259,33 @@ const authenticationSlice = createSlice({
       state.formValidation.errorText = text;
     });
 
-    builder.addCase(validateFromDetails.rejected, (state, action) => {
-      toast.error("Something went wrong");
+    builder.addCase(validateFromDetails.rejected, (_, action) => {
       console.error(action.error);
     });
 
     builder.addCase(sendOtpToEmail.fulfilled, (state) => {
-      state.otp = true;
+      state.otpDetails.otpSent = true;
     });
 
-    builder.addCase(sendOtpToEmail.rejected, (state, action) => {
-      toast.error("Something went wrong");
+    builder.addCase(sendOtpToEmail.rejected, (_, action) => {
+      toast.error("Something went wrong, please try again later");
       console.error(action.error);
+    });
+
+    builder.addCase(verifyUserOtp.pending, (state) => {
+      state.btnLoader = true;
+    });
+
+    builder.addCase(verifyUserOtp.fulfilled, (state) => {
+      state.otpDetails.verified = true;
+      state.otpDetails.errorMessage = "";
+      state.btnLoader = false;
+    });
+
+    builder.addCase(verifyUserOtp.rejected, (state, action) => {
+      console.error(action.payload.message);
+      state.btnLoader = false;
+      state.otpDetails.errorMessage = action.payload.message;
     });
   },
 });
