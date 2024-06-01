@@ -18,16 +18,15 @@ export const SignUp = () => {
     token,
     formValidation,
     signupForm: { email },
+    buttonDisable,
   } = useSelector((state) => state.authentication);
   const navigate = useNavigate();
-  const [showNextPage, setShowNextPage] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [click, setClick] = useState(false);
   const dispatch = useDispatch();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    if (!isButtonDisabled) {
+    if (!buttonDisable) {
       setClick(true);
       if (!formValidation.errorText) {
         dispatch(sendOtpToEmail(email));
@@ -47,8 +46,6 @@ export const SignUp = () => {
       {!showNextPage ? (
         <SignupForm
           handleSignup={handleSignup}
-          isButtonDisabled={isButtonDisabled}
-          setIsButtonDisabled={setIsButtonDisabled}
           click={click}
           setClick={setClick}
         />

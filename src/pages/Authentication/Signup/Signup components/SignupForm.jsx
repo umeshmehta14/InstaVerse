@@ -19,6 +19,7 @@ import {
   validateFromDetails,
   updateShowPassword,
   updateSignupForm,
+  updateButtonDisable,
 } from "../../authenticationSlice.js";
 import {
   IoCheckmarkCircleOutline,
@@ -26,17 +27,10 @@ import {
 } from "../../../../utils/Icons.jsx";
 import { authBox } from "../../../../styles/AuthenticationStyles.jsx";
 
-export const SignupForm = ({
-  handleSignup,
-  isButtonDisabled,
-  setIsButtonDisabled,
-  click,
-  setClick,
-}) => {
-  const colorMode = useColorMode();
-  const { signupForm, showPassword, formValidation } = useSelector(
-    (state) => state.authentication
-  );
+export const SignupForm = ({ handleSignup, click, setClick }) => {
+  const { colorMode } = useColorMode();
+  const { signupForm, showPassword, formValidation, buttonDisable } =
+    useSelector((state) => state.authentication);
   const dispatch = useDispatch();
 
   const { fullName, email, username, password } = signupForm;
@@ -58,9 +52,9 @@ export const SignupForm = ({
 
   useEffect(() => {
     if (password.length >= 8 && email && username) {
-      setIsButtonDisabled(false);
+      dispatch(updateButtonDisable(false));
     } else {
-      setIsButtonDisabled(true);
+      dispatch(updateButtonDisable(true));
     }
   }, [email, username, password]);
 
@@ -70,7 +64,7 @@ export const SignupForm = ({
         fontFamily={"Pacifico, cursive"}
         title="InstaVerse"
         align={"center"}
-        color={"gray"}
+        color={colorMode === "light" ? "#262626" : "gray"}
         my={"4"}
       >
         InstaVerse
@@ -237,13 +231,13 @@ export const SignupForm = ({
         </Text>
         <VStack justifyContent={"space-between"}>
           <Button
-            bg={isButtonDisabled ? "gray" : "blue.500"}
-            cursor={isButtonDisabled ? "default" : "pointer"}
+            bg={buttonDisable ? "gray" : "blue.500"}
+            cursor={buttonDisable ? "default" : "pointer"}
             type="submit"
             w={"100%"}
             color={"white"}
             borderRadius={"12px"}
-            disabled={isButtonDisabled}
+            disabled={buttonDisable}
           >
             Sign Up
           </Button>

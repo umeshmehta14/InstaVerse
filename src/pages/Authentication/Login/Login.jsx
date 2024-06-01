@@ -12,43 +12,32 @@ import {
   Link,
   Text,
   useColorMode,
-  Avatar,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { authBox, mainAuthContainer } from "../../styles/AuthenticationStyles";
-import { GUEST_USER_PASSWORD } from "../../utils/Constants";
-import { loginHandler } from "./authenticationSlice";
-import TailSpinLoader from "../../components/Loader/TailSpinLoader";
-import { updateLoginForm, updateShowPassword } from "./authenticationSlice.js";
-import "./auth.css";
+import {
+  authBox,
+  mainAuthContainer,
+} from "../../../styles/AuthenticationStyles";
+import { loginHandler, updateButtonDisable } from "../authenticationSlice";
+import { updateLoginForm, updateShowPassword } from "../authenticationSlice.js";
+import "../auth.css";
 
 export const Login = () => {
   document.title = "InstaVerse | Login";
 
   const { colorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { token, loginForm, showPassword } = useSelector(
+  const { token, loginForm, showPassword, buttonDisable } = useSelector(
     (state) => state.authentication
   );
-  const { guestUsers, isLoading } = useSelector((state) => state.user);
-
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (!isButtonDisabled) {
+    if (!buttonDisable) {
       dispatch(
         loginHandler({
           identifier: loginForm?.identifier,
@@ -72,9 +61,9 @@ export const Login = () => {
 
   useEffect(() => {
     if (loginForm.identifier && loginForm.password.length >= 8) {
-      setIsButtonDisabled(false);
+      dispatch(updateButtonDisable(false));
     } else {
-      setIsButtonDisabled(true);
+      dispatch(updateButtonDisable(true));
     }
   }, [loginForm.identifier, loginForm.password]);
 
@@ -110,7 +99,6 @@ export const Login = () => {
                   })
                 )
               }
-              className="floating-input"
             />
           </FormControl>
           <FormControl
@@ -150,26 +138,50 @@ export const Login = () => {
           <VStack justifyContent={"space-between"}>
             <Button
               size="md"
-              bg={isButtonDisabled ? "gray" : "blue.500"}
-              cursor={isButtonDisabled ? "default" : "pointer"}
+              bg={buttonDisable ? "gray" : "blue.500"}
+              cursor={buttonDisable ? "default" : "pointer"}
               type="submit"
               w={"100%"}
               color={"white"}
               borderRadius={"12px"}
-              disabled={isButtonDisabled}
+              disabled={buttonDisable}
             >
               Log In
             </Button>
-            {/* <Button
+          </VStack>
+        </form>
+        <Text mt={4} textAlign="center" fontSize={"12px"}>
+          <Link
+            color="blue.500"
+            onClick={() => navigate("/accounts/password/emailConfirmation/")}
+          >
+            Forgot password?
+          </Link>
+        </Text>
+      </Box>
+      <Text textAlign="center" {...authBox} padding={"1rem 2rem"}>
+        Don't have an account?{" "}
+        <Link color="blue.500" onClick={() => navigate("/signup")}>
+          Sign up
+        </Link>
+      </Text>
+    </Flex>
+  );
+};
+
+{
+  /* <Button
               variant={"white-button"}
               w={"100%"}
               borderRadius={"12px"}
               onClick={onOpen}
             >
               Login As
-            </Button> */}
-          </VStack>
-          {/*
+            </Button> */
+}
+
+{
+  /*
           <Modal onClose={onClose} size={"xs"} isOpen={isOpen}>
             <ModalOverlay />
             <ModalContent
@@ -212,20 +224,5 @@ export const Login = () => {
                 )}
               </ModalBody>
             </ModalContent>
-          </Modal> */}
-        </form>
-        <Text mt={4} textAlign="center" fontSize={"12px"}>
-          <Link color="blue.500" onClick={() => navigate("/signup")}>
-            Forgot password?
-          </Link>
-        </Text>
-      </Box>
-      <Text textAlign="center" {...authBox} padding={"1rem 2rem"}>
-        Don't have an account?{" "}
-        <Link color="blue.500" onClick={() => navigate("/signup")}>
-          Sign up
-        </Link>
-      </Text>
-    </Flex>
-  );
-};
+          </Modal> */
+}

@@ -38,6 +38,7 @@ const initialState = {
     verified: false,
   },
   btnLoader: false,
+  buttonDisable: false,
 };
 
 export const loginHandler = createAsyncThunk(
@@ -173,6 +174,10 @@ const authenticationSlice = createSlice({
     updateCurrentUserFollowing: (state, action) => {
       state.currentUser.following = action.payload.following;
     },
+
+    updateButtonDisable: (state, action) => {
+      state.buttonDisable = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(updateProgress, (state, action) => {
@@ -296,6 +301,7 @@ export const {
   updateLoginForm,
   updateShowPassword,
   updateSignupForm,
+  updateButtonDisable,
 } = authenticationSlice.actions;
 
 export const authenticationReducer = authenticationSlice.reducer;

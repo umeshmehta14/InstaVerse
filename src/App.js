@@ -20,6 +20,7 @@ import {
   SinglePost,
   Error,
   Explore,
+  LoginConfirmation,
 } from "./pages";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -114,6 +115,10 @@ function App() {
             <Route path={"/error"} element={<Login />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/signup"} element={<SignUp />} />
+            <Route
+              path={"/accounts/password/emailConfirmation/"}
+              element={<LoginConfirmation />}
+            />
           </Routes>
         </Flex>
       )}

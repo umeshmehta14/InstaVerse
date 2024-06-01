@@ -40,7 +40,7 @@ import {
 import { FcAddImage } from "react-icons/fc";
 import { IoPaperPlaneOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import { BiChevronDown } from "react-icons/bi";
-import { VscPassFilled } from "react-icons/vsc";
+import { VscPassFilled, VscLock } from "react-icons/vsc";
 import { LuFilter } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { SlTrash } from "react-icons/sl";
@@ -74,6 +74,7 @@ export {
   BsFillSunFill,
   RxCross2,
   BiChevronDown,
+  VscLock,
   VscPassFilled,
   RxCrossCircled,
   LuFilter,

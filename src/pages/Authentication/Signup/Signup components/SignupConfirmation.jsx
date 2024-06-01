@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   sendOtpToEmail,
   signupHandler,
+  updateButtonDisable,
   updateSignupForm,
   verifyUserOtp,
 } from "../../authenticationSlice";
@@ -15,13 +16,12 @@ import { RotatingLoader } from "../../../../components";
 
 export const SignupConfirmation = ({ setShowNextPage }) => {
   const colorMode = useColorMode();
-  const { signupForm, otpDetails, btnLoader } = useSelector(
+  const { signupForm, otpDetails, btnLoader, buttonDisable } = useSelector(
     (state) => state.authentication
   );
   const dispatch = useDispatch();
   const { fullName, email, username, password } = signupForm;
 
-  const [buttonDisable, SetButtonDisable] = useState(false);
   const [confirmationCode, setConfirmationCode] = useState("");
 
   const handleVerifyOtp = () => {
@@ -34,9 +34,9 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
 
   useEffect(() => {
     if (confirmationCode.length === 4) {
-      SetButtonDisable(false);
+      dispatch(updateButtonDisable(false));
     } else {
-      SetButtonDisable(true);
+      dispatch(updateButtonDisable(true));
     }
   }, [confirmationCode]);
 

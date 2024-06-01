@@ -34,7 +34,11 @@ export const NavBar = () => {
   const { currentUser } = useSelector((state) => state.authentication);
   const { selectedUser } = useSelector((state) => state.user);
 
-  if (location?.pathname === "/login" || location?.pathname === "/signup") {
+  if (
+    location?.pathname === "/login" ||
+    location?.pathname === "/signup" ||
+    location.pathname === "/accounts/password/emailConfirmation/"
+  ) {
     return null;
   }
 

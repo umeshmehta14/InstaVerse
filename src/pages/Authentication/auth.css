@@ -24,9 +24,6 @@
     padding: 0 8px;
 }
 
-.floating-input {
-    position: relative;
-}
 
 .floating-label-input input {
     height: 2.5rem;
