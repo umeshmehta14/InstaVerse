@@ -7,7 +7,7 @@ import { PostModal } from "../../components";
 import { profileMainBox } from "../../styles/ProfileStyles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getUserByUsername, updateTab } from "../Post Feed/userSlice";
+import { getUserByUsername } from "../Post Feed/userSlice";
 import UserProfileTabs from "./Profile Components/UserProfileTabs";
 
 export const Profile = () => {

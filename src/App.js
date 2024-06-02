@@ -75,7 +75,7 @@ function App() {
       ) : (
         <Flex flexDir={{ base: "column", md: "row" }}>
           <NavBar />
-          <LoadingBar height={2} color="yellow" progress={progress} />
+          <LoadingBar height={2} color={"#ef2bae"} progress={progress} />
           <Routes>
             <Route
               path={"/"}

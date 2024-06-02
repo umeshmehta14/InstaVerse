@@ -33,16 +33,16 @@ export const validateUserDetails = async (userDetails) =>
   });
 
 export const sendOtp = async (details) =>
-  await axios.post(`http://localhost:8000/api/v1/user/send-otp`, {
+  await axios.post(`${API_URL}/user/send-otp`, {
     ...details,
   });
 
 export const verifyOtp = async (data) =>
-  await axios.post(`http://localhost:8000/api/v1/user/verify-otp`, {
+  await axios.post(`${API_URL}/user/verify-otp`, {
     ...data,
   });
 
 export const resetPassword = async (data) =>
-  await axios.post(`http://localhost:8000/api/v1/user/reset-password`, {
+  await axios.post(`${API_URL}/user/reset-password`, {
     ...data,
   });

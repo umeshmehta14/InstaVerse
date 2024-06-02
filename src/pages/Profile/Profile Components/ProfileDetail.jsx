@@ -35,6 +35,7 @@ import { logoutHandler } from "../../Authentication/authenticationSlice";
 import {
   handleFollowUnfollowUser,
   handleGetFollower,
+  updateTab,
 } from "../../Post Feed/userSlice";
 import { useEffect, useState } from "react";
 
@@ -74,7 +75,9 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
 
   const isLoading = loadingUsers.includes(_id);
 
-  useEffect(() => {}, [currentUser, selectedUser]);
+  useEffect(() => {
+    !currentUser && dispatch(updateTab(0));
+  }, [currentUser, selectedUser]);
 
   return (
     <>

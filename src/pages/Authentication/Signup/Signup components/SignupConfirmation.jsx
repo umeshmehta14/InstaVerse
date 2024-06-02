@@ -1,5 +1,5 @@
 import { Box, useColorMode, Text, Input, Button } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { TbMailHeart } from "../../../../utils/Icons";
 import { authBox } from "../../../../styles/AuthenticationStyles";
@@ -87,10 +87,11 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
           color={"blue.500"}
           fontWeight={"bold"}
           onClick={() => {
-            toast.success(
-              `We sent the confirmation code to your email ${email}.`
+            dispatch(sendOtpToEmail({ email })).then(() =>
+              toast.success(
+                `We sent the confirmation code to your email ${email}.`
+              )
             );
-            dispatch(sendOtpToEmail(email));
           }}
         >
           Resend Code.

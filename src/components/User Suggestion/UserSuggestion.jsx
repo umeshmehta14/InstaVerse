@@ -16,10 +16,12 @@ import {
 import { SwitchAccountModal } from "../index";
 import UserSuggestionMain from "./UserSuggestion Components/UserSuggestionMain";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTab } from "../../pages/Post Feed/userSlice";
 
 export const UserSuggestion = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -37,7 +39,10 @@ export const UserSuggestion = () => {
           title={currentUser.username}
           alignItems={"center"}
           cursor={"pointer"}
-          onClick={() => navigate(`/profile/${currentUser.username}`)}
+          onClick={() => {
+            dispatch(updateTab(0));
+            navigate(`/profile/${currentUser.username}`);
+          }}
         >
           <Avatar size="lg" src={currentUser.avatar?.url} />
           <Text fontWeight={"normal"} justifySelf={"flex-end"}>
