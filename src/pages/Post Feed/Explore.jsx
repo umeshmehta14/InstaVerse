@@ -6,6 +6,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { getExplorePosts, updateNewPostLoading } from "./postSlice";
 import _ from "lodash";
 import { PostAlert } from "./Post Components/PostAlert";
+import { ExploreSkeleton } from "./Post Components/ExploreSkeleton";
 
 export const Explore = () => {
   const {
@@ -65,14 +66,7 @@ export const Explore = () => {
       mb={{ base: "4.2rem", md: "0.4rem" }}
     >
       {!postFetched && currentPage === 1 && !newPostLoading ? (
-        <Flex
-          justifyContent={"center"}
-          alignItems={"center"}
-          minH={"30vh"}
-          width={"100%"}
-        >
-          <RotatingLoader w={"50"} sw={"3"} />
-        </Flex>
+        <ExploreSkeleton />
       ) : (
         <GridBox showingPost={posts} />
       )}
