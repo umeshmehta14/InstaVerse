@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import {
   Box,
   Flex,
@@ -39,37 +39,50 @@ export const Login = () => {
     (state) => state.authentication
   );
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (!buttonDisable) {
-      dispatch(
-        loginHandler({
-          identifier: loginForm?.identifier,
-          password: loginForm?.password,
-        })
-      );
-      dispatch(
-        updateLoginForm({
-          identifier: "",
-          password: "",
-        })
-      );
-    }
-  };
+  const identifierRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleLogin = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!buttonDisable) {
+        dispatch(
+          loginHandler({
+            identifier: loginForm?.identifier,
+            password: loginForm?.password,
+          })
+        );
+        dispatch(updateLoginForm({ identifier: "", password: "" }));
+      }
+    },
+    [buttonDisable, loginForm, dispatch]
+  );
+
+  const handleKeyPress = useCallback(
+    (e, nextRef) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (nextRef && nextRef.current) {
+          nextRef.current.focus();
+        } else {
+          handleLogin(e);
+        }
+      }
+    },
+    [handleLogin]
+  );
 
   useEffect(() => {
     if (token) {
       navigate("/");
     }
-  }, [token]);
 
-  useEffect(() => {
     if (loginForm.identifier && loginForm.password.length >= 8) {
       dispatch(updateButtonDisable(false));
     } else {
       dispatch(updateButtonDisable(true));
     }
-  }, [loginForm.identifier, loginForm.password]);
+  }, [token, loginForm, dispatch, navigate]);
 
   return (
     <Flex {...mainAuthContainer}>
@@ -103,6 +116,8 @@ export const Login = () => {
                   })
                 )
               }
+              ref={identifierRef}
+              onKeyPress={(e) => handleKeyPress(e, passwordRef)}
             />
           </FormControl>
           <FormControl
@@ -125,7 +140,8 @@ export const Login = () => {
                     })
                   )
                 }
-                className="floating-input"
+                ref={passwordRef}
+                onKeyPress={(e) => handleKeyPress(e, null)}
               />
               {loginForm.password && (
                 <InputRightElement

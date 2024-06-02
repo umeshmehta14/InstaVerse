@@ -8,7 +8,7 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   authBox,
   mainAuthContainer,
@@ -35,41 +35,35 @@ export const LoginConfirmation = () => {
 
   const { identifier } = loginForm;
 
-  const handleOtp = () => {
+  const handleOtp = useCallback(() => {
     if (!buttonDisable) {
       dispatch(sendOtpToEmail({ login: true, identifier }));
     }
-  };
+  }, [buttonDisable, dispatch, identifier]);
 
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = useCallback(() => {
     if (!buttonDisable) {
       dispatch(
         verifyUserOtp({ identifier, login: true, otp: confirmationCode })
       );
     }
-  };
+  }, [buttonDisable, dispatch, identifier, confirmationCode]);
 
   useEffect(() => {
     if (otpDetails.otpSent) {
-      if (confirmationCode.length === 4) {
-        dispatch(updateButtonDisable(false));
-      } else {
-        dispatch(updateButtonDisable(true));
-      }
+      dispatch(
+        updateButtonDisable(!confirmationCode || confirmationCode.length !== 4)
+      );
     } else {
-      if (identifier) {
-        dispatch(updateButtonDisable(false));
-      } else {
-        dispatch(updateButtonDisable(true));
-      }
+      dispatch(updateButtonDisable(!identifier));
     }
-  }, [confirmationCode, identifier, otpDetails.otpSent]);
+  }, [dispatch, otpDetails.otpSent, identifier, confirmationCode]);
 
   useEffect(() => {
     if (otpDetails.verified) {
       navigate("/accounts/password/reset/confirm/");
     }
-  }, [otpDetails.verified]);
+  }, [otpDetails.verified, navigate]);
 
   return (
     <Flex {...mainAuthContainer} gap={0}>
@@ -163,6 +157,12 @@ export const LoginConfirmation = () => {
         borderRadius={0}
         onClick={() => {
           dispatch(updateConfirmationCode(""));
+          dispatch(
+            updateLoginForm({
+              identifier: "",
+              password: "",
+            })
+          );
           navigate("/login");
         }}
       >
