@@ -30,7 +30,7 @@ export const SignUp = () => {
   const dispatch = useDispatch();
 
   const handleSignup = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     if (!buttonDisable) {
       setClick(true);
       if (!formValidation.errorText) {

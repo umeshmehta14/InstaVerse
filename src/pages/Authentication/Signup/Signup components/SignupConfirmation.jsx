@@ -125,7 +125,15 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
         my={"4"}
         cursor={"pointer"}
         _hover={{ color: "gray" }}
-        onClick={() => setShowNextPage(false)}
+        onClick={() => {
+          dispatch(
+            updateSignupForm({
+              ...signupForm,
+              password: "",
+            })
+          );
+          setShowNextPage(false);
+        }}
       >
         Go back
       </Text>

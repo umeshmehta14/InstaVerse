@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Heading,
@@ -37,18 +37,21 @@ export const SignupForm = ({ handleSignup, click, setClick }) => {
 
   const [focusedField, setFocusedField] = useState(null);
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     setClick(false);
     dispatch(
       validateFromDetails({ username: username.trim(), email, password })
     );
     setFocusedField(null);
-  };
+  }, [dispatch, username, email, password, setClick]);
 
-  const handleFocus = (field) => {
-    setClick(false);
-    setFocusedField(field);
-  };
+  const handleFocus = useCallback(
+    (field) => {
+      setClick(false);
+      setFocusedField(field);
+    },
+    [setClick]
+  );
 
   useEffect(() => {
     if (password.length >= 8 && email && username) {
@@ -56,7 +59,7 @@ export const SignupForm = ({ handleSignup, click, setClick }) => {
     } else {
       dispatch(updateButtonDisable(true));
     }
-  }, [email, username, password]);
+  }, [email, username, password, dispatch]);
 
   return (
     <Box {...authBox} bg={colorMode === "light" ? "white.500" : "black.900"}>
