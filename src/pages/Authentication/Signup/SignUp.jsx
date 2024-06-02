@@ -8,7 +8,11 @@ import {
   mainAuthContainer,
 } from "../../../styles/AuthenticationStyles.jsx";
 import { SignupForm } from "./Signup components/SignupForm.jsx";
-import { sendOtpToEmail, updateSignupForm } from "../authenticationSlice.js";
+import {
+  sendOtpToEmail,
+  updateConfirmationCode,
+  updateSignupForm,
+} from "../authenticationSlice.js";
 import "../auth.css";
 import { SignupConfirmation } from "./Signup components/SignupConfirmation.jsx";
 
@@ -22,6 +26,7 @@ export const SignUp = () => {
   } = useSelector((state) => state.authentication);
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
+  const [showNextPage, setShowNextPage] = useState(false);
   const dispatch = useDispatch();
 
   const handleSignup = (e) => {
@@ -29,7 +34,7 @@ export const SignUp = () => {
     if (!buttonDisable) {
       setClick(true);
       if (!formValidation.errorText) {
-        dispatch(sendOtpToEmail(email));
+        dispatch(sendOtpToEmail({ email }));
         setShowNextPage(true);
       }
     }
@@ -65,6 +70,7 @@ export const SignUp = () => {
                 password: "",
               })
             );
+            dispatch(updateConfirmationCode(""));
             navigate("/login");
           }}
         >

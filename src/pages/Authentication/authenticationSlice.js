@@ -3,6 +3,7 @@ import {
   createUser,
   getLoginInformation,
   refreshUserToken,
+  resetPassword,
   sendOtp,
   userLogout,
   validateUserDetails,
@@ -32,6 +33,7 @@ const initialState = {
     errorText: "",
   },
   showPassword: false,
+  confirmationCode: "",
   otpDetails: {
     otpSent: false,
     errorMessage: "",
@@ -39,6 +41,7 @@ const initialState = {
   },
   btnLoader: false,
   buttonDisable: false,
+  passwordReset: false,
 };
 
 export const loginHandler = createAsyncThunk(
@@ -116,23 +119,43 @@ export const validateFromDetails = createAsyncThunk(
 
 export const sendOtpToEmail = createAsyncThunk(
   "authentication/user/send-otp",
-  async (email) => {
-    const {
-      data: { statusCode },
-    } = await sendOtp(email);
-    if (statusCode === 200) {
-      return;
+  async ({ email, login, identifier }, { rejectWithValue }) => {
+    try {
+      const {
+        data: { statusCode, data },
+      } = await sendOtp({ email, login, identifier });
+      if (statusCode === 200) {
+        return data?.email;
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const verifyUserOtp = createAsyncThunk(
   "authentication/user/verify-otp",
-  async ({ email, otp }, { rejectWithValue }) => {
+  async ({ email, otp, login, identifier }, { rejectWithValue }) => {
     try {
       const {
         data: { statusCode },
-      } = await verifyOtp({ email, otp });
+      } = await verifyOtp({ email, otp, login, identifier });
+      if (statusCode === 200) {
+        return;
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const resetUserPassword = createAsyncThunk(
+  "authentication/user/reset/password",
+  async ({ password, identifier }, { rejectWithValue }) => {
+    try {
+      const {
+        data: { statusCode },
+      } = await resetPassword({ password, identifier });
       if (statusCode === 200) {
         return;
       }
@@ -177,6 +200,10 @@ const authenticationSlice = createSlice({
 
     updateButtonDisable: (state, action) => {
       state.buttonDisable = action.payload;
+    },
+
+    updateConfirmationCode: (state, action) => {
+      state.confirmationCode = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -268,13 +295,23 @@ const authenticationSlice = createSlice({
       console.error(action.error);
     });
 
-    builder.addCase(sendOtpToEmail.fulfilled, (state) => {
-      state.otpDetails.otpSent = true;
+    builder.addCase(sendOtpToEmail.pending, (state) => {
+      state.btnLoader = true;
     });
 
-    builder.addCase(sendOtpToEmail.rejected, (_, action) => {
-      toast.error("Something went wrong, please try again later");
-      console.error(action.error);
+    builder.addCase(sendOtpToEmail.fulfilled, (state, action) => {
+      state.otpDetails.otpSent = true;
+      action.payload &&
+        toast.success(`otp sent successfully to ${action.payload}`);
+      state.btnLoader = false;
+    });
+
+    builder.addCase(sendOtpToEmail.rejected, (state, action) => {
+      state.btnLoader = false;
+      action.payload.error
+        ? toast.error(action.payload.error)
+        : toast.error("Something went wrong, please try again later");
+      console.error(action.payload.error);
     });
 
     builder.addCase(verifyUserOtp.pending, (state) => {
@@ -288,9 +325,37 @@ const authenticationSlice = createSlice({
     });
 
     builder.addCase(verifyUserOtp.rejected, (state, action) => {
+      const { login } = action.meta.arg;
+      state.otpDetails.otpSent = false;
+      state.confirmationCode = "";
+
+      if (login) {
+        toast.error(action.payload.message);
+      } else {
+        state.otpDetails.errorMessage = action.payload.message;
+      }
       console.error(action.payload.message);
       state.btnLoader = false;
+    });
+
+    builder.addCase(resetUserPassword.pending, (state) => {
+      state.btnLoader = true;
+      state.passwordReset = false;
+    });
+
+    builder.addCase(resetUserPassword.fulfilled, (state) => {
+      state.otpDetails.errorMessage = "";
+      state.btnLoader = false;
+      state.passwordReset = true;
+      toast.success(
+        "Password reset successful. Please log in with your new password."
+      );
+    });
+
+    builder.addCase(resetUserPassword.rejected, (state, action) => {
       state.otpDetails.errorMessage = action.payload.message;
+      console.error(action.payload.message);
+      state.btnLoader = false;
     });
   },
 });
@@ -302,6 +367,7 @@ export const {
   updateShowPassword,
   updateSignupForm,
   updateButtonDisable,
+  updateConfirmationCode,
 } = authenticationSlice.actions;
 
 export const authenticationReducer = authenticationSlice.reducer;

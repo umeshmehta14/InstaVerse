@@ -8,29 +8,27 @@ import {
   sendOtpToEmail,
   signupHandler,
   updateButtonDisable,
+  updateConfirmationCode,
   updateSignupForm,
   verifyUserOtp,
 } from "../../authenticationSlice";
 import toast from "react-hot-toast";
 import { RotatingLoader } from "../../../../components";
+import { useNavigate } from "react-router-dom";
 
 export const SignupConfirmation = ({ setShowNextPage }) => {
-  const colorMode = useColorMode();
-  const { signupForm, otpDetails, btnLoader, buttonDisable } = useSelector(
-    (state) => state.authentication
-  );
+  const { colorMode } = useColorMode();
+  const { signupForm, otpDetails, btnLoader, buttonDisable, confirmationCode } =
+    useSelector((state) => state.authentication);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { fullName, email, username, password } = signupForm;
-
-  const [confirmationCode, setConfirmationCode] = useState("");
 
   const handleVerifyOtp = () => {
     if (!buttonDisable) {
       dispatch(verifyUserOtp({ email, otp: confirmationCode }));
     }
   };
-
-  console.log("otp details message", otpDetails.errorMessage);
 
   useEffect(() => {
     if (confirmationCode.length === 4) {
@@ -60,6 +58,12 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
       );
     }
   }, [dispatch, updateSignupForm, signupHandler, otpDetails.verified]);
+
+  useEffect(() => {
+    if (!email) {
+      navigate("/signup");
+    }
+  }, [email]);
 
   return (
     <Box {...authBox} bg={colorMode === "light" ? "white.500" : "black.900"}>
@@ -97,7 +101,7 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
         type="text"
         maxLength={"4"}
         value={confirmationCode}
-        onChange={(e) => setConfirmationCode(e.target.value)}
+        onChange={(e) => dispatch(updateConfirmationCode(e.target.value))}
         placeholder="Confirmation Code"
         my={"4"}
       />

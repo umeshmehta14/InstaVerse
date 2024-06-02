@@ -21,7 +21,11 @@ import {
   authBox,
   mainAuthContainer,
 } from "../../../styles/AuthenticationStyles";
-import { loginHandler, updateButtonDisable } from "../authenticationSlice";
+import {
+  loginHandler,
+  updateButtonDisable,
+  updateConfirmationCode,
+} from "../authenticationSlice";
 import { updateLoginForm, updateShowPassword } from "../authenticationSlice.js";
 import "../auth.css";
 
@@ -153,7 +157,16 @@ export const Login = () => {
         <Text mt={4} textAlign="center" fontSize={"12px"}>
           <Link
             color="blue.500"
-            onClick={() => navigate("/accounts/password/emailConfirmation/")}
+            onClick={() => {
+              dispatch(
+                updateLoginForm({
+                  identifier: "",
+                  password: "",
+                })
+              );
+              dispatch(updateConfirmationCode(""));
+              navigate("/accounts/password/emailConfirmation/");
+            }}
           >
             Forgot password?
           </Link>
@@ -161,68 +174,22 @@ export const Login = () => {
       </Box>
       <Text textAlign="center" {...authBox} padding={"1rem 2rem"}>
         Don't have an account?{" "}
-        <Link color="blue.500" onClick={() => navigate("/signup")}>
+        <Link
+          color="blue.500"
+          onClick={() => {
+            dispatch(
+              updateLoginForm({
+                identifier: "",
+                password: "",
+              })
+            );
+            dispatch(updateConfirmationCode(""));
+            navigate("/signup");
+          }}
+        >
           Sign up
         </Link>
       </Text>
     </Flex>
   );
 };
-
-{
-  /* <Button
-              variant={"white-button"}
-              w={"100%"}
-              borderRadius={"12px"}
-              onClick={onOpen}
-            >
-              Login As
-            </Button> */
-}
-
-{
-  /*
-          <Modal onClose={onClose} size={"xs"} isOpen={isOpen}>
-            <ModalOverlay />
-            <ModalContent
-              bg={colorMode === "light" ? "white.500" : "black.900"}
-              minH={"560px"}
-              border={"1px solid #5454548f"}
-            >
-              <ModalHeader>Guest Users</ModalHeader>
-              <ModalCloseButton _hover={{ bg: "red", color: "white" }} />
-              <ModalBody>
-                {isLoading ? (
-                  <TailSpinLoader />
-                ) : (
-                  guestUsers?.map((user) => (
-                    <Flex
-                      key={user?._id}
-                      gap={"2"}
-                      cursor={"pointer"}
-                      align={"center"}
-                      p="2"
-                      onClick={() =>
-                        dispatch(
-                          loginHandler({
-                            identifier: user?.username,
-                            password: GUEST_USER_PASSWORD,
-                          })
-                        )
-                      }
-                      borderRadius={"12px"}
-                      _hover={{ bg: "gray.100" }}
-                    >
-                      <Avatar
-                        size="sm"
-                        name={user?.fullName}
-                        src={user?.avatar?.url}
-                      />
-                      {user?.username}
-                    </Flex>
-                  ))
-                )}
-              </ModalBody>
-            </ModalContent>
-          </Modal> */
-}

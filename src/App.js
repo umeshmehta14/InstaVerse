@@ -21,6 +21,7 @@ import {
   Error,
   Explore,
   LoginConfirmation,
+  ResetPassword,
 } from "./pages";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -118,6 +119,10 @@ function App() {
             <Route
               path={"/accounts/password/emailConfirmation/"}
               element={<LoginConfirmation />}
+            />
+            <Route
+              path={"/accounts/password/reset/confirm/"}
+              element={<ResetPassword />}
             />
           </Routes>
         </Flex>

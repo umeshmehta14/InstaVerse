@@ -15,29 +15,61 @@ import {
 } from "../../../styles/AuthenticationStyles";
 import { VscLock } from "../../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
-import { updateButtonDisable, updateLoginForm } from "../authenticationSlice";
+import {
+  sendOtpToEmail,
+  updateButtonDisable,
+  updateConfirmationCode,
+  updateLoginForm,
+  verifyUserOtp,
+} from "../authenticationSlice";
 import { useNavigate } from "react-router-dom";
+import { RotatingLoader } from "../../../components";
 
 export const LoginConfirmation = () => {
   const { colorMode } = useColorMode();
 
-  const { loginForm, btnLoader, buttonDisable } = useSelector(
-    (state) => state.authentication
-  );
+  const { loginForm, btnLoader, buttonDisable, otpDetails, confirmationCode } =
+    useSelector((state) => state.authentication);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { identifier } = loginForm;
 
-  const [confirmationCode, setConfirmationCode] = useState("");
+  const handleOtp = () => {
+    if (!buttonDisable) {
+      dispatch(sendOtpToEmail({ login: true, identifier }));
+    }
+  };
+
+  const handleVerifyOtp = () => {
+    if (!buttonDisable) {
+      dispatch(
+        verifyUserOtp({ identifier, login: true, otp: confirmationCode })
+      );
+    }
+  };
 
   useEffect(() => {
-    if (confirmationCode.length === 4) {
-      dispatch(updateButtonDisable(false));
+    if (otpDetails.otpSent) {
+      if (confirmationCode.length === 4) {
+        dispatch(updateButtonDisable(false));
+      } else {
+        dispatch(updateButtonDisable(true));
+      }
     } else {
-      dispatch(updateButtonDisable(true));
+      if (identifier) {
+        dispatch(updateButtonDisable(false));
+      } else {
+        dispatch(updateButtonDisable(true));
+      }
     }
-  }, [confirmationCode]);
+  }, [confirmationCode, identifier, otpDetails.otpSent]);
+
+  useEffect(() => {
+    if (otpDetails.verified) {
+      navigate("/accounts/password/reset/confirm/");
+    }
+  }, [otpDetails.verified]);
 
   return (
     <Flex {...mainAuthContainer} gap={0}>
@@ -57,7 +89,13 @@ export const LoginConfirmation = () => {
         <Text textAlign={"center"} my={"5"} fontWeight={"700"}>
           Trouble logging in?
         </Text>
-        <Text textAlign={"center"} mb={"5"}>
+        <Text
+          textAlign={"center"}
+          mb={"5"}
+          color={"gray"}
+          fontSize={"0.9rem"}
+          fontWeight={"400"}
+        >
           Enter your email or username and we'll send you a code to get back
           into your account.
         </Text>
@@ -71,25 +109,29 @@ export const LoginConfirmation = () => {
           <Input
             type="text"
             value={identifier}
-            onChange={(event) =>
+            onChange={(event) => {
               dispatch(
                 updateLoginForm({
                   ...loginForm,
                   identifier: event.target.value,
                 })
-              )
-            }
+              );
+              dispatch(updateConfirmationCode(""));
+            }}
+            disabled={otpDetails.otpSent && identifier}
           />
         </FormControl>
 
-        <Input
-          type="text"
-          maxLength={"4"}
-          value={confirmationCode}
-          onChange={(e) => setConfirmationCode(e.target.value)}
-          placeholder="Confirmation Code"
-          my={"4"}
-        />
+        {otpDetails.otpSent && identifier && (
+          <Input
+            type="text"
+            maxLength={"4"}
+            value={confirmationCode}
+            onChange={(e) => dispatch(updateConfirmationCode(e.target.value))}
+            placeholder="Confirmation Code"
+            my={"4"}
+          />
+        )}
         <Button
           bg={buttonDisable ? "gray" : "blue.500"}
           cursor={buttonDisable ? "default" : "pointer"}
@@ -99,9 +141,15 @@ export const LoginConfirmation = () => {
           borderRadius={"12px"}
           mb={"4rem"}
           disabled={buttonDisable}
-          onClick={() => handleVerifyOtp()}
+          onClick={() => (otpDetails.otpSent ? handleVerifyOtp() : handleOtp())}
         >
-          {btnLoader ? <RotatingLoader w="20" sw={"7"} /> : "Confirm"}
+          {btnLoader ? (
+            <RotatingLoader w="20" sw={"7"} />
+          ) : otpDetails.otpSent ? (
+            "Confirm"
+          ) : (
+            "Send Code"
+          )}
         </Button>
       </Box>
       <Text
@@ -113,7 +161,10 @@ export const LoginConfirmation = () => {
         _hover={{ color: "gray" }}
         padding={"1rem"}
         borderRadius={0}
-        onClick={() => navigate("/login")}
+        onClick={() => {
+          dispatch(updateConfirmationCode(""));
+          navigate("/login");
+        }}
       >
         Back to login
       </Text>

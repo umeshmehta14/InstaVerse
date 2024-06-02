@@ -1,6 +1,7 @@
 export { Home } from "./Post Feed/Home.jsx";
 export { Explore } from "./Post Feed/Explore.jsx";
 export { Login } from "./Authentication/Login/Login.jsx";
+export { ResetPassword } from "./Authentication/Login/ResetPassword.jsx";
 export { LoginConfirmation } from "./Authentication/Login/LoginConfirmation.jsx";
 export { SignUp } from "./Authentication/Signup/SignUp.jsx";
 export { Profile } from "./Profile/Profile.jsx";

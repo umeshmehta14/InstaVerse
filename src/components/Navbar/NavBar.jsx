@@ -37,7 +37,8 @@ export const NavBar = () => {
   if (
     location?.pathname === "/login" ||
     location?.pathname === "/signup" ||
-    location.pathname === "/accounts/password/emailConfirmation/"
+    location?.pathname === "/accounts/password/emailConfirmation/" ||
+    location?.pathname === "/accounts/password/reset/confirm/"
   ) {
     return null;
   }

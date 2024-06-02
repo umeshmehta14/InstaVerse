@@ -19,7 +19,7 @@ export const Home = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  document.title = `InstaVerse | "Home" `;
+  document.title = `InstaVerse | Home `;
 
   const bottomRef = useRef(null);
 

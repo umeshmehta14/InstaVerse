@@ -32,12 +32,17 @@ export const validateUserDetails = async (userDetails) =>
     ...userDetails,
   });
 
-export const sendOtp = async (email) =>
-  await axios.post(`${API_URL}/user/send-otp`, {
-    email,
+export const sendOtp = async (details) =>
+  await axios.post(`http://localhost:8000/api/v1/user/send-otp`, {
+    ...details,
   });
 
 export const verifyOtp = async (data) =>
-  await axios.post(`${API_URL}/user/verify-otp`, {
+  await axios.post(`http://localhost:8000/api/v1/user/verify-otp`, {
+    ...data,
+  });
+
+export const resetPassword = async (data) =>
+  await axios.post(`http://localhost:8000/api/v1/user/reset-password`, {
     ...data,
   });
