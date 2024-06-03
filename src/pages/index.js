@@ -11,6 +11,7 @@ export { Error } from "./Error/Error.jsx";
 export { CommentFooter } from "./Single Post/SinglePost Components/CommentFooter.jsx";
 export { DisplayComments } from "./Single Post/SinglePost Components/DisplayComments.jsx";
 export { MobileSinglePost } from "./Single Post/SinglePost Components/MobileSinglePost.jsx";
+export { SinglePostModal } from "./Single Post/SinglePost Components/SinglePostModal.jsx";
 
 export { AvatarModal } from "./Profile/Profile Components/AvatarModal.jsx";
 export { EditProfileModal } from "./Profile/Profile Components/EditProfileModal.jsx";
