@@ -42,6 +42,7 @@ import { commentInput, emojiPickerButton } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { handleGetPostById } from "../Post Feed/postSlice";
 import { updateTab } from "../Post Feed/userSlice";
+import { SinglePostSkeleton } from "./SinglePost Components/SinglePostSkeleton";
 
 export const SinglePost = () => {
   const { postId } = useParams();
@@ -91,6 +92,11 @@ export const SinglePost = () => {
     <>
       {isMobile && redirectLocation?.includes("/profile") ? (
         username && <MobileSinglePost post={post} />
+      ) : !postLoading ? (
+        <SinglePostSkeleton
+          redirectLocation={redirectLocation}
+          onClose={onClose}
+        />
       ) : (
         <Modal
           onClose={onClose}
