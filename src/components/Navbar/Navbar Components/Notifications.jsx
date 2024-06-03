@@ -39,8 +39,6 @@ const Notifications = ({ isOpen, onClose }) => {
 
   const unfollowModalDisclosure = useDisclosure();
 
-  console.log(notifications);
-
   return (
     <Box>
       <Drawer
@@ -180,6 +178,7 @@ const Notifications = ({ isOpen, onClose }) => {
                           gap={{ base: "0.5rem", md: "1rem" }}
                           alignItems={"center"}
                           justifyContent={"space-between"}
+                          w={"100%"}
                         >
                           <Flex flexWrap={"wrap"}>
                             <Text wordBreak={"break-word"}>

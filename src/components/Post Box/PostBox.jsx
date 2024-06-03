@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { RotatingLoader, UserListModal } from "../index";
+import { HeartPopup, RotatingLoader, UserListModal } from "../index";
 import {
   bookmarkPopup,
   postThreeDot,
@@ -22,7 +22,6 @@ import {
 import { BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
 import { InfoPopup } from "../index";
-import HeartPopup from "./PostBox Components/HeartPopup";
 import { useDispatch, useSelector } from "react-redux";
 import {
   handleFollowUnfollowUser,

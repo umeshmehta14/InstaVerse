@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
@@ -40,9 +40,10 @@ import {
 } from "../../styles/SinglePostStyle";
 import { commentInput, emojiPickerButton } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
-import { handleGetPostById } from "../Post Feed/postSlice";
+import { handleGetPostById, handleLikes } from "../Post Feed/postSlice";
 import { updateTab } from "../Post Feed/userSlice";
 import { SinglePostSkeleton } from "./SinglePost Components/SinglePostSkeleton";
+import { HeartPopup } from "../../components";
 
 export const SinglePost = () => {
   const { postId } = useParams();
@@ -59,8 +60,7 @@ export const SinglePost = () => {
   const {
     singlePost: { post, postLoading },
   } = useSelector((state) => state.post);
-
-  console.log({ post });
+  const { currentUser } = useSelector((state) => state.authentication);
 
   const [commentValue, setCommentValue] = useState("");
 
@@ -69,12 +69,38 @@ export const SinglePost = () => {
     userState: { users },
   } = useUser();
 
-  const { _id, comments, owner, url } = post || {};
+  const { _id, owner, url, likes } = post || {};
   const { username } = owner || {};
 
   document.title = `@${username}` || "Instaverse";
 
   const profileUser = users.find((user) => user.username === username);
+
+  const [doubleTap, setDoubleTap] = useState(false);
+  const lastTapRef = useRef(0);
+
+  const userLike = likes?.find(
+    ({ username }) => username === currentUser.username
+  );
+
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    const DOUBLE_TAP_THRESHOLD = 300;
+
+    if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
+      setDoubleTap(true);
+      if (!userLike) {
+        dispatch(handleLikes({ _id, singlePost: true }));
+      }
+      setTimeout(() => {
+        setDoubleTap(false);
+      }, 800);
+    } else {
+      setDoubleTap(false);
+    }
+
+    lastTapRef.current = now;
+  };
 
   const handleCommentPost = () => {
     handleCreateComment(commentValue, _id);
@@ -86,13 +112,13 @@ export const SinglePost = () => {
       dispatch(handleGetPostById({ _id: postId }));
       dispatch(updateTab(0));
     }
-  }, [postId, dispatch]);
+  }, [postId, dispatch, currentUser]);
 
   return (
     <>
       {isMobile && redirectLocation?.includes("/profile") ? (
         username && <MobileSinglePost post={post} />
-      ) : !postLoading ? (
+      ) : postLoading ? (
         <SinglePostSkeleton
           redirectLocation={redirectLocation}
           onClose={onClose}
@@ -116,8 +142,14 @@ export const SinglePost = () => {
             />
             <ModalBody p={0} height={"100%"}>
               <HStack align={"flex-start"} height={"600px"}>
-                <Flex {...mediaPostBox}>
-                  <Image src={url} w={"100%"} height={"100%"} />
+                <Flex {...mediaPostBox} pos={"relative"}>
+                  <Image
+                    src={url}
+                    w={"100%"}
+                    height={"100%"}
+                    onClick={() => handleDoubleTap()}
+                  />
+                  {doubleTap && <HeartPopup />}
                 </Flex>
                 <Flex {...commentSectionMain}>
                   <HStack {...mobileCommentHeading}>
@@ -137,7 +169,9 @@ export const SinglePost = () => {
 
                   <DisplayComments post={post} location={redirectLocation} />
 
-                  {username && <CommentFooter post={post} />}
+                  {username && (
+                    <CommentFooter post={post} userLike={userLike} />
+                  )}
                 </Flex>
               </HStack>
             </ModalBody>

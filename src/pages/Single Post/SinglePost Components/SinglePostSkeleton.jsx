@@ -61,7 +61,11 @@ export const SinglePostSkeleton = ({ redirectLocation, onClose }) => {
             />
             <Flex
               {...commentSectionMain}
-              bg={colorMode === "dark" ? "#1a1a1a" : "white.500"}
+              bg={
+                colorMode === "dark"
+                  ? { base: "black.900", md: "#1a1a1a" }
+                  : "white.500"
+              }
               height={"100%"}
             >
               <HStack {...mobileCommentHeading}>
@@ -96,7 +100,11 @@ export const SinglePostSkeleton = ({ redirectLocation, onClose }) => {
               </Flex>
               <Divider />
               <VStack
-                bg={colorMode === "dark" ? "#1a1a1a" : "white.500"}
+                bg={
+                  colorMode === "dark"
+                    ? { base: "black.900", md: "#1a1a1a" }
+                    : "white.500"
+                }
                 p={"8px"}
               >
                 {new Array(5).fill(null)?.map((_, index) => (

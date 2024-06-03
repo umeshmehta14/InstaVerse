@@ -123,11 +123,15 @@ export const handleDeletePost = createAsyncThunk(
 
 export const handleLikes = createAsyncThunk(
   "post/like",
-  async ({ _id, unlike }, { getState, dispatch }) => {
+  async ({ _id, unlike, singlePost }, { getState, dispatch }) => {
     const { token, currentUser } = getState().authentication;
-    unlike
+    !singlePost && unlike
       ? dispatch(removePostLike({ _id, currentUser }))
       : dispatch(updatePostLikes({ _id, currentUser }));
+
+    singlePost && unlike
+      ? dispatch(removeSinglePostLikes(currentUser))
+      : dispatch(updateSinglePostLikes(currentUser));
     const {
       data: { statusCode, data },
     } = unlike ? await removeLike(_id, token) : await addLike(_id, token);
@@ -202,6 +206,7 @@ const postSlice = createSlice({
         );
       }
     },
+
     removePostLike: (state, action) => {
       const { currentUser, _id } = action.payload;
 
@@ -225,6 +230,18 @@ const postSlice = createSlice({
           false
         );
       }
+    },
+
+    updateSinglePostLikes: (state, action) => {
+      const { post } = state.singlePost;
+      post.likes = [action.payload, ...post.likes];
+    },
+
+    removeSinglePostLikes: (state, action) => {
+      const { post } = state.singlePost;
+      post.likes = post.likes.filter(
+        (user) => user._id !== action.payload?._id
+      );
     },
   },
   extraReducers: (builder) => {
@@ -370,6 +387,8 @@ export const {
   updateUploadPost,
   updatePostLikes,
   removePostLike,
+  updateSinglePostLikes,
+  removeSinglePostLikes,
 } = postSlice.actions;
 
 export const postReducer = postSlice.reducer;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 
-const HeartPopup = () => {
+export const HeartPopup = () => {
   const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
@@ -19,5 +19,3 @@ const HeartPopup = () => {
     </div>
   );
 };
-
-export default HeartPopup;

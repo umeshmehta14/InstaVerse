@@ -47,8 +47,9 @@ import {
   getPostLikeUsers,
   removeUserBookmark,
 } from "../../Post Feed/userSlice";
+import { handleLikes } from "../../Post Feed/postSlice";
 
-export const CommentFooter = ({ post }) => {
+export const CommentFooter = ({ post, userLike }) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -57,22 +58,27 @@ export const CommentFooter = ({ post }) => {
 
   const { _id, likes } = post;
 
-  const { handlePostLike, handlePostUnLike, handleCreateComment, handleShare } =
-    usePost();
+  const { handleCreateComment, handleShare } = usePost();
   const { currentUser } = useSelector((state) => state.authentication);
   const { bookmarks } = useSelector((state) => state.user);
+
+  const [isLiked, setIsLiked] = useState(false);
 
   const [commentValue, setCommentValue] = useState("");
 
   const bookmarked = bookmarks?.find((post) => post?._id === _id);
 
-  const userLike = likes.find(
-    ({ username }) => username === currentUser.username
-  );
-
   const friendLike = currentUser.following.find(({ username }) =>
     likes.some((likeUser) => likeUser?.username === username)
   );
+
+  const handleLike = () => {
+    setIsLiked(true);
+    dispatch(handleLikes({ _id, singlePost: true }));
+    setTimeout(() => {
+      setIsLiked(false);
+    }, 1000);
+  };
 
   const handleCommentPost = () => {
     handleCreateComment(commentValue, _id);
@@ -94,14 +100,17 @@ export const CommentFooter = ({ post }) => {
                 cursor="pointer"
                 color={"red"}
                 title="Unlike"
-                onClick={() => handlePostUnLike(_id)}
+                onClick={() =>
+                  dispatch(handleLikes({ _id, unlike: true, singlePost: true }))
+                }
               />
             ) : (
               <Box
                 as={AiOutlineHeart}
                 {...IconHoverStyle}
                 title="Like"
-                onClick={() => handlePostLike(_id)}
+                onClick={() => handleLike()}
+                className={isLiked ? "like-animation" : ""}
               />
             )}
             <Box

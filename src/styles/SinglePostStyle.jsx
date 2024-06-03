@@ -75,8 +75,9 @@ export const displayCommentMainBox = {
   align: "flex-start",
   gap: "1rem",
   w: "100%",
-  maxH: { base: "none", md: "275px" },
-  minH: { base: "none", md: "275px" },
+  // maxH: { base: "none", md: "275px" },
+  // minH: { base: "none", md: "275px" },
+  minH: { base: "none", md: "300px" },
   overflow: "auto",
   mb: { base: "3rem", md: "0" },
 };
