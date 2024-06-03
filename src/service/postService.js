@@ -57,3 +57,10 @@ export const removeLike = async (postId, token) =>
       },
     }
   );
+
+export const getPostById = async (postId, token) =>
+  await axios.get(`${API_URL}/post/${postId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

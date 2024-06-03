@@ -41,37 +41,37 @@ import {
   emojiPickerButtonNew,
 } from "../../../styles/GlobalStyles";
 import { commentFooterInputMain } from "../../../styles/SinglePostStyle";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addUserBookmark,
+  getPostLikeUsers,
+  removeUserBookmark,
+} from "../../Post Feed/userSlice";
 
 export const CommentFooter = ({ post }) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const {
-    _id,
-    likes: { likedBy },
-  } = post;
+  const { _id, likes } = post;
 
   const { handlePostLike, handlePostUnLike, handleCreateComment, handleShare } =
     usePost();
   const { currentUser } = useSelector((state) => state.authentication);
-  const {
-    handleBookmark,
-    handleRemoveBookmark,
-    userState: { userBookmarks },
-  } = useUser();
+  const { bookmarks } = useSelector((state) => state.user);
 
   const [commentValue, setCommentValue] = useState("");
 
-  const bookmarked = userBookmarks?.includes(_id);
-  const userLike = likedBy?.find(
-    ({ username }) => username === currentUser?.username
+  const bookmarked = bookmarks?.find((post) => post?._id === _id);
+
+  const userLike = likes.find(
+    ({ username }) => username === currentUser.username
   );
 
-  const friendLike = currentUser?.following?.find(({ username }) =>
-    likedBy?.some((likeUser) => likeUser?.username === username)
+  const friendLike = currentUser.following.find(({ username }) =>
+    likes.some((likeUser) => likeUser?.username === username)
   );
 
   const handleCommentPost = () => {
@@ -117,7 +117,7 @@ export const CommentFooter = ({ post }) => {
                 as={FaBookmark}
                 sx={postIconStyle}
                 title="Remove"
-                onClick={() => handleRemoveBookmark(_id)}
+                onClick={() => dispatch(removeUserBookmark({ _id }))}
               />
             ) : (
               <Box
@@ -125,7 +125,7 @@ export const CommentFooter = ({ post }) => {
                 sx={postIconStyle}
                 title="Save"
                 onClick={() => {
-                  handleBookmark(_id);
+                  dispatch(addUserBookmark({ _id }));
                 }}
               />
             )}
@@ -142,19 +142,35 @@ export const CommentFooter = ({ post }) => {
               <Avatar
                 size="2xs"
                 title={friendLike?.username}
-                src={friendLike?.avatarURL}
+                src={friendLike?.avatar?.url}
               />
               {friendLike?.username}
             </Flex>
-            <Text mx={"1"}>and</Text>
-            <Text sx={userBoldStyle} onClick={onOpen}>
-              {likedBy?.length - 1} others
-            </Text>
+            {likes?.length !== 1 && (
+              <>
+                <Text mx={"1"}>and</Text>
+                <Text
+                  sx={userBoldStyle}
+                  onClick={() => {
+                    dispatch(getPostLikeUsers({ _id }));
+                    onOpen();
+                  }}
+                >
+                  {likes?.length - 1} others
+                </Text>
+              </>
+            )}
           </Flex>
         ) : (
-          likedBy?.length !== 0 && (
-            <Text onClick={onOpen} cursor={"pointer"}>
-              {likedBy?.length} likes
+          likes?.length !== 0 && (
+            <Text
+              onClick={() => {
+                dispatch(getPostLikeUsers({ _id }));
+                onOpen();
+              }}
+              cursor={"pointer"}
+            >
+              {likes?.length} likes
             </Text>
           )
         )}

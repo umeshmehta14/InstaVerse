@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -38,12 +39,15 @@ import {
   singlePostModalClose,
 } from "../../styles/SinglePostStyle";
 import { commentInput, emojiPickerButton } from "../../styles/GlobalStyles";
-import { SET_DEFAULT_TAB, fallBackImg } from "../../utils/Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { handleGetPostById } from "../Post Feed/postSlice";
+import { updateTab } from "../Post Feed/userSlice";
 
 export const SinglePost = () => {
   const { postId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const redirectLocation = location?.state?.from?.pathname;
 
@@ -51,20 +55,23 @@ export const SinglePost = () => {
   const { colorMode } = useColorMode();
   const [isMobile] = useMediaQuery("(max-width: 767px)");
 
+  const {
+    singlePost: { post, postLoading },
+  } = useSelector((state) => state.post);
+
+  console.log({ post });
+
   const [commentValue, setCommentValue] = useState("");
 
-  const {
-    handleSinglePost,
-    handleCreateComment,
-    postState: { singlePost },
-  } = usePost();
+  const { handleCreateComment } = usePost();
   const {
     userState: { users },
-    userDispatch,
   } = useUser();
 
-  const { _id, comments, username, mediaUrl } = singlePost;
-  document.title = `@${username}`;
+  const { _id, comments, owner, url } = post || {};
+  const { username } = owner || {};
+
+  document.title = `@${username}` || "Instaverse";
 
   const profileUser = users.find((user) => user.username === username);
 
@@ -74,14 +81,16 @@ export const SinglePost = () => {
   };
 
   useEffect(() => {
-    handleSinglePost(postId);
-    userDispatch({ type: SET_DEFAULT_TAB, payload: 0 });
-  }, [postId, comments, handleSinglePost, singlePost]);
+    if (postId) {
+      dispatch(handleGetPostById({ _id: postId }));
+      dispatch(updateTab(0));
+    }
+  }, [postId, dispatch]);
 
   return (
     <>
       {isMobile && redirectLocation?.includes("/profile") ? (
-        username && <MobileSinglePost post={singlePost} />
+        username && <MobileSinglePost post={post} />
       ) : (
         <Modal
           onClose={onClose}
@@ -102,12 +111,7 @@ export const SinglePost = () => {
             <ModalBody p={0} height={"100%"}>
               <HStack align={"flex-start"} height={"600px"}>
                 <Flex {...mediaPostBox}>
-                  <Image
-                    src={mediaUrl}
-                    fallbackSrc={fallBackImg}
-                    w={"100%"}
-                    height={"100%"}
-                  />
+                  <Image src={url} w={"100%"} height={"100%"} />
                 </Flex>
                 <Flex {...commentSectionMain}>
                   <HStack {...mobileCommentHeading}>
@@ -125,12 +129,9 @@ export const SinglePost = () => {
                     <Text>Comments</Text>
                   </HStack>
 
-                  <DisplayComments
-                    post={singlePost}
-                    location={redirectLocation}
-                  />
+                  <DisplayComments post={post} location={redirectLocation} />
 
-                  {username && <CommentFooter post={singlePost} />}
+                  {username && <CommentFooter post={post} />}
                 </Flex>
               </HStack>
             </ModalBody>

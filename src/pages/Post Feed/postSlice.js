@@ -4,6 +4,7 @@ import {
   deletePost,
   explorePosts,
   getNotifications,
+  getPostById,
   homePosts,
   removeLike,
   uploadPost,
@@ -32,6 +33,10 @@ const initialState = {
     url: "",
   },
   isUploading: false,
+  singlePost: {
+    postLoading: false,
+    post: {},
+  },
 };
 
 export const getUserNotifications = createAsyncThunk(
@@ -128,6 +133,21 @@ export const handleLikes = createAsyncThunk(
     } = unlike ? await removeLike(_id, token) : await addLike(_id, token);
     if (statusCode === 200) {
       return { data, _id };
+    }
+  }
+);
+
+export const handleGetPostById = createAsyncThunk(
+  "post/singlePost",
+  async ({ _id }, { getState }) => {
+    console.log("calling", { _id });
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await getPostById(_id, token);
+    if (statusCode === 200) {
+      console.log({ data });
+      return data;
     }
   }
 );
@@ -325,6 +345,20 @@ const postSlice = createSlice({
       if (explorePosts) {
         state.explorePosts.posts = updateLikes(explorePosts);
       }
+    });
+
+    builder.addCase(handleGetPostById.pending, (state) => {
+      state.singlePost.postLoading = true;
+    });
+
+    builder.addCase(handleGetPostById.fulfilled, (state, action) => {
+      state.singlePost.post = action.payload;
+      state.singlePost.postLoading = false;
+    });
+
+    builder.addCase(handleGetPostById.rejected, (state, action) => {
+      console.error(action.error);
+      state.singlePost.postLoading = false;
     });
   },
 });

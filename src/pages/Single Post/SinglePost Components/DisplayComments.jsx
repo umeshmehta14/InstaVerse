@@ -29,7 +29,9 @@ import { simpleButton } from "../../../styles/GlobalStyles";
 import { useSelector } from "react-redux";
 
 export const DisplayComments = ({ post, location }) => {
-  const { username, avatarURL, comments, createdAt, content } = post;
+  const { owner, comments, createdAt, caption } = post || {};
+
+  const { username, avatar } = owner || {};
 
   const navigate = useNavigate();
 
@@ -54,7 +56,7 @@ export const DisplayComments = ({ post, location }) => {
             title={username}
             onClick={() => navigate(`/profile/${username}`)}
           >
-            <Avatar size="sm" src={avatarURL} />
+            <Avatar size="sm" src={avatar?.url} />
             <Text ml="2" fontWeight="semibold">
               {username}
             </Text>
@@ -78,7 +80,7 @@ export const DisplayComments = ({ post, location }) => {
         <Flex gap={4} cursor={"pointer"} title={username}>
           <Avatar
             size="md"
-            src={avatarURL}
+            src={avatar?.url}
             onClick={() => navigate(`/profile/${username}`)}
             cursor={"pointer"}
           />
@@ -95,7 +97,7 @@ export const DisplayComments = ({ post, location }) => {
                 {getRelativeTime(createdAt)}
               </Text>
             </Flex>
-            <Text fontWeight={0}>{content}</Text>
+            <Text fontWeight={0}>{caption}</Text>
           </VStack>
         </Flex>
       </Flex>
@@ -109,11 +111,20 @@ export const DisplayComments = ({ post, location }) => {
           </Text>
         ) : (
           comments?.map((comment) => {
-            const { _id, avatarURL, text, createdAt, username } = comment;
+            const {
+              _id,
+              owner: { username, avatar: commentAvatar },
+              text,
+              createdAt,
+            } = comment || {};
             return (
               <Flex key={_id} gap={"1rem"} title={username}>
                 <Box pt={"4"} onClick={() => navigate(`/profile/${username}`)}>
-                  <Avatar src={avatarURL} size={"sm"} cursor={"pointer"} />
+                  <Avatar
+                    src={commentAvatar?.url}
+                    size={"sm"}
+                    cursor={"pointer"}
+                  />
                 </Box>
                 <VStack align={"flex-start"} gap={"0"}>
                   <Flex gap={"0.5rem"} align={"center"}>
