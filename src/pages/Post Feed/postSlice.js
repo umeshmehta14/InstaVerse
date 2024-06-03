@@ -144,13 +144,13 @@ export const handleLikes = createAsyncThunk(
 export const handleGetPostById = createAsyncThunk(
   "post/singlePost",
   async ({ _id }, { getState }) => {
-    console.log("calling", { _id });
     const { token } = getState().authentication;
+
     const {
       data: { statusCode, data },
     } = await getPostById(_id, token);
+
     if (statusCode === 200) {
-      console.log({ data });
       return data;
     }
   }
