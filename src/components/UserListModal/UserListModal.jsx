@@ -17,11 +17,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { UnfollowModal, RotatingLoader } from "../index";
+import { UnfollowModal, RotatingLoader, RemoveFollowerModal } from "../index";
 import { handleFollowUnfollowUser } from "../../pages/Post Feed/userSlice";
 import { useState } from "react";
 import { BsDot } from "../../utils/Icons";
-import { RemoveFollowerModal } from "./UserListModal Components/RemoveFollowerModal";
 
 export const UserListModal = ({ onClose, isOpen, heading }) => {
   const navigate = useNavigate();

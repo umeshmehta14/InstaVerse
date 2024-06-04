@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Flex, Divider, useDisclosure } from "@chakra-ui/react";
 
-import { ProfileSkeleton, ProfileDetail } from "../index";
-import { PostModal } from "../../components";
+import { ProfileDetail } from "../index";
+import { PostModal, ProfileSkeleton } from "../../components";
 import { profileMainBox } from "../../styles/ProfileStyles";
 
 import { useDispatch, useSelector } from "react-redux";

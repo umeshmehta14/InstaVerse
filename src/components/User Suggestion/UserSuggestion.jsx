@@ -13,8 +13,7 @@ import {
   userSuggestionContainer,
   userSuggestionMainProfile,
 } from "../../styles/UserSuggestionStyles";
-import { SwitchAccountModal } from "../index";
-import UserSuggestionMain from "./UserSuggestion Components/UserSuggestionMain";
+import { SwitchAccountModal, UserSuggestionMain } from "../index";
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateTab } from "../../pages/Post Feed/userSlice";

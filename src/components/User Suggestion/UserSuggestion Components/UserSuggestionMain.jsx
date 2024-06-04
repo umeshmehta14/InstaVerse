@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../../pages/Post Feed/userSlice";
 import { RotatingLoader } from "../../Loader/RotatingLoader";
 
-const UserSuggestionMain = () => {
+export const UserSuggestionMain = () => {
   const navigate = useNavigate();
 
   const { currentUser } = useSelector((state) => state.authentication);
@@ -83,5 +83,3 @@ const UserSuggestionMain = () => {
     )
   );
 };
-
-export default UserSuggestionMain;
