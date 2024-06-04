@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   Drawer,
@@ -16,11 +17,11 @@ import {
   Button,
   Image,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
-import SearchSkeleton from "./SearchSkeleton";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { AiOutlineArrowLeft } from "../../../utils/Icons";
+import { SearchSkeleton } from "../../index";
 import { handleFollowUnfollowUser } from "../../../pages/Post Feed/userSlice";
 import { UnfollowModal } from "../../Unfollow Modal/UnfollowModal";
 import { getRelativeTime } from "../../../utils/Utils";

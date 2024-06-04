@@ -1,7 +1,7 @@
 import { Flex, SkeletonCircle, SkeletonText, VStack } from "@chakra-ui/react";
 import React from "react";
 
-const SearchSkeleton = () => {
+export const SearchSkeleton = () => {
   return (
     <VStack
       overflowY="scroll"
@@ -25,5 +25,3 @@ const SearchSkeleton = () => {
     </VStack>
   );
 };
-
-export default SearchSkeleton;

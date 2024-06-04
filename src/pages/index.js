@@ -17,4 +17,4 @@ export { AvatarModal } from "./Profile/Profile Components/AvatarModal.jsx";
 export { EditProfileModal } from "./Profile/Profile Components/EditProfileModal.jsx";
 export { GridBox } from "./Profile/Profile Components/GridBox.jsx";
 export { ProfileDetail } from "./Profile/Profile Components/ProfileDetail.jsx";
-export { ProfileSkeleton } from "./Profile/Profile Components/ProfileSkeleton.jsx";
+export { ProfileSkeleton } from "../components/Skeletons/ProfileSkeleton.jsx";

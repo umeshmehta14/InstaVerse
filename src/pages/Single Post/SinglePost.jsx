@@ -7,7 +7,7 @@ import { MobileSinglePost, SinglePostModal } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { handleGetPostById } from "../Post Feed/postSlice";
 import { updateTab } from "../Post Feed/userSlice";
-import { SinglePostSkeleton } from "./SinglePost Components/SinglePostSkeleton";
+import { SinglePostSkeleton } from "../../components";
 
 export const SinglePost = () => {
   const { postId } = useParams();

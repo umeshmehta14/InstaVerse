@@ -1,22 +1,15 @@
-import React from "react";
 import {
   AspectRatio,
-  Box,
-  Divider,
   Flex,
-  Grid,
   GridItem,
-  SkeletonCircle,
-  SkeletonText,
   useColorMode,
+  Grid,
 } from "@chakra-ui/react";
-
-import { profileMainBox } from "../../../styles/ProfileStyles";
+import { profileMainBox } from "../../styles/ProfileStyles";
 import ContentLoader from "react-content-loader";
 
-export const ProfileSkeleton = () => {
+export const ExploreSkeleton = () => {
   const { colorMode } = useColorMode();
-
   return (
     <Flex
       {...profileMainBox}
@@ -24,17 +17,12 @@ export const ProfileSkeleton = () => {
       h={"100vh"}
       bg={colorMode === "dark" ? "black.900" : "white.500"}
     >
-      <Box padding="6" boxShadow="lg">
-        <SkeletonCircle size="20" />
-        <SkeletonText mt="4" noOfLines={4} spacing="4" skeletonHeight="2" />
-      </Box>
-      <Divider />
       <Grid
         templateColumns="repeat(3, minmax(104px, 1fr))"
         width={"100%"}
         gap={"1"}
       >
-        {new Array(6).fill(null)?.map((_, n) => (
+        {new Array(12).fill(null)?.map((_, n) => (
           <GridItem key={n}>
             <AspectRatio ratio={1}>
               <ContentLoader

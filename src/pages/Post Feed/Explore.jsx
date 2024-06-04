@@ -1,12 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { RotatingLoader } from "../../components";
+import { ExploreSkeleton, RotatingLoader } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { GridBox } from "../Profile/Profile Components/GridBox";
 import { useEffect, useRef, useCallback } from "react";
 import { getExplorePosts, updateNewPostLoading } from "./postSlice";
 import _ from "lodash";
 import { PostAlert } from "./Post Components/PostAlert";
-import { ExploreSkeleton } from "./Post Components/ExploreSkeleton";
 
 export const Explore = () => {
   const {

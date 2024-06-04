@@ -19,11 +19,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { RxCrossCircled, BsDot, RxCross2 } from "../../../utils/Icons";
-import { useNavigate } from "react-router-dom";
 import { getMutualFollowers } from "../../../utils/Utils";
-import { useDispatch, useSelector } from "react-redux";
 import {
   addUserToSearchList,
   getSearchedUsers,
@@ -31,7 +31,7 @@ import {
   updateSearchedUsers,
   updateSearchValue,
 } from "../../../pages/Post Feed/userSlice";
-import SearchSkeleton from "./SearchSkeleton";
+import { SearchSkeleton } from "../../index";
 import { ClearRecentModal } from "./ClearRecentModal";
 
 const SearchBox = ({ isOpen, onClose }) => {

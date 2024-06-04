@@ -13,17 +13,17 @@ import {
   useColorMode,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import {
   commentSectionMain,
   mediaPostBox,
   mobileCommentHeading,
   modalContentStyle,
   singlePostModalClose,
-} from "../../../styles/SinglePostStyle";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AiOutlineArrowLeft } from "../../../utils/Icons";
-import { iconPostStyles } from "../../../styles/PostBoxStyles";
+} from "../../styles/SinglePostStyle";
+import { iconPostStyles } from "../../styles/PostBoxStyles";
+import { AiOutlineArrowLeft } from "../../utils/Icons";
 
 export const SinglePostSkeleton = ({ redirectLocation, onClose }) => {
   const { colorMode } = useColorMode();

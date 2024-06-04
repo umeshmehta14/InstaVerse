@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getHomePosts, updateNewPostLoading } from "./postSlice";
 import { PostAlert } from "./Post Components/PostAlert";
 import { getUserBookmark } from "./userSlice";
-import { SinglePostSkeleton } from "../Single Post/SinglePost Components/SinglePostSkeleton";
 
 export const Home = () => {
   const {
