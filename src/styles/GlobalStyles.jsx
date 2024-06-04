@@ -84,3 +84,11 @@ export const editFormLabel = {
   fontWeight: 200,
   color: "gray",
 };
+
+export const hideScrollbar = {
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+  "-ms-overflow-style": "none",
+  "scrollbar-width": "none",
+};

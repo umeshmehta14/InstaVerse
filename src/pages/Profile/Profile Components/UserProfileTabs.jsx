@@ -31,6 +31,7 @@ import {
 } from "../../../utils/Icons";
 import { RotatingLoader } from "../../../components";
 import { GridBox } from "./GridBox";
+import { hideScrollbar } from "../../../styles/GlobalStyles";
 
 const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
   const { selectedUser, bookmarks, isLoading, likedPosts, tab } = useSelector(
@@ -49,6 +50,9 @@ const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
       index={tab}
       onChange={(index) => dispatch(updateTab(index))}
       w={"100%"}
+      h={"100%"}
+      // overflowY={"scroll"}
+      // sx={hideScrollbar}
     >
       <TabList {...tabListStyle}>
         <Tab flexGrow={1} colorScheme="blue" gap={2}>

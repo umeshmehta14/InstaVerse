@@ -52,13 +52,14 @@ export const addCommentMainBox = {
 };
 
 export const mobilePostMainBoxStyle = {
-  h: "92vh",
+  maxH: "92vh",
   zIndex: "5",
   pos: "fixed",
   top: "0",
   align: "flex-start",
   gap: "0.3rem",
   w: "100vw",
+  overflowY: "auto",
 };
 
 export const mobileSinglePostHeading = {

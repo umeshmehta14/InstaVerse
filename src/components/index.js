@@ -9,3 +9,5 @@ export { RotatingLoader } from "./Loader/RotatingLoader.jsx";
 export { InfoPopup } from "./InfoPopup/InfoPopup.jsx";
 export { HeartPopup } from "./HeartPopup/HeartPopup.jsx";
 export { SwitchAccountModal } from "./SwitchAccount Modal/SwitchAccountModal.jsx";
+
+export { PostBoxSkeleton } from "./Skeletons/PostBoxSkeleton.jsx";

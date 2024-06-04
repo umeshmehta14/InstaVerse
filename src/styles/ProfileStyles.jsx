@@ -1,10 +1,12 @@
 export const profileMainBox = {
   direction: "column",
   w: "100%",
+  h: { base: "87vh", md: "100%" },
   p: { base: 0, md: "1rem" },
   maxW: "975px",
   margin: "0 auto",
   mb: { base: "4.2rem", md: "0.4rem" },
+  overflowY: "scroll",
 };
 
 export const tabListStyle = {

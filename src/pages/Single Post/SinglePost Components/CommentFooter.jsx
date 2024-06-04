@@ -229,12 +229,7 @@ export const CommentFooter = ({ post, userLike }) => {
         </Button>
       </Flex>
       {isOpen && (
-        <UserListModal
-          onClose={onClose}
-          isOpen={isOpen}
-          users={likedBy}
-          heading={"Liked By"}
-        />
+        <UserListModal onClose={onClose} isOpen={isOpen} heading={"Liked By"} />
       )}
     </>
   );

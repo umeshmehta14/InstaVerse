@@ -36,6 +36,7 @@ import {
   FaRegBookmark,
   FaBookmark,
   FaComment,
+  FaHeart,
 } from "react-icons/fa";
 import { FcAddImage } from "react-icons/fc";
 import { IoPaperPlaneOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
@@ -62,6 +63,7 @@ export {
   RxHamburgerMenu,
   BsFillHeartbreakFill,
   FcAddImage,
+  FaHeart,
   MdHome,
   FaInstalod,
   BsMoon,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart } from "../../utils/Icons";
 
 export const HeartPopup = () => {
   const [animate, setAnimate] = useState(true);

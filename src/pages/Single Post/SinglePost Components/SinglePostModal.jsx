@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState } from "react";
 import {
   Box,
@@ -38,11 +38,13 @@ import {
 import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../../utils/Icons";
 import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
+import { handleLikes } from "../../Post Feed/postSlice";
 
 export const SinglePostModal = ({ onClose, redirectLocation }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { colorMode } = useColorMode();
+  const dispatch = useDispatch();
 
   const [commentValue, setCommentValue] = useState("");
   const [doubleTap, setDoubleTap] = useState(false);
@@ -53,7 +55,7 @@ export const SinglePostModal = ({ onClose, redirectLocation }) => {
   } = useSelector((state) => state.post);
   const { currentUser } = useSelector((state) => state.authentication);
 
-  const { _id, owner, likes } = post || {};
+  const { _id, owner, url, likes } = post || {};
   const { username } = owner || {};
 
   const userLike = likes?.find(
@@ -116,7 +118,7 @@ export const SinglePostModal = ({ onClose, redirectLocation }) => {
                     navigate(
                       location?.pathname === redirectLocation
                         ? `/profile/${username}`
-                        : redirectLocation
+                        : redirectLocation || `/profile/${username}`
                     )
                   }
                 />

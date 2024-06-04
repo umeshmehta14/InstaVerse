@@ -9,6 +9,7 @@ import { profileMainBox } from "../../styles/ProfileStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserByUsername } from "../Post Feed/userSlice";
 import UserProfileTabs from "./Profile Components/UserProfileTabs";
+import { hideScrollbar } from "../../styles/GlobalStyles";
 
 export const Profile = () => {
   const paramUser = useParams();
@@ -35,7 +36,7 @@ export const Profile = () => {
   }, [paramUser.username, prevUsername, dispatch]);
 
   return progress === 100 ? (
-    <Flex {...profileMainBox}>
+    <Flex {...profileMainBox} sx={hideScrollbar}>
       <ProfileDetail
         selectedUser={selectedUser}
         currentUserCheck={currentUserCheck}

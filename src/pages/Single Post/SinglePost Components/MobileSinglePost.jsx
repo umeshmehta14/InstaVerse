@@ -2,21 +2,28 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Box, HStack, Text, VStack, useColorMode } from "@chakra-ui/react";
 
-import { PostBox } from "../../../components";
+import { PostBox, PostBoxSkeleton } from "../../../components";
 import {
   mobilePostMainBoxStyle,
   mobileSinglePostHeading,
 } from "../../../styles/SinglePostStyle";
 import { AiOutlineArrowLeft } from "../../../utils/Icons";
+import { useSelector } from "react-redux";
+import { hideScrollbar } from "../../../styles/GlobalStyles";
 
-export const MobileSinglePost = ({ post }) => {
+export const MobileSinglePost = () => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   const location = useLocation();
+  const {
+    singlePost: { post, postLoading },
+  } = useSelector((state) => state.post);
+
   return (
     <VStack
-      bg={colorMode === "dark" ? "black.700" : "white.500"}
+      bg={colorMode === "dark" ? "black.900" : "white.500"}
       {...mobilePostMainBoxStyle}
+      sx={hideScrollbar}
     >
       <HStack
         bg={colorMode === "dark" ? "black.900" : "white.500"}
@@ -25,12 +32,17 @@ export const MobileSinglePost = ({ post }) => {
         <Box
           as={AiOutlineArrowLeft}
           fontSize={"1.8rem"}
-          onClick={() => navigate(location?.state?.from?.pathname)}
+          onClick={() =>
+            navigate(
+              location?.state?.from?.pathname ||
+                `/profile/${post?.owner?.username}`
+            )
+          }
         />
         <Text>Post</Text>
       </HStack>
-      <Box m="auto" w="100%">
-        <PostBox post={post} />
+      <Box w="100%">
+        {postLoading ? <PostBoxSkeleton /> : <PostBox post={post} />}
       </Box>
     </VStack>
   );
