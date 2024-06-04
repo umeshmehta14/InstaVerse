@@ -41,7 +41,7 @@ export const MobileSinglePost = () => {
         />
         <Text>Post</Text>
       </HStack>
-      <Box w="100%">
+      <Box w="100%" h={"86vh"}>
         {postLoading ? <PostBoxSkeleton /> : <PostBox post={post} />}
       </Box>
     </VStack>

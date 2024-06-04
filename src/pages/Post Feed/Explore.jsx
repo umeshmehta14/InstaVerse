@@ -70,16 +70,7 @@ export const Explore = () => {
         <GridBox showingPost={posts} />
       )}
       <div ref={bottomRef} style={{ height: 20 }} />
-      {newPostLoading && (
-        <Flex
-          width={"100%"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          h={"4rem"}
-        >
-          <RotatingLoader w={"50"} sw={"4"} />
-        </Flex>
-      )}
+      {newPostLoading && <ExploreSkeleton />}
       {currentPage === totalPages && <PostAlert />}
     </Box>
   );

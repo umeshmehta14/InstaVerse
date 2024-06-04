@@ -7,7 +7,7 @@ import { MobileSinglePost, SinglePostModal } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { handleGetPostById } from "../Post Feed/postSlice";
 import { updateTab } from "../Post Feed/userSlice";
-import { SinglePostSkeleton } from "../../components";
+import { SinglePostSkeleton } from "../../components/index";
 
 export const SinglePost = () => {
   const { postId } = useParams();
@@ -28,8 +28,6 @@ export const SinglePost = () => {
   const { username } = owner || {};
 
   document.title = `@${username}` || "Instaverse";
-
-  console.log({ postLoading });
 
   useEffect(() => {
     if (postId) {

@@ -104,7 +104,17 @@ export const Home = () => {
             );
           })}
           {currentPage === totalPages ||
-            (newPostLoading && <RotatingLoader w={"50"} sw={"4"} />)}
+            (newPostLoading && (
+              <VStack
+                w={{ base: "100%", lg: "auto" }}
+                alignItems={"center"}
+                minW={{ md: "468px" }}
+              >
+                {new Array(6).fill(null)?.map((_, n) => (
+                  <PostBoxSkeleton />
+                ))}
+              </VStack>
+            ))}
           {currentPage === totalPages && <PostAlert />}
         </VStack>
       )}
