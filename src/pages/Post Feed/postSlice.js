@@ -129,9 +129,12 @@ export const handleLikes = createAsyncThunk(
       ? dispatch(removePostLike({ _id, currentUser }))
       : dispatch(updatePostLikes({ _id, currentUser }));
 
-    singlePost && unlike
-      ? dispatch(removeSinglePostLikes(currentUser))
-      : dispatch(updateSinglePostLikes(currentUser));
+    singlePost
+      ? unlike
+        ? dispatch(removeSinglePostLikes(currentUser))
+        : dispatch(updateSinglePostLikes(currentUser))
+      : null;
+
     const {
       data: { statusCode, data },
     } = unlike ? await removeLike(_id, token) : await addLike(_id, token);

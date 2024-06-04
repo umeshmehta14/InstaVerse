@@ -111,10 +111,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
       data.append("portfolio", portfolio);
       data.append("avatar", avatar);
       data.append("picture", picture);
-      data.append(
-        "username",
-        username === currentUser?.username ? "" : username
-      );
+      data.append("username", username);
       dispatch(editUserProfile({ data }));
       onClose();
     }

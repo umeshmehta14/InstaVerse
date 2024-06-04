@@ -7,7 +7,12 @@ export const Error = () => {
   const navigate = useNavigate();
   document.title = "Error/404";
   return (
-    <VStack w="100%" my={"2rem"} gap={"2rem"}>
+    <VStack
+      w="100%"
+      my={"2rem"}
+      gap={"2rem"}
+      height={{ base: "100vh", md: "auto" }}
+    >
       <Text fontSize={"2rem"} textAlign={"center"}>
         Sorry, this page isn't available.
       </Text>

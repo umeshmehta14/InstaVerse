@@ -114,7 +114,10 @@ const PostDetailSection = ({
                 cursor="pointer"
                 color={"red"}
                 title="Unlike"
-                onClick={() => dispatch(handleLikes({ _id, unlike: true }))}
+                onClick={() => {
+                  console.log("click on dislike");
+                  dispatch(handleLikes({ _id, unlike: true }));
+                }}
               />
             ) : (
               <Box

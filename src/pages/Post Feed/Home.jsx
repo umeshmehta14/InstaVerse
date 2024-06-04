@@ -64,7 +64,7 @@ export const Home = () => {
           minW={{ md: "468px" }}
         >
           {new Array(6).fill(null)?.map((_, n) => (
-            <PostBoxSkeleton />
+            <PostBoxSkeleton key={n} />
           ))}
         </VStack>
       ) : posts?.length === 0 ? (
@@ -106,7 +106,7 @@ export const Home = () => {
                 minW={{ md: "468px" }}
               >
                 {new Array(6).fill(null)?.map((_, n) => (
-                  <PostBoxSkeleton />
+                  <PostBoxSkeleton key={n} />
                 ))}
               </VStack>
             ))}
