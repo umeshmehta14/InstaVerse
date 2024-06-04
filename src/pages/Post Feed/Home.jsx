@@ -1,13 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import { Flex, Text, VStack } from "@chakra-ui/react";
 
-import { PostBox, RotatingLoader, UserSuggestion } from "../../components";
+import {
+  PostBox,
+  PostBoxSkeleton,
+  RotatingLoader,
+  UserSuggestion,
+} from "../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePosts, updateNewPostLoading } from "./postSlice";
 import { PostAlert } from "./Post Components/PostAlert";
 import { getUserBookmark } from "./userSlice";
+import { SinglePostSkeleton } from "../Single Post/SinglePost Components/SinglePostSkeleton";
 
 export const Home = () => {
   const {
@@ -62,10 +68,10 @@ export const Home = () => {
           w={{ base: "100%", lg: "auto" }}
           alignItems={"center"}
           minW={{ md: "468px" }}
-          justifyContent={"center"}
-          h={{ base: "50vh", md: "90vh" }}
         >
-          <RotatingLoader w={"70"} sw={"4"} />
+          {new Array(6).fill(null)?.map((_, n) => (
+            <PostBoxSkeleton />
+          ))}
         </VStack>
       ) : posts?.length === 0 ? (
         <Flex {...emptyMessageStyle}>
