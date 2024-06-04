@@ -1,15 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { Flex, Text, VStack } from "@chakra-ui/react";
-
-import {
-  PostBox,
-  PostBoxSkeleton,
-  RotatingLoader,
-  UserSuggestion,
-} from "../../components";
-import { useLocation, useNavigate } from "react-router-dom";
-import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { PostBox, PostBoxSkeleton, UserSuggestion } from "../../components";
+import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { getHomePosts, updateNewPostLoading } from "./postSlice";
 import { PostAlert } from "./Post Components/PostAlert";
 import { getUserBookmark } from "./userSlice";

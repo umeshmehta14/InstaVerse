@@ -1,5 +1,5 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { ExploreSkeleton, RotatingLoader } from "../../components";
+import { Box } from "@chakra-ui/react";
+import { ExploreSkeleton } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { GridBox } from "../Profile/Profile Components/GridBox";
 import { useEffect, useRef, useCallback } from "react";

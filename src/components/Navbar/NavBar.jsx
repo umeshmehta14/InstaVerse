@@ -53,7 +53,10 @@ export const NavBar = () => {
           fontFamily={"Pacifico, cursive"}
           fontSize={"1.2rem"}
           title="Instaverse | Home"
-          onClick={() => navigate("/")}
+          onClick={() => {
+            window.location.reload();
+            navigate("/");
+          }}
         >
           InstaVerse
         </Text>
