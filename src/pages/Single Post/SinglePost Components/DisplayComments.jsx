@@ -33,7 +33,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
 
 export const DisplayComments = ({ post, location }) => {
-  const { _id: postId, owner, comments, createdAt, caption } = post;
+  const {
+    _id: postId,
+    owner,
+    comments,
+    createdAt,
+    caption,
+    edit,
+    updatedAt,
+  } = post;
 
   const { username, avatar, _id } = owner;
 
@@ -125,9 +133,15 @@ export const DisplayComments = ({ post, location }) => {
                 {renderCaptionWithHashtags(caption)}
               </Text>
             </Box>
-            <Text fontSize="sm" color={"#717171e0"}>
-              {getRelativeTime(createdAt)}
-            </Text>
+            <Flex fontSize="sm" color={"#717171e0"} alignItems={"center"}>
+              {edit && (
+                <>
+                  <Text>Edited</Text>
+                  <Box display={"inline"} as={BsDot} />
+                </>
+              )}
+              <Text>{getRelativeTime(edit ? updatedAt : createdAt)}</Text>
+            </Flex>
           </VStack>
         </Flex>
       </Flex>
