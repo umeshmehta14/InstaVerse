@@ -117,7 +117,12 @@ export const DisplayComments = ({ post, location }) => {
               >
                 {username}
               </Text>
-              <Text as="span" fontWeight={100} fontSize={"0.95rem"}>
+              <Text
+                as="span"
+                whiteSpace={"break-spaces"}
+                fontWeight={100}
+                fontSize={"0.95rem"}
+              >
                 {renderCaptionWithHashtags(caption)}
               </Text>
             </Box>
