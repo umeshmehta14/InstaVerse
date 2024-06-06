@@ -92,3 +92,9 @@ export const hideScrollbar = {
   "-ms-overflow-style": "none",
   "scrollbar-width": "none",
 };
+
+export const userNameStyle = {
+  fontWeight: "semibold",
+  cursor: "pointer",
+  _hover: { color: "gray" },
+};

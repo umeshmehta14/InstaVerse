@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
 import { useDisclosure, useMediaQuery } from "@chakra-ui/react";
@@ -13,6 +13,7 @@ export const SinglePost = () => {
   const { postId } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
+  const previousPostIdRef = useRef();
 
   const redirectLocation = location?.state?.from?.pathname;
 
@@ -22,25 +23,25 @@ export const SinglePost = () => {
   const {
     singlePost: { post, postLoading },
   } = useSelector((state) => state.post);
-  const { currentUser } = useSelector((state) => state.authentication);
 
-  const { owner } = post || {};
-  const { username } = owner || {};
-
-  document.title = `@${username}` || "Instaverse";
+  document.title = `@${post?.owner?.username}` || "Instaverse";
 
   useEffect(() => {
-    if (postId) {
+    if (postId && postId !== previousPostIdRef.current) {
       dispatch(handleGetPostById({ _id: postId }));
       dispatch(updateTab(0));
+      previousPostIdRef.current = postId;
     }
-  }, [postId, dispatch, currentUser]);
+  }, [postId]);
+
+  console.log({ post });
 
   return (
     <>
       {isMobile &&
       (redirectLocation?.includes("/explore") ||
-        redirectLocation?.includes("/profile")) ? (
+        redirectLocation?.includes("/profile")) &&
+      post?.url ? (
         <MobileSinglePost />
       ) : postLoading ? (
         <SinglePostSkeleton
@@ -48,10 +49,13 @@ export const SinglePost = () => {
           onClose={onClose}
         />
       ) : (
-        <SinglePostModal
-          onClose={onClose}
-          redirectLocation={redirectLocation}
-        />
+        post?.owner?.username && (
+          <SinglePostModal
+            onClose={onClose}
+            redirectLocation={redirectLocation}
+            post={post}
+          />
+        )
       )}
     </>
   );

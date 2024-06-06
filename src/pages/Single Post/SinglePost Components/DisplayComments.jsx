@@ -16,40 +16,48 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { usePost, useUser } from "../../../contexts";
-import { getRelativeTime } from "../../../utils/Utils";
-import { InfoPopup } from "../../../components/index";
+import { usePost } from "../../../contexts";
+import {
+  getRelativeTime,
+  renderCaptionWithHashtags,
+} from "../../../utils/Utils";
+import { InfoPopup, RotatingLoader } from "../../../components/index";
 import {
   commentTextStyle,
   displayCommentMainBox,
 } from "../../../styles/SinglePostStyle";
 import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
-import { BsThreeDots } from "../../../utils/Icons";
+import { BsDot, BsThreeDots } from "../../../utils/Icons";
 import { simpleButton } from "../../../styles/GlobalStyles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
 
 export const DisplayComments = ({ post, location }) => {
-  const { owner, comments, createdAt, caption } = post || {};
+  const { _id: postId, owner, comments, createdAt, caption } = post;
 
-  const { username, avatar } = owner || {};
+  const { username, avatar, _id } = owner;
 
   const navigate = useNavigate();
 
   const infoPopupDisclosure = useDisclosure();
   const commentDeleteDisclosure = useDisclosure();
   const { colorMode } = useColorMode();
+  const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { handleFollow } = useUser();
+  const { loadingUsers } = useSelector((state) => state.user);
+
   const { handleDeleteComment } = usePost();
   const postFollow = currentUser?.following?.find(
     (user) => user?.username === username
   );
 
+  const isLoading = loadingUsers?.includes(_id);
+
   return (
     <>
       <Flex {...postNavStyles} display={{ base: "none", md: "flex" }}>
-        <Flex alignItems={"center"} gap={2}>
+        <Flex alignItems={"center"}>
           <Flex
             alignItems={"center"}
             cursor={"pointer"}
@@ -60,17 +68,31 @@ export const DisplayComments = ({ post, location }) => {
             <Text ml="2" fontWeight="semibold">
               {username}
             </Text>
+            {!postFollow && !(currentUser?.username === username) && (
+              <>
+                <Box as={BsDot} fontSize={"1.5rem"} />
+                <Button
+                  variant={"link-button"}
+                  size="sm"
+                  p={0}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    dispatch(
+                      handleFollowUnfollowUser({
+                        _id,
+                        follow: true,
+                        noPostLoading: true,
+                        notSelectedUser: true,
+                        singlePost: postId,
+                      })
+                    );
+                  }}
+                >
+                  {isLoading ? <RotatingLoader w="20" sw={"7"} /> : "Follow"}
+                </Button>
+              </>
+            )}
           </Flex>
-          {!postFollow && !(currentUser.username === username) && (
-            <Button
-              alignItems={"center"}
-              variant={"link-button"}
-              justifyContent="flex-start"
-              onClick={() => handleFollow(username)}
-            >
-              Follow
-            </Button>
-          )}
         </Flex>
         <Button {...postThreeDot} onClick={infoPopupDisclosure.onOpen}>
           <Box as={BsThreeDots} cursor={"pointer"} />
@@ -84,20 +106,24 @@ export const DisplayComments = ({ post, location }) => {
             onClick={() => navigate(`/profile/${username}`)}
             cursor={"pointer"}
           />
-          <VStack alignItems={"flex-start"}>
-            <Flex alignItems={"center"} gap={4}>
+          <VStack alignItems={"flex-start"} gap={0}>
+            <Box>
               <Text
-                fontWeight="semibold"
-                onClick={() => navigate(`/profile/${username}`)}
+                as="span"
                 cursor={"pointer"}
+                onClick={() => navigate(`/profile/${username}`)}
+                fontWeight="semibold"
+                mr={"0.3rem"}
               >
                 {username}
               </Text>
-              <Text fontSize="sm" color={"#717171e0"}>
-                {getRelativeTime(createdAt)}
+              <Text as="span" fontWeight={100} fontSize={"0.95rem"}>
+                {renderCaptionWithHashtags(caption)}
               </Text>
-            </Flex>
-            <Text fontWeight={0}>{caption}</Text>
+            </Box>
+            <Text fontSize="sm" color={"#717171e0"}>
+              {getRelativeTime(createdAt)}
+            </Text>
           </VStack>
         </Flex>
       </Flex>

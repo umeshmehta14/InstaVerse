@@ -10,15 +10,21 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 
 import { usePost, useUser } from "../../contexts";
 import { UnfollowModal } from "../index";
 import { PostModal } from "../index";
 import { simpleButton } from "../../styles/GlobalStyles";
-import { SET_EDIT_POST } from "../../utils/Constants";
-import { useDispatch, useSelector } from "react-redux";
-import { handleDeletePost } from "../../pages/Post Feed/postSlice";
+import {
+  handleDeletePost,
+  updateUploadPost,
+} from "../../pages/Post Feed/postSlice";
+import {
+  addUserBookmark,
+  removeUserBookmark,
+} from "../../pages/Post Feed/userSlice";
 
 export const InfoPopup = ({
   onClose,
@@ -35,23 +41,21 @@ export const InfoPopup = ({
   const mainLocation = useLocation();
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const {
-    userState: { userBookmarks },
-    handleBookmark,
-    handleRemoveBookmark,
-    handleFollow,
-  } = useUser();
+  const { bookmarks } = useSelector((state) => state.user);
+  const { handleFollow } = useUser();
 
   const dispatch = useDispatch();
   const {
     _id,
     owner: { username },
+    url,
+    caption,
   } = post;
-  const { postDispatch, handleShare } = usePost();
+  const { handleShare } = usePost();
 
-  const checkBookmark = userBookmarks?.find((bookmark) => bookmark === _id);
-  const isFollowing = currentUser?.following?.find(
-    (user) => user?.username === username
+  const checkBookmark = bookmarks?.find((post) => post?._id === _id);
+  const isFollowing = currentUser.following.find(
+    (user) => user.username === username
   );
 
   return (
@@ -68,7 +72,7 @@ export const InfoPopup = ({
                 <Button
                   sx={simpleButton}
                   onClick={() => {
-                    postDispatch({ type: SET_EDIT_POST, payload: post });
+                    dispatch(updateUploadPost({ url, caption }));
                     postModalDisclosure.onOpen();
                   }}
                 >
@@ -94,7 +98,7 @@ export const InfoPopup = ({
                   <Button
                     sx={simpleButton}
                     onClick={() => {
-                      handleRemoveBookmark(_id);
+                      dispatch(removeUserBookmark({ _id }));
                       onClose();
                     }}
                   >
@@ -104,7 +108,7 @@ export const InfoPopup = ({
                   <Button
                     sx={simpleButton}
                     onClick={() => {
-                      handleBookmark(_id);
+                      dispatch(addUserBookmark({ _id }));
                       onClose();
                     }}
                   >
@@ -189,6 +193,7 @@ export const InfoPopup = ({
           isOpen={postModalDisclosure.isOpen}
           onClose={postModalDisclosure.onClose}
           edit={true}
+          _id={_id}
         />
       )}
     </>

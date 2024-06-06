@@ -17,17 +17,16 @@ import {
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-import { usePost, useUser } from "../../../contexts";
-import { getRelativeTime } from "../../../utils/Utils";
+import { usePost } from "../../../contexts";
 import {
   commentInput,
   emojiPickerButtonNew,
+  userNameStyle,
 } from "../../../styles/GlobalStyles";
 import {
   IconHoverStyle,
   friendLikeUserStyle,
   iconPostStyles,
-  postContent,
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
@@ -47,6 +46,11 @@ import {
   getPostLikeUsers,
   removeUserBookmark,
 } from "../../../pages/Post Feed/userSlice";
+import {
+  handleShare,
+  renderCaptionWithHashtags,
+  truncateTextWithHTML,
+} from "../../../utils/Utils";
 
 const PostDetailSection = ({
   onOpen,
@@ -60,7 +64,7 @@ const PostDetailSection = ({
   const location = useLocation();
   const { colorMode } = useColorMode();
 
-  const { handleCreateComment, handleShare } = usePost();
+  const { handleCreateComment } = usePost();
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
 
@@ -72,7 +76,6 @@ const PostDetailSection = ({
     owner: { username },
     totalComments,
     caption,
-    createdAt,
     likes,
   } = post;
 
@@ -208,34 +211,44 @@ const PostDetailSection = ({
           )
         )}
 
-        <Flex fontSize={"sm"} flexWrap="wrap">
-          <Flex gap={1} w="100%">
-            <Text
-              {...userBoldStyle}
-              onClick={() => navigate(`/profile/${username}`)}
-            >
-              {username}
-            </Text>
-            <Text
-              {...postContent}
-              overflow={isExpanded ? "unset" : "hidden"}
-              whiteSpace={isExpanded ? "unset" : "nowrap"}
-            >
-              {caption}
-            </Text>
-          </Flex>
-          {caption?.length > 56 && (
+        <Box
+          fontSize={"sm"}
+          w={"100%"}
+          overflow={isExpanded ? "visible" : "hidden"}
+          whiteSpace="break-spaces"
+        >
+          <Text
+            as="span"
+            {...userNameStyle}
+            onClick={() => navigate(`/profile/${username}`)}
+            mr={"0.3rem"}
+          >
+            {username}
+          </Text>
+          <Text
+            as="span"
+            fontWeight={100}
+            fontSize={"0.95rem"}
+            display="inline"
+            whiteSpace={isExpanded ? "break-spaces" : "normal"}
+          >
+            {isExpanded
+              ? renderCaptionWithHashtags(caption)
+              : renderCaptionWithHashtags(truncateTextWithHTML(caption))}
+          </Text>
+          {caption?.length > 50 && (
             <Button
               variant={"link-button"}
               fontSize={"0.8rem"}
               p="0"
               color={"gray"}
               onClick={toggleExpanded}
+              ml={"0.3rem"}
             >
-              {isExpanded ? "Show less" : "Show more"}
+              {isExpanded ? "Show less" : "more"}
             </Button>
           )}
-        </Flex>
+        </Box>
 
         <Text
           fontSize={"sm"}
@@ -249,9 +262,6 @@ const PostDetailSection = ({
             `View ${totalComments > 1 ? "all" : ""} ${totalComments}  comment${
               totalComments > 1 ? "s" : ""
             }`}
-        </Text>
-        <Text fontSize="xs" color={"#717171e0"}>
-          {getRelativeTime(createdAt)}
         </Text>
       </Flex>
 

@@ -40,7 +40,7 @@ import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
 import { handleLikes } from "../../Post Feed/postSlice";
 
-export const SinglePostModal = ({ onClose, redirectLocation }) => {
+export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { colorMode } = useColorMode();
@@ -50,13 +50,10 @@ export const SinglePostModal = ({ onClose, redirectLocation }) => {
   const [doubleTap, setDoubleTap] = useState(false);
   const lastTapRef = useRef(0);
 
-  const {
-    singlePost: { post },
-  } = useSelector((state) => state.post);
   const { currentUser } = useSelector((state) => state.authentication);
 
-  const { _id, owner, url, likes } = post || {};
-  const { username } = owner || {};
+  const { _id, owner, url, likes } = post;
+  const { username } = owner;
 
   const userLike = likes?.find(
     ({ username }) => username === currentUser.username
@@ -125,7 +122,9 @@ export const SinglePostModal = ({ onClose, redirectLocation }) => {
                 <Text>Comments</Text>
               </HStack>
 
-              <DisplayComments post={post} location={redirectLocation} />
+              {username && (
+                <DisplayComments post={post} location={redirectLocation} />
+              )}
 
               {username && <CommentFooter post={post} userLike={userLike} />}
             </Flex>

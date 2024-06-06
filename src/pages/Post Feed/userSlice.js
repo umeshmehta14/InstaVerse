@@ -26,7 +26,12 @@ import {
   updateCurrentUserFollowing,
   updateProgress,
 } from "../Authentication/authenticationSlice";
-import { getExplorePosts, getHomePosts, updatePosts } from "./postSlice";
+import {
+  getExplorePosts,
+  getHomePosts,
+  handleGetPostById,
+  updatePosts,
+} from "./postSlice";
 
 const initialState = {
   guestUsers: [],
@@ -247,7 +252,15 @@ export const editUserProfile = createAsyncThunk(
 export const handleFollowUnfollowUser = createAsyncThunk(
   "user/follow-unfollow",
   async (
-    { _id, follow, username, notSelectedUser, unFollow, noPostLoading },
+    {
+      _id,
+      follow,
+      username,
+      notSelectedUser,
+      unFollow,
+      noPostLoading,
+      singlePost,
+    },
     { getState, dispatch }
   ) => {
     const { token, currentUser } = getState().authentication;
@@ -276,6 +289,8 @@ export const handleFollowUnfollowUser = createAsyncThunk(
           })
         );
       }
+      singlePost &&
+        dispatch(handleGetPostById({ _id: singlePost, noLoading: true }));
       unFollow &&
         dispatch(
           handleGetFollower({ _id: selectedUser._id, type: "following" })

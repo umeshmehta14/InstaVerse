@@ -26,27 +26,24 @@ import Picker from "@emoji-mart/react";
 import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
 import { usePost } from "../../contexts";
 import { imageCrossButton, postTextarea } from "../../styles/PostModalStyles";
-import { SET_EDIT_POST, SET_POSTVALUE } from "../../utils/Constants";
+import { SET_POSTVALUE } from "../../utils/Constants";
 import { inputLengthReader } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  handleEditPost,
   handleUploadPost,
   updateUploadPost,
 } from "../../pages/Post Feed/postSlice";
 import { Vortex } from "react-loader-spinner";
 
-export const PostModal = ({ isOpen, onClose, edit }) => {
+export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   const { colorMode } = useColorMode();
-  const {
-    handleCreatePost,
-    handleEditPost,
-    postState: { editPost, postValue },
-    postDispatch,
-  } = usePost();
+  const { postDispatch } = usePost();
 
   const [selectedPost, setSelectedPost] = useState("");
 
   const { uploadPost, isUploading } = useSelector((state) => state.post);
+
   const { caption, url } = uploadPost;
   const dispatch = useDispatch();
 
@@ -73,24 +70,23 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
     }
   };
 
-  useEffect(() => {
-    postDispatch({
-      type: SET_POSTVALUE,
-      payload: {
-        content: editPost?.content,
-        mediaUrl: editPost?.mediaUrl,
-      },
-    });
-  }, [isOpen]);
+  useEffect(() => {}, [isOpen]);
 
   const handlePost = () => {
-    const data = new FormData();
-    data.append("caption", caption);
-    data.append("post", selectedPost);
-    dispatch(handleUploadPost({ postData: data })).then(() => {
-      dispatch(updateUploadPost({ caption: "", url: "" }));
-      onClose();
-    });
+    if (edit) {
+      dispatch(handleEditPost({ _id, caption })).then(() => {
+        dispatch(updateUploadPost({ caption: "", url: "" }));
+        onClose();
+      });
+    } else {
+      const data = new FormData();
+      data.append("caption", caption);
+      data.append("post", selectedPost);
+      dispatch(handleUploadPost({ postData: data })).then(() => {
+        dispatch(updateUploadPost({ caption: "", url: "" }));
+        onClose();
+      });
+    }
   };
 
   return (
@@ -101,10 +97,6 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
           if (!isUploading) {
             onClose();
             dispatch(updateUploadPost({ caption: "", url: "" }));
-            postDispatch({
-              type: SET_EDIT_POST,
-              payload: { content: "", mediaUrl: "" },
-            });
           }
         }}
         size="xl"
@@ -126,7 +118,6 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
             <ModalCloseButton
               color={colorMode === "light" ? "black" : "white"}
               _hover={{ bg: "red" }}
-              isDisabled={isUploading}
             />
           )}
           <ModalBody>
@@ -141,7 +132,6 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                   height="80"
                   width="80"
                   ariaLabel="vortex-loading"
-                  wrapperStyle={{}}
                   wrapperClass="vortex-wrapper"
                   colors={[
                     "red",
@@ -169,14 +159,16 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                 {url && (
                   <Flex mt={"2rem"} justifyContent={"center"} pos={"relative"}>
                     <Img src={url} alt="Selected" width="200px" />
-                    <Box
-                      as={RxCross2}
-                      {...imageCrossButton}
-                      title="Remove"
-                      onClick={() =>
-                        dispatch(updateUploadPost({ ...uploadPost, url: "" }))
-                      }
-                    />
+                    {!edit && (
+                      <Box
+                        as={RxCross2}
+                        {...imageCrossButton}
+                        title="Remove"
+                        onClick={() =>
+                          dispatch(updateUploadPost({ ...uploadPost, url: "" }))
+                        }
+                      />
+                    )}
                   </Flex>
                 )}
                 <ModalFooter
@@ -238,9 +230,9 @@ export const PostModal = ({ isOpen, onClose, edit }) => {
                     }
                     onClick={handlePost}
                     fontSize={"1rem"}
-                    title="Share"
+                    title={edit ? "Edit" : "Share"}
                   >
-                    Share
+                    {edit ? "Edit" : "Share"}
                   </Button>
                 </ModalFooter>
               </>

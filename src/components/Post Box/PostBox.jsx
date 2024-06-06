@@ -19,7 +19,7 @@ import {
   mainPostBoxStyles,
   postNavStyles,
 } from "../../styles/PostBoxStyles";
-import { BsThreeDots } from "../../utils/Icons";
+import { BsDot, BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
 import { InfoPopup } from "../index";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +28,7 @@ import {
   updateTab,
 } from "../../pages/Post Feed/userSlice";
 import { handleLikes } from "../../pages/Post Feed/postSlice";
+import { getRelativeTime } from "../../utils/Utils";
 
 export const PostBox = ({ post }) => {
   const navigate = useNavigate();
@@ -38,16 +39,17 @@ export const PostBox = ({ post }) => {
   const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { isLoading, bookmarks } = useSelector((state) => state.user);
+  const { loadingUsers, bookmarks } = useSelector((state) => state.user);
 
   const [showSavedPostBox, setShowSavedPostBox] = useState(false);
   const [clicked, setClicked] = useState(false);
 
   const {
     _id,
-    owner: { username, avatar },
+    owner: { _id: userId, username, avatar },
     url,
     likes,
+    createdAt,
   } = post;
 
   const bookmarked = bookmarks?.find((post) => post?._id === _id);
@@ -59,6 +61,8 @@ export const PostBox = ({ post }) => {
   const userLike = likes.find(
     ({ username }) => username === currentUser.username
   );
+
+  const isLoading = loadingUsers.includes(userId);
 
   const [doubleTap, setDoubleTap] = useState(false);
   const lastTapRef = useRef(0);
@@ -102,35 +106,43 @@ export const PostBox = ({ post }) => {
       bg={colorMode === "light" ? "white.500" : "black.900"}
     >
       <Flex {...postNavStyles}>
-        <Flex alignItems={"center"} gap={2}>
-          <Flex
-            alignItems={"center"}
-            cursor={"pointer"}
-            title={username}
-            onClick={() => navigate(`/profile/${username}`)}
-          >
-            <Avatar size="sm" src={avatar?.url} />
-            <Text ml="2" fontWeight="medium">
-              {username}
-            </Text>
-          </Flex>
+        <Flex
+          alignItems={"center"}
+          cursor={"pointer"}
+          title={username}
+          onClick={() => navigate(`/profile/${username}`)}
+        >
+          <Avatar size="sm" src={avatar?.url} />
+          <Text ml="3" fontWeight="medium">
+            {username}
+          </Text>
+          <Box as={BsDot} color={"#717171e0"} fontSize={"1.5rem"} />
+          <Text fontSize="sm" color={"#717171e0"}>
+            {getRelativeTime(createdAt)}
+          </Text>
           {!postFollow && !(currentUser?.username === username) && (
-            <Button
-              variant={"link-button"}
-              size="sm"
-              p={0}
-              onClick={() =>
-                dispatch(
-                  handleFollowUnfollowUser({
-                    _id,
-                    follow: true,
-                    username,
-                  })
-                )
-              }
-            >
-              {isLoading ? <RotatingLoader w="20" sw={"7"} /> : "Follow"}
-            </Button>
+            <>
+              <Box as={BsDot} color={"#717171e0"} fontSize={"1.5rem"} />
+              <Button
+                variant={"link-button"}
+                size="sm"
+                p={0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dispatch(
+                    handleFollowUnfollowUser({
+                      _id: userId,
+                      follow: true,
+                      singlePost: _id,
+                      noPostLoading: true,
+                      notSelectedUser: true,
+                    })
+                  );
+                }}
+              >
+                {isLoading ? <RotatingLoader w="20" sw={"7"} /> : "Follow"}
+              </Button>
+            </>
           )}
         </Flex>
         <Button {...postThreeDot} onClick={infoPopupDisclosure.onOpen}>

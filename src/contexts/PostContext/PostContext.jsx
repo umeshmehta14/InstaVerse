@@ -189,18 +189,6 @@ export const PostProvider = ({ children }) => {
     }
   };
 
-  const handleShare = async (_id) => {
-    try {
-      await navigator.share({
-        title: "Instaverse",
-        text: "Check out this post",
-        url: `https://instaverse-um14.netlify.app/post/${_id}`,
-      });
-    } catch (error) {
-      console.error("Error sharing:", error);
-    }
-  };
-
   return (
     <PostContext.Provider
       value={{
@@ -216,7 +204,6 @@ export const PostProvider = ({ children }) => {
         handleSinglePost,
         handleCreateComment,
         handleDeleteComment,
-        handleShare,
       }}
     >
       {children}

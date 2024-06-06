@@ -58,6 +58,17 @@ export const removeLike = async (postId, token) =>
     }
   );
 
+export const editPost = async (postId, caption, token) =>
+  await axios.patch(
+    `${API_URL}/post/edit/${postId}`,
+    { caption },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
 export const getPostById = async (postId, token) =>
   await axios.get(`${API_URL}/post/${postId}`, {
     headers: {

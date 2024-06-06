@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addLike,
   deletePost,
+  editPost,
   explorePosts,
   getNotifications,
   getPostById,
@@ -146,7 +147,7 @@ export const handleLikes = createAsyncThunk(
 
 export const handleGetPostById = createAsyncThunk(
   "post/singlePost",
-  async ({ _id }, { getState }) => {
+  async ({ _id, noLoading }, { getState }) => {
     const { token } = getState().authentication;
 
     const {
@@ -154,6 +155,22 @@ export const handleGetPostById = createAsyncThunk(
     } = await getPostById(_id, token);
 
     if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const handleEditPost = createAsyncThunk(
+  "post/edit",
+  async ({ _id, caption }, { getState, dispatch }) => {
+    const { token } = getState().authentication;
+    dispatch(updatePostCaption({ _id, caption }));
+    const {
+      data: { statusCode, data },
+    } = await editPost(_id, caption, token);
+
+    if (statusCode === 200) {
+      console.log("edited");
       return data;
     }
   }
@@ -245,6 +262,16 @@ const postSlice = createSlice({
       post.likes = post.likes.filter(
         (user) => user._id !== action.payload?._id
       );
+    },
+
+    updatePostCaption: (state, action) => {
+      const { caption, _id } = action.payload;
+      state.homePosts.posts = state.homePosts.posts?.map((post) =>
+        post?._id === _id ? { ...post, caption } : post
+      );
+      if (state.singlePost?.post) {
+        state.singlePost.post.caption = caption;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -367,8 +394,9 @@ const postSlice = createSlice({
       }
     });
 
-    builder.addCase(handleGetPostById.pending, (state) => {
-      state.singlePost.postLoading = true;
+    builder.addCase(handleGetPostById.pending, (state, action) => {
+      const { noLoading } = action.meta.arg;
+      state.singlePost.postLoading = noLoading ? false : true;
     });
 
     builder.addCase(handleGetPostById.fulfilled, (state, action) => {
@@ -392,6 +420,7 @@ export const {
   removePostLike,
   updateSinglePostLikes,
   removeSinglePostLikes,
+  updatePostCaption,
 } = postSlice.actions;
 
 export const postReducer = postSlice.reducer;

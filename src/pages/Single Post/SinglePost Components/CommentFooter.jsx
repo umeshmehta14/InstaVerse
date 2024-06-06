@@ -133,9 +133,7 @@ export const CommentFooter = ({ post, userLike }) => {
                 as={FaRegBookmark}
                 sx={postIconStyle}
                 title="Save"
-                onClick={() => {
-                  dispatch(addUserBookmark({ _id }));
-                }}
+                onClick={() => dispatch(addUserBookmark({ _id }))}
               />
             )}
           </HStack>
