@@ -39,6 +39,7 @@ import { UserListModal } from "../../../components";
 import {
   commentInput,
   emojiPickerButtonNew,
+  userNameStyle,
 } from "../../../styles/GlobalStyles";
 import { commentFooterInputMain } from "../../../styles/SinglePostStyle";
 import { useDispatch, useSelector } from "react-redux";
@@ -145,6 +146,7 @@ export const CommentFooter = ({ post, userLike }) => {
               sx={friendLikeUserStyle}
               onClick={() => navigate(`/profile/${friendLike?.username}`)}
               align={"center"}
+              {...userNameStyle}
             >
               <Avatar
                 size="2xs"

@@ -28,7 +28,7 @@ import {
 } from "../../../styles/SinglePostStyle";
 import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
 import { BsDot, BsThreeDots } from "../../../utils/Icons";
-import { simpleButton } from "../../../styles/GlobalStyles";
+import { simpleButton, userNameStyle } from "../../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
 
@@ -65,7 +65,7 @@ export const DisplayComments = ({ post, location }) => {
             onClick={() => navigate(`/profile/${username}`)}
           >
             <Avatar size="sm" src={avatar?.url} />
-            <Text ml="2" fontWeight="semibold">
+            <Text ml="2" {...userNameStyle}>
               {username}
             </Text>
             {!postFollow && !(currentUser?.username === username) && (
@@ -110,9 +110,8 @@ export const DisplayComments = ({ post, location }) => {
             <Box>
               <Text
                 as="span"
-                cursor={"pointer"}
+                {...userNameStyle}
                 onClick={() => navigate(`/profile/${username}`)}
-                fontWeight="semibold"
                 mr={"0.3rem"}
               >
                 {username}

@@ -174,6 +174,7 @@ const PostDetailSection = ({
               sx={friendLikeUserStyle}
               onClick={() => navigate(`/profile/${friendLike.username}`)}
               align={"center"}
+              {...userNameStyle}
             >
               <Avatar
                 size="2xs"

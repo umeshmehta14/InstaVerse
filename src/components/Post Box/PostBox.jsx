@@ -29,6 +29,7 @@ import {
 } from "../../pages/Post Feed/userSlice";
 import { handleLikes } from "../../pages/Post Feed/postSlice";
 import { getRelativeTime } from "../../utils/Utils";
+import { userNameStyle } from "../../styles/GlobalStyles";
 
 export const PostBox = ({ post }) => {
   const navigate = useNavigate();
@@ -113,7 +114,7 @@ export const PostBox = ({ post }) => {
           onClick={() => navigate(`/profile/${username}`)}
         >
           <Avatar size="sm" src={avatar?.url} />
-          <Text ml="3" fontWeight="medium">
+          <Text ml="3" {...userNameStyle}>
             {username}
           </Text>
           <Box as={BsDot} color={"#717171e0"} fontSize={"1.5rem"} />
