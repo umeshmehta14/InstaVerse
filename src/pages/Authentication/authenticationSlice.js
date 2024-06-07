@@ -229,7 +229,6 @@ const authenticationSlice = createSlice({
     builder.addCase(loginHandler.rejected, (state, action) => {
       state.progress = 100;
       toast.error(action.payload.error);
-      console.error(action.payload.error);
     });
 
     builder.addCase(signupHandler.pending, (state) => {
@@ -251,7 +250,6 @@ const authenticationSlice = createSlice({
     builder.addCase(signupHandler.rejected, (state, action) => {
       state.progress = 100;
       toast.error(action.payload.error);
-      console.error(action.payload.error);
     });
 
     builder.addCase(logoutHandler.fulfilled, (state) => {
@@ -291,10 +289,6 @@ const authenticationSlice = createSlice({
       state.formValidation.errorText = text;
     });
 
-    builder.addCase(validateFromDetails.rejected, (_, action) => {
-      console.error(action.error);
-    });
-
     builder.addCase(sendOtpToEmail.pending, (state) => {
       state.btnLoader = true;
     });
@@ -311,7 +305,6 @@ const authenticationSlice = createSlice({
       action.payload.error
         ? toast.error(action.payload.error)
         : toast.error("Something went wrong, please try again later");
-      console.error(action.payload.error);
     });
 
     builder.addCase(verifyUserOtp.pending, (state) => {
@@ -334,7 +327,6 @@ const authenticationSlice = createSlice({
       } else {
         state.otpDetails.errorMessage = action.payload.message;
       }
-      console.error(action.payload.message);
       state.btnLoader = false;
     });
 
@@ -354,7 +346,6 @@ const authenticationSlice = createSlice({
 
     builder.addCase(resetUserPassword.rejected, (state, action) => {
       state.otpDetails.errorMessage = action.payload.message;
-      console.error(action.payload.message);
       state.btnLoader = false;
     });
   },
