@@ -13,7 +13,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 
-import { usePost, useUser } from "../../contexts";
 import { UnfollowModal } from "../index";
 import { PostModal } from "../index";
 import { simpleButton } from "../../styles/GlobalStyles";
@@ -23,8 +22,10 @@ import {
 } from "../../pages/Post Feed/postSlice";
 import {
   addUserBookmark,
+  handleFollowUnfollowUser,
   removeUserBookmark,
 } from "../../pages/Post Feed/userSlice";
+import { handleShare } from "../../utils/Utils";
 
 export const InfoPopup = ({
   onClose,
@@ -42,7 +43,6 @@ export const InfoPopup = ({
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { bookmarks } = useSelector((state) => state.user);
-  const { handleFollow } = useUser();
 
   const dispatch = useDispatch();
   const {
@@ -51,7 +51,6 @@ export const InfoPopup = ({
     url,
     caption,
   } = post;
-  const { handleShare } = usePost();
 
   const checkBookmark = bookmarks?.find((post) => post?._id === _id);
   const isFollowing = currentUser.following.find(
@@ -163,7 +162,14 @@ export const InfoPopup = ({
                     sx={simpleButton}
                     color={"blue.500"}
                     onClick={() => {
-                      handleFollow(username);
+                      handleFollowUnfollowUser({
+                        _id: userId,
+                        follow: true,
+                        singlePost: _id,
+                        noPostLoading: true,
+                        notSelectedUser: true,
+                      });
+
                       onClose();
                     }}
                   >

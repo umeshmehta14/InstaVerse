@@ -17,7 +17,6 @@ import {
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-import { usePost } from "../../../contexts";
 import {
   commentInput,
   emojiPickerButtonNew,
@@ -64,7 +63,6 @@ const PostDetailSection = ({
   const location = useLocation();
   const { colorMode } = useColorMode();
 
-  const { handleCreateComment } = usePost();
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
 

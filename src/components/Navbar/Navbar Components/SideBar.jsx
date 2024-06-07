@@ -36,9 +36,7 @@ import {
   FaRegBookmark,
   FiLogOut,
 } from "../../../utils/Icons";
-import { useUser } from "../../../contexts";
 import SearchBox from "./SearchBox";
-import { SET_DEFAULT_TAB } from "../../../utils/Constants";
 import { SwitchAccountModal } from "../../index";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../../pages/Authentication/authenticationSlice";

@@ -19,7 +19,6 @@ import {
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-import { usePost, useUser } from "../../../contexts";
 import {
   AiFillHeart,
   AiOutlineHeart,
@@ -49,6 +48,7 @@ import {
   removeUserBookmark,
 } from "../../Post Feed/userSlice";
 import { handleLikes } from "../../Post Feed/postSlice";
+import { handleShare } from "../../../utils/Utils";
 
 export const CommentFooter = ({ post, userLike }) => {
   const { colorMode } = useColorMode();
@@ -59,7 +59,6 @@ export const CommentFooter = ({ post, userLike }) => {
 
   const { _id, likes } = post;
 
-  const { handleCreateComment, handleShare } = usePost();
   const { currentUser } = useSelector((state) => state.authentication);
   const { bookmarks } = useSelector((state) => state.user);
 

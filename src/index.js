@@ -6,12 +6,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 import "./index.css";
 import App from "./App";
 import theme from "./styles/Theme";
-import {
-  UserContext,
-  UserProvider,
-  PostContext,
-  PostProvider,
-} from "./contexts";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 
@@ -21,15 +15,9 @@ root.render(
     <Router>
       <Provider store={store}>
         <ChakraProvider theme={theme}>
-          <PostProvider>
-            <UserProvider>
-              <App />
-            </UserProvider>
-          </PostProvider>
+          <App />
         </ChakraProvider>
       </Provider>
     </Router>
   </React.StrictMode>
 );
-
-export { PostContext, UserContext };

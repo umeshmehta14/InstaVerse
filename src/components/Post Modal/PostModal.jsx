@@ -24,9 +24,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
-import { usePost } from "../../contexts";
 import { imageCrossButton, postTextarea } from "../../styles/PostModalStyles";
-import { SET_POSTVALUE } from "../../utils/Constants";
 import { inputLengthReader } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -38,7 +36,6 @@ import { Vortex } from "react-loader-spinner";
 
 export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   const { colorMode } = useColorMode();
-  const { postDispatch } = usePost();
 
   const [selectedPost, setSelectedPost] = useState("");
 

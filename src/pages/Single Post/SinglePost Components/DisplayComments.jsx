@@ -16,7 +16,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { usePost } from "../../../contexts";
 import {
   getRelativeTime,
   renderCaptionWithHashtags,
@@ -37,9 +36,9 @@ export const DisplayComments = ({ post, location }) => {
     _id: postId,
     owner,
     comments,
-    createdAt,
     caption,
     edit,
+    createdAt,
     updatedAt,
   } = post;
 
@@ -55,7 +54,6 @@ export const DisplayComments = ({ post, location }) => {
   const { currentUser } = useSelector((state) => state.authentication);
   const { loadingUsers } = useSelector((state) => state.user);
 
-  const { handleDeleteComment } = usePost();
   const postFollow = currentUser?.following?.find(
     (user) => user?.username === username
   );
