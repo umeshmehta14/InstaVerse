@@ -5,7 +5,7 @@ import { Box, Text, VStack, useColorMode } from "@chakra-ui/react";
 export const Error = () => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
-  document.title = "Error/404";
+  document.title = "Page Not Found | Instaverse";
   return (
     <VStack
       w="100%"

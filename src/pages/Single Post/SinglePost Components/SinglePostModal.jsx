@@ -93,7 +93,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
         <ModalCloseButton
           color={colorMode === "dark" ? "white" : "black"}
           {...singlePostModalClose}
-          onClick={() => navigate(redirectLocation)}
+          onClick={() => navigate(redirectLocation || "/")}
         />
         <ModalBody p={0} height={"100%"}>
           <HStack align={"flex-start"} height={"600px"}>

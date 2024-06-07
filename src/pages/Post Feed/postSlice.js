@@ -267,10 +267,11 @@ const postSlice = createSlice({
     updatePostCaption: (state, action) => {
       const { caption, _id } = action.payload;
       state.homePosts.posts = state.homePosts.posts?.map((post) =>
-        post?._id === _id ? { ...post, caption } : post
+        post?._id === _id ? { ...post, caption, edit: true } : post
       );
       if (state.singlePost?.post) {
         state.singlePost.post.caption = caption;
+        state.singlePost.post.edit = true;
       }
     },
   },

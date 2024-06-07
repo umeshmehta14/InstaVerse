@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDisclosure, useMediaQuery } from "@chakra-ui/react";
 
 import { MobileSinglePost, SinglePostModal } from "../index";
@@ -14,6 +14,7 @@ export const SinglePost = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const previousPostIdRef = useRef();
+  const navigate = useNavigate();
 
   const redirectLocation = location?.state?.from?.pathname;
 
@@ -34,7 +35,12 @@ export const SinglePost = () => {
     }
   }, [postId]);
 
-  console.log({ post });
+  useEffect(() => {
+    console.log(!postLoading, !post?.url);
+    if (!postLoading && !post?.url) {
+      navigate("/404");
+    }
+  }, [postLoading]);
 
   return (
     <>

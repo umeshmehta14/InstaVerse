@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 
-import { UnfollowModal } from "../index";
+import { PostDeleteModal, UnfollowModal } from "../index";
 import { PostModal } from "../index";
 import { simpleButton } from "../../styles/GlobalStyles";
 import {
@@ -37,6 +37,7 @@ export const InfoPopup = ({
   const { colorMode } = useColorMode();
   const unfollowModalDisclosure = useDisclosure();
   const postModalDisclosure = useDisclosure();
+  const postDeleteModalDisclosure = useDisclosure();
 
   const navigate = useNavigate();
   const mainLocation = useLocation();
@@ -47,7 +48,7 @@ export const InfoPopup = ({
   const dispatch = useDispatch();
   const {
     _id,
-    owner: { username },
+    owner: { _id: userId, username },
     url,
     caption,
   } = post;
@@ -81,11 +82,7 @@ export const InfoPopup = ({
                 <Button
                   sx={simpleButton}
                   color={"red"}
-                  onClick={() => {
-                    dispatch(handleDeletePost({ _id }));
-                    fromSinglePost ? navigate(location) : "";
-                    onClose();
-                  }}
+                  onClick={postDeleteModalDisclosure.onOpen}
                 >
                   Delete
                 </Button>
@@ -162,13 +159,15 @@ export const InfoPopup = ({
                     sx={simpleButton}
                     color={"blue.500"}
                     onClick={() => {
-                      handleFollowUnfollowUser({
-                        _id: userId,
-                        follow: true,
-                        singlePost: _id,
-                        noPostLoading: true,
-                        notSelectedUser: true,
-                      });
+                      dispatch(
+                        handleFollowUnfollowUser({
+                          _id: userId,
+                          follow: true,
+                          singlePost: _id,
+                          noPostLoading: true,
+                          notSelectedUser: true,
+                        })
+                      );
 
                       onClose();
                     }}
@@ -188,10 +187,23 @@ export const InfoPopup = ({
       </Modal>
       {unfollowModalDisclosure.isOpen && (
         <UnfollowModal
-          {...post}
+          {...post.owner}
+          singlePost={_id}
           isOpen={unfollowModalDisclosure.isOpen}
           onClose={unfollowModalDisclosure.onClose}
+          infoPopupOnclose={onClose}
           fromInfoPop={true}
+        />
+      )}
+      {postDeleteModalDisclosure.isOpen && (
+        <PostDeleteModal
+          _id={_id}
+          isOpen={postDeleteModalDisclosure.isOpen}
+          onClose={postDeleteModalDisclosure.onClose}
+          infoPopupOnclose={onClose}
+          fromInfoPop={true}
+          fromSinglePost={fromSinglePost}
+          location={location}
         />
       )}
       {postModalDisclosure.isOpen && (
