@@ -22,7 +22,9 @@ export const Profile = () => {
   const { currentUser, progress } = useSelector(
     (state) => state.authentication
   );
-  const { selectedUser } = useSelector((state) => state.user);
+  const { selectedUser, isSelectedUserFetched } = useSelector(
+    (state) => state.user
+  );
 
   const dispatch = useDispatch();
 
@@ -37,10 +39,11 @@ export const Profile = () => {
   }, [paramUser.username, prevUsername, dispatch]);
 
   useEffect(() => {
-    if (progress === 100 && !selectedUser?.username) {
-      navigate("/404");
+    console.log({ progress, l: !selectedUser?.username, selectedUser });
+    if (isSelectedUserFetched && progress === 100 && !selectedUser?.username) {
+      navigate(`/${paramUser.username}`);
     }
-  }, [selectedUser?.username]);
+  }, [selectedUser?.username, isSelectedUserFetched, progress]);
 
   return progress === 100 ? (
     <Flex {...profileMainBox} sx={hideScrollbar}>

@@ -37,6 +37,7 @@ const initialState = {
   guestUsers: [],
   isLoading: false,
   selectedUser: {},
+  isSelectedUserFetched: false,
   searchValue: "",
   searchedUsers: [],
   isSearchUserFetched: false,
@@ -67,23 +68,31 @@ export const getGuestUsers = createAsyncThunk(
 
 export const getUserByUsername = createAsyncThunk(
   "user/getByusername",
-  async ({ username, noLoading, currentUser }, { getState, dispatch }) => {
-    !noLoading && dispatch(updateProgress(40));
+  async (
+    { username, noLoading, currentUser },
+    { getState, dispatch, rejectWithValue }
+  ) => {
+    try {
+      !noLoading && dispatch(updateProgress(40));
 
-    const { token } = getState().authentication;
-    const {
-      data: { statusCode, data },
-    } = await getByUsername(username, token);
+      const { token } = getState().authentication;
+      const {
+        data: { statusCode, data },
+      } = await getByUsername(username, token);
 
-    if (statusCode === 200) {
-      if (currentUser) {
-        dispatch(updateCurrentUser(data));
+      if (statusCode === 200) {
+        if (currentUser) {
+          dispatch(updateCurrentUser(data));
+          return data;
+        }
+        !noLoading && dispatch(updateProgress(100));
         return data;
+      } else {
+        !noLoading && dispatch(updateProgress(100));
       }
+    } catch (error) {
       !noLoading && dispatch(updateProgress(100));
-      return data;
-    } else {
-      !noLoading && dispatch(updateProgress(100));
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -440,11 +449,13 @@ const userSlice = createSlice({
 
     builder.addCase(getUserByUsername.fulfilled, (state, action) => {
       state.selectedUser = action.payload;
+      state.isSelectedUserFetched = true;
     });
 
-    builder.addCase(getUserByUsername.rejected, (_, action) => {
-      toast.error("Something went wrong");
+    builder.addCase(getUserByUsername.rejected, (state, action) => {
+      state.selectedUser = {};
       console.error(action.error);
+      state.isSelectedUserFetched = true;
     });
 
     builder.addCase(getSearchedUsers.pending, (state) => {
@@ -473,7 +484,7 @@ const userSlice = createSlice({
       state.isLoading = false;
     });
 
-    builder.addCase(getUserSearchList.rejected, (_, action) => {
+    builder.addCase(getUserSearchList.rejected, (state, action) => {
       console.error(action.error);
       state.isLoading = false;
     });
