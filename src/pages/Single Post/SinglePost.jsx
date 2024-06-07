@@ -36,7 +36,6 @@ export const SinglePost = () => {
   }, [postId]);
 
   useEffect(() => {
-    console.log(!postLoading, !post?.url);
     if (!postLoading && !post?.url) {
       navigate("/404");
     }

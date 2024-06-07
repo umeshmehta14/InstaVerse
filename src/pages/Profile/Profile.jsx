@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Flex, Divider, useDisclosure } from "@chakra-ui/react";
 
 import { ProfileDetail } from "../index";
@@ -13,6 +13,7 @@ import { hideScrollbar } from "../../styles/GlobalStyles";
 
 export const Profile = () => {
   const paramUser = useParams();
+  const navigate = useNavigate();
 
   const postModalDisclosure = useDisclosure();
 
@@ -34,6 +35,13 @@ export const Profile = () => {
       setPrevUsername(paramUser.username);
     }
   }, [paramUser.username, prevUsername, dispatch]);
+
+  useEffect(() => {
+    console.log({ progress, l: !selectedUser?.username });
+    if (progress === 100 && !selectedUser?.username) {
+      navigate("/404");
+    }
+  }, [selectedUser?.username]);
 
   return progress === 100 ? (
     <Flex {...profileMainBox} sx={hideScrollbar}>

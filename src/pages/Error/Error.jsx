@@ -16,7 +16,7 @@ export const Error = () => {
       <Text fontSize={"2rem"} textAlign={"center"}>
         Sorry, this page isn't available.
       </Text>
-      <Box p={"1rem"}>
+      <Box p={"1rem"} textAlign={"center"}>
         <Text display={"inline"}>
           The link you followed may be broken, or the page may have been
           removed.
