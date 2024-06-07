@@ -37,6 +37,7 @@ const initialState = {
   singlePost: {
     postLoading: false,
     post: {},
+    postFetched: false,
   },
 };
 
@@ -403,6 +404,7 @@ const postSlice = createSlice({
     builder.addCase(handleGetPostById.fulfilled, (state, action) => {
       state.singlePost.post = action.payload;
       state.singlePost.postLoading = false;
+      state.singlePost.postFetched = true;
     });
 
     builder.addCase(handleGetPostById.rejected, (state, action) => {

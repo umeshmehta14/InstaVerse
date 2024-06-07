@@ -37,7 +37,6 @@ export const Profile = () => {
   }, [paramUser.username, prevUsername, dispatch]);
 
   useEffect(() => {
-    console.log({ progress, l: !selectedUser?.username });
     if (progress === 100 && !selectedUser?.username) {
       navigate("/404");
     }

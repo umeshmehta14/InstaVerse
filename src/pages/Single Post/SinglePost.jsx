@@ -22,7 +22,7 @@ export const SinglePost = () => {
   const [isMobile] = useMediaQuery("(max-width: 767px)");
 
   const {
-    singlePost: { post, postLoading },
+    singlePost: { post, postLoading, postFetched },
   } = useSelector((state) => state.post);
 
   document.title = `@${post?.owner?.username}` || "Instaverse";
@@ -36,10 +36,10 @@ export const SinglePost = () => {
   }, [postId]);
 
   useEffect(() => {
-    if (!postLoading && !post?.url) {
+    if (!post?.url && !postLoading && postFetched) {
       navigate("/404");
     }
-  }, [postLoading]);
+  }, [post?.url]);
 
   return (
     <>
