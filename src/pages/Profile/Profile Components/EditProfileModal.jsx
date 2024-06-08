@@ -29,7 +29,6 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import { AvatarModal } from "../../index";
 import {
   inputLengthReader,
@@ -40,6 +39,7 @@ import {
 import { AiOutlinePicture, SlTrash, RxAvatar } from "../../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import { editUserProfile } from "../../Post Feed/userSlice";
+import toast from "react-hot-toast";
 
 export const EditProfileModal = ({ isOpen, onClose }) => {
   const { currentUser } = useSelector((state) => state.authentication);
@@ -51,7 +51,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
   const discardDisclosure = useDisclosure();
   const avatarDisclosure = useDisclosure();
 
-  const editData = {
+  const initialEditData = {
     username: currentUser?.username,
     avatar: currentUser?.avatar.url,
     fullName: currentUser?.fullName,
@@ -60,15 +60,15 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
     picture: "",
   };
 
-  const [updateProfile, setUpdateProfile] = useState(editData);
+  const [updateProfile, setUpdateProfile] = useState(initialEditData);
   const [selectedPicture, setSelectedPicture] = useState("");
+
   const { avatar, fullName, bio, portfolio, username, picture } = updateProfile;
 
-  const handleBioChange = (e) => {
-    const { value } = e.target;
-    if (value?.length <= 150) {
-      setUpdateProfile({ ...updateProfile, bio: value });
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "bio" && value.length > 150) return;
+    setUpdateProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileSelect = () => {
@@ -77,48 +77,56 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
 
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
-    setUpdateProfile({
-      ...updateProfile,
+    setUpdateProfile((prev) => ({
+      ...prev,
       picture: file,
       avatar: "",
-    });
+    }));
     setSelectedPicture(URL.createObjectURL(file));
   };
 
   const handleCartoonAvatar = (url) => {
-    setUpdateProfile({
-      ...updateProfile,
+    setUpdateProfile((prev) => ({
+      ...prev,
       avatar: url,
       picture: "",
-    });
+    }));
   };
 
   const handleEditSubmission = () => {
+    if (currentUser.guest) {
+      toast.error("Guest user cannot edit profile");
+      onClose();
+      return;
+    }
     if (
       username === currentUser?.username &&
       avatar === currentUser?.avatar.url &&
       fullName === currentUser?.fullName &&
       portfolio === currentUser?.portfolio &&
       bio === currentUser?.bio &&
-      picture === ""
+      !picture
     ) {
       onClose();
       return;
-    } else {
-      const data = new FormData();
-      data.append("bio", bio);
-      data.append("fullName", fullName);
-      data.append("portfolio", portfolio);
-      data.append("avatar", avatar);
-      data.append("picture", picture);
-      data.append("username", username);
-      dispatch(editUserProfile({ data }));
-      onClose();
     }
+
+    const data = new FormData();
+    data.append("bio", bio);
+    data.append("fullName", fullName);
+    data.append("portfolio", portfolio);
+    data.append("avatar", avatar);
+    data.append("picture", picture);
+    data.append("username", username);
+
+    dispatch(editUserProfile({ data }));
+    onClose();
   };
 
   useEffect(() => {
-    setUpdateProfile(editData);
+    if (isOpen) {
+      setUpdateProfile(initialEditData);
+    }
   }, [isOpen]);
 
   return (
@@ -179,7 +187,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
                           handleCartoonAvatar={handleCartoonAvatar}
                         />
                       )}
-                      {avatar?.length > 0 && (
+                      {(avatar || selectedPicture) && (
                         <Button
                           w="100%"
                           justifyContent={"flex-start"}
@@ -212,40 +220,32 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
               <FormControl>
                 <FormLabel sx={editFormLabel}>Username</FormLabel>
                 <Input
-                  placeholder="username"
+                  name="username"
+                  placeholder="Username"
                   value={username}
                   sx={editFormInput}
                   maxLength={20}
-                  onChange={(e) =>
-                    setUpdateProfile({
-                      ...updateProfile,
-                      username: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                 />
               </FormControl>
               <FormControl>
                 <FormLabel sx={editFormLabel}>Full Name</FormLabel>
                 <Input
+                  name="fullName"
                   placeholder="Full Name"
                   value={fullName}
                   sx={editFormInput}
                   maxLength={20}
-                  onChange={(e) =>
-                    setUpdateProfile({
-                      ...updateProfile,
-                      fullName: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                 />
               </FormControl>
-
               <FormControl pos={"relative"}>
                 <FormLabel sx={editFormLabel}>Bio</FormLabel>
                 <Input
+                  name="bio"
                   placeholder="Bio..."
                   sx={editFormInput}
-                  onChange={handleBioChange}
+                  onChange={handleChange}
                   value={bio}
                 />
                 <Text
@@ -253,26 +253,20 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
                   color={bio?.length >= 145 ? "red" : ""}
                 >{`${bio?.length || 0}/150`}</Text>
               </FormControl>
-
               <FormControl>
                 <FormLabel sx={editFormLabel}>Add link</FormLabel>
                 <Input
+                  name="portfolio"
                   placeholder="Add link"
                   value={portfolio}
                   sx={editFormInput}
                   maxLength={50}
-                  onChange={(e) =>
-                    setUpdateProfile({
-                      ...updateProfile,
-                      portfolio: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                   color={colorMode === "dark" ? "blue.200" : "blue.500"}
                 />
               </FormControl>
             </VStack>
           </ModalBody>
-
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleEditSubmission}>
               Save
@@ -290,7 +284,6 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
           isCentered
         >
           <AlertDialogOverlay />
-
           <AlertDialogContent
             bg={colorMode === "dark" ? "black.600" : "white.500"}
             w={"350px"}
