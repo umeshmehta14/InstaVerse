@@ -13,8 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 
-import { PostDeleteModal, UnfollowModal } from "../index";
-import { PostModal } from "../index";
+import { PostDeleteModal, UnfollowModal, PostModal } from "../index";
 import { simpleButton } from "../../styles/GlobalStyles";
 import { updateUploadPost } from "../../pages/Post Feed/postSlice";
 import {
@@ -43,17 +42,63 @@ export const InfoPopup = ({
   const { bookmarks } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-  const {
-    _id,
-    owner: { _id: userId, username },
-    url,
-    caption,
-  } = post;
 
-  const checkBookmark = bookmarks?.find((post) => post?._id === _id);
-  const isFollowing = currentUser.following.find(
+  const { _id, owner } = post;
+  const { _id: userId, username } = owner;
+
+  const isBookmarked = bookmarks?.some((post) => post?._id === _id);
+  const isFollowing = currentUser.following.some(
     (user) => user.username === username
   );
+
+  const handleEdit = () => {
+    if (currentUser.guest) {
+      toast.error("Guest users cannot edit posts.");
+      onClose();
+    } else {
+      dispatch(updateUploadPost({ url: post.url, caption: post.caption }));
+      postModalDisclosure.onOpen();
+    }
+  };
+
+  const handleBookmark = () => {
+    if (isBookmarked) {
+      dispatch(removeUserBookmark({ _id }));
+    } else {
+      dispatch(addUserBookmark({ _id }));
+    }
+    onClose();
+  };
+
+  const handleFollow = () => {
+    dispatch(
+      handleFollowUnfollowUser({
+        _id: userId,
+        follow: true,
+        singlePost: _id,
+        noPostLoading: true,
+        notSelectedUser: true,
+      })
+    );
+    onClose();
+  };
+
+  const handleUnfollow = () => {
+    unfollowModalDisclosure.onOpen();
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(
+      `https://instaverse-um14.netlify.app/post/${_id}`
+    );
+    toast.success("Link copied to clipboard.");
+    onClose();
+  };
+
+  const handleGoToPost = () => {
+    navigate(`/post/${_id}`, { state: { from: mainLocation } });
+    onClose();
+  };
 
   return (
     <>
@@ -66,13 +111,7 @@ export const InfoPopup = ({
           <ModalBody>
             {currentUser?.username === username ? (
               <>
-                <Button
-                  sx={simpleButton}
-                  onClick={() => {
-                    dispatch(updateUploadPost({ url, caption }));
-                    postModalDisclosure.onOpen();
-                  }}
-                >
+                <Button sx={simpleButton} onClick={handleEdit}>
                   Edit
                 </Button>
                 <Divider />
@@ -87,47 +126,17 @@ export const InfoPopup = ({
               </>
             ) : (
               <>
-                {checkBookmark ? (
-                  <Button
-                    sx={simpleButton}
-                    onClick={() => {
-                      dispatch(removeUserBookmark({ _id }));
-                      onClose();
-                    }}
-                  >
-                    Remove from favourites
-                  </Button>
-                ) : (
-                  <Button
-                    sx={simpleButton}
-                    onClick={() => {
-                      dispatch(addUserBookmark({ _id }));
-                      onClose();
-                    }}
-                  >
-                    Add to favourites
-                  </Button>
-                )}
+                <Button sx={simpleButton} onClick={handleBookmark}>
+                  {isBookmarked
+                    ? "Remove from favourites"
+                    : "Add to favourites"}
+                </Button>
                 <Divider />
-                <Button
-                  sx={simpleButton}
-                  onClick={() =>
-                    navigate(`/post/${_id}`, { state: { from: mainLocation } })
-                  }
-                >
+                <Button sx={simpleButton} onClick={handleGoToPost}>
                   Go to post
                 </Button>
                 <Divider />
-                <Button
-                  sx={simpleButton}
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      `https://instaverse-um14.netlify.app/post/${_id}`
-                    );
-                    toast.success("Link copied to your clipboard");
-                    onClose();
-                  }}
-                >
+                <Button sx={simpleButton} onClick={handleCopyLink}>
                   Copy link
                 </Button>
                 <Divider />
@@ -141,38 +150,13 @@ export const InfoPopup = ({
                   Share to
                 </Button>
                 <Divider />
-                {isFollowing ? (
-                  <Button
-                    sx={simpleButton}
-                    color={"red.500"}
-                    onClick={() => {
-                      unfollowModalDisclosure.onOpen();
-                    }}
-                  >
-                    Unfollow
-                  </Button>
-                ) : (
-                  <Button
-                    sx={simpleButton}
-                    color={"blue.500"}
-                    onClick={() => {
-                      dispatch(
-                        handleFollowUnfollowUser({
-                          _id: userId,
-                          follow: true,
-                          singlePost: _id,
-                          noPostLoading: true,
-                          notSelectedUser: true,
-                        })
-                      );
-
-                      onClose();
-                    }}
-                  >
-                    Follow
-                  </Button>
-                )}
-
+                <Button
+                  sx={simpleButton}
+                  color={isFollowing ? "red.500" : "blue.500"}
+                  onClick={isFollowing ? handleUnfollow : handleFollow}
+                >
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </Button>
                 <Divider />
               </>
             )}
@@ -182,6 +166,7 @@ export const InfoPopup = ({
           </ModalBody>
         </ModalContent>
       </Modal>
+
       {unfollowModalDisclosure.isOpen && (
         <UnfollowModal
           {...post.owner}
