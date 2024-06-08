@@ -16,10 +16,7 @@ import { toast } from "react-hot-toast";
 import { PostDeleteModal, UnfollowModal } from "../index";
 import { PostModal } from "../index";
 import { simpleButton } from "../../styles/GlobalStyles";
-import {
-  handleDeletePost,
-  updateUploadPost,
-} from "../../pages/Post Feed/postSlice";
+import { updateUploadPost } from "../../pages/Post Feed/postSlice";
 import {
   addUserBookmark,
   handleFollowUnfollowUser,

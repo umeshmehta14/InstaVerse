@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Divider,
@@ -8,10 +9,12 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import { simpleButton } from "../../styles/GlobalStyles";
 import { handleDeletePost } from "../../pages/Post Feed/postSlice";
-import { useNavigate } from "react-router-dom";
 
 export const PostDeleteModal = ({
   isOpen,
@@ -24,6 +27,20 @@ export const PostDeleteModal = ({
   const { colorMode } = useColorMode();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.authentication);
+
+  const handleDelete = () => {
+    if (currentUser.guest) {
+      toast.error("Guest users cannot delete posts.");
+    } else {
+      dispatch(handleDeletePost({ _id }));
+      if (fromSinglePost) {
+        navigate(location);
+      }
+    }
+    infoPopupOnclose();
+    onClose();
+  };
 
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
@@ -45,16 +62,7 @@ export const PostDeleteModal = ({
             Are you sure you want to delete this post?
           </Text>
           <Divider />
-          <Button
-            sx={simpleButton}
-            color={"#ed4956"}
-            onClick={() => {
-              dispatch(handleDeletePost({ _id }));
-              fromSinglePost ? navigate(location) : "";
-              infoPopupOnclose();
-              onClose();
-            }}
-          >
+          <Button sx={simpleButton} color={"#ed4956"} onClick={handleDelete}>
             Delete
           </Button>
           <Divider />
