@@ -34,7 +34,7 @@ import {
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
-import { UserListModal } from "../../../components";
+import { RotatingLoader, UserListModal } from "../../../components";
 import {
   commentInput,
   emojiPickerButtonNew,
@@ -62,6 +62,7 @@ export const CommentFooter = ({ post, userLike }) => {
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { bookmarks } = useSelector((state) => state.user);
+  const { commentLoader } = useSelector((state) => state.comment);
 
   const [isLiked, setIsLiked] = useState(false);
 
@@ -82,8 +83,11 @@ export const CommentFooter = ({ post, userLike }) => {
   };
 
   const handleCommentPost = () => {
-    dispatch(addCommentToPost({ _id, text: commentValue }));
-    setCommentValue("");
+    if (!commentLoader) {
+      dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
+        setCommentValue("")
+      );
+    }
   };
   return (
     <>
@@ -210,20 +214,40 @@ export const CommentFooter = ({ post, userLike }) => {
             </PopoverBody>
           </PopoverContent>
         </Popover>
-
-        <Input
-          placeholder="Add a comment..."
-          value={commentValue}
-          onChange={(e) => setCommentValue(e.target.value)}
-          {...commentInput}
-          px={"2"}
-        />
+        <Box pos={"relative"} width={"100%"}>
+          <Input
+            placeholder="Add a comment..."
+            value={commentValue}
+            onChange={(e) => setCommentValue(e.target.value)}
+            disabled={commentLoader}
+            {...commentInput}
+            px={"2"}
+          />
+          {commentLoader && (
+            <Box
+              pos="absolute"
+              inset={0}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <RotatingLoader w={"40"} sw={"3"} />
+            </Box>
+          )}
+        </Box>
         <Button
           fontSize={"1rem"}
           variant={"link-button"}
           size="sm"
           onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
           color={commentValue === "" ? "gray" : null}
+          disabled={commentLoader || commentValue === ""}
+          _disabled={{ color: "gray.400", cursor: "default" }}
+          _hover={
+            commentLoader || commentValue === ""
+              ? { color: "gray", cursor: "default" }
+              : {}
+          }
         >
           Post
         </Button>
