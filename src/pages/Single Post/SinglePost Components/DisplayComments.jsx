@@ -25,7 +25,12 @@ import {
   displayCommentMainBox,
 } from "../../../styles/SinglePostStyle";
 import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
-import { BsDot, BsThreeDots } from "../../../utils/Icons";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  BsDot,
+  BsThreeDots,
+} from "../../../utils/Icons";
 import {
   hideScrollbar,
   simpleButton,
@@ -162,75 +167,62 @@ export const DisplayComments = ({ post, location }) => {
               owner: { username, avatar: commentAvatar },
               text,
               createdAt,
+              likes,
             } = comment || {};
+
+            const commentLike = likes?.find(
+              (like) => like === currentUser?._id
+            );
             return (
-              <Flex key={_id} gap={"1rem"} title={username}>
-                <Box pt={"4"} onClick={() => navigate(`/profile/${username}`)}>
+              <Flex key={_id} gap={"1rem"} title={username} w={"100%"}>
+                <Box pt={"2"} onClick={() => navigate(`/profile/${username}`)}>
                   <Avatar
                     src={commentAvatar?.url}
                     size={"sm"}
                     cursor={"pointer"}
                   />
                 </Box>
-                <VStack align={"flex-start"} gap={"0"}>
-                  <Flex gap={"0.5rem"} align={"center"}>
+                <VStack align={"flex-start"} gap={"0"} w={"100%"}>
+                  <Box>
                     <Text
-                      fontWeight={"bold"}
-                      cursor={"pointer"}
+                      {...userNameStyle}
                       onClick={() => navigate(`/profile/${username}`)}
+                      as={"span"}
+                      mr={"0.3rem"}
                     >
                       {username}
                     </Text>
+                    <Text fontWeight={100} {...commentTextStyle} as={"span"}>
+                      {text}
+                    </Text>
+                  </Box>
+
+                  <Flex gap={"0.8rem"} alignItems={"center"}>
                     <Text fontSize="sm" color={"#717171e0"}>
                       {getRelativeTime(createdAt)}
+                    </Text>
+                    <Text fontSize="sm" color={"#717171e0"}>
+                      {likes?.length} likes
                     </Text>
                     {currentUser.username === username && (
                       <Box
                         as={BsThreeDots}
-                        onClick={commentDeleteDisclosure.onOpen}
+                        onClick={(e) => {
+                          // e.stopPropagation();
+                          commentDeleteDisclosure.onOpen();
+                        }}
                       />
                     )}
                   </Flex>
-                  <Text
-                    {...commentTextStyle}
-                    color={colorMode === "dark" ? "#d7d7d7" : "black"}
-                  >
-                    {text}
-                  </Text>
                 </VStack>
-                {commentDeleteDisclosure.isOpen && (
-                  <Modal
-                    onClose={commentDeleteDisclosure.onClose}
-                    size={"xs"}
-                    isOpen={commentDeleteDisclosure.isOpen}
-                  >
-                    <ModalOverlay />
-                    <ModalContent
-                      bg={colorMode === "dark" ? "black.700" : "white.500"}
-                      mt={"20rem"}
-                    >
-                      <ModalBody>
-                        <Button
-                          sx={simpleButton}
-                          color={"red.500"}
-                          onClick={() => {
-                            handleDeleteComment(_id, post._id);
-                            commentDeleteDisclosure.onClose();
-                          }}
-                        >
-                          Delete
-                        </Button>
-                        <Divider />
-                        <Button
-                          sx={simpleButton}
-                          onClick={commentDeleteDisclosure.onClose}
-                        >
-                          Cancel
-                        </Button>
-                      </ModalBody>
-                    </ModalContent>
-                  </Modal>
-                )}
+
+                <Box
+                  as={commentLike ? AiFillHeart : AiOutlineHeart}
+                  fontSize={"12px"}
+                  w={"10%"}
+                  mt={"2"}
+                  justifySelf={"flex-end"}
+                />
               </Flex>
             );
           })
@@ -244,6 +236,39 @@ export const DisplayComments = ({ post, location }) => {
           fromSinglePost={true}
           location={location}
         />
+      )}
+      {commentDeleteDisclosure.isOpen && (
+        <Modal
+          onClose={commentDeleteDisclosure.onClose}
+          size={"xs"}
+          isOpen={commentDeleteDisclosure.isOpen}
+        >
+          <ModalOverlay />
+          <ModalContent
+            mt={"20rem"}
+            bg={colorMode === "dark" ? "black.700" : "white.500"}
+          >
+            <ModalBody>
+              <Button
+                sx={simpleButton}
+                color={"red.500"}
+                onClick={() => {
+                  handleDeleteComment(_id, post._id);
+                  commentDeleteDisclosure.onClose();
+                }}
+              >
+                Delete
+              </Button>
+              <Divider />
+              <Button
+                sx={simpleButton}
+                onClick={commentDeleteDisclosure.onClose}
+              >
+                Cancel
+              </Button>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       )}
     </>
   );

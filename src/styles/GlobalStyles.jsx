@@ -94,7 +94,7 @@ export const hideScrollbar = {
 };
 
 export const userNameStyle = {
-  fontWeight: "semibold",
+  fontFamily: "boldFont",
   cursor: "pointer",
   _hover: { color: "gray" },
 };

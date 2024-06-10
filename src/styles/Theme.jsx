@@ -28,7 +28,8 @@ const colors = {
 
 const fonts = {
   heading: "Lora, serif",
-  body: "'Lora', serif",
+  body: "MyCustomFont, sans-serif",
+  boldFont: "MyCustomFontBold, sans-serif",
 };
 
 const styles = {

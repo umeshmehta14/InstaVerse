@@ -222,6 +222,7 @@ export const CommentFooter = ({ post, userLike }) => {
             disabled={commentLoader}
             {...commentInput}
             px={"2"}
+            fontSize={"14px"}
           />
           {commentLoader && (
             <Box
