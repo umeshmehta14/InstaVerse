@@ -38,6 +38,8 @@ import {
 } from "../../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
+import { deleteCommentToPost } from "../commentSlice";
+import { useState } from "react";
 
 export const DisplayComments = ({ post, location }) => {
   const {
@@ -53,6 +55,7 @@ export const DisplayComments = ({ post, location }) => {
   const { username, avatar, _id } = owner;
 
   const navigate = useNavigate();
+  const [commentId, setCommentId] = useState("");
 
   const infoPopupDisclosure = useDisclosure();
   const commentDeleteDisclosure = useDisclosure();
@@ -201,14 +204,17 @@ export const DisplayComments = ({ post, location }) => {
                     <Text fontSize="sm" color={"#717171e0"}>
                       {getRelativeTime(createdAt)}
                     </Text>
-                    <Text fontSize="sm" color={"#717171e0"}>
-                      {likes?.length} likes
-                    </Text>
+                    {likes?.length !== 0 && (
+                      <Text fontSize="sm" color={"#717171e0"}>
+                        {likes?.length} likes
+                      </Text>
+                    )}
                     {currentUser.username === username && (
                       <Box
                         as={BsThreeDots}
                         onClick={(e) => {
-                          // e.stopPropagation();
+                          e.stopPropagation();
+                          setCommentId(_id);
                           commentDeleteDisclosure.onOpen();
                         }}
                       />
@@ -243,7 +249,7 @@ export const DisplayComments = ({ post, location }) => {
           size={"xs"}
           isOpen={commentDeleteDisclosure.isOpen}
         >
-          <ModalOverlay />
+          <ModalOverlay bg="rgba(0, 0, 0, 0.5)" />
           <ModalContent
             mt={"20rem"}
             bg={colorMode === "dark" ? "black.700" : "white.500"}
@@ -253,7 +259,7 @@ export const DisplayComments = ({ post, location }) => {
                 sx={simpleButton}
                 color={"red.500"}
                 onClick={() => {
-                  handleDeleteComment(_id, post._id);
+                  dispatch(deleteCommentToPost({ _id: commentId }));
                   commentDeleteDisclosure.onClose();
                 }}
               >

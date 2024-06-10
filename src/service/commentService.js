@@ -11,3 +11,21 @@ export const addComment = async (postId, text, token) =>
       },
     }
   );
+
+export const deleteComment = async (commentId, token) =>
+  axios.delete(`${API_URL}/post/comment/${commentId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const editComment = async (commentId, text, token) =>
+  axios.patch(
+    `${API_URL}/post/comment/${commentId}`,
+    { text },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );

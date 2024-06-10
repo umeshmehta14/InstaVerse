@@ -285,6 +285,13 @@ const postSlice = createSlice({
         post?._id === _id ? { ...post, comments: data } : post
       );
     },
+
+    updateDeleteComment: (state, action) => {
+      const { _id } = action.payload;
+      state.singlePost.post.comments = state.singlePost.post.comments?.filter(
+        (comment) => comment?._id !== _id
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserNotifications.pending, (state) => {
@@ -435,6 +442,7 @@ export const {
   removeSinglePostLikes,
   updatePostCaption,
   updatePostComment,
+  updateDeleteComment,
 } = postSlice.actions;
 
 export const postReducer = postSlice.reducer;

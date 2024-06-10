@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addComment } from "../../service/commentService";
-import { updatePostComment } from "../Post Feed/postSlice";
+import { addComment, deleteComment } from "../../service/commentService";
+import { updateDeleteComment, updatePostComment } from "../Post Feed/postSlice";
 
 const initialState = {
   commentLoader: false,
@@ -13,6 +13,21 @@ export const addCommentToPost = createAsyncThunk(
     const {
       data: { statusCode, data },
     } = await addComment(_id, text, token);
+    if (statusCode === 201) {
+      dispatch(updatePostComment({ data, _id }));
+      return data;
+    }
+  }
+);
+
+export const deleteCommentToPost = createAsyncThunk(
+  "comment/delete",
+  async ({ _id }, { getState, dispatch }) => {
+    const { token } = getState().authentication;
+    dispatch(updateDeleteComment({ _id }));
+    const {
+      data: { statusCode, data },
+    } = await deleteComment(_id, token);
     if (statusCode === 201) {
       dispatch(updatePostComment({ data, _id }));
       return data;
@@ -33,6 +48,9 @@ const commentSlice = createSlice({
     });
     builder.addCase(addCommentToPost.rejected, (state, action) => {
       state.commentLoader = false;
+    });
+    builder.addCase(deleteCommentToPost.rejected, (state, action) => {
+      console.error(action.error);
     });
   },
 });
