@@ -25,7 +25,7 @@ export const SinglePost = () => {
     singlePost: { post, postLoading, postFetched },
   } = useSelector((state) => state.post);
 
-  document.title = `@${post?.owner?.username}` || "Instaverse";
+  document.title = "Instaverse";
 
   useEffect(() => {
     if (postId && postId !== previousPostIdRef.current) {

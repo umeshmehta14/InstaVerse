@@ -49,6 +49,7 @@ import {
 } from "../../Post Feed/userSlice";
 import { handleLikes } from "../../Post Feed/postSlice";
 import { handleShare } from "../../../utils/Utils";
+import { addCommentToPost } from "../commentSlice";
 
 export const CommentFooter = ({ post, userLike }) => {
   const { colorMode } = useColorMode();
@@ -81,7 +82,7 @@ export const CommentFooter = ({ post, userLike }) => {
   };
 
   const handleCommentPost = () => {
-    handleCreateComment(commentValue, _id);
+    dispatch(addCommentToPost({ _id, text: commentValue }));
     setCommentValue("");
   };
   return (

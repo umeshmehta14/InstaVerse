@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -27,7 +26,11 @@ import {
 } from "../../../styles/SinglePostStyle";
 import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
 import { BsDot, BsThreeDots } from "../../../utils/Icons";
-import { simpleButton, userNameStyle } from "../../../styles/GlobalStyles";
+import {
+  hideScrollbar,
+  simpleButton,
+  userNameStyle,
+} from "../../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
 
@@ -146,6 +149,7 @@ export const DisplayComments = ({ post, location }) => {
       <VStack
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...displayCommentMainBox}
+        sx={hideScrollbar}
       >
         {comments?.length === 0 ? (
           <Text h="100px" textAlign="center" w="100%" pt="4rem" color="gray">

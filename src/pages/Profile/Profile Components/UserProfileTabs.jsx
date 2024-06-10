@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Flex,
@@ -31,7 +31,6 @@ import {
 } from "../../../utils/Icons";
 import { RotatingLoader } from "../../../components";
 import { GridBox } from "./GridBox";
-import { hideScrollbar } from "../../../styles/GlobalStyles";
 
 const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
   const { selectedUser, bookmarks, isLoading, likedPosts, tab } = useSelector(
@@ -51,8 +50,6 @@ const UserProfileTabs = ({ currentUserCheck, postModalDisclosure }) => {
       onChange={(index) => dispatch(updateTab(index))}
       w={"100%"}
       h={"100%"}
-      // overflowY={"scroll"}
-      // sx={hideScrollbar}
     >
       <TabList {...tabListStyle}>
         <Tab flexGrow={1} colorScheme="blue" gap={2}>
