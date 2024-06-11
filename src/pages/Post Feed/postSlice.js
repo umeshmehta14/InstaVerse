@@ -171,7 +171,6 @@ export const handleEditPost = createAsyncThunk(
     } = await editPost(_id, caption, token);
 
     if (statusCode === 200) {
-      console.log("edited");
       return data;
     }
   }

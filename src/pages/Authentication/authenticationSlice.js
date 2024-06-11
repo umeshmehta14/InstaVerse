@@ -260,7 +260,7 @@ const authenticationSlice = createSlice({
 
     builder.addCase(logoutHandler.rejected, (_, action) => {
       toast.error("Something went wrong");
-      console.log(action.error);
+      console.error(action.error);
     });
 
     builder.addCase(refreshTokens.fulfilled, (state, action) => {

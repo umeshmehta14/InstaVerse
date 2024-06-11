@@ -72,10 +72,6 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
       onClose();
       return;
     }
-    if (!caption) {
-      toast.error("Please write a caption for your post");
-      return;
-    }
     if (!selectedPost) {
       toast.error("Please select a photo to upload");
       return;

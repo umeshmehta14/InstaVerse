@@ -384,8 +384,6 @@ export const getPostLikeUsers = createAsyncThunk(
       data: { statusCode, data },
     } = await postLikeUsers(_id, token);
 
-    console.log({ data });
-
     if (statusCode === 200) {
       return data;
     }

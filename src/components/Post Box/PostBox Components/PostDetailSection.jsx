@@ -116,7 +116,6 @@ const PostDetailSection = ({
                 color={"red"}
                 title="Unlike"
                 onClick={() => {
-                  console.log("click on dislike");
                   dispatch(handleLikes({ _id, unlike: true }));
                 }}
               />
