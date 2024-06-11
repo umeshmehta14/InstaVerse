@@ -120,52 +120,55 @@ export const DisplayComments = ({ post, location }) => {
           <Box as={BsThreeDots} cursor={"pointer"} />
         </Button>
       </Flex>
-      <Flex {...postNavStyles} w={"100%"}>
-        <Flex gap={4} cursor={"pointer"} title={username}>
-          <Avatar
-            size="md"
-            src={avatar?.url}
-            onClick={() => navigate(`/profile/${username}`)}
-            cursor={"pointer"}
-          />
-          <VStack alignItems={"flex-start"} gap={0}>
-            <Box>
-              <Text
-                as="span"
-                {...userNameStyle}
-                onClick={() => navigate(`/profile/${username}`)}
-                mr={"0.3rem"}
-              >
-                {username}
-              </Text>
-              <Text
-                as="span"
-                whiteSpace={"break-spaces"}
-                fontWeight={100}
-                fontSize={"0.95rem"}
-              >
-                {renderCaptionWithHashtags(caption)}
-              </Text>
-            </Box>
-            <Flex fontSize="sm" color={"#717171e0"} alignItems={"center"}>
-              {edit && (
-                <>
-                  <Text>Edited</Text>
-                  <Box display={"inline"} as={BsDot} />
-                </>
-              )}
-              <Text>{getRelativeTime(edit ? updatedAt : createdAt)}</Text>
-            </Flex>
-          </VStack>
+      {caption?.length !== 0 && (
+        <Flex {...postNavStyles} w={"100%"}>
+          <Flex gap={4} cursor={"pointer"} title={username}>
+            <Avatar
+              size="md"
+              src={avatar?.url}
+              onClick={() => navigate(`/profile/${username}`)}
+              cursor={"pointer"}
+            />
+            <VStack alignItems={"flex-start"} gap={0}>
+              <Box>
+                <Text
+                  as="span"
+                  {...userNameStyle}
+                  onClick={() => navigate(`/profile/${username}`)}
+                  mr={"0.3rem"}
+                >
+                  {username}
+                </Text>
+                <Text
+                  as="span"
+                  whiteSpace={"break-spaces"}
+                  fontWeight={100}
+                  fontSize={"0.95rem"}
+                >
+                  {renderCaptionWithHashtags(caption)}
+                </Text>
+              </Box>
+              <Flex fontSize="sm" color={"#717171e0"} alignItems={"center"}>
+                {edit && (
+                  <>
+                    <Text>Edited</Text>
+                    <Box display={"inline"} as={BsDot} />
+                  </>
+                )}
+                <Text>{getRelativeTime(edit ? updatedAt : createdAt)}</Text>
+              </Flex>
+            </VStack>
+          </Flex>
         </Flex>
-      </Flex>
+      )}
+
       <VStack
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...displayCommentMainBox}
         sx={hideScrollbar}
       >
         {comments?.length === 0 ? (
-          <Text h="100px" textAlign="center" w="100%" pt="4rem" color="gray">
+          <Text h="100%" textAlign="center" w="100%" pt="4rem" color="gray">
             No Comments Yet
           </Text>
         ) : (
@@ -242,8 +245,6 @@ export const DisplayComments = ({ post, location }) => {
                       <ModalBody>
                         {currentUser?.username === username && (
                           <>
-                            {" "}
-                            (
                             <Button
                               sx={simpleButton}
                               onClick={() => {
@@ -253,7 +254,7 @@ export const DisplayComments = ({ post, location }) => {
                             >
                               Edit
                             </Button>
-                            )
+
                             <Divider />
                           </>
                         )}

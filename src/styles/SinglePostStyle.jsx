@@ -25,6 +25,7 @@ export const commentSectionMain = {
   gap: "0.5rem",
   width: "100%",
   maxW: { base: "100%", md: "400px" },
+  height: "100%",
 };
 
 export const mobileCommentHeading = {
@@ -76,7 +77,7 @@ export const displayCommentMainBox = {
   align: "flex-start",
   gap: "1rem",
   w: "100%",
-  h: { base: "none", md: "300px" },
+  h: "100%",
   overflow: "auto",
   mb: { base: "3rem", md: "0" },
 };
@@ -86,7 +87,6 @@ export const commentTextStyle = {
   width: "100%",
   overflowWrap: "break-word",
   whiteSpace: "normal",
-  wordBreak: "break-all",
 };
 
 export const commentFooterInputMain = {

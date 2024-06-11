@@ -209,44 +209,46 @@ const PostDetailSection = ({
           )
         )}
 
-        <Box
-          fontSize={"sm"}
-          w={"100%"}
-          overflow={isExpanded ? "visible" : "hidden"}
-          whiteSpace="break-spaces"
-        >
-          <Text
-            as="span"
-            {...userNameStyle}
-            onClick={() => navigate(`/profile/${username}`)}
-            mr={"0.3rem"}
+        {caption?.length !== 0 && (
+          <Box
+            fontSize={"sm"}
+            w={"100%"}
+            overflow={isExpanded ? "visible" : "hidden"}
+            whiteSpace="break-spaces"
           >
-            {username}
-          </Text>
-          <Text
-            as="span"
-            fontWeight={100}
-            fontSize={"0.95rem"}
-            display="inline"
-            whiteSpace={isExpanded ? "break-spaces" : "normal"}
-          >
-            {isExpanded
-              ? renderCaptionWithHashtags(caption)
-              : renderCaptionWithHashtags(truncateTextWithHTML(caption))}
-          </Text>
-          {caption?.length > 50 && (
-            <Button
-              variant={"link-button"}
-              fontSize={"0.8rem"}
-              p="0"
-              color={"gray"}
-              onClick={toggleExpanded}
-              ml={"0.3rem"}
+            <Text
+              as="span"
+              {...userNameStyle}
+              onClick={() => navigate(`/profile/${username}`)}
+              mr={"0.3rem"}
             >
-              {isExpanded ? "Show less" : "more"}
-            </Button>
-          )}
-        </Box>
+              {username}
+            </Text>
+            <Text
+              as="span"
+              fontWeight={100}
+              fontSize={"0.95rem"}
+              display="inline"
+              whiteSpace={isExpanded ? "break-spaces" : "normal"}
+            >
+              {isExpanded
+                ? renderCaptionWithHashtags(caption)
+                : renderCaptionWithHashtags(truncateTextWithHTML(caption))}
+            </Text>
+            {caption?.length > 50 && (
+              <Button
+                variant={"link-button"}
+                fontSize={"0.8rem"}
+                p="0"
+                color={"gray"}
+                onClick={toggleExpanded}
+                ml={"0.3rem"}
+              >
+                {isExpanded ? "Show less" : "more"}
+              </Button>
+            )}
+          </Box>
+        )}
 
         <Text
           fontSize={"sm"}

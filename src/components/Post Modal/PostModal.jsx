@@ -72,7 +72,7 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
       onClose();
       return;
     }
-    if (!selectedPost) {
+    if (!selectedPost && !edit) {
       toast.error("Please select a photo to upload");
       return;
     }
