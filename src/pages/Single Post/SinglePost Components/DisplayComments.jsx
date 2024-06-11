@@ -38,7 +38,11 @@ import {
 } from "../../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
-import { deleteCommentToPost } from "../commentSlice";
+import {
+  deleteCommentToPost,
+  editCommentToPost,
+  updateCommentEdit,
+} from "../commentSlice";
 import { useState } from "react";
 
 export const DisplayComments = ({ post, location }) => {
@@ -52,7 +56,7 @@ export const DisplayComments = ({ post, location }) => {
     updatedAt,
   } = post;
 
-  const { username, avatar, _id } = owner;
+  const { username, avatar, _id: ownerId } = owner;
 
   const navigate = useNavigate();
   const [commentId, setCommentId] = useState("");
@@ -64,12 +68,13 @@ export const DisplayComments = ({ post, location }) => {
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { loadingUsers } = useSelector((state) => state.user);
+  const { commentEdit } = useSelector((state) => state.comment);
 
   const postFollow = currentUser?.following?.find(
     (user) => user?.username === username
   );
 
-  const isLoading = loadingUsers?.includes(_id);
+  const isLoading = loadingUsers?.includes(ownerId);
 
   return (
     <>
@@ -96,7 +101,7 @@ export const DisplayComments = ({ post, location }) => {
                     e.stopPropagation();
                     dispatch(
                       handleFollowUnfollowUser({
-                        _id,
+                        _id: ownerId,
                         follow: true,
                         noPostLoading: true,
                         notSelectedUser: true,
@@ -176,6 +181,7 @@ export const DisplayComments = ({ post, location }) => {
             const commentLike = likes?.find(
               (like) => like === currentUser?._id
             );
+
             return (
               <Flex key={_id} gap={"1rem"} title={username} w={"100%"}>
                 <Box pt={"2"} onClick={() => navigate(`/profile/${username}`)}>
@@ -209,18 +215,69 @@ export const DisplayComments = ({ post, location }) => {
                         {likes?.length} likes
                       </Text>
                     )}
-                    {currentUser.username === username && (
-                      <Box
-                        as={BsThreeDots}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCommentId(_id);
-                          commentDeleteDisclosure.onOpen();
-                        }}
-                      />
-                    )}
+                    {(currentUser._id === ownerId ||
+                      currentUser?.username === username) &&
+                      commentEdit !== _id && (
+                        <Box
+                          as={BsThreeDots}
+                          onClick={() => {
+                            setCommentId(_id);
+                            commentDeleteDisclosure.onOpen();
+                          }}
+                        />
+                      )}
                   </Flex>
                 </VStack>
+                {commentDeleteDisclosure.isOpen && (
+                  <Modal
+                    onClose={commentDeleteDisclosure.onClose}
+                    size={"xs"}
+                    isOpen={commentDeleteDisclosure.isOpen}
+                  >
+                    <ModalOverlay bg="rgba(0, 0, 0, 0.5)" />
+                    <ModalContent
+                      mt={"20rem"}
+                      bg={colorMode === "dark" ? "black.700" : "white.500"}
+                    >
+                      <ModalBody>
+                        {currentUser?.username === username && (
+                          <>
+                            {" "}
+                            (
+                            <Button
+                              sx={simpleButton}
+                              onClick={() => {
+                                dispatch(updateCommentEdit(commentId));
+                                commentDeleteDisclosure.onClose();
+                              }}
+                            >
+                              Edit
+                            </Button>
+                            )
+                            <Divider />
+                          </>
+                        )}
+                        <Button
+                          sx={simpleButton}
+                          color={"red.500"}
+                          onClick={() => {
+                            dispatch(deleteCommentToPost({ _id: commentId }));
+                            commentDeleteDisclosure.onClose();
+                          }}
+                        >
+                          Delete
+                        </Button>
+                        <Divider />
+                        <Button
+                          sx={simpleButton}
+                          onClick={commentDeleteDisclosure.onClose}
+                        >
+                          Cancel
+                        </Button>
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
+                )}
 
                 <Box
                   as={commentLike ? AiFillHeart : AiOutlineHeart}
@@ -242,39 +299,6 @@ export const DisplayComments = ({ post, location }) => {
           fromSinglePost={true}
           location={location}
         />
-      )}
-      {commentDeleteDisclosure.isOpen && (
-        <Modal
-          onClose={commentDeleteDisclosure.onClose}
-          size={"xs"}
-          isOpen={commentDeleteDisclosure.isOpen}
-        >
-          <ModalOverlay bg="rgba(0, 0, 0, 0.5)" />
-          <ModalContent
-            mt={"20rem"}
-            bg={colorMode === "dark" ? "black.700" : "white.500"}
-          >
-            <ModalBody>
-              <Button
-                sx={simpleButton}
-                color={"red.500"}
-                onClick={() => {
-                  dispatch(deleteCommentToPost({ _id: commentId }));
-                  commentDeleteDisclosure.onClose();
-                }}
-              >
-                Delete
-              </Button>
-              <Divider />
-              <Button
-                sx={simpleButton}
-                onClick={commentDeleteDisclosure.onClose}
-              >
-                Cancel
-              </Button>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
       )}
     </>
   );

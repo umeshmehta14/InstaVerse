@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -49,7 +49,11 @@ import {
 } from "../../Post Feed/userSlice";
 import { handleLikes } from "../../Post Feed/postSlice";
 import { handleShare } from "../../../utils/Utils";
-import { addCommentToPost } from "../commentSlice";
+import {
+  addCommentToPost,
+  editCommentToPost,
+  updateCommentEdit,
+} from "../commentSlice";
 
 export const CommentFooter = ({ post, userLike }) => {
   const { colorMode } = useColorMode();
@@ -58,11 +62,11 @@ export const CommentFooter = ({ post, userLike }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { _id, likes } = post;
+  const { _id, likes, comments } = post;
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { bookmarks } = useSelector((state) => state.user);
-  const { commentLoader } = useSelector((state) => state.comment);
+  const { commentLoader, commentEdit } = useSelector((state) => state.comment);
 
   const [isLiked, setIsLiked] = useState(false);
 
@@ -84,11 +88,29 @@ export const CommentFooter = ({ post, userLike }) => {
 
   const handleCommentPost = () => {
     if (!commentLoader) {
+      if (commentEdit) {
+        dispatch(
+          editCommentToPost({ _id: commentEdit, text: commentValue })
+        ).then(() => {
+          setCommentValue("");
+          dispatch(updateCommentEdit(""));
+        });
+        return;
+      }
       dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
         setCommentValue("")
       );
     }
   };
+
+  useEffect(() => {
+    if (commentEdit) {
+      setCommentValue(
+        () => comments.find((comment) => comment._id === commentEdit)?.text
+      );
+    }
+  }, [commentEdit]);
+
   return (
     <>
       <Divider display={{ base: "none", md: "flex" }} />

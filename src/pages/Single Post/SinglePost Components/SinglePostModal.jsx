@@ -39,6 +39,7 @@ import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../../utils/Icons";
 import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
 import { handleLikes } from "../../Post Feed/postSlice";
+import { updateCommentEdit } from "../commentSlice";
 
 export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const navigate = useNavigate();
@@ -93,7 +94,10 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
         <ModalCloseButton
           color={colorMode === "dark" ? "white" : "black"}
           {...singlePostModalClose}
-          onClick={() => navigate(redirectLocation || "/")}
+          onClick={() => {
+            navigate(redirectLocation || "/");
+            dispatch(updateCommentEdit(""));
+          }}
         />
         <ModalBody p={0} height={"100%"}>
           <HStack align={"flex-start"} height={"600px"}>
