@@ -17,6 +17,7 @@ import { SwitchAccountModal, UserSuggestionMain } from "../index";
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateTab } from "../../pages/Post Feed/userSlice";
+import { userNameStyle } from "../../styles/GlobalStyles";
 
 export const UserSuggestion = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export const UserSuggestion = () => {
           }}
         >
           <Avatar size="lg" src={currentUser.avatar?.url} />
-          <Text fontWeight={"normal"} justifySelf={"flex-end"}>
+          <Text justifySelf={"flex-end"} {...userNameStyle}>
             {currentUser.username}
           </Text>
         </Flex>

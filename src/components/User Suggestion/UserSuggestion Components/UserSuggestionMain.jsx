@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../../pages/Post Feed/userSlice";
 import { RotatingLoader } from "../../Loader/RotatingLoader";
+import { userNameStyle } from "../../../styles/GlobalStyles";
 
 export const UserSuggestionMain = () => {
   const navigate = useNavigate();
@@ -48,7 +49,9 @@ export const UserSuggestionMain = () => {
                   >
                     <Avatar size={"md"} src={avatar.url} />
                     <Flex flexDir={"column"}>
-                      <Text fontSize="sm">{username}</Text>
+                      <Text fontSize="sm" {...userNameStyle}>
+                        {username}
+                      </Text>
                       <Flex
                         fontSize={"12px"}
                         color={"gray"}
