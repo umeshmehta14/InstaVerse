@@ -23,7 +23,7 @@ body {
 }
 
 .nav-item:hover .nav-icon {
-    font-size: 2.08rem;
+    transform: scale(1.1);
 }
 
 .css-14tiamn .css-1qq679y {

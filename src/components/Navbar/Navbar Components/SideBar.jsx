@@ -35,6 +35,7 @@ import {
   BsMoon,
   FaRegBookmark,
   FiLogOut,
+  BsDot,
 } from "../../../utils/Icons";
 import SearchBox from "./SearchBox";
 import { SwitchAccountModal } from "../../index";
@@ -57,10 +58,15 @@ const SideBar = ({ searchDrawerDisclosure }) => {
   const SwitchUserDisclosure = useDisclosure();
   const notificationDisclosure = useDisclosure();
   const { currentUser } = useSelector((state) => state.authentication);
+  const { notifications } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
   const getStyle = ({ isActive }) =>
     isActive ? { fontWeight: "bold", fontSize: "2.08rem" } : {};
+
+  const newNotifications = notifications?.find(
+    (notification) => !notification?.read
+  );
 
   return (
     <Flex {...sidebarStyle} bg={useColorModeValue("white.900", "black.900")}>
@@ -173,6 +179,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
               dispatch(getUserNotifications());
               notificationDisclosure.onOpen();
             }}
+            pos={"relative"}
           >
             <AiOutlineHeart className="nav-icon" />
             <Text
@@ -181,6 +188,16 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             >
               Notifications
             </Text>
+            {newNotifications && (
+              <Text
+                as={BsDot}
+                pos={"absolute"}
+                color={"#ff3040"}
+                left={{ base: "2px", lg: "7px" }}
+                fontSize={"3rem"}
+                top={{ base: "-1.1rem", lg: "-0.7rem" }}
+              />
+            )}
           </HStack>
 
           <NavLink
