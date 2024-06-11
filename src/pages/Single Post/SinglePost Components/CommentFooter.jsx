@@ -40,7 +40,10 @@ import {
   emojiPickerButtonNew,
   userNameStyle,
 } from "../../../styles/GlobalStyles";
-import { commentFooterInputMain } from "../../../styles/SinglePostStyle";
+import {
+  commentFooterInputMain,
+  commentLoaderStyle,
+} from "../../../styles/SinglePostStyle";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addUserBookmark,
@@ -243,17 +246,9 @@ export const CommentFooter = ({ post, userLike }) => {
             onChange={(e) => setCommentValue(e.target.value)}
             disabled={commentLoader}
             {...commentInput}
-            px={"2"}
-            fontSize={"14px"}
           />
           {commentLoader && (
-            <Box
-              pos="absolute"
-              inset={0}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
+            <Box {...commentLoaderStyle}>
               <RotatingLoader w={"40"} sw={"3"} />
             </Box>
           )}

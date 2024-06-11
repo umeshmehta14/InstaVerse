@@ -50,6 +50,9 @@ import {
   renderCaptionWithHashtags,
   truncateTextWithHTML,
 } from "../../../utils/Utils";
+import { commentLoaderStyle } from "../../../styles/SinglePostStyle";
+import { RotatingLoader } from "../../Loader/RotatingLoader";
+import { addCommentToPost } from "../../../pages/Single Post/commentSlice";
 
 const PostDetailSection = ({
   onOpen,
@@ -67,6 +70,7 @@ const PostDetailSection = ({
   const [commentValue, setCommentValue] = useState("");
 
   const { currentUser } = useSelector((state) => state.authentication);
+  const { commentLoader } = useSelector((state) => state.comment);
   const dispatch = useDispatch();
 
   const {
@@ -86,8 +90,11 @@ const PostDetailSection = ({
   };
 
   const handleCommentPost = () => {
-    handleCreateComment(commentValue, _id);
-    setCommentValue("");
+    if (!commentLoader) {
+      dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
+        setCommentValue("")
+      );
+    }
   };
 
   const [isLiked, setIsLiked] = useState(false);
@@ -286,17 +293,34 @@ const PostDetailSection = ({
           </PopoverContent>
         </Popover>
 
-        <Input
-          placeholder="Add a comment..."
-          value={commentValue}
-          onChange={(e) => setCommentValue(e.target.value)}
-          {...commentInput}
-        />
+        <Box pos={"relative"} width={"100%"}>
+          <Input
+            placeholder="Add a comment..."
+            value={commentValue}
+            onChange={(e) => setCommentValue(e.target.value)}
+            disabled={commentLoader}
+            {...commentInput}
+            px={0}
+          />
+          {commentLoader && commentValue && (
+            <Box {...commentLoaderStyle}>
+              <RotatingLoader w={"40"} sw={"3"} />
+            </Box>
+          )}
+        </Box>
         <Button
-          fontSize={"0.8rem"}
+          fontSize={"1rem"}
           variant={"link-button"}
           size="sm"
           onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
+          color={commentValue === "" ? "gray" : null}
+          disabled={commentLoader || commentValue === ""}
+          _disabled={{ color: "gray.400", cursor: "default" }}
+          _hover={
+            commentLoader || commentValue === ""
+              ? { color: "gray", cursor: "default" }
+              : {}
+          }
           visibility={commentValue.length === 0 ? "hidden" : "visible"}
         >
           Post

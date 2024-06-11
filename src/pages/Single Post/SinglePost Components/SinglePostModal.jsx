@@ -24,10 +24,11 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
-import { HeartPopup } from "../../../components";
+import { HeartPopup, RotatingLoader } from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   addCommentMainBox,
+  commentLoaderStyle,
   commentSectionMain,
   mediaPostBox,
   mobileCommentHeading,
@@ -39,7 +40,7 @@ import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../../utils/Icons";
 import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
 import { handleLikes } from "../../Post Feed/postSlice";
-import { updateCommentEdit } from "../commentSlice";
+import { addCommentToPost, updateCommentEdit } from "../commentSlice";
 
 export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const lastTapRef = useRef(0);
 
   const { currentUser } = useSelector((state) => state.authentication);
+  const { commentLoader } = useSelector((state) => state.comment);
 
   const { _id, owner, url, likes } = post;
   const { username } = owner;
@@ -77,6 +79,14 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
     }
 
     lastTapRef.current = now;
+  };
+
+  const handleCommentPost = () => {
+    if (!commentLoader) {
+      dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
+        setCommentValue("")
+      );
+    }
   };
 
   return (
@@ -161,20 +171,34 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
                 </PopoverBody>
               </PopoverContent>
             </Popover>
-            <Input
-              placeholder="Add a comment..."
-              value={commentValue}
-              onChange={(e) => setCommentValue(e.target.value)}
-              {...commentInput}
-              px={"2"}
-            />
+            <Box pos={"relative"} width={"100%"}>
+              <Input
+                placeholder="Add a comment..."
+                value={commentValue}
+                onChange={(e) => setCommentValue(e.target.value)}
+                disabled={commentLoader}
+                {...commentInput}
+                px={2}
+              />
+              {commentLoader && (
+                <Box {...commentLoaderStyle}>
+                  <RotatingLoader w={"40"} sw={"3"} />
+                </Box>
+              )}
+            </Box>
             <Button
-              fontSize={"0.8rem"}
+              fontSize={"1rem"}
               variant={"link-button"}
               size="sm"
               onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
-              color={commentValue === "" ? "gray" : undefined}
-              p="0"
+              color={commentValue === "" ? "gray" : null}
+              disabled={commentLoader || commentValue === ""}
+              _disabled={{ color: "gray.400", cursor: "default" }}
+              _hover={
+                commentLoader || commentValue === ""
+                  ? { color: "gray", cursor: "default" }
+                  : {}
+              }
             >
               Post
             </Button>

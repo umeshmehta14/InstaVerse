@@ -98,3 +98,11 @@ export const commentFooterInputMain = {
   display: { base: "none", md: "flex" },
   w: "100%",
 };
+
+export const commentLoaderStyle = {
+  pos: "absolute",
+  inset: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};

@@ -45,8 +45,8 @@ export const emojiPickerButtonNew = {
 export const commentInput = {
   border: "none",
   flex: "1",
-  fontSize: "0.8rem",
-  p: 0,
+  fontSize: "14px",
+  px: "2",
   _focus: {
     outline: "none",
     boxShadow: "none",
