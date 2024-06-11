@@ -108,8 +108,20 @@ const Notifications = ({ isOpen, onClose }) => {
                           >
                             <Flex flexWrap={"wrap"}>
                               <Text wordBreak={"break-word"}>
-                                <strong>{`${username}`}</strong> started
-                                following you.
+                                <Text
+                                  as="span"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/profile/${username}`);
+                                    onClose();
+                                  }}
+                                  {...userNameStyle}
+                                >
+                                  {username}
+                                </Text>
+                                <Text as="span" ml={"0.2rem"}>
+                                  started following you.
+                                </Text>
                                 <Text
                                   fontSize="xs"
                                   color={"#717171e0"}
@@ -191,8 +203,20 @@ const Notifications = ({ isOpen, onClose }) => {
                           >
                             <Flex flexWrap={"wrap"}>
                               <Text wordBreak={"break-word"}>
-                                <strong>{`${username}`}</strong> liked your
-                                photo.
+                                <Text
+                                  as="span"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/profile/${username}`);
+                                    onClose();
+                                  }}
+                                  {...userNameStyle}
+                                >
+                                  {username}
+                                </Text>
+                                <Text as="span" ml={"0.2rem"}>
+                                  liked your photo.
+                                </Text>
                                 <Text
                                   fontSize="xs"
                                   color={"#717171e0"}
@@ -245,9 +269,11 @@ const Notifications = ({ isOpen, onClose }) => {
                               <Text wordBreak={"break-word"}>
                                 <Text
                                   as="span"
-                                  onClick={() =>
-                                    navigate(`/profile/${username}`)
-                                  }
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/profile/${username}`);
+                                    onClose();
+                                  }}
                                   {...userNameStyle}
                                 >
                                   {username}
