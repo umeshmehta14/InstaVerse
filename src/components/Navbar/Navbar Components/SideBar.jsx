@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Flex,
@@ -14,16 +14,6 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import { PostModal } from "../../index";
-import {
-  sidebarStyle,
-  navRoutesStyle,
-  desktopLogoStyles,
-  sidebarLogoBoxStyles,
-  navlinkStyle,
-  sideBarLogoMain,
-  navPopOverMain,
-} from "../../../styles/NavbarStyles";
 import {
   MdHome,
   MdOutlineExplore,
@@ -37,11 +27,25 @@ import {
   FiLogOut,
   BsDot,
 } from "../../../utils/Icons";
-import SearchBox from "./SearchBox";
-import { SwitchAccountModal } from "../../index";
+
+import {
+  NavItem,
+  PostModal,
+  SwitchAccountModal,
+  SearchBox,
+  Notifications,
+} from "../../index";
+import {
+  sidebarStyle,
+  navRoutesStyle,
+  desktopLogoStyles,
+  sidebarLogoBoxStyles,
+  navlinkStyle,
+  sideBarLogoMain,
+  navPopOverMain,
+} from "../../../styles/NavbarStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../../pages/Authentication/authenticationSlice";
-import Notifications from "./Notifications";
 import {
   getHomePosts,
   getUserNotifications,
@@ -55,17 +59,53 @@ const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const navigate = useNavigate();
   const postModalDisclosure = useDisclosure();
-  const SwitchUserDisclosure = useDisclosure();
+  const switchUserDisclosure = useDisclosure();
   const notificationDisclosure = useDisclosure();
-  const { currentUser } = useSelector((state) => state.authentication);
-  const { notifications } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
-  const getStyle = ({ isActive }) =>
-    isActive ? { fontWeight: "bold", fontSize: "2.08rem" } : {};
+  const { currentUser } = useSelector((state) => state.authentication);
+  const { notifications } = useSelector((state) => state.post);
 
   const newNotifications = notifications?.find(
     (notification) => !notification?.read
+  );
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleHomeClick = () => {
+    dispatch(getHomePosts({ page: 1 }));
+    handleNavigate("/");
+  };
+
+  const handleSearchClick = () => {
+    dispatch(getUserSearchList());
+    searchDrawerDisclosure.onOpen();
+  };
+
+  const handleCreatePostClick = () => {
+    postModalDisclosure.onOpen();
+  };
+
+  const handleNotificationsClick = () => {
+    dispatch(getUserNotifications());
+    notificationDisclosure.onOpen();
+  };
+
+  const handleProfileClick = () => {
+    dispatch(updateTab(0));
+    handleNavigate(`/profile/${currentUser?.username}`);
+  };
+
+  const navLinkProps = useMemo(
+    () => ({
+      _hover: colorMode === "dark" ? { bg: "#323232ad" } : {},
+      className: "nav-item",
+      fontSize: "1rem",
+    }),
+    [colorMode]
   );
 
   return (
@@ -75,13 +115,9 @@ const SideBar = ({ searchDrawerDisclosure }) => {
           <Text display={{ base: "none", md: "flex", lg: "none" }}>
             <FaInstalod />
           </Text>
-
           <Text
             {...sideBarLogoMain}
-            onClick={() => {
-              window.location.reload();
-              navigate("/");
-            }}
+            onClick={handleHomeClick}
             title="Instaverse | Home"
           >
             InstaVerse
@@ -89,133 +125,63 @@ const SideBar = ({ searchDrawerDisclosure }) => {
         </HStack>
         <Flex {...navRoutesStyle}>
           <NavLink
-            style={getStyle}
-            className="nav-links"
             to="/"
             title="Home"
-            onClick={() => {
-              dispatch(getHomePosts({ page: 1 }));
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            className={"w-full"}
+            onClick={handleHomeClick}
           >
-            <HStack
-              {...navlinkStyle}
-              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-              className="nav-item"
-            >
-              <MdHome className="nav-icon" />
-              <Text
-                display={{ base: "none", lg: "inline-block" }}
-                fontSize={"1rem"}
-              >
-                Home
-              </Text>
-            </HStack>
+            <NavItem icon={MdHome} label="Home" />
           </NavLink>
 
           <HStack
             id="md-search-nav"
-            {...navlinkStyle}
-            _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-            onClick={() => {
-              dispatch(getUserSearchList());
-              searchDrawerDisclosure.onOpen();
-            }}
-            className="nav-item"
+            w={"100%"}
+            onClick={handleSearchClick}
             title="Search"
           >
-            <MdSearch className="nav-icon" />
-            <Text
-              display={{ base: "none", lg: "inline-block" }}
-              fontSize={"1rem"}
-            >
-              Search
-            </Text>
+            <NavItem icon={MdSearch} label="Search" />
           </HStack>
 
-          <NavLink
-            style={getStyle}
-            className="nav-links"
-            to="/explore"
-            title="Explore"
-          >
-            <HStack
-              {...navlinkStyle}
-              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-              className="nav-item"
-            >
-              <MdOutlineExplore className="nav-icon" />
-              <Text
-                display={{ base: "none", lg: "inline-block" }}
-                fontSize={"1rem"}
-              >
-                Explore
-              </Text>
-            </HStack>
+          <NavLink className={"w-full"} to="/explore" title="Explore">
+            <NavItem icon={MdOutlineExplore} label="Explore" />
           </NavLink>
 
           <HStack
-            {...navlinkStyle}
-            _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-            onClick={postModalDisclosure.onOpen}
-            className="nav-item"
+            onClick={handleCreatePostClick}
+            w={"100%"}
             title="Create Post"
           >
-            <TbSquareRoundedPlus className="nav-icon" />
-            <Text
-              display={{ base: "none", lg: "inline-block" }}
-              fontSize={"1rem"}
-            >
-              Create
-            </Text>
+            <NavItem icon={TbSquareRoundedPlus} label="Create" />
           </HStack>
 
           <HStack
-            {...navlinkStyle}
-            _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-            className="nav-item"
+            onClick={handleNotificationsClick}
+            pos="relative"
             title="Likes"
-            onClick={() => {
-              dispatch(getUserNotifications());
-              notificationDisclosure.onOpen();
-            }}
-            pos={"relative"}
+            w={"100%"}
           >
-            <AiOutlineHeart className="nav-icon" />
-            <Text
-              display={{ base: "none", lg: "inline-block" }}
-              fontSize={"1rem"}
-            >
-              Notifications
-            </Text>
+            <NavItem icon={AiOutlineHeart} label="Notifications" />
             {newNotifications && (
               <Text
                 as={BsDot}
-                pos={"absolute"}
-                color={"#ff3040"}
+                pos="absolute"
+                color="#ff3040"
                 left={{ base: "2px", lg: "7px" }}
-                fontSize={"3rem"}
+                fontSize="3rem"
                 top={{ base: "-1.1rem", lg: "-0.7rem" }}
               />
             )}
           </HStack>
 
           <NavLink
-            style={getStyle}
-            className="nav-links"
-            onClick={() => dispatch(updateTab(0))}
+            onClick={handleProfileClick}
             to={`/profile/${currentUser?.username}`}
             title="Profile"
+            className={"w-full"}
           >
-            <HStack
-              {...navlinkStyle}
-              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-            >
-              <Avatar size={"sm"} src={currentUser?.avatar?.url} />
-              <Text
-                display={{ base: "none", lg: "inline-block" }}
-                fontSize={"1rem"}
-              >
+            <HStack {...navlinkStyle} {...navLinkProps}>
+              <Avatar size="sm" src={currentUser?.avatar?.url} />
+              <Text display={{ base: "none", lg: "inline-block" }}>
                 Profile
               </Text>
             </HStack>
@@ -226,50 +192,39 @@ const SideBar = ({ searchDrawerDisclosure }) => {
       <Flex {...navPopOverMain}>
         <Popover>
           <PopoverTrigger>
-            <HStack
-              {...navlinkStyle}
-              fontSize={"2rem"}
-              title="More"
-              _hover={colorMode === "dark" ? { bg: "#323232ad" } : ""}
-            >
+            <HStack {...navlinkStyle} {...navLinkProps} title="More">
               <RxHamburgerMenu className="nav-icon" />
-              <Text
-                display={{ base: "none", lg: "inline-block" }}
-                fontSize={"1rem"}
-              >
-                More
-              </Text>
+              <Text display={{ base: "none", lg: "inline-block" }}>More</Text>
             </HStack>
           </PopoverTrigger>
           <PopoverContent
-            width={"13rem"}
+            width="13rem"
             bg={colorMode === "light" ? "white.500" : "gray.700"}
           >
-            <Button justifyContent={"space-between"} onClick={toggleColorMode}>
-              <span>Switch Apperrance</span>
+            <Button justifyContent="space-between" onClick={toggleColorMode}>
+              <span>Switch Appearance</span>
               <BsMoon />
             </Button>
             <Button
-              justifyContent={"flex-start"}
+              justifyContent="flex-start"
               gap={2}
-              onClick={() => {
-                dispatch(updateTab(2));
-                navigate(`/profile/${currentUser?.username}`);
-              }}
+              onClick={() =>
+                handleNavigate(`/profile/${currentUser?.username}/saved`)
+              }
             >
               Saved <FaRegBookmark />
             </Button>
             <Button
-              justifyContent={"flex-start"}
-              onClick={SwitchUserDisclosure.onOpen}
+              justifyContent="flex-start"
+              onClick={switchUserDisclosure.onOpen}
             >
               Switch Accounts
             </Button>
             <Button
-              justifyContent={"flex-start"}
+              justifyContent="flex-start"
               gap={2}
               onClick={() => dispatch(logoutHandler())}
-              color={"red.500"}
+              color="red.500"
             >
               LogOut <FiLogOut />
             </Button>
@@ -289,10 +244,10 @@ const SideBar = ({ searchDrawerDisclosure }) => {
           onClose={searchDrawerDisclosure.onClose}
         />
       )}
-      {SwitchUserDisclosure.isOpen && (
+      {switchUserDisclosure.isOpen && (
         <SwitchAccountModal
-          isOpen={SwitchUserDisclosure.isOpen}
-          onClose={SwitchUserDisclosure.onClose}
+          isOpen={switchUserDisclosure.isOpen}
+          onClose={switchUserDisclosure.onClose}
         />
       )}
       {notificationDisclosure.isOpen && (

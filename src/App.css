@@ -18,6 +18,10 @@ body {
     border-radius: 4px;
 }
 
+.w-full {
+    width: 100%;
+}
+
 #md-search-nav {
     display: none;
 }

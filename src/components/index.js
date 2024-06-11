@@ -18,3 +18,7 @@ export { SearchSkeleton } from "./Skeletons/SearchSkeleton.jsx";
 export { ExploreSkeleton } from "./Skeletons/ExploreSkeleton.jsx";
 export { ProfileSkeleton } from "./Skeletons/ProfileSkeleton.jsx";
 export { SinglePostSkeleton } from "./Skeletons/SinglePostSkeleton.jsx";
+
+export { NavItem } from "./Navbar/Navbar Components/NavItem.jsx";
+export { SearchBox } from "./Navbar/Navbar Components/SearchBox.jsx";
+export { Notifications } from "./Navbar/Navbar Components/Notifications.jsx";

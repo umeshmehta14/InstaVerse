@@ -28,7 +28,7 @@ import { getRelativeTime } from "../../../utils/Utils";
 import { RotatingLoader } from "../../Loader/RotatingLoader";
 import { userNameStyle } from "../../../styles/GlobalStyles";
 
-const Notifications = ({ isOpen, onClose }) => {
+export const Notifications = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
   const { loadingUsers } = useSelector((state) => state.user);
   const { currentUser } = useSelector((state) => state.authentication);
@@ -327,5 +327,3 @@ const Notifications = ({ isOpen, onClose }) => {
     </Box>
   );
 };
-
-export default Notifications;

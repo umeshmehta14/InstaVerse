@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 
 import { mobileNavbarStyle } from "../../styles/NavbarStyles";
-import SearchBox from "./Navbar Components/SearchBox";
 import SideBar from "./Navbar Components/SideBar";
 import {
   MdSearch,
@@ -19,7 +18,7 @@ import {
   BsMoon,
   AiOutlineDown,
 } from "../../utils/Icons";
-import { SwitchAccountModal } from "../index";
+import { SwitchAccountModal, SearchBox } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserSearchList } from "../../pages/Post Feed/userSlice";
 

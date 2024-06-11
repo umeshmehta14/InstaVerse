@@ -34,7 +34,7 @@ import {
 import { SearchSkeleton } from "../../index";
 import { ClearRecentModal } from "./ClearRecentModal";
 
-const SearchBox = ({ isOpen, onClose }) => {
+export const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   const clearRecentDisclosure = useDisclosure();
@@ -271,5 +271,3 @@ const SearchBox = ({ isOpen, onClose }) => {
     </Box>
   );
 };
-
-export default SearchBox;
