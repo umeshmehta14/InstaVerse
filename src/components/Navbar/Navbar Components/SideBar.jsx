@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Flex,
@@ -107,6 +107,10 @@ const SideBar = ({ searchDrawerDisclosure }) => {
     }),
     [colorMode]
   );
+
+  useEffect(() => {
+    dispatch(getUserNotifications());
+  }, []);
 
   return (
     <Flex {...sidebarStyle} bg={useColorModeValue("white.900", "black.900")}>
