@@ -140,6 +140,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
           <HStack
             id="md-search-nav"
             w={"100%"}
+            justifyContent={"center"}
             onClick={handleSearchClick}
             title="Search"
           >
@@ -153,6 +154,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
           <HStack
             onClick={handleCreatePostClick}
             w={"100%"}
+            justifyContent={"center"}
             title="Create Post"
           >
             <NavItem icon={TbSquareRoundedPlus} label="Create" />
@@ -162,6 +164,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             onClick={handleNotificationsClick}
             pos="relative"
             title="Likes"
+            justifyContent={"center"}
             w={"100%"}
           >
             <NavItem icon={AiOutlineHeart} label="Notifications" />
@@ -170,9 +173,10 @@ const SideBar = ({ searchDrawerDisclosure }) => {
                 as={BsDot}
                 pos="absolute"
                 color="#ff3040"
-                left={{ base: "2px", lg: "7px" }}
+                left={{ base: "12px", md: "22px", lg: "7px" }}
                 fontSize="3rem"
                 top={{ base: "-1.1rem", lg: "-0.7rem" }}
+                h={"fit-content"}
               />
             )}
           </HStack>
@@ -196,9 +200,13 @@ const SideBar = ({ searchDrawerDisclosure }) => {
       <Flex {...navPopOverMain}>
         <Popover>
           <PopoverTrigger>
-            <HStack {...navlinkStyle} {...navLinkProps} title="More">
-              <RxHamburgerMenu className="nav-icon" />
-              <Text display={{ base: "none", lg: "inline-block" }}>More</Text>
+            <HStack
+              w={"100%"}
+              justifyContent={{ base: "center", lg: "flex-start" }}
+              fontSize={"2rem"}
+              title="More"
+            >
+              <NavItem icon={RxHamburgerMenu} label="More" />
             </HStack>
           </PopoverTrigger>
           <PopoverContent

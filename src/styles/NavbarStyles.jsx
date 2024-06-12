@@ -72,6 +72,7 @@ export const navlinkStyle = {
   padding: { lg: "6px" },
   cursor: "pointer",
   columnGap: "0.8rem",
+  justifyContent: { base: "center", lg: "flex-start" },
 };
 
 export const navPopOverMain = {
