@@ -123,7 +123,7 @@ export const Notifications = ({ isOpen, onClose }) => {
                                   started following you.
                                 </Text>
                                 <Text
-                                  fontSize="xs"
+                                  fontSize={"14px"}
                                   color={"#717171e0"}
                                   display={"inline"}
                                   ml={"0.2rem"}
@@ -218,7 +218,7 @@ export const Notifications = ({ isOpen, onClose }) => {
                                   liked your photo.
                                 </Text>
                                 <Text
-                                  fontSize="xs"
+                                  fontSize={"14px"}
                                   color={"#717171e0"}
                                   display={"inline"}
                                   ml={"0.2rem"}
@@ -289,7 +289,79 @@ export const Notifications = ({ isOpen, onClose }) => {
                                   {text}
                                 </Text>
                                 <Text
-                                  fontSize="xs"
+                                  fontSize={"14px"}
+                                  color={"#717171e0"}
+                                  display={"inline"}
+                                  ml={"0.2rem"}
+                                  wordBreak={"break-word"}
+                                >
+                                  {getRelativeTime(createdAt)}
+                                </Text>
+                              </Text>
+                            </Flex>
+                            <Image
+                              src={url}
+                              minW={"50px"}
+                              maxW={"50px"}
+                              h={"50px"}
+                              borderRadius={"14px"}
+                            />
+                          </Flex>
+                        </Flex>
+                      );
+                    } else if (type === "commentLike") {
+                      const { url, _id: postId } = post;
+                      const { text } = comment;
+                      return (
+                        <Flex
+                          key={postId}
+                          gap={"2"}
+                          my={"2"}
+                          cursor={"pointer"}
+                          w={"100%"}
+                          title={username}
+                          onClick={() => {
+                            navigate(`/post/${postId}`);
+                            onClose();
+                          }}
+                          _hover={
+                            colorMode === "dark" ? { bg: "#323232ad" } : ""
+                          }
+                        >
+                          <Flex alignItems={"center"} gap={"2"}>
+                            <Avatar size="md" src={avatar?.url} />
+                          </Flex>
+                          <Flex
+                            gap={{ base: "0.5rem", md: "1rem" }}
+                            alignItems={"center"}
+                            justifyContent={"space-between"}
+                            w={"100%"}
+                          >
+                            <Flex flexWrap={"wrap"}>
+                              <Text wordBreak={"break-word"}>
+                                <Text
+                                  as="span"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/profile/${username}`);
+                                    onClose();
+                                  }}
+                                  {...userNameStyle}
+                                >
+                                  {username}
+                                </Text>
+                                <Text as="span" ml={"0.2rem"}>
+                                  liked your comment:
+                                </Text>
+                                <Text
+                                  display={"inline"}
+                                  ml={"0.2rem"}
+                                  wordBreak={"break-word"}
+                                >
+                                  {text}
+                                </Text>
+                                <Text
+                                  fontSize={"14px"}
                                   color={"#717171e0"}
                                   display={"inline"}
                                   ml={"0.2rem"}

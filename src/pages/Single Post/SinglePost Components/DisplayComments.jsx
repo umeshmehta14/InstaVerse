@@ -220,7 +220,8 @@ export const DisplayComments = ({ post, location }) => {
                     </Text>
                     {likes?.length !== 0 && (
                       <Text fontSize="sm" color={"#717171e0"}>
-                        {likes?.length} likes
+                        {likes?.length}
+                        {likes?.length > 1 ? " likes" : " like"}
                       </Text>
                     )}
                     {(currentUser._id === ownerId ||
