@@ -46,7 +46,7 @@ export const renderCaptionWithHashtags = (caption) => {
   return parts.map((part, index) => {
     if (part.startsWith("#")) {
       return (
-        <Text as="span" key={index} color="#385898">
+        <Text as="span" key={index} color="blue.500">
           {part}
         </Text>
       );

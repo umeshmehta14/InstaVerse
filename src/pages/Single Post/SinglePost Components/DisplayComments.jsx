@@ -210,7 +210,27 @@ export const DisplayComments = ({ post, location }) => {
                       {username}
                     </Text>
                     <Text fontWeight={100} {...commentTextStyle} as={"span"}>
-                      {text}
+                      {text.split(/\s+/).map((word, index) => {
+                        if (word.startsWith("@")) {
+                          const username = word.substring(1);
+                          return (
+                            <Text
+                              key={index}
+                              as="span"
+                              color="blue.500"
+                              cursor="pointer"
+                              onClick={() => navigate(`/profile/${username}`)}
+                            >
+                              {word}{" "}
+                            </Text>
+                          );
+                        }
+                        return (
+                          <Text key={index} as="span">
+                            {word}{" "}
+                          </Text>
+                        );
+                      })}
                     </Text>
                   </Box>
 

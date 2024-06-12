@@ -37,11 +37,7 @@ import {
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
-import {
-  RotatingLoader,
-  SearchSkeleton,
-  UserListModal,
-} from "../../../components";
+import { RotatingLoader, UserListModal } from "../../../components";
 import {
   commentInput,
   emojiPickerButtonNew,
@@ -79,7 +75,7 @@ export const CommentFooter = ({ post, userLike }) => {
   const { _id, likes, comments } = post;
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { bookmarks, searchedUsers, searchValue, isLoading } = useSelector(
+  const { bookmarks, searchedUsers, isLoading } = useSelector(
     (state) => state.user
   );
   const { commentLoader, commentEdit } = useSelector((state) => state.comment);
