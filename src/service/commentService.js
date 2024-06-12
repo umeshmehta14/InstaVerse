@@ -29,3 +29,25 @@ export const editComment = async (commentId, text, token) =>
       },
     }
   );
+
+export const likeComment = async (commentId, token) =>
+  axios.patch(
+    `${API_URL}/post/comment/like/${commentId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+export const removelikeFromComment = async (commentId, token) =>
+  axios.patch(
+    `${API_URL}/post/comment/unlike/${commentId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );

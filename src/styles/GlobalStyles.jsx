@@ -98,3 +98,8 @@ export const userNameStyle = {
   cursor: "pointer",
   _hover: { color: "gray" },
 };
+
+export const likeHeartStyle = {
+  cursor: "pointer",
+  color: "red",
+};

@@ -69,6 +69,7 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   const handlePost = () => {
     if (currentUser?.guest) {
       toast.error("Guest users cannot upload posts");
+      dispatch(updateUploadPost({ caption: "", url: "" }));
       onClose();
       return;
     }

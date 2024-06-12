@@ -3,8 +3,15 @@ import {
   addComment,
   deleteComment,
   editComment,
+  likeComment,
+  removelikeFromComment,
 } from "../../service/commentService";
-import { updateDeleteComment, updatePostComment } from "../Post Feed/postSlice";
+import {
+  removeCommentLike,
+  updateCommentLike,
+  updateDeleteComment,
+  updatePostComment,
+} from "../Post Feed/postSlice";
 
 const initialState = {
   commentLoader: false,
@@ -54,6 +61,25 @@ export const editCommentToPost = createAsyncThunk(
   }
 );
 
+export const handleCommentLike = createAsyncThunk(
+  "comment/like-unlike",
+  async ({ _id, unlike }, { getState, dispatch }) => {
+    const { token, currentUser } = getState().authentication;
+    unlike
+      ? dispatch(removeCommentLike({ _id, currentUser }))
+      : dispatch(updateCommentLike({ _id, currentUser }));
+    const {
+      data: { statusCode, data },
+    } = unlike
+      ? await removelikeFromComment(_id, token)
+      : await likeComment(_id, token);
+    if (statusCode === 200) {
+      dispatch(updatePostComment({ data, _id }));
+      return data;
+    }
+  }
+);
+
 const commentSlice = createSlice({
   name: "comment",
   initialState,
@@ -89,6 +115,10 @@ const commentSlice = createSlice({
 
     builder.addCase(editCommentToPost.rejected, (state, action) => {
       state.commentLoader = false;
+    });
+
+    builder.addCase(handleCommentLike.rejected, (state, action) => {
+      console.error(action.error);
     });
   },
 });

@@ -24,7 +24,11 @@ import {
   commentTextStyle,
   displayCommentMainBox,
 } from "../../../styles/SinglePostStyle";
-import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
+import {
+  IconHoverStyle,
+  postNavStyles,
+  postThreeDot,
+} from "../../../styles/PostBoxStyles";
 import {
   AiFillHeart,
   AiOutlineHeart,
@@ -33,6 +37,7 @@ import {
 } from "../../../utils/Icons";
 import {
   hideScrollbar,
+  likeHeartStyle,
   simpleButton,
   userNameStyle,
 } from "../../../styles/GlobalStyles";
@@ -40,7 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
 import {
   deleteCommentToPost,
-  editCommentToPost,
+  handleCommentLike,
   updateCommentEdit,
 } from "../commentSlice";
 import { useState } from "react";
@@ -60,6 +65,7 @@ export const DisplayComments = ({ post, location }) => {
 
   const navigate = useNavigate();
   const [commentId, setCommentId] = useState("");
+  const [isLiked, setIsLiked] = useState(false);
 
   const infoPopupDisclosure = useDisclosure();
   const commentDeleteDisclosure = useDisclosure();
@@ -180,7 +186,6 @@ export const DisplayComments = ({ post, location }) => {
               createdAt,
               likes,
             } = comment || {};
-
             const commentLike = likes?.find(
               (like) => like === currentUser?._id
             );
@@ -231,61 +236,23 @@ export const DisplayComments = ({ post, location }) => {
                       )}
                   </Flex>
                 </VStack>
-                {commentDeleteDisclosure.isOpen && (
-                  <Modal
-                    onClose={commentDeleteDisclosure.onClose}
-                    size={"xs"}
-                    isOpen={commentDeleteDisclosure.isOpen}
-                  >
-                    <ModalOverlay bg="rgba(0, 0, 0, 0.5)" />
-                    <ModalContent
-                      mt={"20rem"}
-                      bg={colorMode === "dark" ? "black.700" : "white.500"}
-                    >
-                      <ModalBody>
-                        {currentUser?.username === username && (
-                          <>
-                            <Button
-                              sx={simpleButton}
-                              onClick={() => {
-                                dispatch(updateCommentEdit(commentId));
-                                commentDeleteDisclosure.onClose();
-                              }}
-                            >
-                              Edit
-                            </Button>
-
-                            <Divider />
-                          </>
-                        )}
-                        <Button
-                          sx={simpleButton}
-                          color={"red.500"}
-                          onClick={() => {
-                            dispatch(deleteCommentToPost({ _id: commentId }));
-                            commentDeleteDisclosure.onClose();
-                          }}
-                        >
-                          Delete
-                        </Button>
-                        <Divider />
-                        <Button
-                          sx={simpleButton}
-                          onClick={commentDeleteDisclosure.onClose}
-                        >
-                          Cancel
-                        </Button>
-                      </ModalBody>
-                    </ModalContent>
-                  </Modal>
-                )}
 
                 <Box
                   as={commentLike ? AiFillHeart : AiOutlineHeart}
                   fontSize={"12px"}
+                  sx={
+                    commentLike ? { ...likeHeartStyle } : { ...IconHoverStyle }
+                  }
                   w={"10%"}
                   mt={"2"}
                   justifySelf={"flex-end"}
+                  onClick={() => {
+                    setIsLiked(!isLiked);
+                    commentLike
+                      ? dispatch(handleCommentLike({ _id, unlike: true }))
+                      : dispatch(handleCommentLike({ _id }));
+                  }}
+                  className={isLiked ? "like-animation" : ""}
                 />
               </Flex>
             );
@@ -300,6 +267,54 @@ export const DisplayComments = ({ post, location }) => {
           fromSinglePost={true}
           location={location}
         />
+      )}
+      {commentDeleteDisclosure.isOpen && (
+        <Modal
+          onClose={commentDeleteDisclosure.onClose}
+          size={"xs"}
+          isOpen={commentDeleteDisclosure.isOpen}
+        >
+          <ModalOverlay bg="rgba(0, 0, 0, 0.5)" />
+          <ModalContent
+            mt={"20rem"}
+            bg={colorMode === "dark" ? "black.700" : "white.500"}
+          >
+            <ModalBody>
+              {currentUser?.username === username && (
+                <>
+                  <Button
+                    sx={simpleButton}
+                    onClick={() => {
+                      dispatch(updateCommentEdit(commentId));
+                      commentDeleteDisclosure.onClose();
+                    }}
+                  >
+                    Edit
+                  </Button>
+
+                  <Divider />
+                </>
+              )}
+              <Button
+                sx={simpleButton}
+                color={"red.500"}
+                onClick={() => {
+                  dispatch(deleteCommentToPost({ _id: commentId }));
+                  commentDeleteDisclosure.onClose();
+                }}
+              >
+                Delete
+              </Button>
+              <Divider />
+              <Button
+                sx={simpleButton}
+                onClick={commentDeleteDisclosure.onClose}
+              >
+                Cancel
+              </Button>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       )}
     </>
   );

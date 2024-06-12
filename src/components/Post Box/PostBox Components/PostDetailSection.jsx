@@ -20,6 +20,7 @@ import Picker from "@emoji-mart/react";
 import {
   commentInput,
   emojiPickerButtonNew,
+  likeHeartStyle,
   userNameStyle,
 } from "../../../styles/GlobalStyles";
 import {
@@ -119,8 +120,7 @@ const PostDetailSection = ({
             {userLike ? (
               <Box
                 as={AiFillHeart}
-                cursor="pointer"
-                color={"red"}
+                {...likeHeartStyle}
                 title="Unlike"
                 onClick={() => {
                   dispatch(handleLikes({ _id, unlike: true }));
