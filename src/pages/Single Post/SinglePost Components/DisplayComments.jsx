@@ -3,12 +3,7 @@ import {
   Avatar,
   Box,
   Button,
-  Divider,
   Flex,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
   Text,
   VStack,
   useColorMode,
@@ -20,35 +15,12 @@ import {
   renderCaptionWithHashtags,
 } from "../../../utils/Utils";
 import { InfoPopup, RotatingLoader } from "../../../components/index";
-import {
-  commentTextStyle,
-  displayCommentMainBox,
-} from "../../../styles/SinglePostStyle";
-import {
-  IconHoverStyle,
-  postNavStyles,
-  postThreeDot,
-} from "../../../styles/PostBoxStyles";
-import {
-  AiFillHeart,
-  AiOutlineHeart,
-  BsDot,
-  BsThreeDots,
-} from "../../../utils/Icons";
-import {
-  hideScrollbar,
-  likeHeartStyle,
-  simpleButton,
-  userNameStyle,
-} from "../../../styles/GlobalStyles";
+import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
+import { BsDot, BsThreeDots } from "../../../utils/Icons";
+import { userNameStyle } from "../../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
-import {
-  deleteCommentToPost,
-  handleCommentLike,
-  updateCommentEdit,
-} from "../commentSlice";
-import { useRef, useState } from "react";
+import { CommentList } from "./CommentList";
 
 export const DisplayComments = ({ post, location }) => {
   const {
@@ -64,19 +36,12 @@ export const DisplayComments = ({ post, location }) => {
   const { username, avatar, _id: ownerId } = owner;
 
   const navigate = useNavigate();
-  const [commentId, setCommentId] = useState("");
-  const [isLiked, setIsLiked] = useState(false);
-  const [doubleTap, setDoubleTap] = useState(false);
-  const lastTapRef = useRef(0);
 
   const infoPopupDisclosure = useDisclosure();
-  const commentDeleteDisclosure = useDisclosure();
-  const { colorMode } = useColorMode();
   const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { loadingUsers } = useSelector((state) => state.user);
-  const { commentEdit } = useSelector((state) => state.comment);
 
   const postFollow = currentUser?.following?.find(
     (user) => user?.username === username
@@ -169,200 +134,7 @@ export const DisplayComments = ({ post, location }) => {
           </Flex>
         </Flex>
       )}
-
-      <VStack
-        bg={colorMode === "dark" ? "black.900" : "white.500"}
-        {...displayCommentMainBox}
-        sx={hideScrollbar}
-      >
-        {comments?.length === 0 ? (
-          <Text h="100%" textAlign="center" w="100%" pt="4rem" color="gray">
-            No Comments Yet
-          </Text>
-        ) : (
-          comments?.map((comment) => {
-            const {
-              _id,
-              owner: { username, avatar: commentAvatar },
-              text,
-              createdAt,
-              likes,
-              edit,
-            } = comment || {};
-            const commentLike = likes?.find(
-              (like) => like === currentUser?._id
-            );
-
-            const handleDoubleTap = () => {
-              const now = Date.now();
-              const DOUBLE_TAP_THRESHOLD = 300;
-
-              if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
-                setDoubleTap(true);
-                if (!commentLike) {
-                  dispatch(handleCommentLike({ _id }));
-                }
-                setTimeout(() => {
-                  setDoubleTap(false);
-                }, 800);
-              } else {
-                setDoubleTap(false);
-              }
-
-              lastTapRef.current = now;
-            };
-
-            return (
-              <Flex
-                key={_id}
-                gap={"1rem"}
-                title={username}
-                w={"100%"}
-                onClick={() => handleDoubleTap()}
-              >
-                <Box pt={"2"} onClick={() => navigate(`/profile/${username}`)}>
-                  <Avatar
-                    src={commentAvatar?.url}
-                    size={"sm"}
-                    cursor={"pointer"}
-                  />
-                </Box>
-                <VStack align={"flex-start"} gap={"0"} w={"100%"}>
-                  <Box>
-                    <Text
-                      {...userNameStyle}
-                      onClick={() => navigate(`/profile/${username}`)}
-                      as={"span"}
-                      mr={"0.3rem"}
-                    >
-                      {username}
-                    </Text>
-                    <Text fontWeight={100} {...commentTextStyle} as={"span"}>
-                      {text.split(/\s+/).map((word, index) => {
-                        if (word.startsWith("@")) {
-                          const username = word.substring(1);
-                          return (
-                            <Text
-                              key={index}
-                              as="span"
-                              color="blue.500"
-                              cursor="pointer"
-                              onClick={() => navigate(`/profile/${username}`)}
-                            >
-                              {word}{" "}
-                            </Text>
-                          );
-                        }
-                        return (
-                          <Text key={index} as="span">
-                            {word}{" "}
-                          </Text>
-                        );
-                      })}
-                    </Text>
-                  </Box>
-
-                  <Flex gap={"0.6rem"} alignItems={"center"}>
-                    <Text fontSize="sm" color={"#717171e0"}>
-                      {edit && (
-                        <Flex display={"inline-flex"} alignItems={"center"}>
-                          <Text as={"span"}>Edited</Text>
-                          <Box display={"inline"} as={BsDot} />
-                        </Flex>
-                      )}
-                      {getRelativeTime(createdAt)}
-                    </Text>
-                    {likes?.length !== 0 && (
-                      <Text fontSize="sm" color={"#717171e0"}>
-                        {likes?.length}
-                        {likes?.length > 1 ? " likes" : " like"}
-                      </Text>
-                    )}
-                    {(currentUser._id === ownerId ||
-                      currentUser?.username === username) &&
-                      commentEdit !== _id && (
-                        <Box
-                          as={BsThreeDots}
-                          onClick={() => {
-                            setCommentId(_id);
-                            commentDeleteDisclosure.onOpen();
-                          }}
-                        />
-                      )}
-                  </Flex>
-                </VStack>
-
-                {commentDeleteDisclosure.isOpen && (
-                  <Modal
-                    onClose={commentDeleteDisclosure.onClose}
-                    size={"xs"}
-                    isOpen={commentDeleteDisclosure.isOpen}
-                  >
-                    <ModalOverlay bg="rgba(0, 0, 0, 0.5)" />
-                    <ModalContent
-                      mt={"20rem"}
-                      bg={colorMode === "dark" ? "black.700" : "white.500"}
-                    >
-                      <ModalBody>
-                        {currentUser?.username === username && (
-                          <>
-                            <Button
-                              sx={simpleButton}
-                              onClick={() => {
-                                dispatch(updateCommentEdit(commentId));
-                                commentDeleteDisclosure.onClose();
-                              }}
-                            >
-                              Edit
-                            </Button>
-
-                            <Divider />
-                          </>
-                        )}
-                        <Button
-                          sx={simpleButton}
-                          color={"red.500"}
-                          onClick={() => {
-                            dispatch(deleteCommentToPost({ _id: commentId }));
-                            commentDeleteDisclosure.onClose();
-                          }}
-                        >
-                          Delete
-                        </Button>
-                        <Divider />
-                        <Button
-                          sx={simpleButton}
-                          onClick={commentDeleteDisclosure.onClose}
-                        >
-                          Cancel
-                        </Button>
-                      </ModalBody>
-                    </ModalContent>
-                  </Modal>
-                )}
-
-                <Box
-                  as={commentLike ? AiFillHeart : AiOutlineHeart}
-                  fontSize={"12px"}
-                  sx={
-                    commentLike ? { ...likeHeartStyle } : { ...IconHoverStyle }
-                  }
-                  w={"10%"}
-                  mt={"2"}
-                  justifySelf={"flex-end"}
-                  onClick={() => {
-                    setIsLiked(!isLiked);
-                    commentLike
-                      ? dispatch(handleCommentLike({ _id, unlike: true }))
-                      : dispatch(handleCommentLike({ _id }));
-                  }}
-                  className={isLiked ? "like-animation" : ""}
-                />
-              </Flex>
-            );
-          })
-        )}
-      </VStack>
+      <CommentList comments={comments} ownerId={ownerId} />
       {infoPopupDisclosure.isOpen && (
         <InfoPopup
           isOpen={infoPopupDisclosure.isOpen}

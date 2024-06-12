@@ -12,6 +12,7 @@ export { CommentFooter } from "./Single Post/SinglePost Components/CommentFooter
 export { DisplayComments } from "./Single Post/SinglePost Components/DisplayComments.jsx";
 export { MobileSinglePost } from "./Single Post/SinglePost Components/MobileSinglePost.jsx";
 export { SinglePostModal } from "./Single Post/SinglePost Components/SinglePostModal.jsx";
+export { CommentList } from "./Single Post/SinglePost Components/CommentList.jsx";
 
 export { AvatarModal } from "./Profile/Profile Components/AvatarModal.jsx";
 export { EditProfileModal } from "./Profile/Profile Components/EditProfileModal.jsx";

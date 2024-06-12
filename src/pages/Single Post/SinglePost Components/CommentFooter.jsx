@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -35,6 +35,7 @@ import {
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
 import {
+  EmojiPopover,
   RotatingLoader,
   UserListModal,
   UserMentionList,
@@ -59,11 +60,7 @@ import {
 } from "../../Post Feed/userSlice";
 import { handleLikes } from "../../Post Feed/postSlice";
 import { debounce, handleShare } from "../../../utils/Utils";
-import {
-  addCommentToPost,
-  editCommentToPost,
-  updateCommentEdit,
-} from "../commentSlice";
+import { addCommentToPost } from "../commentSlice";
 
 export const CommentFooter = ({ post, userLike }) => {
   const { colorMode } = useColorMode();
@@ -72,16 +69,17 @@ export const CommentFooter = ({ post, userLike }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { _id, likes, comments } = post;
+  const { _id, likes } = post;
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { bookmarks } = useSelector((state) => state.user);
-  const { commentLoader, commentEdit } = useSelector((state) => state.comment);
+  const { commentLoader } = useSelector((state) => state.comment);
 
   const [isLiked, setIsLiked] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [showTagBox, setShowTagBox] = useState(false);
   const [matchIndex, setMatchIndex] = useState(null);
+  const inputRef = useRef(null);
 
   const bookmarked = bookmarks?.find((post) => post?._id === _id);
 
@@ -103,15 +101,6 @@ export const CommentFooter = ({ post, userLike }) => {
 
   const handleCommentPost = () => {
     if (!commentLoader) {
-      if (commentEdit) {
-        dispatch(
-          editCommentToPost({ _id: commentEdit, text: commentValue })
-        ).then(() => {
-          setCommentValue("");
-          dispatch(updateCommentEdit(""));
-        });
-        return;
-      }
       dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
         setCommentValue("")
       );
@@ -143,14 +132,6 @@ export const CommentFooter = ({ post, userLike }) => {
     setShowTagBox(false);
     setMatchIndex(null);
   };
-
-  useEffect(() => {
-    if (commentEdit) {
-      setCommentValue(
-        () => comments.find((comment) => comment._id === commentEdit)?.text
-      );
-    }
-  }, [commentEdit]);
 
   return (
     <>
@@ -256,37 +237,21 @@ export const CommentFooter = ({ post, userLike }) => {
         {...commentFooterInputMain}
       >
         {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
-        <Popover>
-          <PopoverTrigger>
-            <Box
-              as={BsEmojiSunglasses}
-              {...emojiPickerButtonNew}
-              title="Emoji"
-            />
-          </PopoverTrigger>
-          <PopoverContent bottom={"27rem"} bg={"transparent"}>
-            <PopoverBody p={0}>
-              <Picker
-                data={data}
-                onEmojiSelect={(emoji) =>
-                  setCommentValue(commentValue + emoji.native)
-                }
-                theme={colorMode}
-                title="Pick an Emoji"
-                emoji=""
-              />
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+        <EmojiPopover
+          setCommentValue={setCommentValue}
+          commentValue={commentValue}
+          inputRef={inputRef}
+        />
         <Box pos={"relative"} width={"100%"}>
           <Input
             placeholder="Add a comment..."
             value={commentValue}
             onChange={handleInputChange}
-            disabled={commentLoader}
+            disabled={commentLoader && commentValue}
             {...commentInput}
+            ref={inputRef}
           />
-          {commentLoader && (
+          {commentLoader && commentValue && (
             <Box {...commentLoaderStyle}>
               <RotatingLoader w={"40"} sw={"3"} />
             </Box>
