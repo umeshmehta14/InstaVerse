@@ -41,6 +41,7 @@ import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
 import { handleLikes } from "../../Post Feed/postSlice";
 import { addCommentToPost, updateCommentEdit } from "../commentSlice";
+import { updateSearchValue } from "../../Post Feed/userSlice";
 
 export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const navigate = useNavigate();
@@ -107,6 +108,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
           onClick={() => {
             navigate(redirectLocation || "/");
             dispatch(updateCommentEdit(""));
+            dispatch(updateSearchValue(""));
           }}
         />
         <ModalBody p={0} height={"100%"}>

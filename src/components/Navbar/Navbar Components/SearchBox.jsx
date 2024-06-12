@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RxCrossCircled, BsDot, RxCross2 } from "../../../utils/Icons";
-import { getMutualFollowers } from "../../../utils/Utils";
+import { debounce, getMutualFollowers } from "../../../utils/Utils";
 import {
   addUserToSearchList,
   getSearchedUsers,
@@ -54,17 +54,9 @@ export const SearchBox = ({ isOpen, onClose }) => {
     }
   }, [searchValue]);
 
-  const debounce = (delay) => {
-    let timeoutId;
-    return () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        dispatch(getSearchedUsers());
-      }, delay);
-    };
-  };
-
-  const debouncedFetchData = useCallback(debounce(500), [getSearchedUsers]);
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
 
   return (
     <Box>

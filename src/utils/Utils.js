@@ -1,4 +1,5 @@
 import { Text } from "@chakra-ui/react";
+import { getSearchedUsers } from "../pages/Post Feed/userSlice";
 
 export const getRelativeTime = (date) => {
   const now = new Date();
@@ -71,4 +72,14 @@ export const truncateTextWithHTML = (text) => {
   }
 
   return truncated + "...";
+};
+
+export const debounce = (dispatch) => {
+  let timeoutId;
+  return () => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      dispatch(getSearchedUsers());
+    }, 500);
+  };
 };

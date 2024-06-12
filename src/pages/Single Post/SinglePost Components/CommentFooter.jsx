@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -12,9 +12,12 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  SkeletonCircle,
+  SkeletonText,
   Text,
   useColorMode,
   useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -34,10 +37,15 @@ import {
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
-import { RotatingLoader, UserListModal } from "../../../components";
+import {
+  RotatingLoader,
+  SearchSkeleton,
+  UserListModal,
+} from "../../../components";
 import {
   commentInput,
   emojiPickerButtonNew,
+  hideScrollbar,
   userNameStyle,
 } from "../../../styles/GlobalStyles";
 import {
@@ -48,10 +56,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addUserBookmark,
   getPostLikeUsers,
+  getSearchedUsers,
   removeUserBookmark,
+  updateSearchedUsers,
+  updateSearchValue,
 } from "../../Post Feed/userSlice";
 import { handleLikes } from "../../Post Feed/postSlice";
-import { handleShare } from "../../../utils/Utils";
+import { debounce, handleShare } from "../../../utils/Utils";
 import {
   addCommentToPost,
   editCommentToPost,
@@ -68,18 +79,25 @@ export const CommentFooter = ({ post, userLike }) => {
   const { _id, likes, comments } = post;
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { bookmarks } = useSelector((state) => state.user);
+  const { bookmarks, searchedUsers, searchValue, isLoading } = useSelector(
+    (state) => state.user
+  );
   const { commentLoader, commentEdit } = useSelector((state) => state.comment);
 
   const [isLiked, setIsLiked] = useState(false);
-
   const [commentValue, setCommentValue] = useState("");
+  const [showTagBox, setShowTagBox] = useState(false);
+  const [matchIndex, setMatchIndex] = useState(null);
 
   const bookmarked = bookmarks?.find((post) => post?._id === _id);
 
   const friendLike = currentUser.following.find(({ username }) =>
     likes.some((likeUser) => likeUser?.username === username)
   );
+
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
 
   const handleLike = () => {
     setIsLiked(true);
@@ -104,6 +122,32 @@ export const CommentFooter = ({ post, userLike }) => {
         setCommentValue("")
       );
     }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setCommentValue(value);
+
+    const match = value.match(/@(\w*)$/);
+    if (match && match[1]) {
+      const username = match[1];
+      setMatchIndex(match.index);
+      setShowTagBox(true);
+      dispatch(updateSearchValue(username));
+      debouncedFetchData(username);
+    } else {
+      setShowTagBox(false);
+      setMatchIndex(null);
+      dispatch(updateSearchValue(""));
+      dispatch(updateSearchedUsers());
+    }
+  };
+
+  const handleUserClick = (username) => {
+    const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
+    setCommentValue(newValue);
+    setShowTagBox(false);
+    setMatchIndex(null);
   };
 
   useEffect(() => {
@@ -217,6 +261,60 @@ export const CommentFooter = ({ post, userLike }) => {
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...commentFooterInputMain}
       >
+        {showTagBox && (
+          <Box
+            pos={"absolute"}
+            backgroundColor={"black.900"}
+            bottom={"3.5rem"}
+            maxH={"300px"}
+            overflow={"scroll"}
+            w={"70%"}
+            sx={hideScrollbar}
+          >
+            {isLoading
+              ? new Array(5).fill(null)?.map((_, index) => (
+                  <Flex gap={"2"} my={"2"} w={"100%"} key={index}>
+                    <SkeletonCircle size="12" />
+                    <SkeletonText
+                      mt="4"
+                      noOfLines={2}
+                      spacing="4"
+                      skeletonHeight="2"
+                      w={"80%"}
+                    />
+                  </Flex>
+                ))
+              : searchedUsers?.map((user) => {
+                  const { _id, avatar, username, fullName } = user;
+                  return (
+                    <Flex
+                      key={_id}
+                      gap={"2"}
+                      my={"2"}
+                      cursor={"pointer"}
+                      w={"100%"}
+                      _hover={{ bg: "#1f1f1f6a" }}
+                      title={username}
+                      onClick={() => handleUserClick(username)}
+                    >
+                      <Flex alignItems={"center"} gap={"2"}>
+                        <Avatar size="md" src={avatar?.url} />
+                      </Flex>
+                      <VStack
+                        align={"flex-start"}
+                        gap={"0"}
+                        whiteSpace={"nowrap"}
+                      >
+                        <Text>{username}</Text>
+                        <Flex fontSize={"0.8rem"} color={"gray"}>
+                          <Text>{fullName}</Text>
+                        </Flex>
+                      </VStack>
+                    </Flex>
+                  );
+                })}
+          </Box>
+        )}
         <Popover>
           <PopoverTrigger>
             <Box
@@ -243,7 +341,7 @@ export const CommentFooter = ({ post, userLike }) => {
           <Input
             placeholder="Add a comment..."
             value={commentValue}
-            onChange={(e) => setCommentValue(e.target.value)}
+            onChange={handleInputChange}
             disabled={commentLoader}
             {...commentInput}
           />
