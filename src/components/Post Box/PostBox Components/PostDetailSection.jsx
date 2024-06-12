@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -44,9 +44,13 @@ import { handleLikes } from "../../../pages/Post Feed/postSlice";
 import {
   addUserBookmark,
   getPostLikeUsers,
+  getSearchedUsers,
   removeUserBookmark,
+  updateSearchedUsers,
+  updateSearchValue,
 } from "../../../pages/Post Feed/userSlice";
 import {
+  debounce,
   handleShare,
   renderCaptionWithHashtags,
   truncateTextWithHTML,
@@ -54,6 +58,7 @@ import {
 import { commentLoaderStyle } from "../../../styles/SinglePostStyle";
 import { RotatingLoader } from "../../Loader/RotatingLoader";
 import { addCommentToPost } from "../../../pages/Single Post/commentSlice";
+import { UserMentionList } from "../../UserMention List/UserMentionList";
 
 const PostDetailSection = ({
   onOpen,
@@ -69,6 +74,9 @@ const PostDetailSection = ({
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
+  const [showTagBox, setShowTagBox] = useState(false);
+  const [matchIndex, setMatchIndex] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { commentLoader } = useSelector((state) => state.comment);
@@ -98,7 +106,9 @@ const PostDetailSection = ({
     }
   };
 
-  const [isLiked, setIsLiked] = useState(false);
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
 
   const handleLike = () => {
     setIsLiked(true);
@@ -106,6 +116,32 @@ const PostDetailSection = ({
     setTimeout(() => {
       setIsLiked(false);
     }, 1000);
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setCommentValue(value);
+
+    const match = value.match(/@(\w*)$/);
+    if (match && match[1]) {
+      const username = match[1];
+      setMatchIndex(match.index);
+      setShowTagBox(true);
+      dispatch(updateSearchValue(username));
+      debouncedFetchData(username);
+    } else {
+      setShowTagBox(false);
+      setMatchIndex(null);
+      dispatch(updateSearchValue(""));
+      dispatch(updateSearchedUsers());
+    }
+  };
+
+  const handleUserClick = (username) => {
+    const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
+    setCommentValue(newValue);
+    setShowTagBox(false);
+    setMatchIndex(null);
   };
 
   return (
@@ -272,7 +308,12 @@ const PostDetailSection = ({
         </Text>
       </Flex>
 
-      <Flex p={{ base: "0 12px", md: 0 }} alignItems={"center"}>
+      <Flex
+        p={{ base: "0 12px", md: 0 }}
+        alignItems={"center"}
+        pos={"relative"}
+      >
+        {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
         <Popover>
           <PopoverTrigger>
             <Button {...emojiPickerButtonNew}>
@@ -297,7 +338,7 @@ const PostDetailSection = ({
           <Input
             placeholder="Add a comment..."
             value={commentValue}
-            onChange={(e) => setCommentValue(e.target.value)}
+            onChange={handleInputChange}
             disabled={commentLoader}
             {...commentInput}
             px={0}

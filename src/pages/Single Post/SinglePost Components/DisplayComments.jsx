@@ -48,7 +48,7 @@ import {
   handleCommentLike,
   updateCommentEdit,
 } from "../commentSlice";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export const DisplayComments = ({ post, location }) => {
   const {
@@ -66,6 +66,8 @@ export const DisplayComments = ({ post, location }) => {
   const navigate = useNavigate();
   const [commentId, setCommentId] = useState("");
   const [isLiked, setIsLiked] = useState(false);
+  const [doubleTap, setDoubleTap] = useState(false);
+  const lastTapRef = useRef(0);
 
   const infoPopupDisclosure = useDisclosure();
   const commentDeleteDisclosure = useDisclosure();
@@ -185,13 +187,39 @@ export const DisplayComments = ({ post, location }) => {
               text,
               createdAt,
               likes,
+              edit,
             } = comment || {};
             const commentLike = likes?.find(
               (like) => like === currentUser?._id
             );
 
+            const handleDoubleTap = () => {
+              const now = Date.now();
+              const DOUBLE_TAP_THRESHOLD = 300;
+
+              if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
+                setDoubleTap(true);
+                if (!commentLike) {
+                  dispatch(handleCommentLike({ _id }));
+                }
+                setTimeout(() => {
+                  setDoubleTap(false);
+                }, 800);
+              } else {
+                setDoubleTap(false);
+              }
+
+              lastTapRef.current = now;
+            };
+
             return (
-              <Flex key={_id} gap={"1rem"} title={username} w={"100%"}>
+              <Flex
+                key={_id}
+                gap={"1rem"}
+                title={username}
+                w={"100%"}
+                onClick={() => handleDoubleTap()}
+              >
                 <Box pt={"2"} onClick={() => navigate(`/profile/${username}`)}>
                   <Avatar
                     src={commentAvatar?.url}
@@ -234,8 +262,14 @@ export const DisplayComments = ({ post, location }) => {
                     </Text>
                   </Box>
 
-                  <Flex gap={"0.8rem"} alignItems={"center"}>
+                  <Flex gap={"0.6rem"} alignItems={"center"}>
                     <Text fontSize="sm" color={"#717171e0"}>
+                      {edit && (
+                        <Flex display={"inline-flex"} alignItems={"center"}>
+                          <Text as={"span"}>Edited</Text>
+                          <Box display={"inline"} as={BsDot} />
+                        </Flex>
+                      )}
                       {getRelativeTime(createdAt)}
                     </Text>
                     {likes?.length !== 0 && (

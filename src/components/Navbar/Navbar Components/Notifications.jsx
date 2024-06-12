@@ -76,7 +76,14 @@ export const Notifications = ({ isOpen, onClose }) => {
             ) : (
               <VStack maxW={"100%"}>
                 {notifications?.map(
-                  ({ type, actionBy, createdAt, post, comment }) => {
+                  ({
+                    _id: notId,
+                    type,
+                    actionBy,
+                    createdAt,
+                    post,
+                    comment,
+                  }) => {
                     const { _id, username, avatar } = actionBy;
                     const isFollowing = currentUser?.following?.some(
                       (user) => user?._id === _id
@@ -240,6 +247,7 @@ export const Notifications = ({ isOpen, onClose }) => {
                     } else if (type === "comment") {
                       const { url, _id: postId } = post;
                       const { text } = comment;
+
                       return (
                         <Flex
                           key={postId}
@@ -360,6 +368,71 @@ export const Notifications = ({ isOpen, onClose }) => {
                                 >
                                   {text}
                                 </Text>
+                                <Text
+                                  fontSize={"14px"}
+                                  color={"#717171e0"}
+                                  display={"inline"}
+                                  ml={"0.2rem"}
+                                  wordBreak={"break-word"}
+                                >
+                                  {getRelativeTime(createdAt)}
+                                </Text>
+                              </Text>
+                            </Flex>
+                            <Image
+                              src={url}
+                              minW={"50px"}
+                              maxW={"50px"}
+                              h={"50px"}
+                              borderRadius={"14px"}
+                            />
+                          </Flex>
+                        </Flex>
+                      );
+                    } else if (type === "mention") {
+                      const { url, _id: postId } = post;
+                      return (
+                        <Flex
+                          key={postId}
+                          gap={"2"}
+                          my={"2"}
+                          cursor={"pointer"}
+                          w={"100%"}
+                          title={username}
+                          onClick={() => {
+                            navigate(`/post/${postId}`);
+                            onClose();
+                          }}
+                          _hover={
+                            colorMode === "dark" ? { bg: "#323232ad" } : ""
+                          }
+                        >
+                          <Flex alignItems={"center"} gap={"2"}>
+                            <Avatar size="md" src={avatar?.url} />
+                          </Flex>
+                          <Flex
+                            gap={{ base: "0.5rem", md: "1rem" }}
+                            alignItems={"center"}
+                            justifyContent={"space-between"}
+                            w={"100%"}
+                          >
+                            <Flex flexWrap={"wrap"}>
+                              <Text wordBreak={"break-word"}>
+                                <Text
+                                  as="span"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/profile/${username}`);
+                                    onClose();
+                                  }}
+                                  {...userNameStyle}
+                                >
+                                  {username}
+                                </Text>
+                                <Text as="span" ml={"0.1rem"}>
+                                  : Mentioned you in a comment.
+                                </Text>
+
                                 <Text
                                   fontSize={"14px"}
                                   color={"#717171e0"}

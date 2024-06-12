@@ -67,12 +67,12 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   };
 
   const handlePost = () => {
-    if (currentUser?.guest) {
-      toast.error("Guest users cannot upload posts");
-      dispatch(updateUploadPost({ caption: "", url: "" }));
-      onClose();
-      return;
-    }
+    // if (currentUser?.guest) {
+    //   toast.error("Guest users cannot upload posts");
+    //   dispatch(updateUploadPost({ caption: "", url: "" }));
+    //   onClose();
+    //   return;
+    // }
     if (!selectedPost && !edit) {
       toast.error("Please select a photo to upload");
       return;

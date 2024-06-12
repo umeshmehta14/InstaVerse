@@ -12,12 +12,9 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  SkeletonCircle,
-  SkeletonText,
   Text,
   useColorMode,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -37,11 +34,14 @@ import {
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
-import { RotatingLoader, UserListModal } from "../../../components";
+import {
+  RotatingLoader,
+  UserListModal,
+  UserMentionList,
+} from "../../../components";
 import {
   commentInput,
   emojiPickerButtonNew,
-  hideScrollbar,
   userNameStyle,
 } from "../../../styles/GlobalStyles";
 import {
@@ -75,9 +75,7 @@ export const CommentFooter = ({ post, userLike }) => {
   const { _id, likes, comments } = post;
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { bookmarks, searchedUsers, isLoading } = useSelector(
-    (state) => state.user
-  );
+  const { bookmarks } = useSelector((state) => state.user);
   const { commentLoader, commentEdit } = useSelector((state) => state.comment);
 
   const [isLiked, setIsLiked] = useState(false);
@@ -257,60 +255,7 @@ export const CommentFooter = ({ post, userLike }) => {
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...commentFooterInputMain}
       >
-        {showTagBox && (
-          <Box
-            pos={"absolute"}
-            backgroundColor={"black.900"}
-            bottom={"3.5rem"}
-            maxH={"300px"}
-            overflow={"scroll"}
-            w={"70%"}
-            sx={hideScrollbar}
-          >
-            {isLoading
-              ? new Array(5).fill(null)?.map((_, index) => (
-                  <Flex gap={"2"} my={"2"} w={"100%"} key={index}>
-                    <SkeletonCircle size="12" />
-                    <SkeletonText
-                      mt="4"
-                      noOfLines={2}
-                      spacing="4"
-                      skeletonHeight="2"
-                      w={"80%"}
-                    />
-                  </Flex>
-                ))
-              : searchedUsers?.map((user) => {
-                  const { _id, avatar, username, fullName } = user;
-                  return (
-                    <Flex
-                      key={_id}
-                      gap={"2"}
-                      my={"2"}
-                      cursor={"pointer"}
-                      w={"100%"}
-                      _hover={{ bg: "#1f1f1f6a" }}
-                      title={username}
-                      onClick={() => handleUserClick(username)}
-                    >
-                      <Flex alignItems={"center"} gap={"2"}>
-                        <Avatar size="md" src={avatar?.url} />
-                      </Flex>
-                      <VStack
-                        align={"flex-start"}
-                        gap={"0"}
-                        whiteSpace={"nowrap"}
-                      >
-                        <Text>{username}</Text>
-                        <Flex fontSize={"0.8rem"} color={"gray"}>
-                          <Text>{fullName}</Text>
-                        </Flex>
-                      </VStack>
-                    </Flex>
-                  );
-                })}
-          </Box>
-        )}
+        {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
         <Popover>
           <PopoverTrigger>
             <Box

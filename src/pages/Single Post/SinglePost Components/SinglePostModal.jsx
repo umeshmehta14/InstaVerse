@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -24,7 +24,11 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
-import { HeartPopup, RotatingLoader } from "../../../components";
+import {
+  HeartPopup,
+  RotatingLoader,
+  UserMentionList,
+} from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   addCommentMainBox,
@@ -40,8 +44,17 @@ import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../../utils/Icons";
 import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
 import { handleLikes } from "../../Post Feed/postSlice";
-import { addCommentToPost, updateCommentEdit } from "../commentSlice";
-import { updateSearchValue } from "../../Post Feed/userSlice";
+import {
+  addCommentToPost,
+  editCommentToPost,
+  updateCommentEdit,
+} from "../commentSlice";
+import {
+  getSearchedUsers,
+  updateSearchedUsers,
+  updateSearchValue,
+} from "../../Post Feed/userSlice";
+import { debounce } from "../../../utils/Utils";
 
 export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const navigate = useNavigate();
@@ -51,17 +64,23 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
 
   const [commentValue, setCommentValue] = useState("");
   const [doubleTap, setDoubleTap] = useState(false);
+  const [showTagBox, setShowTagBox] = useState(false);
+  const [matchIndex, setMatchIndex] = useState(null);
   const lastTapRef = useRef(0);
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { commentLoader } = useSelector((state) => state.comment);
+  const { commentLoader, commentEdit } = useSelector((state) => state.comment);
 
-  const { _id, owner, url, likes } = post;
+  const { _id, owner, url, likes, comments } = post;
   const { username } = owner;
 
   const userLike = likes?.find(
     ({ username }) => username === currentUser.username
   );
+
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
 
   const handleDoubleTap = () => {
     const now = Date.now();
@@ -84,11 +103,54 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
 
   const handleCommentPost = () => {
     if (!commentLoader) {
+      if (commentEdit) {
+        dispatch(
+          editCommentToPost({ _id: commentEdit, text: commentValue })
+        ).then(() => {
+          setCommentValue("");
+          dispatch(updateCommentEdit(""));
+        });
+        return;
+      }
       dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
         setCommentValue("")
       );
     }
   };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setCommentValue(value);
+
+    const match = value.match(/@(\w*)$/);
+    if (match && match[1]) {
+      const username = match[1];
+      setMatchIndex(match.index);
+      setShowTagBox(true);
+      dispatch(updateSearchValue(username));
+      debouncedFetchData(username);
+    } else {
+      setShowTagBox(false);
+      setMatchIndex(null);
+      dispatch(updateSearchValue(""));
+      dispatch(updateSearchedUsers());
+    }
+  };
+
+  const handleUserClick = (username) => {
+    const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
+    setCommentValue(newValue);
+    setShowTagBox(false);
+    setMatchIndex(null);
+  };
+
+  useEffect(() => {
+    if (commentEdit) {
+      setCommentValue(
+        () => comments.find((comment) => comment._id === commentEdit)?.text
+      );
+    }
+  }, [commentEdit]);
 
   return (
     <Modal
@@ -127,13 +189,15 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
                 <Box
                   as={AiOutlineArrowLeft}
                   fontSize={"1.8rem"}
-                  onClick={() =>
+                  onClick={() => {
                     navigate(
                       location?.pathname === redirectLocation
                         ? `/profile/${username}`
                         : redirectLocation || `/profile/${username}`
-                    )
-                  }
+                    );
+                    dispatch(updateCommentEdit(""));
+                    dispatch(updateSearchValue(""));
+                  }}
                 />
                 <Text>Comments</Text>
               </HStack>
@@ -150,6 +214,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
           bg={colorMode === "dark" ? "black.900" : "white.500"}
           {...mobileFooterStyle}
         >
+          {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
           <Flex {...addCommentMainBox}>
             <Popover>
               <PopoverTrigger>
@@ -177,7 +242,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
               <Input
                 placeholder="Add a comment..."
                 value={commentValue}
-                onChange={(e) => setCommentValue(e.target.value)}
+                onChange={handleInputChange}
                 disabled={commentLoader}
                 {...commentInput}
                 px={2}
