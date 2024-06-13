@@ -13,19 +13,21 @@ import React from "react";
 import { hideScrollbar } from "../../styles/GlobalStyles";
 import { useSelector } from "react-redux";
 
-export const UserMentionList = ({ handleUserClick }) => {
+export const UserMentionList = ({ handleUserClick, bottom }) => {
   const { searchedUsers, isLoading } = useSelector((state) => state.user);
   const { colorMode } = useColorMode();
   return (
     <Box
       pos={"absolute"}
       backgroundColor={colorMode === "dark" ? "black.900" : "white.900"}
-      bottom={"3.5rem"}
       maxH={"300px"}
       overflow={"scroll"}
       w={"70%"}
       p={"0.5rem"}
       sx={hideScrollbar}
+      zIndex={9999}
+      bottom={!bottom && "3.5rem"}
+      top={bottom && "3.5rem"}
     >
       {isLoading
         ? new Array(5).fill(null)?.map((_, index) => (
@@ -43,9 +45,8 @@ export const UserMentionList = ({ handleUserClick }) => {
         : searchedUsers?.map((user) => {
             const { _id, avatar, username, fullName } = user;
             return (
-              <>
+              <React.Fragment key={_id}>
                 <Flex
-                  key={_id}
                   gap={"2"}
                   my={"2"}
                   cursor={"pointer"}
@@ -65,7 +66,7 @@ export const UserMentionList = ({ handleUserClick }) => {
                   </VStack>
                 </Flex>
                 <Divider />
-              </>
+              </React.Fragment>
             );
           })}
     </Box>

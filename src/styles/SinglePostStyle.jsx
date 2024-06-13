@@ -26,7 +26,7 @@ export const commentSectionMain = {
   gap: "0.5rem",
   width: "100%",
   maxW: { base: "100%", md: "400px" },
-  height: "100%",
+  height: { base: "100vh", md: "100%" },
 };
 
 export const mobileCommentHeading = {

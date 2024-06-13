@@ -38,11 +38,20 @@ import {
   editCommentToPost,
   handleCommentLike,
 } from "../commentSlice";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { EmojiPopover, RotatingLoader } from "../../../components";
-import { getRelativeTime } from "../../../utils/Utils";
+import {
+  EmojiPopover,
+  RotatingLoader,
+  UserMentionList,
+} from "../../../components";
+import { debounce, getRelativeTime } from "../../../utils/Utils";
+import {
+  getSearchedUsers,
+  updateSearchedUsers,
+  updateSearchValue,
+} from "../../Post Feed/userSlice";
 
 export const CommentList = ({ comments, ownerId }) => {
   const { colorMode } = useColorMode();
@@ -50,13 +59,16 @@ export const CommentList = ({ comments, ownerId }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [doubleTap, setDoubleTap] = useState(false);
   const [commentValue, setCommentValue] = useState("");
+  const [showTagBox, setShowTagBox] = useState(false);
+  const [matchIndex, setMatchIndex] = useState(null);
   const [commentEdit, setCommentEdit] = useState({
     commentId: "",
+    commentUsername: "",
     doEdit: false,
   });
   const inputRef = useRef(null);
 
-  const { commentId, doEdit } = commentEdit;
+  const { commentId, doEdit, commentUsername } = commentEdit;
   const lastTapRef = useRef(0);
   const navigate = useNavigate();
   const commentDeleteDisclosure = useDisclosure();
@@ -65,6 +77,60 @@ export const CommentList = ({ comments, ownerId }) => {
 
   const { commentLoader } = useSelector((state) => state.comment);
   const { currentUser } = useSelector((state) => state.authentication);
+
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setCommentValue(value);
+
+    const match = value.match(/@(\w*)$/);
+    if (match && match[1]) {
+      const username = match[1];
+      setMatchIndex(match.index);
+      setShowTagBox(true);
+      dispatch(updateSearchValue(username));
+      debouncedFetchData(username);
+    } else {
+      setShowTagBox(false);
+      setMatchIndex(null);
+      dispatch(updateSearchValue(""));
+      dispatch(updateSearchedUsers());
+    }
+  };
+
+  const handleUserClick = (username) => {
+    const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
+    setCommentValue(newValue);
+    setShowTagBox(false);
+    setMatchIndex(null);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && commentValue !== "") {
+      handleEditComment();
+    }
+  };
+
+  const handleEditComment = () => {
+    if (!commentLoader) {
+      dispatch(
+        editCommentToPost({
+          _id: commentId,
+          text: commentValue,
+        })
+      ).then(() => {
+        setCommentValue("");
+        setCommentEdit({
+          commentId: "",
+          doEdit: false,
+          commentUsername: "",
+        });
+      });
+    }
+  };
 
   return (
     <VStack
@@ -130,6 +196,12 @@ export const CommentList = ({ comments, ownerId }) => {
                   gap={"0.5rem"}
                 >
                   <Box pos={"relative"}>
+                    {showTagBox && (
+                      <UserMentionList
+                        handleUserClick={handleUserClick}
+                        bottom={true}
+                      />
+                    )}
                     <Input
                       value={commentValue}
                       border={"none"}
@@ -141,7 +213,8 @@ export const CommentList = ({ comments, ownerId }) => {
                       h={"30px"}
                       disabled={commentLoader}
                       ref={inputRef}
-                      onChange={({ target }) => setCommentValue(target.value)}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyPress}
                     />
                     {commentLoader && (
                       <Box {...commentLoaderStyle}>
@@ -172,17 +245,7 @@ export const CommentList = ({ comments, ownerId }) => {
                         _disabled={{ color: "gray.400", cursor: "default" }}
                         variant={"link-button"}
                         fontSize={"1rem"}
-                        onClick={() => {
-                          dispatch(
-                            editCommentToPost({
-                              _id: commentId,
-                              text: commentValue,
-                            })
-                          ).then(() => {
-                            setCommentValue("");
-                            setCommentEdit({ commentId: "", doEdit: false });
-                          });
-                        }}
+                        onClick={handleEditComment}
                       >
                         Post
                       </Button>
@@ -251,6 +314,7 @@ export const CommentList = ({ comments, ownerId }) => {
                               setCommentEdit({
                                 ...commentEdit,
                                 commentId: _id,
+                                commentUsername: username,
                               });
                               setCommentValue(text);
                               commentDeleteDisclosure.onOpen();
@@ -280,61 +344,60 @@ export const CommentList = ({ comments, ownerId }) => {
                   />
                 </>
               )}
-
-              {commentDeleteDisclosure.isOpen && (
-                <Modal
-                  onClose={commentDeleteDisclosure.onClose}
-                  size={"xs"}
-                  isOpen={commentDeleteDisclosure.isOpen}
-                >
-                  <ModalOverlay bg="rgba(0, 0, 0, 0.5)" />
-                  <ModalContent
-                    mt={"20rem"}
-                    bg={colorMode === "dark" ? "black.700" : "white.500"}
-                  >
-                    <ModalBody>
-                      {currentUser?.username === username && (
-                        <>
-                          <Button
-                            sx={simpleButton}
-                            onClick={() => {
-                              setCommentEdit({
-                                ...commentEdit,
-                                doEdit: true,
-                              });
-                              commentDeleteDisclosure.onClose();
-                            }}
-                          >
-                            Edit
-                          </Button>
-
-                          <Divider />
-                        </>
-                      )}
-                      <Button
-                        sx={simpleButton}
-                        color={"red.500"}
-                        onClick={() => {
-                          dispatch(deleteCommentToPost({ _id: commentId }));
-                          commentDeleteDisclosure.onClose();
-                        }}
-                      >
-                        Delete
-                      </Button>
-                      <Divider />
-                      <Button
-                        sx={simpleButton}
-                        onClick={commentDeleteDisclosure.onClose}
-                      >
-                        Cancel
-                      </Button>
-                    </ModalBody>
-                  </ModalContent>
-                </Modal>
-              )}
             </Flex>
           );
         })
+      )}
+      {commentDeleteDisclosure.isOpen && (
+        <Modal
+          onClose={commentDeleteDisclosure.onClose}
+          size={"xs"}
+          isOpen={commentDeleteDisclosure.isOpen}
+        >
+          <ModalOverlay bg="rgba(0, 0, 0, 0.5)" />
+          <ModalContent
+            mt={"20rem"}
+            bg={colorMode === "dark" ? "black.700" : "white.500"}
+          >
+            <ModalBody>
+              {currentUser?.username === commentUsername && (
+                <>
+                  <Button
+                    sx={simpleButton}
+                    onClick={() => {
+                      setCommentEdit({
+                        ...commentEdit,
+                        doEdit: true,
+                      });
+                      commentDeleteDisclosure.onClose();
+                    }}
+                  >
+                    Edit
+                  </Button>
+
+                  <Divider />
+                </>
+              )}
+              <Button
+                sx={simpleButton}
+                color={"red.500"}
+                onClick={() => {
+                  dispatch(deleteCommentToPost({ _id: commentId }));
+                  commentDeleteDisclosure.onClose();
+                }}
+              >
+                Delete
+              </Button>
+              <Divider />
+              <Button
+                sx={simpleButton}
+                onClick={commentDeleteDisclosure.onClose}
+              >
+                Cancel
+              </Button>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       )}
     </VStack>
   );

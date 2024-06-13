@@ -8,21 +8,14 @@ import {
   Flex,
   HStack,
   Input,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 
 import {
   AiFillHeart,
   AiOutlineHeart,
-  BsEmojiSunglasses,
   FaBookmark,
   FaRegBookmark,
   IoPaperPlaneOutline,
@@ -40,11 +33,7 @@ import {
   UserListModal,
   UserMentionList,
 } from "../../../components";
-import {
-  commentInput,
-  emojiPickerButtonNew,
-  userNameStyle,
-} from "../../../styles/GlobalStyles";
+import { commentInput, userNameStyle } from "../../../styles/GlobalStyles";
 import {
   commentFooterInputMain,
   commentLoaderStyle,
@@ -97,6 +86,12 @@ export const CommentFooter = ({ post, userLike }) => {
     setTimeout(() => {
       setIsLiked(false);
     }, 1000);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && commentValue !== "") {
+      handleCommentPost();
+    }
   };
 
   const handleCommentPost = () => {
@@ -247,6 +242,7 @@ export const CommentFooter = ({ post, userLike }) => {
             placeholder="Add a comment..."
             value={commentValue}
             onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
             disabled={commentLoader && commentValue}
             {...commentInput}
             ref={inputRef}

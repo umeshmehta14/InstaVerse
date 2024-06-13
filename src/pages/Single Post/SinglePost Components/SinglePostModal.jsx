@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -13,18 +13,13 @@ import {
   ModalContent,
   ModalFooter,
   ModalOverlay,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 
-import { commentInput, emojiPickerButton } from "../../../styles/GlobalStyles";
+import { commentInput } from "../../../styles/GlobalStyles";
 import {
+  EmojiPopover,
   HeartPopup,
   RotatingLoader,
   UserMentionList,
@@ -40,15 +35,11 @@ import {
   modalContentStyle,
   singlePostModalClose,
 } from "../../../styles/SinglePostStyle";
-import { AiOutlineArrowLeft, BsEmojiSunglasses } from "../../../utils/Icons";
+import { AiOutlineArrowLeft } from "../../../utils/Icons";
 import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
 import { handleLikes } from "../../Post Feed/postSlice";
-import {
-  addCommentToPost,
-  editCommentToPost,
-  updateCommentEdit,
-} from "../commentSlice";
+import { addCommentToPost } from "../commentSlice";
 import {
   getSearchedUsers,
   updateSearchedUsers,
@@ -67,11 +58,12 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const [showTagBox, setShowTagBox] = useState(false);
   const [matchIndex, setMatchIndex] = useState(null);
   const lastTapRef = useRef(0);
+  const inputRef = useRef(null);
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { commentLoader, commentEdit } = useSelector((state) => state.comment);
+  const { commentLoader } = useSelector((state) => state.comment);
 
-  const { _id, owner, url, likes, comments } = post;
+  const { _id, owner, url, likes } = post;
   const { username } = owner;
 
   const userLike = likes?.find(
@@ -81,6 +73,12 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const debouncedFetchData = useCallback(debounce(dispatch), [
     getSearchedUsers,
   ]);
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && commentValue !== "") {
+      handleCommentPost();
+    }
+  };
 
   const handleDoubleTap = () => {
     const now = Date.now();
@@ -103,15 +101,6 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
 
   const handleCommentPost = () => {
     if (!commentLoader) {
-      if (commentEdit) {
-        dispatch(
-          editCommentToPost({ _id: commentEdit, text: commentValue })
-        ).then(() => {
-          setCommentValue("");
-          dispatch(updateCommentEdit(""));
-        });
-        return;
-      }
       dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
         setCommentValue("")
       );
@@ -144,14 +133,6 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
     setMatchIndex(null);
   };
 
-  useEffect(() => {
-    if (commentEdit) {
-      setCommentValue(
-        () => comments.find((comment) => comment._id === commentEdit)?.text
-      );
-    }
-  }, [commentEdit]);
-
   return (
     <Modal
       onClose={onClose}
@@ -169,7 +150,6 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
           {...singlePostModalClose}
           onClick={() => {
             navigate(redirectLocation || "/");
-            dispatch(updateCommentEdit(""));
             dispatch(updateSearchValue(""));
           }}
         />
@@ -195,7 +175,6 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
                         ? `/profile/${username}`
                         : redirectLocation || `/profile/${username}`
                     );
-                    dispatch(updateCommentEdit(""));
                     dispatch(updateSearchValue(""));
                   }}
                 />
@@ -216,38 +195,23 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
         >
           {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
           <Flex {...addCommentMainBox}>
-            <Popover>
-              <PopoverTrigger>
-                <Box
-                  as={BsEmojiSunglasses}
-                  {...emojiPickerButton}
-                  title="Emoji"
-                />
-              </PopoverTrigger>
-              <PopoverContent bottom={"27rem"} bg={"transparent"}>
-                <PopoverBody p={0}>
-                  <Picker
-                    data={data}
-                    onEmojiSelect={(emoji) =>
-                      setCommentValue(commentValue + emoji.native)
-                    }
-                    theme={colorMode}
-                    title="Pick an Emoji"
-                    emoji=""
-                  />
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
+            <EmojiPopover
+              setCommentValue={setCommentValue}
+              commentValue={commentValue}
+              inputRef={inputRef}
+            />
             <Box pos={"relative"} width={"100%"}>
               <Input
                 placeholder="Add a comment..."
                 value={commentValue}
                 onChange={handleInputChange}
-                disabled={commentLoader}
+                onKeyDown={handleKeyPress}
+                disabled={commentLoader && commentValue}
                 {...commentInput}
+                ref={inputRef}
                 px={2}
               />
-              {commentLoader && (
+              {commentLoader && commentValue && (
                 <Box {...commentLoaderStyle}>
                   <RotatingLoader w={"40"} sw={"3"} />
                 </Box>
