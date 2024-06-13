@@ -14,6 +14,7 @@ export { HeartPopup } from "./HeartPopup/HeartPopup.jsx";
 export { SwitchAccountModal } from "./SwitchAccount Modal/SwitchAccountModal.jsx";
 export { UserMentionList } from "./UserMention List/UserMentionList.jsx";
 export { EmojiPopover } from "./EmojiPopover/EmojiPopover.jsx";
+export { AboutAccountModal } from "./AboutAccount Modal/AboutAccountModal.jsx";
 
 export { PostBoxSkeleton } from "./Skeletons/PostBoxSkeleton.jsx";
 export { SearchSkeleton } from "./Skeletons/SearchSkeleton.jsx";

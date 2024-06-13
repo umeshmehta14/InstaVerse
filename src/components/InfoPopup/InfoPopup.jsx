@@ -13,7 +13,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 
-import { PostDeleteModal, UnfollowModal, PostModal } from "../index";
+import {
+  PostDeleteModal,
+  UnfollowModal,
+  PostModal,
+  AboutAccountModal,
+} from "../index";
 import { simpleButton } from "../../styles/GlobalStyles";
 import { updateUploadPost } from "../../pages/Post Feed/postSlice";
 import {
@@ -34,6 +39,7 @@ export const InfoPopup = ({
   const unfollowModalDisclosure = useDisclosure();
   const postModalDisclosure = useDisclosure();
   const postDeleteModalDisclosure = useDisclosure();
+  const aboutAccountDisclosure = useDisclosure();
 
   const navigate = useNavigate();
   const mainLocation = useLocation();
@@ -44,7 +50,7 @@ export const InfoPopup = ({
   const dispatch = useDispatch();
 
   const { _id, owner } = post;
-  const { _id: userId, username } = owner;
+  const { _id: userId, username, avatar, createdAt } = owner;
 
   const isBookmarked = bookmarks?.some((post) => post?._id === _id);
   const isFollowing = currentUser.following.some(
@@ -142,6 +148,13 @@ export const InfoPopup = ({
                 <Divider />
                 <Button
                   sx={simpleButton}
+                  onClick={aboutAccountDisclosure.onOpen}
+                >
+                  About this account
+                </Button>
+                <Divider />
+                <Button
+                  sx={simpleButton}
                   onClick={() => {
                     handleShare(_id);
                     onClose();
@@ -194,6 +207,15 @@ export const InfoPopup = ({
           onClose={postModalDisclosure.onClose}
           edit={true}
           _id={_id}
+        />
+      )}
+      {aboutAccountDisclosure.isOpen && (
+        <AboutAccountModal
+          isOpen={aboutAccountDisclosure.isOpen}
+          onClose={aboutAccountDisclosure.onClose}
+          url={avatar.url}
+          createdAt={createdAt}
+          username={username}
         />
       )}
     </>

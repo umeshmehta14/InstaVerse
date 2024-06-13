@@ -45,7 +45,7 @@ import { VscPassFilled, VscLock } from "react-icons/vsc";
 import { LuFilter } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { SlTrash } from "react-icons/sl";
-import { CiCamera } from "react-icons/ci";
+import { CiCamera, CiLocationOn, CiCalendarDate } from "react-icons/ci";
 
 export {
   AiOutlineHeart,
@@ -87,6 +87,8 @@ export {
   SlTrash,
   FaComment,
   CiCamera,
+  CiLocationOn,
+  CiCalendarDate,
   BsBookmarkX,
   IoCheckmarkCircleOutline,
 };

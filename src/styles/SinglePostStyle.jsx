@@ -3,7 +3,6 @@ export const modalContentStyle = {
   maxW: "896px !important",
   w: "100%",
   maxH: { base: "auto", md: "750px" },
-  // overflowY: "hidden",
 };
 
 export const singlePostModalClose = {
