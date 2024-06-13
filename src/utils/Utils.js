@@ -28,12 +28,12 @@ export const getMutualFollowers = (follower, currentUser) =>
     currentUser?.following?.some((user) => user?._id === followId._id)
   );
 
-export const handleShare = async (_id) => {
+export const handleShare = async (key, value) => {
   try {
     await navigator.share({
       title: "Instaverse",
-      text: "Check out this post",
-      url: `https://instaverse-um14.netlify.app/post/${_id}`,
+      text: `Check out this ${value}`,
+      url: `https://instaverse-um14.netlify.app/${value}/${key}`,
     });
   } catch (error) {
     console.error("Error sharing:", error);

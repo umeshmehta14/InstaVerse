@@ -160,7 +160,7 @@ export const CommentFooter = ({ post, userLike }) => {
             <Box
               as={IoPaperPlaneOutline}
               sx={IconHoverStyle}
-              onClick={() => handleShare(_id)}
+              onClick={() => handleShare(_id, "post")}
               title="Share"
             />
           </HStack>

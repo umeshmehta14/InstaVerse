@@ -37,7 +37,9 @@ export const AboutAccountModal = ({
         maxWidth={"390px"}
         borderRadius={"16px"}
       >
-        <ModalHeader textAlign={"center"}>About this account</ModalHeader>
+        <ModalHeader textAlign={"center"} p={"0.6rem"}>
+          About this account
+        </ModalHeader>
         <VStack
           bg={colorMode === "dark" ? "black.900" : "white.500"}
           pt={"1.5rem"}

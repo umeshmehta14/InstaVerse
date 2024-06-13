@@ -12,6 +12,7 @@ import {
 import { Link } from "react-router-dom";
 
 import {
+  InfoPopup,
   RotatingLoader,
   UnfollowModal,
   UserListModal,
@@ -29,7 +30,7 @@ import {
   userPostLengthStyle,
 } from "../../../styles/ProfileStyles";
 import { followedByUser } from "../../../styles/GlobalStyles";
-import { FiLogOut } from "../../../utils/Icons";
+import { BsThreeDots, FiLogOut } from "../../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../Authentication/authenticationSlice";
 import {
@@ -43,6 +44,7 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const editModalDisclosure = useDisclosure();
   const unfollowModalDisclosure = useDisclosure();
+  const infoPopupDisclosure = useDisclosure();
   const { colorMode } = useColorMode();
 
   const { currentUser } = useSelector((state) => state.authentication);
@@ -60,6 +62,7 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
     following,
     follower,
     portfolio,
+    createdAt,
   } = selectedUser || {};
 
   const mutualFollowers =
@@ -86,13 +89,19 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
         <Flex {...profileButtonMain}>
           <Flex {...profileUsernameStyle}>
             <Text>{username}</Text>
-            {currentUserCheck && (
+            {currentUserCheck ? (
               <Box
                 as={FiLogOut}
                 fontSize={"1.4rem"}
                 cursor={"pointer"}
                 onClick={() => dispatch(logoutHandler())}
                 title="Logout"
+              />
+            ) : (
+              <Box
+                as={BsThreeDots}
+                cursor={"pointer"}
+                onClick={infoPopupDisclosure.onOpen}
               />
             )}
           </Flex>
@@ -272,6 +281,14 @@ export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
           isOpen={unfollowModalDisclosure.isOpen}
           onClose={unfollowModalDisclosure.onClose}
           {...selectedUser}
+        />
+      )}
+      {infoPopupDisclosure.isOpen && (
+        <InfoPopup
+          isOpen={infoPopupDisclosure.isOpen}
+          onClose={infoPopupDisclosure.onClose}
+          fromProfile={true}
+          post={{ _id: "", owner: { _id, username, avatar, createdAt } }}
         />
       )}
     </>

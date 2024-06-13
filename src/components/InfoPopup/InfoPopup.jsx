@@ -34,6 +34,7 @@ export const InfoPopup = ({
   post,
   fromSinglePost,
   location,
+  fromProfile,
 }) => {
   const { colorMode } = useColorMode();
   const unfollowModalDisclosure = useDisclosure();
@@ -49,8 +50,8 @@ export const InfoPopup = ({
 
   const dispatch = useDispatch();
 
-  const { _id, owner } = post;
-  const { _id: userId, username, avatar, createdAt } = owner;
+  const { _id, owner } = post || {};
+  const { _id: userId, username, avatar, createdAt } = owner || {};
 
   const isBookmarked = bookmarks?.some((post) => post?._id === _id);
   const isFollowing = currentUser.following.some(
@@ -132,20 +133,24 @@ export const InfoPopup = ({
               </>
             ) : (
               <>
-                <Button sx={simpleButton} onClick={handleBookmark}>
-                  {isBookmarked
-                    ? "Remove from favourites"
-                    : "Add to favourites"}
-                </Button>
-                <Divider />
-                <Button sx={simpleButton} onClick={handleGoToPost}>
-                  Go to post
-                </Button>
-                <Divider />
-                <Button sx={simpleButton} onClick={handleCopyLink}>
-                  Copy link
-                </Button>
-                <Divider />
+                {!fromProfile && (
+                  <>
+                    <Button sx={simpleButton} onClick={handleBookmark}>
+                      {isBookmarked
+                        ? "Remove from favourites"
+                        : "Add to favourites"}
+                    </Button>
+                    <Divider />
+                    <Button sx={simpleButton} onClick={handleGoToPost}>
+                      Go to post
+                    </Button>
+                    <Divider />
+                    <Button sx={simpleButton} onClick={handleCopyLink}>
+                      Copy link
+                    </Button>
+                    <Divider />
+                  </>
+                )}
                 <Button
                   sx={simpleButton}
                   onClick={aboutAccountDisclosure.onOpen}
@@ -156,21 +161,27 @@ export const InfoPopup = ({
                 <Button
                   sx={simpleButton}
                   onClick={() => {
-                    handleShare(_id);
+                    fromProfile
+                      ? handleShare(username, "profile")
+                      : handleShare(_id, "post");
                     onClose();
                   }}
                 >
                   Share to
                 </Button>
                 <Divider />
-                <Button
-                  sx={simpleButton}
-                  color={isFollowing ? "red.500" : "blue.500"}
-                  onClick={isFollowing ? handleUnfollow : handleFollow}
-                >
-                  {isFollowing ? "Unfollow" : "Follow"}
-                </Button>
-                <Divider />
+                {!fromProfile && (
+                  <>
+                    <Button
+                      sx={simpleButton}
+                      color={isFollowing ? "red.500" : "blue.500"}
+                      onClick={isFollowing ? handleUnfollow : handleFollow}
+                    >
+                      {isFollowing ? "Unfollow" : "Follow"}
+                    </Button>
+                    <Divider />
+                  </>
+                )}
               </>
             )}
             <Button sx={simpleButton} onClick={onClose}>
