@@ -31,7 +31,7 @@ import { handleLikes } from "../../pages/Post Feed/postSlice";
 import { getRelativeTime } from "../../utils/Utils";
 import { userNameStyle } from "../../styles/GlobalStyles";
 
-export const PostBox = ({ post }) => {
+export const PostBox = ({ post, singlePost }) => {
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -75,7 +75,7 @@ export const PostBox = ({ post }) => {
     if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
       setDoubleTap(true);
       if (!userLike) {
-        dispatch(handleLikes({ _id }));
+        dispatch(handleLikes({ _id, singlePost }));
       }
       setTimeout(() => {
         setDoubleTap(false);
@@ -201,6 +201,7 @@ export const PostBox = ({ post }) => {
         setClicked={setClicked}
         clicked={clicked}
         userLike={userLike}
+        singlePost={singlePost}
       />
 
       {isOpen && (

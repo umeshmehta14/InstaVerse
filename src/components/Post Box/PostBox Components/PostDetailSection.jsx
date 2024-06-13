@@ -67,6 +67,7 @@ const PostDetailSection = ({
   setClicked,
   clicked,
   userLike,
+  singlePost,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -112,7 +113,7 @@ const PostDetailSection = ({
 
   const handleLike = () => {
     setIsLiked(true);
-    dispatch(handleLikes({ _id }));
+    dispatch(handleLikes({ _id, singlePost }));
     setTimeout(() => {
       setIsLiked(false);
     }, 1000);
@@ -159,7 +160,7 @@ const PostDetailSection = ({
                 {...likeHeartStyle}
                 title="Unlike"
                 onClick={() => {
-                  dispatch(handleLikes({ _id, unlike: true }));
+                  dispatch(handleLikes({ _id, unlike: true, singlePost }));
                 }}
               />
             ) : (

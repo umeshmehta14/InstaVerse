@@ -144,7 +144,6 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
       <ModalContent
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...modalContentStyle}
-        // overflow={"hidden"}
       >
         <ModalCloseButton
           color={colorMode === "dark" ? "white" : "black"}

@@ -45,7 +45,7 @@ export const MobileSinglePost = () => {
         {postLoading && post?.url ? (
           <PostBoxSkeleton />
         ) : (
-          <PostBox post={post} />
+          <PostBox post={post} singlePost={true} />
         )}
       </Box>
     </VStack>
