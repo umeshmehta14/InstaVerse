@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -11,18 +11,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   Textarea,
   useColorMode,
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import { FcAddImage, BsEmojiSunglasses, RxCross2 } from "../../utils/Icons";
+import { FcAddImage, RxCross2 } from "../../utils/Icons";
 import { imageCrossButton, postTextarea } from "../../styles/PostModalStyles";
 import { inputLengthReader } from "../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,10 +26,12 @@ import {
   updateUploadPost,
 } from "../../pages/Post Feed/postSlice";
 import { Vortex } from "react-loader-spinner";
+import { EmojiPopover } from "../EmojiPopover/EmojiPopover";
 
 export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   const { colorMode } = useColorMode();
   const [selectedPost, setSelectedPost] = useState(null);
+  const inputRef = useRef(null);
 
   const { uploadPost, isUploading } = useSelector((state) => state.post);
   const { currentUser } = useSelector((state) => state.authentication);
@@ -43,10 +39,12 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
 
   const { caption, url } = uploadPost;
 
+  const [postValue, setPostValue] = useState(caption);
+
   const handleInputChange = (e) => {
     const { value } = e.target;
     if (value.length <= 2200) {
-      dispatch(updateUploadPost({ ...uploadPost, caption: value }));
+      setPostValue(value);
     }
   };
 
@@ -67,12 +65,13 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   };
 
   const handlePost = () => {
-    // if (currentUser?.guest) {
-    //   toast.error("Guest users cannot upload posts");
-    //   dispatch(updateUploadPost({ caption: "", url: "" }));
-    //   onClose();
-    //   return;
-    // }
+    if (currentUser?.guest) {
+      toast.error("Guest users cannot upload posts");
+      dispatch(updateUploadPost({ caption: "", url: "" }));
+      setPostValue("");
+      onClose();
+      return;
+    }
     if (!selectedPost && !edit) {
       toast.error("Please select a photo to upload");
       return;
@@ -86,9 +85,14 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
       : handleUploadPost({ postData });
     dispatch(action).then(() => {
       dispatch(updateUploadPost({ caption: "", url: "" }));
-      onClose();
+      setPostValue("");
     });
+    onClose();
   };
+
+  useEffect(() => {
+    dispatch(updateUploadPost({ ...uploadPost, caption: postValue }));
+  }, [postValue]);
 
   return (
     <Box p={{ base: "0", md: 4 }}>
@@ -98,6 +102,7 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
           if (!isUploading) {
             onClose();
             dispatch(updateUploadPost({ caption: "", url: "" }));
+            setPostValue("");
           }
         }}
         size="xl"
@@ -146,12 +151,13 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
                   <Textarea
                     {...postTextarea}
                     onChange={handleInputChange}
-                    value={caption}
+                    value={postValue}
+                    ref={inputRef}
                   />
                   <Text
                     {...inputLengthReader}
-                    color={caption.length >= 2190 ? "red" : ""}
-                  >{`${caption.length || 0}/2200`}</Text>
+                    color={postValue.length >= 2190 ? "red" : ""}
+                  >{`${postValue.length || 0}/2200`}</Text>
                 </Flex>
                 {url && (
                   <Flex mt="2rem" justifyContent="center" pos="relative">
@@ -190,39 +196,17 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
                       />
                     </label>
 
-                    <Popover>
-                      <PopoverTrigger>
-                        <Box
-                          as={BsEmojiSunglasses}
-                          fontSize="1.8rem"
-                          cursor="pointer"
-                          title="Emoji"
-                        />
-                      </PopoverTrigger>
-                      <PopoverContent top="4rem" bg="transparent">
-                        <PopoverBody p={0}>
-                          <Picker
-                            data={data}
-                            onEmojiSelect={(emoji) =>
-                              dispatch(
-                                updateUploadPost({
-                                  ...uploadPost,
-                                  caption: caption + emoji.native,
-                                })
-                              )
-                            }
-                            theme={colorMode}
-                            title="Pick an Emoji"
-                            emoji=""
-                          />
-                        </PopoverBody>
-                      </PopoverContent>
-                    </Popover>
+                    <EmojiPopover
+                      setCommentValue={setPostValue}
+                      commentValue={postValue}
+                      inputRef={inputRef}
+                      singlePost={true}
+                      bottom={true}
+                    />
                   </Flex>
-
                   <Button
                     variant="link-button"
-                    disabled={isUploading || caption.length === 0 || !url}
+                    disabled={isUploading || postValue.length === 0 || !url}
                     onClick={handlePost}
                     fontSize="1rem"
                     title={edit ? "Edit" : "Share"}

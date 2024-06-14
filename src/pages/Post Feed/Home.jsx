@@ -54,12 +54,6 @@ export const Home = () => {
     dispatch(getUserBookmark());
   }, [currentUser]);
 
-  console.log({
-    postfetc: !postFetched,
-    cp: currentPage === 1,
-    np: !newPostLoading,
-  });
-
   return (
     <Flex sx={heroContentBox}>
       <UserSuggestion />

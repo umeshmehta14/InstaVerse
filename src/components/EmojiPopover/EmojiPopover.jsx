@@ -20,6 +20,7 @@ export const EmojiPopover = ({
   setCommentValue,
   inputRef,
   singlePost,
+  bottom,
 }) => {
   const { colorMode } = useColorMode();
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +80,11 @@ export const EmojiPopover = ({
         />
       </PopoverTrigger>
       {isOpen && (
-        <PopoverContent ref={popoverRef} bottom={"27rem"} bg={"transparent"}>
+        <PopoverContent
+          ref={popoverRef}
+          bottom={!bottom && "27rem"}
+          bg={"transparent"}
+        >
           <PopoverBody p={0}>
             <Picker
               data={data}

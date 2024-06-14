@@ -59,7 +59,7 @@ export const InfoPopup = ({
   );
 
   const handleEdit = () => {
-    if (currentUser.guest) {
+    if (!currentUser.guest) {
       toast.error("Guest users cannot edit posts.");
       onClose();
     } else {
