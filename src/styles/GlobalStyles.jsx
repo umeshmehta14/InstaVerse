@@ -1,3 +1,5 @@
+import { color } from "framer-motion";
+
 export const heroContentBox = {
   gap: "1rem",
   w: "100%",
@@ -35,12 +37,16 @@ export const emojiPickerButton = {
 export const emojiPickerButtonNew = {
   background: "transparent",
   fontSize: "1.2rem",
-  // minW: "30px",
-  // mar
   justifyContent: "flex-start",
   p: "0",
   color: "gray",
   _hover: { background: "transparent", color: "#464646" },
+  cursor: "pointer",
+};
+
+export const emojiPickerSinglePost = {
+  fontSize: "2rem",
+  color: "white",
 };
 
 export const commentInput = {

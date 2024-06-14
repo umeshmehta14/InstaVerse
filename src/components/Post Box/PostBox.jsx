@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -27,9 +27,9 @@ import {
   handleFollowUnfollowUser,
   updateTab,
 } from "../../pages/Post Feed/userSlice";
-import { handleLikes } from "../../pages/Post Feed/postSlice";
-import { getRelativeTime } from "../../utils/Utils";
+import { getRelativeTime, handleDoubleTap } from "../../utils/Utils";
 import { userNameStyle } from "../../styles/GlobalStyles";
+import { LIKE } from "../../utils/Constants";
 
 export const PostBox = ({ post, singlePost }) => {
   const navigate = useNavigate();
@@ -67,25 +67,6 @@ export const PostBox = ({ post, singlePost }) => {
 
   const [doubleTap, setDoubleTap] = useState(false);
   const lastTapRef = useRef(0);
-
-  const handleDoubleTap = () => {
-    const now = Date.now();
-    const DOUBLE_TAP_THRESHOLD = 300;
-
-    if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
-      setDoubleTap(true);
-      if (!userLike) {
-        dispatch(handleLikes({ _id, singlePost }));
-      }
-      setTimeout(() => {
-        setDoubleTap(false);
-      }, 800);
-    } else {
-      setDoubleTap(false);
-    }
-
-    lastTapRef.current = now;
-  };
 
   const handleBookmarkClick = () => {
     if (bookmarked && clicked) {
@@ -168,7 +149,17 @@ export const PostBox = ({ post, singlePost }) => {
           minH={"400px"}
           border={{ base: "none", md: "0.5px solid #838383" }}
           borderRadius={{ base: "0", md: "6px" }}
-          onClick={() => handleDoubleTap()}
+          onClick={() =>
+            handleDoubleTap(
+              lastTapRef,
+              userLike,
+              setDoubleTap,
+              dispatch,
+              _id,
+              LIKE,
+              singlePost
+            )
+          }
         />
         {doubleTap && <HeartPopup />}
         {showSavedPostBox && (

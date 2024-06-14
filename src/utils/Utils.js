@@ -1,5 +1,9 @@
 import { Text } from "@chakra-ui/react";
 import { getSearchedUsers } from "../pages/Post Feed/userSlice";
+import { useDispatch } from "react-redux";
+import { handleCommentLike } from "../pages/Single Post/commentSlice";
+import { useRef } from "react";
+import { handleLikes } from "../pages/Post Feed/postSlice";
 
 export const getRelativeTime = (date) => {
   const now = new Date();
@@ -82,4 +86,35 @@ export const debounce = (dispatch) => {
       dispatch(getSearchedUsers());
     }, 500);
   };
+};
+
+export const handleDoubleTap = (
+  lastTapRef,
+  userAction,
+  setDoubleTap,
+  dispatch,
+  _id,
+  actionType,
+  singlePost
+) => {
+  const now = Date.now();
+  const DOUBLE_TAP_THRESHOLD = 300;
+
+  if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
+    setDoubleTap(true);
+    if (!userAction) {
+      if (actionType === "like") {
+        dispatch(handleLikes({ _id, singlePost }));
+      } else if (actionType === "commentLike") {
+        dispatch(handleCommentLike({ _id }));
+      }
+    }
+    setTimeout(() => {
+      setDoubleTap(false);
+    }, 800);
+  } else {
+    setDoubleTap(false);
+  }
+
+  lastTapRef.current = now;
 };

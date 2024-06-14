@@ -8,11 +8,19 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useRef, useEffect } from "react";
 import { BsEmojiSunglasses } from "../../utils/Icons";
-import { emojiPickerButtonNew } from "../../styles/GlobalStyles";
+import {
+  emojiPickerButtonNew,
+  emojiPickerSinglePost,
+} from "../../styles/GlobalStyles";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-export const EmojiPopover = ({ commentValue, setCommentValue, inputRef }) => {
+export const EmojiPopover = ({
+  commentValue,
+  setCommentValue,
+  inputRef,
+  singlePost,
+}) => {
   const { colorMode } = useColorMode();
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef();
@@ -65,6 +73,7 @@ export const EmojiPopover = ({ commentValue, setCommentValue, inputRef }) => {
         <Box
           as={BsEmojiSunglasses}
           {...emojiPickerButtonNew}
+          sx={singlePost && emojiPickerSinglePost}
           title="Emoji"
           onClick={() => setIsOpen(!isOpen)}
         />
@@ -76,7 +85,7 @@ export const EmojiPopover = ({ commentValue, setCommentValue, inputRef }) => {
               data={data}
               onEmojiSelect={(emoji) => {
                 handleEmojiSelect(emoji);
-                setIsOpen(true); // This line can be removed as the popover should close after selecting an emoji
+                setIsOpen(true);
               }}
               theme={colorMode}
               title="Pick an Emoji"

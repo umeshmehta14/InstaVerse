@@ -236,6 +236,7 @@ export const CommentFooter = ({ post, userLike }) => {
           setCommentValue={setCommentValue}
           commentValue={commentValue}
           inputRef={inputRef}
+          singlePost={true}
         />
         <Box pos={"relative"} width={"100%"}>
           <Input

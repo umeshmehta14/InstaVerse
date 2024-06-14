@@ -45,7 +45,8 @@ import {
   updateSearchedUsers,
   updateSearchValue,
 } from "../../Post Feed/userSlice";
-import { debounce } from "../../../utils/Utils";
+import { debounce, handleDoubleTap } from "../../../utils/Utils";
+import { LIKE } from "../../../utils/Constants";
 
 export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const navigate = useNavigate();
@@ -78,25 +79,6 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
     if (event.key === "Enter" && commentValue !== "") {
       handleCommentPost();
     }
-  };
-
-  const handleDoubleTap = () => {
-    const now = Date.now();
-    const DOUBLE_TAP_THRESHOLD = 300;
-
-    if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
-      setDoubleTap(true);
-      if (!userLike) {
-        dispatch(handleLikes({ _id, singlePost: true }));
-      }
-      setTimeout(() => {
-        setDoubleTap(false);
-      }, 800);
-    } else {
-      setDoubleTap(false);
-    }
-
-    lastTapRef.current = now;
   };
 
   const handleCommentPost = () => {
@@ -160,7 +142,17 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
                 src={url}
                 w={"100%"}
                 height={"100%"}
-                onClick={() => handleDoubleTap()}
+                onClick={() =>
+                  handleDoubleTap(
+                    lastTapRef,
+                    userLike,
+                    setDoubleTap,
+                    dispatch,
+                    _id,
+                    LIKE,
+                    true
+                  )
+                }
               />
               {doubleTap && <HeartPopup />}
             </Flex>

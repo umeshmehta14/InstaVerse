@@ -7,19 +7,12 @@ import {
   Flex,
   HStack,
   Input,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 
 import {
   commentInput,
-  emojiPickerButtonNew,
   likeHeartStyle,
   userNameStyle,
 } from "../../../styles/GlobalStyles";
@@ -37,7 +30,6 @@ import {
   IoPaperPlaneOutline,
   FaBookmark,
   FaRegBookmark,
-  BsEmojiSunglasses,
 } from "../../../utils/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLikes } from "../../../pages/Post Feed/postSlice";
@@ -319,11 +311,6 @@ const PostDetailSection = ({
         gap={"0.3rem"}
       >
         {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
-        <EmojiPopover
-          setCommentValue={setCommentValue}
-          commentValue={commentValue}
-          inputRef={inputRef}
-        />
 
         <Box pos={"relative"} width={"100%"}>
           <Input
@@ -358,6 +345,11 @@ const PostDetailSection = ({
         >
           Post
         </Button>
+        <EmojiPopover
+          setCommentValue={setCommentValue}
+          commentValue={commentValue}
+          inputRef={inputRef}
+        />
       </Flex>
     </>
   );

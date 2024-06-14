@@ -46,12 +46,17 @@ import {
   RotatingLoader,
   UserMentionList,
 } from "../../../components";
-import { debounce, getRelativeTime } from "../../../utils/Utils";
+import {
+  debounce,
+  getRelativeTime,
+  handleDoubleTap,
+} from "../../../utils/Utils";
 import {
   getSearchedUsers,
   updateSearchedUsers,
   updateSearchValue,
 } from "../../Post Feed/userSlice";
+import { COMMENT_LIKE } from "../../../utils/Constants";
 
 export const CommentList = ({ comments, ownerId }) => {
   const { colorMode } = useColorMode();
@@ -154,32 +159,22 @@ export const CommentList = ({ comments, ownerId }) => {
           } = comment || {};
           const commentLike = likes?.find((like) => like === currentUser?._id);
 
-          const handleDoubleTap = () => {
-            const now = Date.now();
-            const DOUBLE_TAP_THRESHOLD = 300;
-
-            if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
-              setDoubleTap(true);
-              if (!commentLike) {
-                dispatch(handleCommentLike({ _id }));
-              }
-              setTimeout(() => {
-                setDoubleTap(false);
-              }, 800);
-            } else {
-              setDoubleTap(false);
-            }
-
-            lastTapRef.current = now;
-          };
-
           return (
             <Flex
               key={_id}
               gap={"1rem"}
               title={username}
               w={"100%"}
-              onClick={() => handleDoubleTap()}
+              onClick={() =>
+                handleDoubleTap(
+                  lastTapRef,
+                  commentLike,
+                  setDoubleTap,
+                  dispatch,
+                  _id,
+                  COMMENT_LIKE
+                )
+              }
             >
               <Box pt={"2"} onClick={() => navigate(`/profile/${username}`)}>
                 <Avatar

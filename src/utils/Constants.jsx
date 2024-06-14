@@ -1,5 +1,7 @@
 export const API_URL = "https://instaverse-backend.onrender.com/api/v1";
 export const GUEST_USER_PASSWORD = "12345678";
+export const COMMENT_LIKE = "commentLike";
+export const LIKE = "like";
 
 export const avatarUrls = [
   "https://res.cloudinary.com/umeshcloud/image/upload/v1711019265/instaverse%20avatar%27s/bjvpn1wtyvl7jgpntmcg.jpg",
