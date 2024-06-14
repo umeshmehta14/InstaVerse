@@ -53,11 +53,7 @@ import {
   handleInputChange,
   renderCaptionWithMentionsAndHashtags,
 } from "../../../utils/Utils";
-import {
-  getSearchedUsers,
-  updateSearchedUsers,
-  updateSearchValue,
-} from "../../Post Feed/userSlice";
+import { getSearchedUsers } from "../../Post Feed/userSlice";
 import { COMMENT_LIKE } from "../../../utils/Constants";
 
 export const CommentList = ({ comments, ownerId }) => {

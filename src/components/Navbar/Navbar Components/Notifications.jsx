@@ -255,6 +255,7 @@ export const Notifications = ({ isOpen, onClose }) => {
                       );
                     } else if (type === "comment") {
                       const { url, _id: postId } = post;
+
                       const { text } = comment;
 
                       return (
@@ -509,8 +510,8 @@ export const Notifications = ({ isOpen, onClose }) => {
                                 >
                                   {username}
                                 </Text>
-                                <Text as="span" ml={"0.1rem"}>
-                                  : Mentioned you in a post.
+                                <Text as="span" ml={"0.2rem"}>
+                                  mentioned you in a post:
                                 </Text>
 
                                 <Text

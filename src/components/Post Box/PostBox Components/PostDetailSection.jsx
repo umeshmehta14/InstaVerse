@@ -93,6 +93,12 @@ const PostDetailSection = ({
     setIsExpanded(!isExpanded);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && commentValue !== "") {
+      handleCommentPost();
+    }
+  };
+
   const handleCommentPost = () => {
     if (!commentLoader) {
       dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
@@ -310,6 +316,7 @@ const PostDetailSection = ({
                 dispatch
               )
             }
+            onKeyDown={handleKeyPress}
             disabled={commentLoader}
             {...commentInput}
             ref={inputRef}

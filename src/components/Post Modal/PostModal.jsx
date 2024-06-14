@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -27,24 +27,40 @@ import {
 } from "../../pages/Post Feed/postSlice";
 import { Vortex } from "react-loader-spinner";
 import { EmojiPopover } from "../EmojiPopover/EmojiPopover";
+import { UserMentionList } from "../UserMention List/UserMentionList";
+import { debounce, handleInputChange } from "../../utils/Utils";
+import { getSearchedUsers } from "../../pages/Post Feed/userSlice";
 
 export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   const { colorMode } = useColorMode();
   const [selectedPost, setSelectedPost] = useState(null);
+  const [showTagBox, setShowTagBox] = useState(false);
+  const [matchIndex, setMatchIndex] = useState(null);
   const inputRef = useRef(null);
 
   const { uploadPost, isUploading } = useSelector((state) => state.post);
   const { currentUser } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
 
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
+
   const { caption, url } = uploadPost;
 
   const [postValue, setPostValue] = useState(caption);
 
-  const handleInputChange = (e) => {
+  const handleInputValue = (e) => {
     const { value } = e.target;
     if (value.length <= 2200) {
-      setPostValue(value);
+      handleInputChange(
+        e,
+        setPostValue,
+        setMatchIndex,
+        setShowTagBox,
+        debouncedFetchData,
+        dispatch
+      );
     }
   };
 
@@ -148,9 +164,19 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
             ) : (
               <>
                 <Flex align="center" mb={4} pos="relative">
+                  {showTagBox && (
+                    <UserMentionList
+                      matchIndex={matchIndex}
+                      commentValue={postValue}
+                      setCommentValue={setPostValue}
+                      setShowTagBox={setShowTagBox}
+                      setMatchIndex={setMatchIndex}
+                      bottom={true}
+                    />
+                  )}
                   <Textarea
                     {...postTextarea}
-                    onChange={handleInputChange}
+                    onChange={handleInputValue}
                     value={postValue}
                     ref={inputRef}
                   />
