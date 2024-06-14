@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -59,6 +59,7 @@ import { commentLoaderStyle } from "../../../styles/SinglePostStyle";
 import { RotatingLoader } from "../../Loader/RotatingLoader";
 import { addCommentToPost } from "../../../pages/Single Post/commentSlice";
 import { UserMentionList } from "../../UserMention List/UserMentionList";
+import { EmojiPopover } from "../../EmojiPopover/EmojiPopover";
 
 const PostDetailSection = ({
   onOpen,
@@ -78,6 +79,8 @@ const PostDetailSection = ({
   const [showTagBox, setShowTagBox] = useState(false);
   const [matchIndex, setMatchIndex] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+
+  const inputRef = useRef(null);
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { commentLoader } = useSelector((state) => state.comment);
@@ -313,27 +316,14 @@ const PostDetailSection = ({
         p={{ base: "0 12px", md: 0 }}
         alignItems={"center"}
         pos={"relative"}
+        gap={"0.3rem"}
       >
         {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
-        <Popover>
-          <PopoverTrigger>
-            <Button {...emojiPickerButtonNew}>
-              <BsEmojiSunglasses />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent bg={"transparent"}>
-            <PopoverBody p={0}>
-              <Picker
-                data={data}
-                onEmojiSelect={(emoji) =>
-                  setCommentValue(commentValue + emoji.native)
-                }
-                theme={colorMode}
-                title="Pick an Emoji"
-              />
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+        <EmojiPopover
+          setCommentValue={setCommentValue}
+          commentValue={commentValue}
+          inputRef={inputRef}
+        />
 
         <Box pos={"relative"} width={"100%"}>
           <Input
@@ -342,6 +332,7 @@ const PostDetailSection = ({
             onChange={handleInputChange}
             disabled={commentLoader}
             {...commentInput}
+            ref={inputRef}
             px={0}
           />
           {commentLoader && commentValue && (

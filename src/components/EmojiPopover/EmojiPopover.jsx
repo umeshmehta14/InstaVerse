@@ -5,7 +5,6 @@ import {
   PopoverContent,
   PopoverTrigger,
   useColorMode,
-  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState, useRef, useEffect } from "react";
 import { BsEmojiSunglasses } from "../../utils/Icons";
@@ -70,20 +69,22 @@ export const EmojiPopover = ({ commentValue, setCommentValue, inputRef }) => {
           onClick={() => setIsOpen(!isOpen)}
         />
       </PopoverTrigger>
-      <PopoverContent ref={popoverRef} bottom={"27rem"} bg={"transparent"}>
-        <PopoverBody p={0}>
-          <Picker
-            data={data}
-            onEmojiSelect={(emoji) => {
-              handleEmojiSelect(emoji);
-              setIsOpen(true); // Keep popover open on emoji select
-            }}
-            theme={colorMode}
-            title="Pick an Emoji"
-            emoji=""
-          />
-        </PopoverBody>
-      </PopoverContent>
+      {isOpen && (
+        <PopoverContent ref={popoverRef} bottom={"27rem"} bg={"transparent"}>
+          <PopoverBody p={0}>
+            <Picker
+              data={data}
+              onEmojiSelect={(emoji) => {
+                handleEmojiSelect(emoji);
+                setIsOpen(true); // This line can be removed as the popover should close after selecting an emoji
+              }}
+              theme={colorMode}
+              title="Pick an Emoji"
+              emoji=""
+            />
+          </PopoverBody>
+        </PopoverContent>
+      )}
     </Popover>
   );
 };

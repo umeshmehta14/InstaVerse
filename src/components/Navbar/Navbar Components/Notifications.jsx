@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Drawer,
@@ -27,6 +27,10 @@ import { UnfollowModal } from "../../Unfollow Modal/UnfollowModal";
 import { getRelativeTime } from "../../../utils/Utils";
 import { RotatingLoader } from "../../Loader/RotatingLoader";
 import { userNameStyle } from "../../../styles/GlobalStyles";
+import {
+  getUserNotifications,
+  readUserNotifications,
+} from "../../../pages/Post Feed/postSlice";
 
 export const Notifications = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
@@ -41,12 +45,21 @@ export const Notifications = ({ isOpen, onClose }) => {
 
   const unfollowModalDisclosure = useDisclosure();
 
+  useEffect(() => {
+    if (notifications?.length > 0) {
+      dispatch(readUserNotifications());
+    }
+  }, [notifications]);
+
   return (
     <Box>
       <Drawer
         isOpen={isOpen}
         placement="left"
-        onClose={onClose}
+        onClose={() => {
+          dispatch(getUserNotifications());
+          onClose();
+        }}
         size={{ base: "full", md: "sm" }}
       >
         <DrawerOverlay />

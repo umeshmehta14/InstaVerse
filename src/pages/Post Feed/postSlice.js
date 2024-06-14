@@ -7,6 +7,7 @@ import {
   getNotifications,
   getPostById,
   homePosts,
+  readNotifications,
   removeLike,
   uploadPost,
 } from "../../service/postService";
@@ -43,11 +44,25 @@ const initialState = {
 
 export const getUserNotifications = createAsyncThunk(
   "post/getNotifications",
-  async (_, { getState, dispatch }) => {
+  async (_, { getState }) => {
     const { token } = getState().authentication;
     const {
       data: { statusCode, data },
     } = await getNotifications(token);
+
+    if (statusCode === 200) {
+      return data;
+    }
+  }
+);
+
+export const readUserNotifications = createAsyncThunk(
+  "post/readNotifications",
+  async (_, { getState }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await readNotifications(token);
 
     if (statusCode === 200) {
       return data;

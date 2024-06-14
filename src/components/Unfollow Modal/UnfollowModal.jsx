@@ -44,7 +44,7 @@ export const UnfollowModal = ({
       dispatch(handleFollowUnfollowUser({ ...actionPayload, unFollow: true }));
     }
 
-    infoPopupOnclose();
+    infoPopupOnclose ? infoPopupOnclose() : null;
     onClose();
   };
 

@@ -34,8 +34,9 @@ export const emojiPickerButton = {
 
 export const emojiPickerButtonNew = {
   background: "transparent",
-  fontSize: "1.1rem",
-  minW: "30px",
+  fontSize: "1.2rem",
+  // minW: "30px",
+  // mar
   justifyContent: "flex-start",
   p: "0",
   color: "gray",

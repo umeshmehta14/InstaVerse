@@ -54,6 +54,12 @@ export const Home = () => {
     dispatch(getUserBookmark());
   }, [currentUser]);
 
+  console.log({
+    postfetc: !postFetched,
+    cp: currentPage === 1,
+    np: !newPostLoading,
+  });
+
   return (
     <Flex sx={heroContentBox}>
       <UserSuggestion />
@@ -92,7 +98,7 @@ export const Home = () => {
             return (
               <React.Fragment key={post?._id}>
                 <PostBox post={post} />
-                {index === posts?.length - 1 && (
+                {index === posts?.length - 1 && posts?.length !== 1 && (
                   <div ref={bottomRef} style={{ height: 0 }} />
                 )}
               </React.Fragment>
