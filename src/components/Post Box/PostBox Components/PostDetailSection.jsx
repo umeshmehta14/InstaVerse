@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -38,13 +38,12 @@ import {
   getPostLikeUsers,
   getSearchedUsers,
   removeUserBookmark,
-  updateSearchedUsers,
-  updateSearchValue,
 } from "../../../pages/Post Feed/userSlice";
 import {
   debounce,
+  handleInputChange,
   handleShare,
-  renderCaptionWithHashtags,
+  renderCaptionWithMentionsAndHashtags,
   truncateTextWithHTML,
 } from "../../../utils/Utils";
 import { commentLoaderStyle } from "../../../styles/SinglePostStyle";
@@ -112,32 +111,6 @@ const PostDetailSection = ({
     setTimeout(() => {
       setIsLiked(false);
     }, 1000);
-  };
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setCommentValue(value);
-
-    const match = value.match(/@(\w*)$/);
-    if (match && match[1]) {
-      const username = match[1];
-      setMatchIndex(match.index);
-      setShowTagBox(true);
-      dispatch(updateSearchValue(username));
-      debouncedFetchData(username);
-    } else {
-      setShowTagBox(false);
-      setMatchIndex(null);
-      dispatch(updateSearchValue(""));
-      dispatch(updateSearchedUsers());
-    }
-  };
-
-  const handleUserClick = (username) => {
-    const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
-    setCommentValue(newValue);
-    setShowTagBox(false);
-    setMatchIndex(null);
   };
 
   return (
@@ -271,8 +244,11 @@ const PostDetailSection = ({
               whiteSpace={isExpanded ? "break-spaces" : "normal"}
             >
               {isExpanded
-                ? renderCaptionWithHashtags(caption)
-                : renderCaptionWithHashtags(truncateTextWithHTML(caption))}
+                ? renderCaptionWithMentionsAndHashtags(caption, navigate)
+                : renderCaptionWithMentionsAndHashtags(
+                    truncateTextWithHTML(caption),
+                    navigate
+                  )}
             </Text>
             {caption?.length > 50 && (
               <Button
@@ -310,13 +286,30 @@ const PostDetailSection = ({
         pos={"relative"}
         gap={"0.3rem"}
       >
-        {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
+        {showTagBox && (
+          <UserMentionList
+            matchIndex={matchIndex}
+            commentValue={commentValue}
+            setCommentValue={setCommentValue}
+            setShowTagBox={setShowTagBox}
+            setMatchIndex={setMatchIndex}
+          />
+        )}
 
         <Box pos={"relative"} width={"100%"}>
           <Input
             placeholder="Add a comment..."
             value={commentValue}
-            onChange={handleInputChange}
+            onChange={(e) =>
+              handleInputChange(
+                e,
+                setCommentValue,
+                setMatchIndex,
+                setShowTagBox,
+                debouncedFetchData,
+                dispatch
+              )
+            }
             disabled={commentLoader}
             {...commentInput}
             ref={inputRef}

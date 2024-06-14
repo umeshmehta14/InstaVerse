@@ -24,7 +24,10 @@ import { AiOutlineArrowLeft } from "../../../utils/Icons";
 import { SearchSkeleton } from "../../index";
 import { handleFollowUnfollowUser } from "../../../pages/Post Feed/userSlice";
 import { UnfollowModal } from "../../Unfollow Modal/UnfollowModal";
-import { getRelativeTime } from "../../../utils/Utils";
+import {
+  getRelativeTime,
+  renderCaptionWithMentionsAndHashtags,
+} from "../../../utils/Utils";
 import { RotatingLoader } from "../../Loader/RotatingLoader";
 import { userNameStyle } from "../../../styles/GlobalStyles";
 import {
@@ -89,14 +92,7 @@ export const Notifications = ({ isOpen, onClose }) => {
             ) : (
               <VStack maxW={"100%"}>
                 {notifications?.map(
-                  ({
-                    _id: notId,
-                    type,
-                    actionBy,
-                    createdAt,
-                    post,
-                    comment,
-                  }) => {
+                  ({ type, actionBy, createdAt, post, comment }) => {
                     const { _id, username, avatar } = actionBy;
                     const isFollowing = currentUser?.following?.some(
                       (user) => user?._id === _id
@@ -307,7 +303,10 @@ export const Notifications = ({ isOpen, onClose }) => {
                                   ml={"0.2rem"}
                                   wordBreak={"break-word"}
                                 >
-                                  {text}
+                                  {renderCaptionWithMentionsAndHashtags(
+                                    text,
+                                    navigate
+                                  )}
                                 </Text>
                                 <Text
                                   fontSize={"14px"}
@@ -379,7 +378,10 @@ export const Notifications = ({ isOpen, onClose }) => {
                                   ml={"0.2rem"}
                                   wordBreak={"break-word"}
                                 >
-                                  {text}
+                                  {renderCaptionWithMentionsAndHashtags(
+                                    text,
+                                    navigate
+                                  )}
                                 </Text>
                                 <Text
                                   fontSize={"14px"}
@@ -444,6 +446,82 @@ export const Notifications = ({ isOpen, onClose }) => {
                                 </Text>
                                 <Text as="span" ml={"0.1rem"}>
                                   : Mentioned you in a comment.
+                                </Text>
+
+                                <Text
+                                  fontSize={"14px"}
+                                  color={"#717171e0"}
+                                  display={"inline"}
+                                  ml={"0.2rem"}
+                                  wordBreak={"break-word"}
+                                >
+                                  {getRelativeTime(createdAt)}
+                                </Text>
+                              </Text>
+                            </Flex>
+                            <Image
+                              src={url}
+                              minW={"50px"}
+                              maxW={"50px"}
+                              h={"50px"}
+                              borderRadius={"14px"}
+                            />
+                          </Flex>
+                        </Flex>
+                      );
+                    } else if (type === "postMention") {
+                      const { url, _id: postId, caption } = post;
+                      return (
+                        <Flex
+                          key={postId}
+                          gap={"2"}
+                          my={"2"}
+                          cursor={"pointer"}
+                          w={"100%"}
+                          title={username}
+                          onClick={() => {
+                            navigate(`/post/${postId}`);
+                            onClose();
+                          }}
+                          _hover={
+                            colorMode === "dark" ? { bg: "#323232ad" } : ""
+                          }
+                        >
+                          <Flex alignItems={"center"} gap={"2"}>
+                            <Avatar size="md" src={avatar?.url} />
+                          </Flex>
+                          <Flex
+                            gap={{ base: "0.5rem", md: "1rem" }}
+                            alignItems={"center"}
+                            justifyContent={"space-between"}
+                            w={"100%"}
+                          >
+                            <Flex flexWrap={"wrap"}>
+                              <Text wordBreak={"break-word"}>
+                                <Text
+                                  as="span"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/profile/${username}`);
+                                    onClose();
+                                  }}
+                                  {...userNameStyle}
+                                >
+                                  {username}
+                                </Text>
+                                <Text as="span" ml={"0.1rem"}>
+                                  : Mentioned you in a post.
+                                </Text>
+
+                                <Text
+                                  display={"inline"}
+                                  ml={"0.2rem"}
+                                  wordBreak={"break-word"}
+                                >
+                                  {renderCaptionWithMentionsAndHashtags(
+                                    caption,
+                                    navigate
+                                  )}
                                 </Text>
 
                                 <Text

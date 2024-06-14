@@ -6,13 +6,12 @@ import {
   Flex,
   Text,
   VStack,
-  useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
 
 import {
   getRelativeTime,
-  renderCaptionWithHashtags,
+  renderCaptionWithMentionsAndHashtags,
 } from "../../../utils/Utils";
 import { InfoPopup, RotatingLoader } from "../../../components/index";
 import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
@@ -118,7 +117,7 @@ export const DisplayComments = ({ post, location }) => {
                   fontWeight={100}
                   fontSize={"0.95rem"}
                 >
-                  {renderCaptionWithHashtags(caption)}
+                  {renderCaptionWithMentionsAndHashtags(caption, navigate)}
                 </Text>
               </Box>
               <Flex fontSize="sm" color={"#717171e0"} alignItems={"center"}>

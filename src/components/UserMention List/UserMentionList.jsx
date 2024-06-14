@@ -12,8 +12,16 @@ import {
 import React from "react";
 import { hideScrollbar } from "../../styles/GlobalStyles";
 import { useSelector } from "react-redux";
+import { handleUserClick } from "../../utils/Utils";
 
-export const UserMentionList = ({ handleUserClick, bottom }) => {
+export const UserMentionList = ({
+  matchIndex,
+  commentValue,
+  setCommentValue,
+  setShowTagBox,
+  setMatchIndex,
+  bottom,
+}) => {
   const { searchedUsers, isLoading } = useSelector((state) => state.user);
   const { colorMode } = useColorMode();
   return (
@@ -53,7 +61,16 @@ export const UserMentionList = ({ handleUserClick, bottom }) => {
                   w={"100%"}
                   _hover={{ bg: "#1f1f1f6a" }}
                   title={username}
-                  onClick={() => handleUserClick(username)}
+                  onClick={() =>
+                    handleUserClick(
+                      username,
+                      matchIndex,
+                      commentValue,
+                      setCommentValue,
+                      setShowTagBox,
+                      setMatchIndex
+                    )
+                  }
                 >
                   <Flex alignItems={"center"} gap={"2"}>
                     <Avatar size="md" src={avatar?.url} />

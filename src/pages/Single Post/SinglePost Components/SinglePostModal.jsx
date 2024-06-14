@@ -38,14 +38,13 @@ import {
 import { AiOutlineArrowLeft } from "../../../utils/Icons";
 import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
-import { handleLikes } from "../../Post Feed/postSlice";
 import { addCommentToPost } from "../commentSlice";
+import { getSearchedUsers, updateSearchValue } from "../../Post Feed/userSlice";
 import {
-  getSearchedUsers,
-  updateSearchedUsers,
-  updateSearchValue,
-} from "../../Post Feed/userSlice";
-import { debounce, handleDoubleTap } from "../../../utils/Utils";
+  debounce,
+  handleDoubleTap,
+  handleInputChange,
+} from "../../../utils/Utils";
 import { LIKE } from "../../../utils/Constants";
 
 export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
@@ -87,32 +86,6 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
         setCommentValue("")
       );
     }
-  };
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setCommentValue(value);
-
-    const match = value.match(/@(\w*)$/);
-    if (match && match[1]) {
-      const username = match[1];
-      setMatchIndex(match.index);
-      setShowTagBox(true);
-      dispatch(updateSearchValue(username));
-      debouncedFetchData(username);
-    } else {
-      setShowTagBox(false);
-      setMatchIndex(null);
-      dispatch(updateSearchValue(""));
-      dispatch(updateSearchedUsers());
-    }
-  };
-
-  const handleUserClick = (username) => {
-    const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
-    setCommentValue(newValue);
-    setShowTagBox(false);
-    setMatchIndex(null);
   };
 
   return (
@@ -185,7 +158,15 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
           bg={colorMode === "dark" ? "black.900" : "white.500"}
           {...mobileFooterStyle}
         >
-          {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
+          {showTagBox && (
+            <UserMentionList
+              matchIndex={matchIndex}
+              commentValue={commentValue}
+              setCommentValue={setCommentValue}
+              setShowTagBox={setShowTagBox}
+              setMatchIndex={setMatchIndex}
+            />
+          )}
           <Flex {...addCommentMainBox}>
             <EmojiPopover
               setCommentValue={setCommentValue}
@@ -196,7 +177,16 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
               <Input
                 placeholder="Add a comment..."
                 value={commentValue}
-                onChange={handleInputChange}
+                onChange={(e) =>
+                  handleInputChange(
+                    e,
+                    setCommentValue,
+                    setMatchIndex,
+                    setShowTagBox,
+                    debouncedFetchData,
+                    dispatch
+                  )
+                }
                 onKeyDown={handleKeyPress}
                 disabled={commentLoader && commentValue}
                 {...commentInput}

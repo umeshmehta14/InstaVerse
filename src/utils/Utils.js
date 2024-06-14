@@ -1,9 +1,12 @@
 import { Text } from "@chakra-ui/react";
-import { getSearchedUsers } from "../pages/Post Feed/userSlice";
-import { useDispatch } from "react-redux";
+import {
+  getSearchedUsers,
+  updateSearchedUsers,
+  updateSearchValue,
+} from "../pages/Post Feed/userSlice";
 import { handleCommentLike } from "../pages/Single Post/commentSlice";
-import { useRef } from "react";
 import { handleLikes } from "../pages/Post Feed/postSlice";
+import { useCallback } from "react";
 
 export const getRelativeTime = (date) => {
   const now = new Date();
@@ -44,11 +47,24 @@ export const handleShare = async (key, value) => {
   }
 };
 
-export const renderCaptionWithHashtags = (caption) => {
-  const parts = caption.split(/(#\w+)/g);
+export const renderCaptionWithMentionsAndHashtags = (caption, navigate) => {
+  const parts = caption.split(/(@\w+|#\w+)/g);
 
   return parts.map((part, index) => {
-    if (part.startsWith("#")) {
+    if (part.startsWith("@")) {
+      const username = part.substring(1);
+      return (
+        <Text
+          as="span"
+          key={index}
+          color="blue.500"
+          cursor="pointer"
+          onClick={() => navigate(`/profile/${username}`)}
+        >
+          {part}
+        </Text>
+      );
+    } else if (part.startsWith("#")) {
       return (
         <Text as="span" key={index} color="blue.500">
           {part}
@@ -76,16 +92,6 @@ export const truncateTextWithHTML = (text) => {
   }
 
   return truncated + "...";
-};
-
-export const debounce = (dispatch) => {
-  let timeoutId;
-  return () => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      dispatch(getSearchedUsers());
-    }, 500);
-  };
 };
 
 export const handleDoubleTap = (
@@ -117,4 +123,54 @@ export const handleDoubleTap = (
   }
 
   lastTapRef.current = now;
+};
+
+export const debounce = (dispatch) => {
+  let timeoutId;
+  return () => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      dispatch(getSearchedUsers());
+    }, 500);
+  };
+};
+
+export const handleInputChange = (
+  e,
+  setCommentValue,
+  setMatchIndex,
+  setShowTagBox,
+  debouncedFetchData,
+  dispatch
+) => {
+  const value = e.target.value;
+  setCommentValue(value);
+
+  const match = value.match(/@(\w*)$/);
+  if (match && match[1]) {
+    const username = match[1];
+    setMatchIndex(match.index);
+    setShowTagBox(true);
+    dispatch(updateSearchValue(username));
+    debouncedFetchData();
+  } else {
+    setShowTagBox(false);
+    setMatchIndex(null);
+    dispatch(updateSearchValue(""));
+    dispatch(updateSearchedUsers());
+  }
+};
+
+export const handleUserClick = (
+  username,
+  matchIndex,
+  commentValue,
+  setCommentValue,
+  setShowTagBox,
+  setMatchIndex
+) => {
+  const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
+  setCommentValue(newValue);
+  setShowTagBox(false);
+  setMatchIndex(null);
 };

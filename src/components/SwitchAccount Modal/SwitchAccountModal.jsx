@@ -85,7 +85,7 @@ export const SwitchAccountModal = ({ onClose, isOpen }) => {
             variant={"link-button"}
             w="100%"
             p="1rem"
-            onClick={logoutHandler}
+            onClick={() => dispatch(logoutHandler())}
           >
             Log In to an Existing Account
           </Button>

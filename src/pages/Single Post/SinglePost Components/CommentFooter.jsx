@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -48,7 +48,7 @@ import {
   updateSearchValue,
 } from "../../Post Feed/userSlice";
 import { handleLikes } from "../../Post Feed/postSlice";
-import { debounce, handleShare } from "../../../utils/Utils";
+import { debounce, handleInputChange, handleShare } from "../../../utils/Utils";
 import { addCommentToPost } from "../commentSlice";
 
 export const CommentFooter = ({ post, userLike }) => {
@@ -100,32 +100,6 @@ export const CommentFooter = ({ post, userLike }) => {
         setCommentValue("")
       );
     }
-  };
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setCommentValue(value);
-
-    const match = value.match(/@(\w*)$/);
-    if (match && match[1]) {
-      const username = match[1];
-      setMatchIndex(match.index);
-      setShowTagBox(true);
-      dispatch(updateSearchValue(username));
-      debouncedFetchData(username);
-    } else {
-      setShowTagBox(false);
-      setMatchIndex(null);
-      dispatch(updateSearchValue(""));
-      dispatch(updateSearchedUsers());
-    }
-  };
-
-  const handleUserClick = (username) => {
-    const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
-    setCommentValue(newValue);
-    setShowTagBox(false);
-    setMatchIndex(null);
   };
 
   return (
@@ -231,7 +205,15 @@ export const CommentFooter = ({ post, userLike }) => {
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...commentFooterInputMain}
       >
-        {showTagBox && <UserMentionList handleUserClick={handleUserClick} />}
+        {showTagBox && (
+          <UserMentionList
+            matchIndex={matchIndex}
+            commentValue={commentValue}
+            setCommentValue={setCommentValue}
+            setShowTagBox={setShowTagBox}
+            setMatchIndex={setMatchIndex}
+          />
+        )}
         <EmojiPopover
           setCommentValue={setCommentValue}
           commentValue={commentValue}
@@ -242,7 +224,16 @@ export const CommentFooter = ({ post, userLike }) => {
           <Input
             placeholder="Add a comment..."
             value={commentValue}
-            onChange={handleInputChange}
+            onChange={(e) =>
+              handleInputChange(
+                e,
+                setCommentValue,
+                setMatchIndex,
+                setShowTagBox,
+                debouncedFetchData,
+                dispatch
+              )
+            }
             onKeyDown={handleKeyPress}
             disabled={commentLoader && commentValue}
             {...commentInput}

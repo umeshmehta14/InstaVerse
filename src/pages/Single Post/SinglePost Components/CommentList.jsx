@@ -50,6 +50,8 @@ import {
   debounce,
   getRelativeTime,
   handleDoubleTap,
+  handleInputChange,
+  renderCaptionWithMentionsAndHashtags,
 } from "../../../utils/Utils";
 import {
   getSearchedUsers,
@@ -86,32 +88,6 @@ export const CommentList = ({ comments, ownerId }) => {
   const debouncedFetchData = useCallback(debounce(dispatch), [
     getSearchedUsers,
   ]);
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setCommentValue(value);
-
-    const match = value.match(/@(\w*)$/);
-    if (match && match[1]) {
-      const username = match[1];
-      setMatchIndex(match.index);
-      setShowTagBox(true);
-      dispatch(updateSearchValue(username));
-      debouncedFetchData(username);
-    } else {
-      setShowTagBox(false);
-      setMatchIndex(null);
-      dispatch(updateSearchValue(""));
-      dispatch(updateSearchedUsers());
-    }
-  };
-
-  const handleUserClick = (username) => {
-    const newValue = commentValue.slice(0, matchIndex) + `@${username} `;
-    setCommentValue(newValue);
-    setShowTagBox(false);
-    setMatchIndex(null);
-  };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter" && commentValue !== "") {
@@ -193,7 +169,11 @@ export const CommentList = ({ comments, ownerId }) => {
                   <Box pos={"relative"}>
                     {showTagBox && (
                       <UserMentionList
-                        handleUserClick={handleUserClick}
+                        matchIndex={matchIndex}
+                        commentValue={commentValue}
+                        setCommentValue={setCommentValue}
+                        setShowTagBox={setShowTagBox}
+                        setMatchIndex={setMatchIndex}
                         bottom={true}
                       />
                     )}
@@ -208,7 +188,16 @@ export const CommentList = ({ comments, ownerId }) => {
                       h={"30px"}
                       disabled={commentLoader}
                       ref={inputRef}
-                      onChange={handleInputChange}
+                      onChange={(e) =>
+                        handleInputChange(
+                          e,
+                          setCommentValue,
+                          setMatchIndex,
+                          setShowTagBox,
+                          debouncedFetchData,
+                          dispatch
+                        )
+                      }
                       onKeyDown={handleKeyPress}
                     />
                     {commentLoader && (
@@ -222,6 +211,7 @@ export const CommentList = ({ comments, ownerId }) => {
                       setCommentValue={setCommentValue}
                       commentValue={commentValue}
                       inputRef={inputRef}
+                      bottom={true}
                     />
                     <Flex>
                       <Button
@@ -260,27 +250,7 @@ export const CommentList = ({ comments, ownerId }) => {
                         {username}
                       </Text>
                       <Text fontWeight={100} {...commentTextStyle} as={"span"}>
-                        {text.split(/\s+/).map((word, index) => {
-                          if (word.startsWith("@")) {
-                            const username = word.substring(1);
-                            return (
-                              <Text
-                                key={index}
-                                as="span"
-                                color="blue.500"
-                                cursor="pointer"
-                                onClick={() => navigate(`/profile/${username}`)}
-                              >
-                                {word}{" "}
-                              </Text>
-                            );
-                          }
-                          return (
-                            <Text key={index} as="span">
-                              {word}{" "}
-                            </Text>
-                          );
-                        })}
+                        {renderCaptionWithMentionsAndHashtags(text, navigate)}
                       </Text>
                     </Box>
 
