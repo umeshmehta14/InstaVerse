@@ -4,7 +4,10 @@ import {
   updateSearchedUsers,
   updateSearchValue,
 } from "../pages/Post Feed/userSlice";
-import { handleCommentLike } from "../pages/Single Post/commentSlice";
+import {
+  handleCommentLike,
+  handleReplyCommentLike,
+} from "../pages/Single Post/commentSlice";
 import { handleLikes } from "../pages/Post Feed/postSlice";
 import { useCallback } from "react";
 
@@ -113,6 +116,13 @@ export const handleDoubleTap = (
         dispatch(handleLikes({ _id, singlePost }));
       } else if (actionType === "commentLike") {
         dispatch(handleCommentLike({ _id }));
+      } else if (actionType === "replyLike") {
+        dispatch(
+          handleReplyCommentLike({
+            commentId: _id,
+            replyId: singlePost,
+          })
+        );
       }
     }
     setTimeout(() => {

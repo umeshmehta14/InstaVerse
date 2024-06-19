@@ -4,13 +4,17 @@ import {
   deleteComment,
   editComment,
   likeComment,
+  likeReplyComment,
   removelikeFromComment,
+  unlikeReplyComment,
 } from "../../service/commentService";
 import {
   removeCommentLike,
+  removeReplyCommentLike,
   updateCommentLike,
   updateDeleteComment,
   updatePostComment,
+  updateReplyCommentLike,
 } from "../Post Feed/postSlice";
 
 const initialState = {
@@ -68,6 +72,7 @@ export const handleCommentLike = createAsyncThunk(
     unlike
       ? dispatch(removeCommentLike({ _id, currentUser }))
       : dispatch(updateCommentLike({ _id, currentUser }));
+
     const {
       data: { statusCode, data },
     } = unlike
@@ -75,6 +80,25 @@ export const handleCommentLike = createAsyncThunk(
       : await likeComment(_id, token);
     if (statusCode === 200) {
       dispatch(updatePostComment({ data, _id }));
+      return data;
+    }
+  }
+);
+
+export const handleReplyCommentLike = createAsyncThunk(
+  "comment/like-unlike/reply",
+  async ({ commentId, replyId, unlike }, { dispatch, getState }) => {
+    const { token, currentUser } = getState().authentication;
+    unlike
+      ? dispatch(removeReplyCommentLike({ commentId, replyId, currentUser }))
+      : dispatch(updateReplyCommentLike({ commentId, replyId, currentUser }));
+    const {
+      data: { statusCode, data },
+    } = unlike
+      ? await unlikeReplyComment(commentId, replyId, token)
+      : await likeReplyComment(commentId, replyId, token);
+    if (statusCode === 200) {
+      dispatch(updatePostComment({ data, _id: commentId }));
       return data;
     }
   }
@@ -118,6 +142,10 @@ const commentSlice = createSlice({
     });
 
     builder.addCase(handleCommentLike.rejected, (state, action) => {
+      console.error(action.error);
+    });
+
+    builder.addCase(handleReplyCommentLike.rejected, (state, action) => {
       console.error(action.error);
     });
   },

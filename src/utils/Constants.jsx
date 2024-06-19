@@ -1,6 +1,7 @@
 export const API_URL = "https://instaverse-backend.onrender.com/api/v1";
 export const GUEST_USER_PASSWORD = "12345678";
 export const COMMENT_LIKE = "commentLike";
+export const REPLY_LIKE = "replyLike";
 export const LIKE = "like";
 
 export const avatarUrls = [

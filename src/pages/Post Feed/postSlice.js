@@ -331,6 +331,45 @@ const postSlice = createSlice({
             : comment
       );
     },
+
+    updateReplyCommentLike: (state, action) => {
+      const { commentId, replyId, currentUser } = action.payload;
+      state.singlePost.post.comments = state.singlePost.post.comments?.map(
+        (comment) =>
+          comment?._id === commentId
+            ? {
+                ...comment,
+                replies: comment.replies.map((reply) =>
+                  reply?._id === replyId
+                    ? { ...reply, likes: [...reply.likes, currentUser?._id] }
+                    : reply
+                ),
+              }
+            : comment
+      );
+    },
+
+    removeReplyCommentLike: (state, action) => {
+      const { commentId, replyId, currentUser } = action.payload;
+      state.singlePost.post.comments = state.singlePost.post.comments?.map(
+        (comment) =>
+          comment?._id === commentId
+            ? {
+                ...comment,
+                replies: comment.replies.map((reply) =>
+                  reply?._id === replyId
+                    ? {
+                        ...reply,
+                        likes: reply?.likes?.filter(
+                          (like) => like !== currentUser?._id
+                        ),
+                      }
+                    : reply
+                ),
+              }
+            : comment
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserNotifications.pending, (state) => {
@@ -484,6 +523,8 @@ export const {
   updateDeleteComment,
   updateCommentLike,
   removeCommentLike,
+  updateReplyCommentLike,
+  removeReplyCommentLike,
 } = postSlice.actions;
 
 export const postReducer = postSlice.reducer;

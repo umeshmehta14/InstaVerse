@@ -51,3 +51,25 @@ export const removelikeFromComment = async (commentId, token) =>
       },
     }
   );
+
+export const likeReplyComment = async (commentId, replyId, token) =>
+  axios.patch(
+    `${API_URL}/post/comment/${commentId}/replies/${replyId}/like`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+export const unlikeReplyComment = async (commentId, replyId, token) =>
+  axios.patch(
+    `${API_URL}/post/comment/${commentId}/replies/${replyId}/unlike`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
