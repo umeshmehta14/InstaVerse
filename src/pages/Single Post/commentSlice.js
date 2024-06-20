@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addComment,
+  addReplyToComment,
   deleteComment,
   editComment,
   likeComment,
@@ -19,7 +20,10 @@ import {
 
 const initialState = {
   commentLoader: false,
-  commentEdit: "",
+  repliedComment: {
+    commentId: "",
+    repliedUsername: "",
+  },
 };
 
 export const addCommentToPost = createAsyncThunk(
@@ -85,6 +89,20 @@ export const handleCommentLike = createAsyncThunk(
   }
 );
 
+export const addCommentReplyToPost = createAsyncThunk(
+  "comment/add/reply",
+  async ({ commentId, text }, { getState, dispatch }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await addReplyToComment(commentId, text, token);
+    if (statusCode === 201) {
+      dispatch(updatePostComment({ data, _id: commentId }));
+      return data;
+    }
+  }
+);
+
 export const handleReplyCommentLike = createAsyncThunk(
   "comment/like-unlike/reply",
   async ({ commentId, replyId, unlike }, { dispatch, getState }) => {
@@ -108,8 +126,8 @@ const commentSlice = createSlice({
   name: "comment",
   initialState,
   reducers: {
-    updateCommentEdit: (state, action) => {
-      state.commentEdit = action.payload;
+    updateReplyComment: (state, action) => {
+      state.repliedComment = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -148,9 +166,21 @@ const commentSlice = createSlice({
     builder.addCase(handleReplyCommentLike.rejected, (state, action) => {
       console.error(action.error);
     });
+
+    builder.addCase(addCommentReplyToPost.pending, (state, action) => {
+      state.commentLoader = true;
+    });
+
+    builder.addCase(addCommentReplyToPost.fulfilled, (state, action) => {
+      state.commentLoader = false;
+    });
+
+    builder.addCase(addCommentReplyToPost.rejected, (state, action) => {
+      state.commentLoader = false;
+    });
   },
 });
 
-export const { updateCommentEdit } = commentSlice.actions;
+export const { updateReplyComment } = commentSlice.actions;
 
 export const commentReducer = commentSlice.reducer;

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -49,7 +49,11 @@ import {
 } from "../../Post Feed/userSlice";
 import { handleLikes } from "../../Post Feed/postSlice";
 import { debounce, handleInputChange, handleShare } from "../../../utils/Utils";
-import { addCommentToPost } from "../commentSlice";
+import {
+  addCommentReplyToPost,
+  addCommentToPost,
+  updateReplyComment,
+} from "../commentSlice";
 
 export const CommentFooter = ({ post, userLike }) => {
   const { colorMode } = useColorMode();
@@ -62,7 +66,11 @@ export const CommentFooter = ({ post, userLike }) => {
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { bookmarks } = useSelector((state) => state.user);
-  const { commentLoader } = useSelector((state) => state.comment);
+  const { commentLoader, repliedComment } = useSelector(
+    (state) => state.comment
+  );
+
+  const { commentId, repliedUsername } = repliedComment;
 
   const [isLiked, setIsLiked] = useState(false);
   const [commentValue, setCommentValue] = useState("");
@@ -96,11 +104,31 @@ export const CommentFooter = ({ post, userLike }) => {
 
   const handleCommentPost = () => {
     if (!commentLoader) {
+      if (commentId) {
+        dispatch(addCommentReplyToPost({ commentId, text: commentValue })).then(
+          () => {
+            setCommentValue("");
+            dispatch(
+              updateReplyComment({
+                commentId: "",
+                repliedUsername: "",
+              })
+            );
+          }
+        );
+        return;
+      }
       dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
         setCommentValue("")
       );
     }
   };
+
+  useEffect(() => {
+    if (commentId) {
+      setCommentValue(`@${repliedUsername} `);
+    }
+  }, [repliedComment]);
 
   return (
     <>

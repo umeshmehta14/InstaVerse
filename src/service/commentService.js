@@ -52,6 +52,17 @@ export const removelikeFromComment = async (commentId, token) =>
     }
   );
 
+export const addReplyToComment = async (commentId, text, token) =>
+  axios.patch(
+    `${API_URL}/post/comment/${commentId}/reply`,
+    { text },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
 export const likeReplyComment = async (commentId, replyId, token) =>
   axios.patch(
     `${API_URL}/post/comment/${commentId}/replies/${replyId}/like`,

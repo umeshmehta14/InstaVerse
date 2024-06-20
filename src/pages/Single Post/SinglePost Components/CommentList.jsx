@@ -38,6 +38,7 @@ import {
   editCommentToPost,
   handleCommentLike,
   handleReplyCommentLike,
+  updateReplyComment,
 } from "../commentSlice";
 import { useCallback, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -280,7 +281,19 @@ export const CommentList = ({ comments, ownerId }) => {
                             {likes?.length > 1 ? " likes" : " like"}
                           </Text>
                         )}
-                        <Text cursor={"pointer"}>Reply</Text>
+                        <Text
+                          cursor={"pointer"}
+                          onClick={() => {
+                            dispatch(
+                              updateReplyComment({
+                                commentId: _id,
+                                repliedUsername: username,
+                              })
+                            );
+                          }}
+                        >
+                          Reply
+                        </Text>
                         {(currentUser._id === ownerId ||
                           currentUser?.username === username) &&
                           commentEdit !== _id && (
