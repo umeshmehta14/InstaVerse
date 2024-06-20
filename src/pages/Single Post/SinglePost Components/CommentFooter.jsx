@@ -19,6 +19,7 @@ import {
   FaBookmark,
   FaRegBookmark,
   IoPaperPlaneOutline,
+  RxCross2,
 } from "../../../utils/Icons";
 import {
   IconHoverStyle,
@@ -37,6 +38,7 @@ import { commentInput, userNameStyle } from "../../../styles/GlobalStyles";
 import {
   commentFooterInputMain,
   commentLoaderStyle,
+  replyPopup,
 } from "../../../styles/SinglePostStyle";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -70,7 +72,7 @@ export const CommentFooter = ({ post, userLike }) => {
     (state) => state.comment
   );
 
-  const { commentId, repliedUsername } = repliedComment;
+  const { commentId, repliedUsername, replyAvatar } = repliedComment;
 
   const [isLiked, setIsLiked] = useState(false);
   const [commentValue, setCommentValue] = useState("");
@@ -112,6 +114,7 @@ export const CommentFooter = ({ post, userLike }) => {
               updateReplyComment({
                 commentId: "",
                 repliedUsername: "",
+                replyAvatar: "",
               })
             );
           }
@@ -131,7 +134,28 @@ export const CommentFooter = ({ post, userLike }) => {
   }, [repliedComment]);
 
   return (
-    <>
+    <Box pos={"relative"}>
+      {commentId && (
+        <Flex sx={replyPopup}>
+          <Flex gap={"0.5rem"} alignItems={"center"}>
+            <Avatar size={"sm"} src={replyAvatar} title={repliedUsername} />
+            <Text>Replying to {repliedUsername}</Text>
+          </Flex>
+          <Text
+            as={RxCross2}
+            onClick={() => {
+              setCommentValue("");
+              dispatch(
+                updateReplyComment({
+                  commentId: "",
+                  repliedUsername: "",
+                  replyAvatar: "",
+                })
+              );
+            }}
+          />
+        </Flex>
+      )}
       <Divider display={{ base: "none", md: "flex" }} />
       <Flex {...iconPostStyles} display={{ base: "none", md: "flex" }}>
         <Flex
@@ -293,6 +317,6 @@ export const CommentFooter = ({ post, userLike }) => {
       {isOpen && (
         <UserListModal onClose={onClose} isOpen={isOpen} heading={"Liked By"} />
       )}
-    </>
+    </Box>
   );
 };

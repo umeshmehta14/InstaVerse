@@ -24,6 +24,7 @@ const initialState = {
   repliedComment: {
     commentId: "",
     repliedUsername: "",
+    replyAvatar: "",
   },
 };
 

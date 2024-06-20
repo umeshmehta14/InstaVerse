@@ -36,6 +36,7 @@ export const mobileCommentHeading = {
 };
 
 export const mobileFooterStyle = {
+  pos: "relative",
   p: "0",
   justifyContent: "flex-start",
   display: { base: "flex", md: "none" },
@@ -105,4 +106,16 @@ export const commentLoaderStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+};
+
+export const replyPopup = {
+  pos: "absolute",
+  bgColor: "#cccccc",
+  w: "100%",
+  top: "-3.6rem",
+  padding: "0.9rem 0.5rem",
+  fontWeight: "700",
+  justifyContent: "space-between",
+  alignItems: "center",
+  color: "#414141",
 };

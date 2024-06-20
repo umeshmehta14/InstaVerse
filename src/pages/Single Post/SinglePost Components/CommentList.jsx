@@ -290,6 +290,7 @@ export const CommentList = ({ comments, ownerId }) => {
                               updateReplyComment({
                                 commentId: _id,
                                 repliedUsername: username,
+                                replyAvatar: commentAvatar?.url,
                               })
                             );
                           }}

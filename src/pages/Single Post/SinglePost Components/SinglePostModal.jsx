@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  Avatar,
   Box,
   Button,
   Flex,
@@ -33,12 +34,17 @@ import {
   mobileCommentHeading,
   mobileFooterStyle,
   modalContentStyle,
+  replyPopup,
   singlePostModalClose,
 } from "../../../styles/SinglePostStyle";
-import { AiOutlineArrowLeft } from "../../../utils/Icons";
+import { AiOutlineArrowLeft, RxCross2 } from "../../../utils/Icons";
 import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
-import { addCommentToPost, updateReplyComment } from "../commentSlice";
+import {
+  addCommentToPost,
+  addReplyToComment,
+  updateReplyComment,
+} from "../commentSlice";
 import { getSearchedUsers, updateSearchValue } from "../../Post Feed/userSlice";
 import {
   debounce,
@@ -61,7 +67,11 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const inputRef = useRef(null);
 
   const { currentUser } = useSelector((state) => state.authentication);
-  const { commentLoader } = useSelector((state) => state.comment);
+  const { commentLoader, repliedComment } = useSelector(
+    (state) => state.comment
+  );
+
+  const { commentId, repliedUsername, replyAvatar } = repliedComment;
 
   const { _id, owner, url, likes } = post;
   const { username } = owner;
@@ -82,11 +92,32 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
 
   const handleCommentPost = () => {
     if (!commentLoader) {
+      if (commentId) {
+        dispatch(addReplyToComment({ commentId, text: commentValue })).then(
+          () => {
+            setCommentValue("");
+            dispatch(
+              updateReplyComment({
+                commentId: "",
+                repliedUsername: "",
+                replyAvatar: "",
+              })
+            );
+          }
+        );
+        return;
+      }
       dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
         setCommentValue("")
       );
     }
   };
+
+  useEffect(() => {
+    if (commentId) {
+      setCommentValue(`@${repliedUsername} `);
+    }
+  }, [repliedComment]);
 
   return (
     <Modal
@@ -151,6 +182,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
                       updateReplyComment({
                         commentId: "",
                         repliedUsername: "",
+                        replyAvatar: "",
                       })
                     );
                   }}
@@ -170,6 +202,27 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
           bg={colorMode === "dark" ? "black.900" : "white.500"}
           {...mobileFooterStyle}
         >
+          {commentId && (
+            <Flex sx={replyPopup}>
+              <Flex gap={"0.5rem"} alignItems={"center"}>
+                <Avatar size={"sm"} src={replyAvatar} title={repliedUsername} />
+                <Text>Replying to {repliedUsername}</Text>
+              </Flex>
+              <Text
+                as={RxCross2}
+                onClick={() => {
+                  setCommentValue("");
+                  dispatch(
+                    updateReplyComment({
+                      commentId: "",
+                      repliedUsername: "",
+                      replyAvatar: "",
+                    })
+                  );
+                }}
+              />
+            </Flex>
+          )}
           {showTagBox && (
             <UserMentionList
               matchIndex={matchIndex}

@@ -46,7 +46,6 @@ export const emojiPickerButtonNew = {
 
 export const emojiPickerSinglePost = {
   fontSize: "2rem",
-  color: "white",
 };
 
 export const commentInput = {
