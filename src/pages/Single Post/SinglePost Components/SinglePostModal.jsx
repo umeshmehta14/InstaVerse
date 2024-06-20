@@ -38,7 +38,7 @@ import {
 import { AiOutlineArrowLeft } from "../../../utils/Icons";
 import { DisplayComments } from "./DisplayComments";
 import { CommentFooter } from "./CommentFooter";
-import { addCommentToPost } from "../commentSlice";
+import { addCommentToPost, updateReplyComment } from "../commentSlice";
 import { getSearchedUsers, updateSearchValue } from "../../Post Feed/userSlice";
 import {
   debounce,
@@ -106,6 +106,12 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
           onClick={() => {
             navigate(redirectLocation || "/");
             dispatch(updateSearchValue(""));
+            dispatch(
+              updateReplyComment({
+                commentId: "",
+                repliedUsername: "",
+              })
+            );
           }}
         />
         <ModalBody p={0} height={"100%"}>
@@ -141,6 +147,12 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
                         : redirectLocation || `/profile/${username}`
                     );
                     dispatch(updateSearchValue(""));
+                    dispatch(
+                      updateReplyComment({
+                        commentId: "",
+                        repliedUsername: "",
+                      })
+                    );
                   }}
                 />
                 <Text>Comments</Text>

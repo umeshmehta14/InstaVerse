@@ -92,7 +92,7 @@ export const Notifications = ({ isOpen, onClose }) => {
             ) : (
               <VStack maxW={"100%"}>
                 {notifications?.map(
-                  ({ type, actionBy, createdAt, post, comment }) => {
+                  ({ type, actionBy, createdAt, post, comment, replyText }) => {
                     const { _id, username, avatar } = actionBy;
                     const isFollowing = currentUser?.following?.some(
                       (user) => user?._id === _id
@@ -380,7 +380,7 @@ export const Notifications = ({ isOpen, onClose }) => {
                                   wordBreak={"break-word"}
                                 >
                                   {renderCaptionWithMentionsAndHashtags(
-                                    text,
+                                    replyText || text,
                                     navigate
                                   )}
                                 </Text>

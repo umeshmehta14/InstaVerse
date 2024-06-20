@@ -50,7 +50,7 @@ import {
 import { handleLikes } from "../../Post Feed/postSlice";
 import { debounce, handleInputChange, handleShare } from "../../../utils/Utils";
 import {
-  addCommentReplyToPost,
+  addReplyToComment,
   addCommentToPost,
   updateReplyComment,
 } from "../commentSlice";
@@ -105,7 +105,7 @@ export const CommentFooter = ({ post, userLike }) => {
   const handleCommentPost = () => {
     if (!commentLoader) {
       if (commentId) {
-        dispatch(addCommentReplyToPost({ commentId, text: commentValue })).then(
+        dispatch(addReplyToComment({ commentId, text: commentValue })).then(
           () => {
             setCommentValue("");
             dispatch(

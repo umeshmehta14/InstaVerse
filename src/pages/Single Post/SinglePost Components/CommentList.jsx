@@ -35,6 +35,7 @@ import {
 
 import {
   deleteCommentToPost,
+  deleteReplyFromComment,
   editCommentToPost,
   handleCommentLike,
   handleReplyCommentLike,
@@ -69,6 +70,7 @@ export const CommentList = ({ comments, ownerId }) => {
     commentId: "",
     commentUsername: "",
     doEdit: false,
+    replyId: "",
   });
   const inputRef = useRef(null);
 
@@ -450,9 +452,8 @@ export const CommentList = ({ comments, ownerId }) => {
                                         setCommentEdit({
                                           ...commentEdit,
                                           commentId: _id,
-                                          commentUsername: username,
+                                          replyId,
                                         });
-                                        setCommentValue(text);
                                         commentDeleteDisclosure.onOpen();
                                       }}
                                       fontSize={"1rem"}
@@ -514,29 +515,37 @@ export const CommentList = ({ comments, ownerId }) => {
             bg={colorMode === "dark" ? "black.700" : "white.500"}
           >
             <ModalBody>
-              {currentUser?.username === commentUsername && (
-                <>
-                  <Button
-                    sx={simpleButton}
-                    onClick={() => {
-                      setCommentEdit({
-                        ...commentEdit,
-                        doEdit: true,
-                      });
-                      commentDeleteDisclosure.onClose();
-                    }}
-                  >
-                    Edit
-                  </Button>
+              {currentUser?.username === commentUsername &&
+                !commentEdit?.replyId && (
+                  <>
+                    <Button
+                      sx={simpleButton}
+                      onClick={() => {
+                        setCommentEdit({
+                          ...commentEdit,
+                          doEdit: true,
+                        });
+                        commentDeleteDisclosure.onClose();
+                      }}
+                    >
+                      Edit
+                    </Button>
 
-                  <Divider />
-                </>
-              )}
+                    <Divider />
+                  </>
+                )}
               <Button
                 sx={simpleButton}
                 color={"red.500"}
                 onClick={() => {
-                  dispatch(deleteCommentToPost({ _id: commentId }));
+                  commentEdit?.replyId
+                    ? dispatch(
+                        deleteReplyFromComment({
+                          commentId,
+                          replyId: commentEdit?.replyId,
+                        })
+                      )
+                    : dispatch(deleteCommentToPost({ _id: commentId }));
                   commentDeleteDisclosure.onClose();
                 }}
               >

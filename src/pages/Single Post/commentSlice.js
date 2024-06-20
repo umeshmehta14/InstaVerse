@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addComment,
-  addReplyToComment,
+  addReply,
   deleteComment,
+  deleteReply,
   editComment,
   likeComment,
   likeReplyComment,
@@ -89,14 +90,28 @@ export const handleCommentLike = createAsyncThunk(
   }
 );
 
-export const addCommentReplyToPost = createAsyncThunk(
+export const addReplyToComment = createAsyncThunk(
   "comment/add/reply",
   async ({ commentId, text }, { getState, dispatch }) => {
     const { token } = getState().authentication;
     const {
       data: { statusCode, data },
-    } = await addReplyToComment(commentId, text, token);
+    } = await addReply(commentId, text, token);
     if (statusCode === 201) {
+      dispatch(updatePostComment({ data, _id: commentId }));
+      return data;
+    }
+  }
+);
+
+export const deleteReplyFromComment = createAsyncThunk(
+  "comment/delete/reply",
+  async ({ commentId, replyId }, { getState, dispatch }) => {
+    const { token } = getState().authentication;
+    const {
+      data: { statusCode, data },
+    } = await deleteReply(commentId, replyId, token);
+    if (statusCode === 200) {
       dispatch(updatePostComment({ data, _id: commentId }));
       return data;
     }
@@ -167,15 +182,15 @@ const commentSlice = createSlice({
       console.error(action.error);
     });
 
-    builder.addCase(addCommentReplyToPost.pending, (state, action) => {
+    builder.addCase(addReplyToComment.pending, (state, action) => {
       state.commentLoader = true;
     });
 
-    builder.addCase(addCommentReplyToPost.fulfilled, (state, action) => {
+    builder.addCase(addReplyToComment.fulfilled, (state, action) => {
       state.commentLoader = false;
     });
 
-    builder.addCase(addCommentReplyToPost.rejected, (state, action) => {
+    builder.addCase(addReplyToComment.rejected, (state, action) => {
       state.commentLoader = false;
     });
   },
