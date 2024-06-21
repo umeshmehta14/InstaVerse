@@ -5,8 +5,15 @@ import {
   renderCaptionWithMentionsAndHashtags,
 } from "../../../utils/Utils";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Box, Flex, Text, VStack } from "@chakra-ui/react";
-import { COMMENT_LIKE, REPLY_LIKE } from "../../../utils/Constants";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Text,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
+import { COMMENT_LIKE } from "../../../utils/Constants";
 import { likeHeartStyle, userNameStyle } from "../../../styles/GlobalStyles";
 import {
   commentHeartStyle,
@@ -21,13 +28,14 @@ import {
   BsThreeDots,
 } from "../../../utils/Icons";
 import {
+  getCommentLikedUsers,
   handleCommentLike,
-  handleReplyCommentLike,
   updateReplyComment,
 } from "../commentSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { EditComment } from "./EditComment";
 import { ReplyList } from "./ReplyList";
+import { UserListModal } from "../../../components";
 
 export const CommentItem = ({
   comment,
@@ -39,6 +47,7 @@ export const CommentItem = ({
   const lastTapRef = useRef(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [doubleTap, setDoubleTap] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -113,7 +122,13 @@ export const CommentItem = ({
                   {getRelativeTime(createdAt)}
                 </Text>
                 {likes?.length !== 0 && (
-                  <Text cursor={"pointer"}>
+                  <Text
+                    cursor={"pointer"}
+                    onClick={() => {
+                      dispatch(getCommentLikedUsers({ _id }));
+                      onOpen();
+                    }}
+                  >
                     {likes?.length}
                     {likes?.length > 1 ? " likes" : " like"}
                   </Text>
@@ -188,6 +203,9 @@ export const CommentItem = ({
               />
             ))}
         </Flex>
+      )}
+      {isOpen && (
+        <UserListModal onClose={onClose} isOpen={isOpen} heading={"Likes"} />
       )}
     </Flex>
   );

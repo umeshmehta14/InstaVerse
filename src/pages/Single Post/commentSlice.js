@@ -2,12 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addComment,
   addReply,
+  commentLikeUsers,
   deleteComment,
   deleteReply,
   editComment,
   likeComment,
   likeReplyComment,
   removelikeFromComment,
+  replyLikeUsers,
   unlikeReplyComment,
 } from "../../service/commentService";
 import {
@@ -18,6 +20,10 @@ import {
   updatePostComment,
   updateReplyCommentLike,
 } from "../Post Feed/postSlice";
+import {
+  getUserListComment,
+  updateLoadingForComment,
+} from "../Post Feed/userSlice";
 
 const initialState = {
   commentLoader: false,
@@ -134,6 +140,54 @@ export const handleReplyCommentLike = createAsyncThunk(
     if (statusCode === 200) {
       dispatch(updatePostComment({ data, _id: commentId }));
       return data;
+    }
+  }
+);
+
+export const getCommentLikedUsers = createAsyncThunk(
+  "comment/like/users",
+  async ({ _id }, { dispatch, getState }) => {
+    try {
+      dispatch(getUserListComment([]));
+      dispatch(updateLoadingForComment(true));
+
+      const { token } = getState().authentication;
+      const {
+        data: { statusCode, data },
+      } = await commentLikeUsers(_id, token);
+
+      if (statusCode === 200) {
+        dispatch(updateLoadingForComment(false));
+        dispatch(getUserListComment(data));
+        return data;
+      }
+    } catch (error) {
+      dispatch(updateLoadingForComment(false));
+      console.error(error);
+    }
+  }
+);
+
+export const getReplyLikedUsers = createAsyncThunk(
+  "comment/like/reply/users",
+  async ({ _id, replyId }, { dispatch, getState }) => {
+    try {
+      dispatch(getUserListComment([]));
+      dispatch(updateLoadingForComment(true));
+
+      const { token } = getState().authentication;
+      const {
+        data: { statusCode, data },
+      } = await replyLikeUsers(_id, replyId, token);
+
+      if (statusCode === 200) {
+        dispatch(updateLoadingForComment(false));
+        dispatch(getUserListComment(data));
+        return data;
+      }
+    } catch (error) {
+      dispatch(updateLoadingForComment(false));
+      console.error(error);
     }
   }
 );

@@ -91,3 +91,20 @@ export const unlikeReplyComment = async (commentId, replyId, token) =>
       },
     }
   );
+
+export const commentLikeUsers = async (commentId, token) =>
+  axios.get(`${API_URL}/post/comment/${commentId}/liked-user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const replyLikeUsers = async (commentId, replyId, token) =>
+  axios.get(
+    `${API_URL}/post/comment/${commentId}/liked-user/${replyId}/reply-like`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );

@@ -428,6 +428,14 @@ const userSlice = createSlice({
     updateTab: (state, action) => {
       state.tab = action.payload;
     },
+
+    getUserListComment: (state, action) => {
+      state.userList = action.payload;
+    },
+
+    updateLoadingForComment: (state, action) => {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getGuestUsers.pending, (state) => {
@@ -630,6 +638,8 @@ export const {
   updateRemoveBookmark,
   updateTab,
   updateUser,
+  getUserListComment,
+  updateLoadingForComment,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

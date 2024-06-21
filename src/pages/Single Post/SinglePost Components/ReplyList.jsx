@@ -13,9 +13,21 @@ import { likeHeartStyle, userNameStyle } from "../../../styles/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { AiFillHeart, AiOutlineHeart, BsThreeDots } from "../../../utils/Icons";
 import { IconHoverStyle } from "../../../styles/PostBoxStyles";
-import { handleReplyCommentLike } from "../commentSlice";
+import {
+  getReplyLikedUsers,
+  handleReplyCommentLike,
+  updateReplyComment,
+} from "../commentSlice";
 import { useRef, useState } from "react";
-import { Avatar, Box, Flex, Text, VStack } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Text,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
+import { UserListModal } from "../../../components";
 
 export const ReplyList = ({
   reply,
@@ -26,6 +38,7 @@ export const ReplyList = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const lastTapRef = useRef(null);
 
@@ -89,12 +102,31 @@ export const ReplyList = ({
           >
             <Text>{getRelativeTime(createdAt)}</Text>
             {replyLikes?.length !== 0 && (
-              <Text cursor={"pointer"}>
+              <Text
+                cursor={"pointer"}
+                onClick={() => {
+                  dispatch(getReplyLikedUsers({ _id, replyId }));
+                  onOpen();
+                }}
+              >
                 {replyLikes?.length}
                 {replyLikes?.length > 1 ? " likes" : " like"}
               </Text>
             )}
-            <Text cursor={"pointer"}>Reply</Text>
+            <Text
+              cursor={"pointer"}
+              onClick={() => {
+                dispatch(
+                  updateReplyComment({
+                    commentId: _id,
+                    repliedUsername: replyUsername,
+                    replyAvatar: replyAvatar?.url,
+                  })
+                );
+              }}
+            >
+              Reply
+            </Text>
             {(currentUser._id === replyOwnerId ||
               currentUser?.username === replyUsername) &&
               commentEdit !== _id && (
@@ -139,6 +171,9 @@ export const ReplyList = ({
           className={isLiked ? "like-animation" : ""}
         />
       </Flex>
+      {isOpen && (
+        <UserListModal onClose={onClose} isOpen={isOpen} heading={"Likes"} />
+      )}
     </Flex>
   );
 };
