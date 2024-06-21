@@ -85,7 +85,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   ]);
 
   const handleKeyPress = (event) => {
-    if (event.key === "Enter" && commentValue !== "") {
+    if (event.key === "Enter" && commentValue.trim() !== "") {
       handleCommentPost();
     }
   };
@@ -269,12 +269,14 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
               fontSize={"1rem"}
               variant={"link-button"}
               size="sm"
-              onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
-              color={commentValue === "" ? "gray" : null}
-              disabled={commentLoader || commentValue === ""}
+              onClick={() =>
+                commentValue.trim() !== "" ? handleCommentPost() : ""
+              }
+              color={commentValue.trim() === "" ? "gray" : null}
+              disabled={commentLoader || commentValue.trim() === ""}
               _disabled={{ color: "gray.400", cursor: "default" }}
               _hover={
-                commentLoader || commentValue === ""
+                commentLoader || commentValue.trim() === ""
                   ? { color: "gray", cursor: "default" }
                   : {}
               }
