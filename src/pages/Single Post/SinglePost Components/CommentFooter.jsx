@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useEffect } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -46,8 +46,6 @@ import {
   getPostLikeUsers,
   getSearchedUsers,
   removeUserBookmark,
-  updateSearchedUsers,
-  updateSearchValue,
 } from "../../Post Feed/userSlice";
 import { handleLikes } from "../../Post Feed/postSlice";
 import { debounce, handleInputChange, handleShare } from "../../../utils/Utils";
@@ -130,6 +128,7 @@ export const CommentFooter = ({ post, userLike }) => {
   useEffect(() => {
     if (commentId) {
       setCommentValue(`@${repliedUsername} `);
+      inputRef.current?.focus();
     }
   }, [repliedComment]);
 
@@ -157,7 +156,11 @@ export const CommentFooter = ({ post, userLike }) => {
         </Flex>
       )}
       <Divider display={{ base: "none", md: "flex" }} />
-      <Flex {...iconPostStyles} display={{ base: "none", md: "flex" }}>
+      <Flex
+        {...iconPostStyles}
+        pb={"6px !important"}
+        display={{ base: "none", md: "flex" }}
+      >
         <Flex
           fontSize={"1.7rem"}
           color={colorMode === "light" ? "black" : "white"}

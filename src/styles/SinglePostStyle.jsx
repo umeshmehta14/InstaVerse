@@ -112,10 +112,35 @@ export const replyPopup = {
   pos: "absolute",
   bgColor: "#cccccc",
   w: "100%",
-  top: "-3.6rem",
-  padding: "0.9rem 0.5rem",
+  top: "-3.4rem",
+  padding: "0.6rem 0.5rem",
   fontWeight: "700",
   justifyContent: "space-between",
   alignItems: "center",
   color: "#414141",
+};
+
+export const editInputStyle = {
+  border: "none",
+  borderBottom: "1px solid",
+  h: "30px",
+  px: "1",
+  borderRadius: 0,
+  _focusVisible: { outline: "none" },
+  _hover: { borderColor: "white" },
+};
+
+export const commentHeartStyle = {
+  fontSize: "12px",
+  w: "10%",
+  mt: "2",
+  justifySelf: "flex-end",
+};
+
+export const showReplyStyle = {
+  fontSize: "sm",
+  color: "#717171e0",
+  gap: "0.6rem",
+  alignItems: "center",
+  cursor: "pointer",
 };

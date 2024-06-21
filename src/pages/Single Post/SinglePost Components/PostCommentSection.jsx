@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
 import { CommentList } from "./CommentList";
 
-export const DisplayComments = ({ post, location }) => {
+export const PostCommentSection = ({ post, location }) => {
   const {
     _id: postId,
     owner,

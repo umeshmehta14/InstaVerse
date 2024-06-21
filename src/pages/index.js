@@ -9,10 +9,13 @@ export { SinglePost } from "./Single Post/SinglePost.jsx";
 export { Error } from "./Error/Error.jsx";
 
 export { CommentFooter } from "./Single Post/SinglePost Components/CommentFooter.jsx";
-export { DisplayComments } from "./Single Post/SinglePost Components/DisplayComments.jsx";
+export { PostCommentSection } from "./Single Post/SinglePost Components/PostCommentSection.jsx";
 export { MobileSinglePost } from "./Single Post/SinglePost Components/MobileSinglePost.jsx";
 export { SinglePostModal } from "./Single Post/SinglePost Components/SinglePostModal.jsx";
 export { CommentList } from "./Single Post/SinglePost Components/CommentList.jsx";
+export { EditComment } from "./Single Post/SinglePost Components/EditComment.jsx";
+export { CommentItem } from "./Single Post/SinglePost Components/CommentItem.jsx";
+export { ReplyList } from "./Single Post/SinglePost Components/ReplyList.jsx";
 
 export { AvatarModal } from "./Profile/Profile Components/AvatarModal.jsx";
 export { EditProfileModal } from "./Profile/Profile Components/EditProfileModal.jsx";

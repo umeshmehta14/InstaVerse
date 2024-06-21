@@ -38,7 +38,7 @@ import {
   singlePostModalClose,
 } from "../../../styles/SinglePostStyle";
 import { AiOutlineArrowLeft, RxCross2 } from "../../../utils/Icons";
-import { DisplayComments } from "./DisplayComments";
+import { PostCommentSection } from "./PostCommentSection";
 import { CommentFooter } from "./CommentFooter";
 import {
   addCommentToPost,
@@ -116,6 +116,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   useEffect(() => {
     if (commentId) {
       setCommentValue(`@${repliedUsername} `);
+      inputRef.current?.focus();
     }
   }, [repliedComment]);
 
@@ -191,7 +192,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
               </HStack>
 
               {username && (
-                <DisplayComments post={post} location={redirectLocation} />
+                <PostCommentSection post={post} location={redirectLocation} />
               )}
 
               {username && <CommentFooter post={post} userLike={userLike} />}
