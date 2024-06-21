@@ -102,8 +102,8 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
     dispatch(action).then(() => {
       dispatch(updateUploadPost({ caption: "", url: "" }));
       setPostValue("");
+      onClose();
     });
-    onClose();
   };
 
   useEffect(() => {

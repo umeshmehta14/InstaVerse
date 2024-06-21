@@ -25,3 +25,4 @@ export { SinglePostSkeleton } from "./Skeletons/SinglePostSkeleton.jsx";
 export { NavItem } from "./Navbar/Navbar Components/NavItem.jsx";
 export { SearchBox } from "./Navbar/Navbar Components/SearchBox.jsx";
 export { Notifications } from "./Navbar/Navbar Components/Notifications.jsx";
+export { NotificationItem } from "./Navbar/Navbar Components/NotificationItem.jsx";
