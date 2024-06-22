@@ -10,7 +10,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
-import { hideScrollbar } from "../../styles/GlobalStyles";
+import {
+  hideScrollbar,
+  userMentionListMain,
+  userMentionUsers,
+} from "../../styles/GlobalStyles";
 import { useSelector } from "react-redux";
 import { handleUserClick } from "../../utils/Utils";
 
@@ -26,16 +30,11 @@ export const UserMentionList = ({
   const { colorMode } = useColorMode();
   return (
     <Box
-      pos={"absolute"}
       backgroundColor={colorMode === "dark" ? "black.900" : "white.900"}
-      maxH={"300px"}
-      overflow={"scroll"}
-      w={"70%"}
-      p={"0.5rem"}
       sx={hideScrollbar}
-      zIndex={9999}
-      bottom={!bottom && "3.5rem"}
       top={bottom && "3.5rem"}
+      bottom={!bottom && "3.5rem"}
+      {...userMentionListMain}
     >
       {isLoading
         ? new Array(5).fill(null)?.map((_, index) => (
@@ -55,11 +54,7 @@ export const UserMentionList = ({
             return (
               <React.Fragment key={_id}>
                 <Flex
-                  gap={"2"}
-                  my={"2"}
-                  cursor={"pointer"}
-                  w={"100%"}
-                  _hover={{ bg: "#1f1f1f6a" }}
+                  {...userMentionUsers}
                   title={username}
                   onClick={() =>
                     handleUserClick(

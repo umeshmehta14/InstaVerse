@@ -109,3 +109,20 @@ export const likeHeartStyle = {
   cursor: "pointer",
   color: "red",
 };
+
+export const userMentionListMain = {
+  pos: "absolute",
+  maxH: "300px",
+  overflow: "scroll",
+  w: "70%",
+  p: "0.5rem",
+  zIndex: 9999,
+};
+
+export const userMentionUsers = {
+  gap: "2",
+  my: "2",
+  cursor: "pointer",
+  w: "100%",
+  _hover: { bg: "#1f1f1f6a" },
+};
