@@ -11,6 +11,10 @@ import {
 import React, { useCallback, useEffect } from "react";
 import {
   authBox,
+  authSmallText,
+  loginBottomBox,
+  loginConfirmCodebtn,
+  loginLogosStyle,
   mainAuthContainer,
 } from "../../../styles/AuthenticationStyles";
 import { VscLock } from "../../../utils/Icons";
@@ -81,24 +85,11 @@ export const LoginConfirmation = () => {
         bg={colorMode === "light" ? "white.500" : "black.900"}
         pb={0}
       >
-        <Box
-          as={VscLock}
-          color={"gray"}
-          m={"auto"}
-          my={"4"}
-          fontSize={"8rem"}
-          textAlign={"center"}
-        />
+        <Box as={VscLock} {...loginLogosStyle} />
         <Text textAlign={"center"} my={"5"} fontWeight={"700"}>
           Trouble logging in?
         </Text>
-        <Text
-          textAlign={"center"}
-          mb={"5"}
-          color={"gray"}
-          fontSize={"0.9rem"}
-          fontWeight={"400"}
-        >
+        <Text {...authSmallText}>
           Enter your email or username and we'll send you a code to get back
           into your account.
         </Text>
@@ -130,21 +121,18 @@ export const LoginConfirmation = () => {
           <Input
             type="text"
             maxLength={"4"}
+            my={"4"}
+            placeholder="Confirmation Code"
             value={confirmationCode}
             onChange={(e) => dispatch(updateConfirmationCode(e.target.value))}
-            placeholder="Confirmation Code"
-            my={"4"}
             onKeyDown={handleKeyPress}
           />
         )}
         <Button
+          {...loginConfirmCodebtn}
           bg={buttonDisable ? "gray" : "blue.500"}
           cursor={buttonDisable ? "default" : "pointer"}
           type="submit"
-          w={"100%"}
-          color={"white"}
-          borderRadius={"12px"}
-          mb={"4rem"}
           disabled={buttonDisable}
           onClick={() => (otpDetails.otpSent ? handleVerifyOtp() : handleOtp())}
         >
@@ -159,13 +147,7 @@ export const LoginConfirmation = () => {
       </Box>
       <Text
         {...authBox}
-        color={"blue.500"}
-        fontWeight={"bold"}
-        textAlign={"center"}
-        cursor={"pointer"}
-        _hover={{ color: "gray" }}
-        padding={"1rem"}
-        borderRadius={0}
+        {...loginBottomBox}
         onClick={() => {
           dispatch(updateConfirmationCode(""));
           dispatch(

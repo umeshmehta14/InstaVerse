@@ -12,7 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RotatingLoader } from "../../../components";
 import {
   authBox,
+  authSmallText,
   mainAuthContainer,
+  resetPasswordBtn,
 } from "../../../styles/AuthenticationStyles";
 import {
   resetUserPassword,
@@ -78,12 +80,7 @@ export const ResetPassword = () => {
         <Text textAlign="center" my="5" fontWeight="bold">
           Create a strong password
         </Text>
-        <Text
-          color="gray"
-          fontSize="0.9rem"
-          fontWeight="400"
-          textAlign="center"
-        >
+        <Text {...authSmallText}>
           Your password must be at least eight characters and should include a
           combination of numbers, letters, and special characters (!$@％).
         </Text>
@@ -125,10 +122,7 @@ export const ResetPassword = () => {
           bg={buttonDisable ? "gray" : "blue.500"}
           cursor={buttonDisable ? "default" : "pointer"}
           type="submit"
-          width="100%"
-          color="white"
-          borderRadius="12px"
-          mt="2rem"
+          {...resetPasswordBtn}
           disabled={buttonDisable}
           onClick={handlePasswordReset}
         >
