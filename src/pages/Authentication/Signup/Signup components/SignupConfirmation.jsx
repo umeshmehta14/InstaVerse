@@ -1,5 +1,5 @@
 import { Box, useColorMode, Text, Input, Button } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import { TbMailHeart } from "../../../../utils/Icons";
 import { authBox } from "../../../../styles/AuthenticationStyles";
@@ -29,6 +29,15 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
       dispatch(verifyUserOtp({ email, otp: confirmationCode }));
     }
   };
+
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        handleVerifyOtp();
+      }
+    },
+    [handleVerifyOtp]
+  );
 
   useEffect(() => {
     if (confirmationCode.length === 4) {
@@ -97,6 +106,7 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
         onChange={(e) => dispatch(updateConfirmationCode(e.target.value))}
         placeholder="Confirmation Code"
         my={"4"}
+        onKeyDown={handleKeyPress}
       />
       <Button
         bg={buttonDisable ? "gray" : "blue.500"}
