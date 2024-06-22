@@ -52,6 +52,7 @@ import {
   handleInputChange,
 } from "../../../utils/Utils";
 import { LIKE } from "../../../utils/Constants";
+import toast from "react-hot-toast";
 
 export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const navigate = useNavigate();
@@ -91,6 +92,11 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   };
 
   const handleCommentPost = () => {
+    if (currentUser?.guest) {
+      toast.error("Guest users cannot post comment");
+      setCommentValue("");
+      return;
+    }
     if (!commentLoader) {
       if (commentId) {
         dispatch(addReplyToComment({ commentId, text: commentValue })).then(

@@ -73,6 +73,14 @@ export const signupHandler = createAsyncThunk(
         data: { statusCode, data },
       } = await createUser(fullName, username, password, email);
       if (statusCode === 201) {
+        dispatch(
+          updateSignupForm({
+            fullName: "",
+            email: "",
+            username: "",
+            password: "",
+          })
+        );
         return data;
       }
     } catch (error) {

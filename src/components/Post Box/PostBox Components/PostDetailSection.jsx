@@ -51,6 +51,7 @@ import { RotatingLoader } from "../../Loader/RotatingLoader";
 import { addCommentToPost } from "../../../pages/Single Post/commentSlice";
 import { UserMentionList } from "../../UserMention List/UserMentionList";
 import { EmojiPopover } from "../../EmojiPopover/EmojiPopover";
+import toast from "react-hot-toast";
 
 const PostDetailSection = ({
   onOpen,
@@ -100,6 +101,11 @@ const PostDetailSection = ({
   };
 
   const handleCommentPost = () => {
+    if (currentUser?.guest) {
+      toast.error("Guest users cannot post comment");
+      setCommentValue("");
+      return;
+    }
     if (!commentLoader) {
       dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
         setCommentValue("")

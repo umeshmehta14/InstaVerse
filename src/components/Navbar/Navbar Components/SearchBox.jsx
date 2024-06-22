@@ -18,7 +18,7 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -38,6 +38,7 @@ export const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   const clearRecentDisclosure = useDisclosure();
+  const searchRef = useRef(null);
   const { currentUser } = useSelector((state) => state.authentication);
   const {
     searchedUsers,
@@ -53,6 +54,12 @@ export const SearchBox = ({ isOpen, onClose }) => {
       dispatch(updateSearchedUsers());
     }
   }, [searchValue]);
+
+  useEffect(() => {
+    if (isOpen) {
+      searchRef.current?.focus();
+    }
+  }, [isOpen]);
 
   const debouncedFetchData = useCallback(debounce(dispatch), [
     getSearchedUsers,
@@ -84,6 +91,7 @@ export const SearchBox = ({ isOpen, onClose }) => {
                   dispatch(updateSearchValue(e.target.value));
                   debouncedFetchData();
                 }}
+                ref={searchRef}
                 value={searchValue}
               />
               {searchValue && (

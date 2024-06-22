@@ -36,6 +36,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { EditComment } from "./EditComment";
 import { ReplyList } from "./ReplyList";
 import { UserListModal } from "../../../components";
+import toast from "react-hot-toast";
 
 export const CommentItem = ({
   comment,
@@ -136,6 +137,10 @@ export const CommentItem = ({
                 <Text
                   cursor={"pointer"}
                   onClick={() => {
+                    if (currentUser?.guest) {
+                      toast.error("Guest users cannot reply on comments");
+                      return;
+                    }
                     dispatch(
                       updateReplyComment({
                         commentId: _id,

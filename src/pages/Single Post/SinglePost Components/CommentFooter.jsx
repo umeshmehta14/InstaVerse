@@ -54,6 +54,7 @@ import {
   addCommentToPost,
   updateReplyComment,
 } from "../commentSlice";
+import toast from "react-hot-toast";
 
 export const CommentFooter = ({ post, userLike }) => {
   const { colorMode } = useColorMode();
@@ -103,6 +104,11 @@ export const CommentFooter = ({ post, userLike }) => {
   };
 
   const handleCommentPost = () => {
+    if (currentUser?.guest) {
+      toast.error("Guest users cannot post comment");
+      setCommentValue("");
+      return;
+    }
     if (!commentLoader) {
       if (commentId) {
         dispatch(addReplyToComment({ commentId, text: commentValue })).then(

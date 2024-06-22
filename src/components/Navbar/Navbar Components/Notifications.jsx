@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Drawer,
@@ -11,25 +11,13 @@ import {
   Divider,
   Text,
   VStack,
-  Flex,
-  Avatar,
   useDisclosure,
-  Button,
-  Image,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AiOutlineArrowLeft } from "../../../utils/Icons";
 import { NotificationItem, SearchSkeleton } from "../../index";
-import { handleFollowUnfollowUser } from "../../../pages/Post Feed/userSlice";
 import { UnfollowModal } from "../../Unfollow Modal/UnfollowModal";
-import {
-  getRelativeTime,
-  renderCaptionWithMentionsAndHashtags,
-} from "../../../utils/Utils";
-import { RotatingLoader } from "../../Loader/RotatingLoader";
-import { userNameStyle } from "../../../styles/GlobalStyles";
 import {
   getUserNotifications,
   readUserNotifications,
@@ -60,13 +48,11 @@ export const Notifications = ({ isOpen, onClose }) => {
     [notifications, onClose, setUnfollowUser, unfollowModalDisclosure]
   );
 
-  console.log({ notifications });
-
   useEffect(() => {
     if (notifications?.length > 0) {
       dispatch(readUserNotifications());
     }
-  }, [notifications]);
+  }, [notifications, onClose, isOpen]);
 
   return (
     <Box>

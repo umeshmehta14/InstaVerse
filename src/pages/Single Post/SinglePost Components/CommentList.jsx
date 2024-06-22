@@ -19,6 +19,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { CommentItem } from "./CommentItem";
+import toast from "react-hot-toast";
 
 export const CommentList = ({ comments, ownerId }) => {
   const { colorMode } = useColorMode();
@@ -38,6 +39,55 @@ export const CommentList = ({ comments, ownerId }) => {
   const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
+
+  const handleCommentDelete = () => {
+    if (currentUser?.guest) {
+      toast.error("Guest users cannot delete comment");
+      setCommentEdit({
+        ...commentEdit,
+        commentId: "",
+        commentUsername: "",
+        commentText: "",
+      });
+      commentDeleteDisclosure.onClose();
+      return;
+    }
+    commentEdit?.replyId
+      ? dispatch(
+          deleteReplyFromComment({
+            commentId,
+            replyId: commentEdit?.replyId,
+          })
+        )
+      : dispatch(deleteCommentToPost({ _id: commentId }));
+
+    setCommentEdit({
+      ...commentEdit,
+      commentId: "",
+      commentUsername: "",
+      commentText: "",
+    });
+    commentDeleteDisclosure.onClose();
+  };
+
+  const handleEditComment = () => {
+    if (currentUser?.guest) {
+      toast.error("Guest users cannot edit comment");
+      setCommentEdit({
+        ...commentEdit,
+        commentId: "",
+        commentUsername: "",
+        commentText: "",
+      });
+      commentDeleteDisclosure.onClose();
+      return;
+    }
+    setCommentEdit({
+      ...commentEdit,
+      doEdit: true,
+    });
+    commentDeleteDisclosure.onClose();
+  };
 
   return (
     <VStack
@@ -63,7 +113,15 @@ export const CommentList = ({ comments, ownerId }) => {
       )}
       {commentDeleteDisclosure.isOpen && (
         <Modal
-          onClose={commentDeleteDisclosure.onClose}
+          onClose={() => {
+            setCommentEdit({
+              ...commentEdit,
+              commentId: "",
+              commentUsername: "",
+              commentText: "",
+            });
+            commentDeleteDisclosure.onClose();
+          }}
           size={"xs"}
           isOpen={commentDeleteDisclosure.isOpen}
         >
@@ -76,16 +134,7 @@ export const CommentList = ({ comments, ownerId }) => {
               {currentUser?.username === commentUsername &&
                 !commentEdit?.replyId && (
                   <>
-                    <Button
-                      sx={simpleButton}
-                      onClick={() => {
-                        setCommentEdit({
-                          ...commentEdit,
-                          doEdit: true,
-                        });
-                        commentDeleteDisclosure.onClose();
-                      }}
-                    >
+                    <Button sx={simpleButton} onClick={handleEditComment}>
                       Edit
                     </Button>
 
@@ -95,24 +144,22 @@ export const CommentList = ({ comments, ownerId }) => {
               <Button
                 sx={simpleButton}
                 color={"red.500"}
-                onClick={() => {
-                  commentEdit?.replyId
-                    ? dispatch(
-                        deleteReplyFromComment({
-                          commentId,
-                          replyId: commentEdit?.replyId,
-                        })
-                      )
-                    : dispatch(deleteCommentToPost({ _id: commentId }));
-                  commentDeleteDisclosure.onClose();
-                }}
+                onClick={handleCommentDelete}
               >
                 Delete
               </Button>
               <Divider />
               <Button
                 sx={simpleButton}
-                onClick={commentDeleteDisclosure.onClose}
+                onClick={() => {
+                  setCommentEdit({
+                    ...commentEdit,
+                    commentId: "",
+                    commentUsername: "",
+                    commentText: "",
+                  });
+                  commentDeleteDisclosure.onClose();
+                }}
               >
                 Cancel
               </Button>

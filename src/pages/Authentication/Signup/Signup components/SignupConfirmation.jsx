@@ -48,14 +48,6 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
           password,
         })
       );
-      dispatch(
-        updateSignupForm({
-          fullName: "",
-          email: "",
-          username: "",
-          password: "",
-        })
-      );
     }
   }, [dispatch, updateSignupForm, signupHandler, otpDetails.verified]);
 

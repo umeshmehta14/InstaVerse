@@ -28,6 +28,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { UserListModal } from "../../../components";
+import toast from "react-hot-toast";
 
 export const ReplyList = ({
   reply,
@@ -116,6 +117,10 @@ export const ReplyList = ({
             <Text
               cursor={"pointer"}
               onClick={() => {
+                if (currentUser?.guest) {
+                  toast.error("Guest users cannot reply on comments");
+                  return;
+                }
                 dispatch(
                   updateReplyComment({
                     commentId: _id,
