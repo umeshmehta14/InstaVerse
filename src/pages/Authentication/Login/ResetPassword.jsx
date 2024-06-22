@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -43,6 +43,15 @@ export const ResetPassword = () => {
       );
     }
   };
+
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        handlePasswordReset();
+      }
+    },
+    [handlePasswordReset]
+  );
 
   useEffect(() => {
     dispatch(
@@ -109,6 +118,7 @@ export const ResetPassword = () => {
           }
           placeholder="New password, again"
           mb="4"
+          onKeyDown={handleKeyPress}
         />
 
         <Button

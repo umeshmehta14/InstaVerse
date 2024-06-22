@@ -117,7 +117,7 @@ export const Login = () => {
                 )
               }
               ref={identifierRef}
-              onKeyPress={(e) => handleKeyPress(e, passwordRef)}
+              onKeyDown={(e) => handleKeyPress(e, passwordRef)}
             />
           </FormControl>
           <FormControl
@@ -141,7 +141,7 @@ export const Login = () => {
                   )
                 }
                 ref={passwordRef}
-                onKeyPress={(e) => handleKeyPress(e, null)}
+                onKeyDown={(e) => handleKeyPress(e, null)}
               />
               {loginForm.password && (
                 <InputRightElement

@@ -49,6 +49,15 @@ export const LoginConfirmation = () => {
     }
   }, [buttonDisable, dispatch, identifier, confirmationCode]);
 
+  const handleKeyPress = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        otpDetails.otpSent ? handleVerifyOtp() : handleOtp();
+      }
+    },
+    [handleVerifyOtp, handleOtp]
+  );
+
   useEffect(() => {
     if (otpDetails.otpSent) {
       dispatch(
@@ -113,6 +122,7 @@ export const LoginConfirmation = () => {
               dispatch(updateConfirmationCode(""));
             }}
             disabled={otpDetails.otpSent && identifier}
+            onKeyDown={handleKeyPress}
           />
         </FormControl>
 
@@ -124,6 +134,7 @@ export const LoginConfirmation = () => {
             onChange={(e) => dispatch(updateConfirmationCode(e.target.value))}
             placeholder="Confirmation Code"
             my={"4"}
+            onKeyDown={handleKeyPress}
           />
         )}
         <Button
