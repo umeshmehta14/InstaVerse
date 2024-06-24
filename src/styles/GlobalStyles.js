@@ -164,3 +164,19 @@ export const commentBtnMain = {
   size: "sm",
   _disabled: { color: "gray.400", cursor: "default" },
 };
+
+export const postUploadingLoaderStyle = {
+  visible: true,
+  height: "80",
+  width: "80",
+  ariaLabel: "vortex-loading",
+  wrapperClass: "vortex-wrapper",
+  colors: ["red", "green", "blue", "yellow", "orange", "purple"],
+};
+
+export const postUploadInput = {
+  id: "photo-upload",
+  type: "file",
+  accept: "image/*",
+  style: { display: "none" },
+};

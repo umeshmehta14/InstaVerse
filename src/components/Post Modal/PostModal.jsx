@@ -16,10 +16,15 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+
 import { FcAddImage, RxCross2 } from "../../utils/Icons";
 import { imageCrossButton, postTextarea } from "../../styles/PostModalStyles";
-import { inputLengthReader } from "../../styles/GlobalStyles";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  inputLengthReader,
+  postUploadingLoaderStyle,
+  postUploadInput,
+} from "../../styles/GlobalStyles";
 import {
   handleEditPost,
   handleUploadPost,
@@ -145,21 +150,7 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
           <ModalBody>
             {isUploading ? (
               <Flex justifyContent="center" alignItems="center" minH="30vh">
-                <Vortex
-                  visible={true}
-                  height="80"
-                  width="80"
-                  ariaLabel="vortex-loading"
-                  wrapperClass="vortex-wrapper"
-                  colors={[
-                    "red",
-                    "green",
-                    "blue",
-                    "yellow",
-                    "orange",
-                    "purple",
-                  ]}
-                />
+                <Vortex {...postUploadingLoaderStyle} />
               </Flex>
             ) : (
               <>
@@ -208,10 +199,7 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
                   <Flex justify="flex-start" gap="1rem">
                     <label htmlFor="photo-upload">
                       <input
-                        id="photo-upload"
-                        type="file"
-                        accept="image/*"
-                        style={{ display: "none" }}
+                        {...postUploadInput}
                         onChange={handlePhotoChange}
                         disabled={isUploading}
                       />
