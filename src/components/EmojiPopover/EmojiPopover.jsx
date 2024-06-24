@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from "react";
 import {
   Box,
   Popover,
@@ -6,14 +7,14 @@ import {
   PopoverTrigger,
   useColorMode,
 } from "@chakra-ui/react";
-import React, { useState, useRef, useEffect } from "react";
-import { BsEmojiSunglasses } from "../../utils/Icons";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+
 import {
   emojiPickerButtonNew,
   emojiPickerSinglePost,
 } from "../../styles/GlobalStyles";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
+import { BsEmojiSunglasses } from "../../utils/Icons";
 
 export const EmojiPopover = ({
   commentValue,

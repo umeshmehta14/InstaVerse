@@ -83,3 +83,44 @@ export const navPopOverMain = {
   justify: "center",
   className: "nav-item",
 };
+
+export const searchBoxUsersStyle = {
+  overflowY: "scroll",
+  maxH: "80vh",
+  overflowX: "hidden",
+  scrollBehavior: "smooth",
+  w: "100%",
+};
+
+export const mutualUserStyle = {
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  w: "150px",
+};
+
+export const searchRecentStyle = {
+  my: "1",
+  w: "100%",
+  cursor: "pointer",
+  alignItems: "center",
+  justifyContent: "space-between",
+  _hover: { bg: "#1f1f1f6a" },
+};
+
+export const recentCrossStyle = {
+  fontSize: "1.5rem",
+  color: "gray",
+  title: "remove",
+  pos: "relative",
+  zIndex: "3",
+};
+
+export const notificationDotStyle = {
+  pos: "absolute",
+  color: "#ff3040",
+  left: { base: "12px", md: "22px", lg: "7px" },
+  fontSize: "3rem",
+  top: { base: "-1.1rem", lg: "-0.7rem" },
+  h: "fit-content",
+};

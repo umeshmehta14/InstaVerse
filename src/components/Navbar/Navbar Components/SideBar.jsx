@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Flex,
@@ -13,6 +13,7 @@ import {
   useDisclosure,
   useColorMode,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   MdHome,
@@ -27,7 +28,6 @@ import {
   FiLogOut,
   BsDot,
 } from "../../../utils/Icons";
-
 import {
   NavItem,
   PostModal,
@@ -43,8 +43,8 @@ import {
   navlinkStyle,
   sideBarLogoMain,
   navPopOverMain,
+  notificationDotStyle,
 } from "../../../styles/NavbarStyles";
-import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../../../pages/Authentication/authenticationSlice";
 import {
   getHomePosts,
@@ -57,14 +57,15 @@ import {
 
 const SideBar = ({ searchDrawerDisclosure }) => {
   const { toggleColorMode, colorMode } = useColorMode();
-  const navigate = useNavigate();
   const postModalDisclosure = useDisclosure();
   const switchUserDisclosure = useDisclosure();
   const notificationDisclosure = useDisclosure();
-  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { notifications } = useSelector((state) => state.post);
+  const dispatch = useDispatch();
 
   const newNotifications = notifications?.find(
     (notification) => !notification?.read
@@ -168,17 +169,7 @@ const SideBar = ({ searchDrawerDisclosure }) => {
             w={"100%"}
           >
             <NavItem icon={AiOutlineHeart} label="Notifications" />
-            {newNotifications && (
-              <Text
-                as={BsDot}
-                pos="absolute"
-                color="#ff3040"
-                left={{ base: "12px", md: "22px", lg: "7px" }}
-                fontSize="3rem"
-                top={{ base: "-1.1rem", lg: "-0.7rem" }}
-                h={"fit-content"}
-              />
-            )}
+            {newNotifications && <Text as={BsDot} {...notificationDotStyle} />}
           </HStack>
 
           <NavLink

@@ -47,7 +47,6 @@ export const InfoPopup = ({
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { bookmarks } = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
 
   const { _id, owner } = post || {};

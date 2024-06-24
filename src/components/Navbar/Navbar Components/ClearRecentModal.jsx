@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Divider,
@@ -9,13 +8,14 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-
 import { useDispatch } from "react-redux";
-import { simpleButton } from "../../../styles/GlobalStyles";
+
+import { clearModalSmText, simpleButton } from "../../../styles/GlobalStyles";
 import { clearUserSearchList } from "../../../pages/Post Feed/userSlice";
 
 export const ClearRecentModal = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
+
   const dispatch = useDispatch();
 
   return (
@@ -31,13 +31,7 @@ export const ClearRecentModal = ({ isOpen, onClose }) => {
           <Text mt="0.5rem" fontSize={"1.2rem"}>
             Clear search history?
           </Text>
-          <Text
-            color={"gray"}
-            fontSize={"0.8rem"}
-            textAlign={"center"}
-            mb={"0.5rem"}
-            px={"1rem"}
-          >
+          <Text {...clearModalSmText}>
             You won't be able to undo this. If you clear your search history,
             you may still see accounts that you've searched for as suggested
             results.

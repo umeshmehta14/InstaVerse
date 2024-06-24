@@ -1,8 +1,10 @@
 import { HStack, Text, useColorMode } from "@chakra-ui/react";
+
 import { navlinkStyle } from "../../../styles/NavbarStyles";
 
 export const NavItem = ({ icon: Icon, label }) => {
   const { colorMode } = useColorMode();
+
   return (
     <HStack
       {...navlinkStyle}

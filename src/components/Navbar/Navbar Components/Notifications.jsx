@@ -25,14 +25,14 @@ import {
 
 export const Notifications = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
+  const unfollowModalDisclosure = useDisclosure();
+
+  const [unfollowUser, setUnfollowUser] = useState({});
+
   const { notifications, notificationLoader } = useSelector(
     (state) => state.post
   );
-
-  const [unfollowUser, setUnfollowUser] = useState({});
   const dispatch = useDispatch();
-
-  const unfollowModalDisclosure = useDisclosure();
 
   const notificationItems = useMemo(
     () =>

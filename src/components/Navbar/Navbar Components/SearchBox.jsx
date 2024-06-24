@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useRef } from "react";
 import {
   Box,
   Input,
@@ -18,11 +19,9 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RxCrossCircled, BsDot, RxCross2 } from "../../../utils/Icons";
 import { debounce, getMutualFollowers } from "../../../utils/Utils";
 import {
   addUserToSearchList,
@@ -32,13 +31,23 @@ import {
   updateSearchValue,
 } from "../../../pages/Post Feed/userSlice";
 import { SearchSkeleton } from "../../index";
+import { RxCrossCircled, BsDot, RxCross2 } from "../../../utils/Icons";
 import { ClearRecentModal } from "./ClearRecentModal";
+import {
+  mutualUserStyle,
+  recentCrossStyle,
+  searchBoxUsersStyle,
+  searchRecentStyle,
+} from "../../../styles/NavbarStyles";
+import { userViewBoxStyle } from "../../../styles/GlobalStyles";
 
 export const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
-  const navigate = useNavigate();
   const clearRecentDisclosure = useDisclosure();
+
+  const navigate = useNavigate();
   const searchRef = useRef(null);
+
   const { currentUser } = useSelector((state) => state.authentication);
   const {
     searchedUsers,
@@ -114,13 +123,7 @@ export const SearchBox = ({ isOpen, onClose }) => {
               (isLoading ? (
                 <SearchSkeleton />
               ) : (
-                <VStack
-                  overflowY="scroll"
-                  maxH={"80vh"}
-                  overflowX={"hidden"}
-                  scroll-behavior="smooth"
-                  w={"100%"}
-                >
+                <VStack {...searchBoxUsersStyle}>
                   {searchedUsers?.map((user) => {
                     const { _id, avatar, username, fullName, follower } = user;
                     const mutualFollower = getMutualFollowers(
@@ -130,11 +133,7 @@ export const SearchBox = ({ isOpen, onClose }) => {
                     return (
                       <Flex
                         key={_id}
-                        gap={"2"}
-                        my={"2"}
-                        cursor={"pointer"}
-                        w={"100%"}
-                        _hover={{ bg: "#1f1f1f6a" }}
+                        {...userViewBoxStyle}
                         title={username}
                         onClick={() => {
                           navigate(`/profile/${username}`);
@@ -156,12 +155,7 @@ export const SearchBox = ({ isOpen, onClose }) => {
                             {mutualFollower?.length > 0 && (
                               <Flex alignItems={"center"}>
                                 <BsDot />
-                                <Text
-                                  whiteSpace="nowrap"
-                                  overflow="hidden"
-                                  textOverflow="ellipsis"
-                                  w="150px"
-                                >
+                                <Text {...mutualUserStyle}>
                                   Followed By {mutualFollower[0]?.username}{" "}
                                   {mutualFollower?.length > 1 && (
                                     <>+{mutualFollower?.length - 1} more</>
@@ -202,22 +196,11 @@ export const SearchBox = ({ isOpen, onClose }) => {
                       Clear All
                     </Button>
                   </Flex>
-                  <VStack
-                    overflowY="scroll"
-                    h={"80vh"}
-                    overflowX={"hidden"}
-                    scroll-behavior="smooth"
-                    w={"100%"}
-                  >
+                  <VStack {...searchBoxUsersStyle}>
                     {searchList?.map(({ _id, avatar, username, fullName }) => (
                       <Flex
                         key={_id}
-                        my={"1"}
-                        w="100%"
-                        cursor={"pointer"}
-                        alignItems={"center"}
-                        justifyContent={"space-between"}
-                        _hover={{ bg: "#1f1f1f6a" }}
+                        {...searchRecentStyle}
                         title={username}
                         onClick={() => {
                           navigate(`/profile/${username}`);
@@ -235,15 +218,11 @@ export const SearchBox = ({ isOpen, onClose }) => {
                         </Flex>
                         <Box
                           as={RxCross2}
-                          fontSize={"1.5rem"}
-                          color={"gray"}
-                          title="remove"
+                          {...recentCrossStyle}
                           onClick={(e) => {
                             e.stopPropagation();
                             dispatch(removeUserFromSearchList({ _id }));
                           }}
-                          pos={"relative"}
-                          zIndex={"3"}
                         />
                       </Flex>
                     ))}

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 import { FaHeart } from "../../utils/Icons";
 
 export const HeartPopup = () => {

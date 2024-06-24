@@ -141,3 +141,19 @@ export const aboutAccountIconMain = {
   alignSelf: "flex-start",
   padding: "1rem",
 };
+
+export const clearModalSmText = {
+  color: "gray",
+  fontSize: "0.8rem",
+  textAlign: "center",
+  mb: "0.5rem",
+  px: "1rem",
+};
+
+export const userViewBoxStyle = {
+  gap: "2",
+  my: "2",
+  cursor: "pointer",
+  w: "100%",
+  _hover: { bg: "#1f1f1f6a" },
+};

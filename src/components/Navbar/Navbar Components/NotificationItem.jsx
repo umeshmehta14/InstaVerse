@@ -8,12 +8,13 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import { handleFollowUnfollowUser } from "../../../pages/Post Feed/userSlice";
-import { userNameStyle } from "../../../styles/GlobalStyles";
 import {
   getRelativeTime,
   renderCaptionWithMentionsAndHashtags,
 } from "../../../utils/Utils";
+import { userNameStyle } from "../../../styles/GlobalStyles";
 import { RotatingLoader } from "../../Loader/RotatingLoader";
 
 export const NotificationItem = ({
@@ -29,10 +30,10 @@ export const NotificationItem = ({
 }) => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { loadingUsers } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const { _id, username, avatar } = actionBy;
   const isFollowing = currentUser?.following?.some((user) => user?._id === _id);

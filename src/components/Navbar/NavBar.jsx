@@ -8,6 +8,7 @@ import {
   Button,
   useDisclosure,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import { mobileNavbarStyle } from "../../styles/NavbarStyles";
@@ -24,14 +25,15 @@ import { getUserSearchList } from "../../pages/Post Feed/userSlice";
 
 export const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
-  const location = useLocation();
   const searchDrawerDisclosure = useDisclosure();
   const switchUserDisclosure = useDisclosure();
+
+  const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
   const { selectedUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   if (
     location?.pathname === "/login" ||
@@ -45,7 +47,7 @@ export const NavBar = () => {
   return (
     <>
       <Flex
-        bg={colorMode === "light" ? "white.900" : "black.900"}
+        bg={useColorModeValue("white.900", "black.900")}
         {...mobileNavbarStyle}
       >
         <Text
