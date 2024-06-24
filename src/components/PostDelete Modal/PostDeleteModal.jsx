@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-import { simpleButton } from "../../styles/GlobalStyles";
+import { clearModalSmText, simpleButton } from "../../styles/GlobalStyles";
 import { handleDeletePost } from "../../pages/Post Feed/postSlice";
 
 export const PostDeleteModal = ({
@@ -52,13 +52,7 @@ export const PostDeleteModal = ({
       >
         <VStack pt={"1.5rem"} pb={"0.5rem"}>
           <Text fontSize={"1.3rem"}>Delete post?</Text>
-          <Text
-            color={"gray"}
-            fontSize={"0.8rem"}
-            textAlign={"center"}
-            mb={"0.5rem"}
-            px={"1rem"}
-          >
+          <Text {...clearModalSmText}>
             Are you sure you want to delete this post?
           </Text>
           <Divider />

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Avatar,
   Box,
@@ -19,17 +20,21 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { UnfollowModal, RotatingLoader, RemoveFollowerModal } from "../index";
 import { handleFollowUnfollowUser } from "../../pages/Post Feed/userSlice";
-import { useState } from "react";
 import { BsDot } from "../../utils/Icons";
+import {
+  userListModalHeading,
+  userListModalMain,
+  userListUsersStyle,
+} from "../../styles/GlobalStyles";
 
 export const UserListModal = ({ onClose, isOpen, heading }) => {
-  const navigate = useNavigate();
-
   const { colorMode } = useColorMode();
   const unfollowDisclosure = useDisclosure();
   const removeFollowerDisclosure = useDisclosure();
 
+  const navigate = useNavigate();
   const [removeUser, setRemoveUser] = useState({});
+  const [unfollowUser, setUnfollowUser] = useState({});
 
   const { currentUser } = useSelector((state) => state.authentication);
   const {
@@ -40,7 +45,6 @@ export const UserListModal = ({ onClose, isOpen, heading }) => {
     removeFollowerUser,
   } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [unfollowUser, setUnfollowUser] = useState({});
 
   const currentUserCheck = currentUser?.username === selectedUser?.username;
 
@@ -60,25 +64,13 @@ export const UserListModal = ({ onClose, isOpen, heading }) => {
             {heading}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody
-            maxH="48vh"
-            overflowX="auto"
-            minH={"40vh"}
-            p={"0.4rem 0.8rem"}
-          >
+          <ModalBody {...userListModalMain}>
             {isLoading ? (
               <VStack justifyContent={"center"} h={"35vh"}>
                 <RotatingLoader w={"50"} sw={"3"} />
               </VStack>
             ) : !isLoading && userList?.length === 0 ? (
-              <Flex
-                justifyContent={"center"}
-                h={"35vh"}
-                fontSize="1.5rem"
-                alignItems={"center"}
-              >
-                No {heading}
-              </Flex>
+              <Flex {...userListModalHeading}>No {heading}</Flex>
             ) : (
               userList?.map(({ _id, fullName, username, avatar }) => {
                 const isLoading = loadingUsers.includes(_id);
@@ -88,14 +80,7 @@ export const UserListModal = ({ onClose, isOpen, heading }) => {
                   (user) => user.username === username
                 );
                 return (
-                  <Flex
-                    key={_id}
-                    gap={"2"}
-                    cursor={"pointer"}
-                    align={"center"}
-                    p="2"
-                    justifyContent={"space-between"}
-                  >
+                  <Flex key={_id} {...userListUsersStyle}>
                     <Flex
                       alignItems={"center"}
                       gap={"2"}

@@ -10,9 +10,9 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 
 import { simpleButton } from "../../../styles/GlobalStyles";
-import { useDispatch } from "react-redux";
 import { handleRemoveFollower } from "../../../pages/Post Feed/userSlice";
 
 export const RemoveFollowerModal = ({

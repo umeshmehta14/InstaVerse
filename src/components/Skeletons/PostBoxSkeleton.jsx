@@ -6,6 +6,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import React from "react";
+
 import ContentLoader from "react-content-loader";
 import { mainPostBoxStyles } from "../../styles/PostBoxStyles";
 

@@ -180,3 +180,25 @@ export const postUploadInput = {
   accept: "image/*",
   style: { display: "none" },
 };
+
+export const userListModalMain = {
+  maxH: "48vh",
+  overflowX: "auto",
+  minH: "40vh",
+  p: "0.4rem 0.8rem",
+};
+
+export const userListModalHeading = {
+  justifyContent: "center",
+  h: "35vh",
+  fontSize: "1.5rem",
+  alignItems: "center",
+};
+
+export const userListUsersStyle = {
+  gap: "2",
+  cursor: "pointer",
+  align: "center",
+  p: "2",
+  justifyContent: "space-between",
+};

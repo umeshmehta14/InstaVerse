@@ -25,10 +25,11 @@ import { GUEST_USER_PASSWORD } from "../../utils/Constants";
 import TailSpinLoader from "../Loader/TailSpinLoader";
 
 export const SwitchAccountModal = ({ onClose, isOpen }) => {
+  const { colorMode } = useColorMode();
+
   const { currentUser } = useSelector((state) => state.authentication);
   const { guestUsers, isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const { colorMode } = useColorMode();
 
   return (
     <Modal onClose={onClose} size={"sm"} isOpen={isOpen}>

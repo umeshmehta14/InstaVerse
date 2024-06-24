@@ -8,24 +8,22 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   userSuggestionContainer,
   userSuggestionMainProfile,
 } from "../../styles/UserSuggestionStyles";
 import { SwitchAccountModal, UserSuggestionMain } from "../index";
-
-import { useDispatch, useSelector } from "react-redux";
 import { updateTab } from "../../pages/Post Feed/userSlice";
 import { userNameStyle } from "../../styles/GlobalStyles";
 
 export const UserSuggestion = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { currentUser } = useSelector((state) => state.authentication);
+  const dispatch = useDispatch();
 
   return (
     <Box sx={userSuggestionContainer}>
