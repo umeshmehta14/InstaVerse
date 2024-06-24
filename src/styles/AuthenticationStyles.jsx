@@ -58,3 +58,34 @@ export const loginLogosStyle = {
   fontSize: "8rem",
   textAlign: "center",
 };
+
+export const signupHeadingStyle = {
+  fontFamily: "Pacifico, cursive",
+  title: "InstaVerse",
+  align: "center",
+  my: "4",
+};
+
+export const signUpFormSmText = {
+  textAlign: "center",
+  margin: "1rem 0",
+  padding: "0 1rem",
+  color: "gray",
+};
+
+export const codeSentLinkStyle = {
+  display: "inline",
+  cursor: "pointer",
+  _hover: { color: "gray" },
+  color: "blue.500",
+  fontWeight: "bold",
+};
+
+export const signupGoBackBtnStyle = {
+  color: "blue.500",
+  fontWeight: "bold",
+  textAlign: "center",
+  my: "4",
+  cursor: "pointer",
+  _hover: { color: "gray" },
+};

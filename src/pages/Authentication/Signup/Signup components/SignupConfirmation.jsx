@@ -2,7 +2,12 @@ import { Box, useColorMode, Text, Input, Button } from "@chakra-ui/react";
 import React, { useCallback, useEffect } from "react";
 
 import { TbMailHeart } from "../../../../utils/Icons";
-import { authBox } from "../../../../styles/AuthenticationStyles";
+import {
+  authBox,
+  codeSentLinkStyle,
+  loginLogosStyle,
+  signupGoBackBtnStyle,
+} from "../../../../styles/AuthenticationStyles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   sendOtpToEmail,
@@ -68,25 +73,14 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
 
   return (
     <Box {...authBox} bg={colorMode === "light" ? "white.500" : "black.900"}>
-      <Box
-        as={TbMailHeart}
-        color={"gray"}
-        m={"auto"}
-        my={"4"}
-        fontSize={"8rem"}
-        textAlign={"center"}
-      />
+      <Box as={TbMailHeart} {...loginLogosStyle} />
       <Text textAlign={"center"} my={"5"} fontWeight={"700"}>
         Enter Confirmation Code
       </Text>
       <Text textAlign={"center"} mb={"5"}>
         Enter the confirmation code we sent to {email}.{" "}
         <Text
-          display={"inline"}
-          cursor={"pointer"}
-          _hover={{ color: "gray" }}
-          color={"blue.500"}
-          fontWeight={"bold"}
+          {...codeSentLinkStyle}
           onClick={() => {
             dispatch(sendOtpToEmail({ email })).then(() =>
               toast.success(
@@ -103,9 +97,9 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
         type="text"
         maxLength={"4"}
         value={confirmationCode}
-        onChange={(e) => dispatch(updateConfirmationCode(e.target.value))}
         placeholder="Confirmation Code"
         my={"4"}
+        onChange={(e) => dispatch(updateConfirmationCode(e.target.value))}
         onKeyDown={handleKeyPress}
       />
       <Button
@@ -122,12 +116,7 @@ export const SignupConfirmation = ({ setShowNextPage }) => {
       </Button>
 
       <Text
-        color={"blue.500"}
-        fontWeight={"bold"}
-        textAlign={"center"}
-        my={"4"}
-        cursor={"pointer"}
-        _hover={{ color: "gray" }}
+        {...signupGoBackBtnStyle}
         onClick={() => {
           dispatch(
             updateSignupForm({

@@ -25,7 +25,11 @@ import {
   IoCheckmarkCircleOutline,
   RxCrossCircled,
 } from "../../../../utils/Icons.jsx";
-import { authBox } from "../../../../styles/AuthenticationStyles.jsx";
+import {
+  authBox,
+  signUpFormSmText,
+  signupHeadingStyle,
+} from "../../../../styles/AuthenticationStyles.jsx";
 
 export const SignupForm = ({ handleSignup, click, setClick }) => {
   const { colorMode } = useColorMode();
@@ -64,20 +68,12 @@ export const SignupForm = ({ handleSignup, click, setClick }) => {
   return (
     <Box {...authBox} bg={colorMode === "light" ? "white.500" : "black.900"}>
       <Heading
-        fontFamily={"Pacifico, cursive"}
-        title="InstaVerse"
-        align={"center"}
+        {...signupHeadingStyle}
         color={colorMode === "light" ? "#262626" : "gray"}
-        my={"4"}
       >
         InstaVerse
       </Heading>
-      <Text
-        textAlign={"center"}
-        margin={"1rem 0"}
-        padding={"0 1rem"}
-        color={"gray"}
-      >
+      <Text {...signUpFormSmText}>
         Sign up to see photos and videos from your friends.
       </Text>
       <Divider mb={"1rem"} />
@@ -222,13 +218,7 @@ export const SignupForm = ({ handleSignup, click, setClick }) => {
             )}
           </InputGroup>
         </FormControl>
-        <Text
-          fontSize={"12px"}
-          color={"grey"}
-          textAlign={"center"}
-          margin={"1rem 0"}
-          padding={"0 1rem"}
-        >
+        <Text fontSize={"12px"} {...signUpFormSmText}>
           People who use our service may have uploaded your contact information
           to Instaverse.
         </Text>
