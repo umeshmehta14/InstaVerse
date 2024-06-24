@@ -226,6 +226,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
                       replyAvatar: "",
                     })
                   );
+                  setShowTagBox(false);
                 }}
               />
             </Flex>

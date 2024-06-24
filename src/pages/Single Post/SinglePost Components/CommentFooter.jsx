@@ -157,6 +157,7 @@ export const CommentFooter = ({ post, userLike }) => {
                   replyAvatar: "",
                 })
               );
+              setShowTagBox(false);
             }}
           />
         </Flex>

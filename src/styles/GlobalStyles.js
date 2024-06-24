@@ -126,3 +126,18 @@ export const userMentionUsers = {
   w: "100%",
   _hover: { bg: "#1f1f1f6a" },
 };
+
+export const smTextModalStyle = {
+  color: "gray",
+  fontSize: "0.8rem",
+  textAlign: "center",
+  mb: "0.5rem",
+  px: "1rem",
+};
+
+export const aboutAccountIconMain = {
+  gap: "1rem",
+  flexDir: "column",
+  alignSelf: "flex-start",
+  padding: "1rem",
+};

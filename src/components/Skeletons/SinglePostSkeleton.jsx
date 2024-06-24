@@ -24,6 +24,7 @@ import {
 } from "../../styles/SinglePostStyle";
 import { iconPostStyles } from "../../styles/PostBoxStyles";
 import { AiOutlineArrowLeft } from "../../utils/Icons";
+import { hideScrollbar } from "../../styles/GlobalStyles";
 
 export const SinglePostSkeleton = ({ redirectLocation, onClose }) => {
   const { colorMode } = useColorMode();
@@ -106,8 +107,11 @@ export const SinglePostSkeleton = ({ redirectLocation, onClose }) => {
                     : "white.500"
                 }
                 p={"8px"}
+                overflow={"hidden"}
+                maxH={{ base: "100%", md: "360px" }}
+                sx={hideScrollbar}
               >
-                {new Array(5).fill(null)?.map((_, index) => (
+                {new Array(10).fill(null)?.map((_, index) => (
                   <Flex
                     gap={"2"}
                     my={"2"}

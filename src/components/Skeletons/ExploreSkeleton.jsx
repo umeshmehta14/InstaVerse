@@ -5,11 +5,13 @@ import {
   useColorMode,
   Grid,
 } from "@chakra-ui/react";
+
 import { profileMainBox } from "../../styles/ProfileStyles";
 import ContentLoader from "react-content-loader";
 
 export const ExploreSkeleton = () => {
   const { colorMode } = useColorMode();
+
   return (
     <Flex
       {...profileMainBox}

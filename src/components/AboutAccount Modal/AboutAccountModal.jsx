@@ -12,7 +12,12 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-import { simpleButton } from "../../styles/GlobalStyles";
+
+import {
+  aboutAccountIconMain,
+  simpleButton,
+  smTextModalStyle,
+} from "../../styles/GlobalStyles";
 import { CiCalendarDate, CiLocationOn } from "../../utils/Icons";
 
 export const AboutAccountModal = ({
@@ -23,8 +28,8 @@ export const AboutAccountModal = ({
   createdAt,
 }) => {
   const { colorMode } = useColorMode();
-  const date = new Date(createdAt);
 
+  const date = new Date(createdAt);
   const options = { year: "numeric", month: "long" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
@@ -46,23 +51,12 @@ export const AboutAccountModal = ({
         >
           <Avatar size={"xl"} src={url} />
           <Text m="0.5rem">{username}</Text>
-          <Text
-            color={"gray"}
-            fontSize={"0.8rem"}
-            textAlign={"center"}
-            mb={"0.5rem"}
-            px={"1rem"}
-          >
+          <Text {...smTextModalStyle}>
             To help keep our community authentic, we're showing information
             about accounts on Instaverse.
           </Text>
 
-          <Flex
-            gap={"1rem"}
-            flexDir={"column"}
-            alignSelf={"flex-start"}
-            padding={"1rem"}
-          >
+          <Flex {...aboutAccountIconMain}>
             <Flex align={"center"} gap={"0.5rem"}>
               <Box as={CiCalendarDate} fontSize={"2rem"} />
               <Box>
