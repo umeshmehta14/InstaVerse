@@ -10,11 +10,14 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 import {
   commentInput,
   likeHeartStyle,
   userNameStyle,
+  commentBtnMain,
 } from "../../../styles/GlobalStyles";
 import {
   IconHoverStyle,
@@ -22,6 +25,8 @@ import {
   iconPostStyles,
   postIconStyle,
   userBoldStyle,
+  captionToggleBtn,
+  postBoxFooterMain,
 } from "../../../styles/PostBoxStyles";
 import {
   AiOutlineHeart,
@@ -31,7 +36,6 @@ import {
   FaBookmark,
   FaRegBookmark,
 } from "../../../utils/Icons";
-import { useDispatch, useSelector } from "react-redux";
 import { handleLikes } from "../../../pages/Post Feed/postSlice";
 import {
   addUserBookmark,
@@ -51,7 +55,6 @@ import { RotatingLoader } from "../../Loader/RotatingLoader";
 import { addCommentToPost } from "../../../pages/Single Post/commentSlice";
 import { UserMentionList } from "../../UserMention List/UserMentionList";
 import { EmojiPopover } from "../../EmojiPopover/EmojiPopover";
-import toast from "react-hot-toast";
 
 const PostDetailSection = ({
   onOpen,
@@ -62,16 +65,16 @@ const PostDetailSection = ({
   userLike,
   singlePost,
 }) => {
+  const { colorMode } = useColorMode();
+
   const navigate = useNavigate();
   const location = useLocation();
-  const { colorMode } = useColorMode();
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [showTagBox, setShowTagBox] = useState(false);
   const [matchIndex, setMatchIndex] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
-
   const inputRef = useRef(null);
 
   const { currentUser } = useSelector((state) => state.authentication);
@@ -263,14 +266,7 @@ const PostDetailSection = ({
                   )}
             </Text>
             {caption?.length > 50 && (
-              <Button
-                variant={"link-button"}
-                fontSize={"0.8rem"}
-                p="0"
-                color={"gray"}
-                onClick={toggleExpanded}
-                ml={"0.3rem"}
-              >
+              <Button {...captionToggleBtn} onClick={toggleExpanded}>
                 {isExpanded ? "Show less" : "more"}
               </Button>
             )}
@@ -292,12 +288,7 @@ const PostDetailSection = ({
         </Text>
       </Flex>
 
-      <Flex
-        p={{ base: "0 12px", md: 0 }}
-        alignItems={"center"}
-        pos={"relative"}
-        gap={"0.3rem"}
-      >
+      <Flex {...postBoxFooterMain}>
         {showTagBox && (
           <UserMentionList
             matchIndex={matchIndex}
@@ -335,13 +326,10 @@ const PostDetailSection = ({
           )}
         </Box>
         <Button
-          fontSize={"1rem"}
-          variant={"link-button"}
-          size="sm"
+          {...commentBtnMain}
           onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
           color={commentValue === "" ? "gray" : null}
           disabled={commentLoader || commentValue === ""}
-          _disabled={{ color: "gray.400", cursor: "default" }}
           _hover={
             commentLoader || commentValue === ""
               ? { color: "gray", cursor: "default" }

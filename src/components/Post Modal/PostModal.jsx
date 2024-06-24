@@ -33,6 +33,7 @@ import { getSearchedUsers } from "../../pages/Post Feed/userSlice";
 
 export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   const { colorMode } = useColorMode();
+
   const [selectedPost, setSelectedPost] = useState(null);
   const [showTagBox, setShowTagBox] = useState(false);
   const [matchIndex, setMatchIndex] = useState(null);
@@ -42,13 +43,12 @@ export const PostModal = ({ isOpen, onClose, edit, _id }) => {
   const { currentUser } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
 
+  const { caption, url } = uploadPost;
+  const [postValue, setPostValue] = useState(caption);
+
   const debouncedFetchData = useCallback(debounce(dispatch), [
     getSearchedUsers,
   ]);
-
-  const { caption, url } = uploadPost;
-
-  const [postValue, setPostValue] = useState(caption);
 
   const handleInputValue = (e) => {
     const { value } = e.target;

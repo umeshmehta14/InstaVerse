@@ -18,6 +18,7 @@ import {
   postThreeDot,
   mainPostBoxStyles,
   postNavStyles,
+  postImageStyle,
 } from "../../styles/PostBoxStyles";
 import { BsDot, BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
@@ -33,10 +34,10 @@ import { LIKE } from "../../utils/Constants";
 
 export const PostBox = ({ post, singlePost }) => {
   const navigate = useNavigate();
+
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const infoPopupDisclosure = useDisclosure();
-
   const dispatch = useDispatch();
 
   const { currentUser } = useSelector((state) => state.authentication);
@@ -144,11 +145,7 @@ export const PostBox = ({ post, singlePost }) => {
       <Box pos={"relative"}>
         <Image
           src={url}
-          w={"100%"}
-          maxH={"585px"}
-          minH={"400px"}
-          border={{ base: "none", md: "0.5px solid #838383" }}
-          borderRadius={{ base: "0", md: "6px" }}
+          {...postImageStyle}
           onClick={() =>
             handleDoubleTap(
               lastTapRef,

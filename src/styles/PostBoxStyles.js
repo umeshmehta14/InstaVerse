@@ -70,3 +70,26 @@ export const postContent = {
   overflowWrap: "break-word",
   textOverflow: "ellipsis",
 };
+
+export const captionToggleBtn = {
+  variant: "link-button",
+  fontSize: "0.8rem",
+  p: "0",
+  color: "gray",
+  ml: "0.3rem",
+};
+
+export const postBoxFooterMain = {
+  p: { base: "0 12px", md: 0 },
+  alignItems: "center",
+  pos: "relative",
+  gap: "0.3rem",
+};
+
+export const postImageStyle = {
+  w: "100%",
+  maxH: "585px",
+  minH: "400px",
+  border: { base: "none", md: "0.5px solid #838383" },
+  borderRadius: { base: "0", md: "6px" },
+};

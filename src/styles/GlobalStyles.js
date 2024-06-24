@@ -157,3 +157,10 @@ export const userViewBoxStyle = {
   w: "100%",
   _hover: { bg: "#1f1f1f6a" },
 };
+
+export const commentBtnMain = {
+  fontSize: "1rem",
+  variant: "link-button",
+  size: "sm",
+  _disabled: { color: "gray.400", cursor: "default" },
+};

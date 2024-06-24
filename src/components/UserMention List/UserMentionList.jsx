@@ -17,6 +17,7 @@ import {
   userMentionUsers,
 } from "../../styles/GlobalStyles";
 import { handleUserClick } from "../../utils/Utils";
+import React from "react";
 
 export const UserMentionList = ({
   matchIndex,
