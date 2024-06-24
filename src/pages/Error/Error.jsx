@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Text, VStack, useColorMode } from "@chakra-ui/react";
 
@@ -6,6 +5,7 @@ export const Error = () => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   document.title = "Page Not Found | Instaverse";
+
   return (
     <VStack
       w="100%"

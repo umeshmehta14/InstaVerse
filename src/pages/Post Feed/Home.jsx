@@ -8,6 +8,7 @@ import { emptyMessageStyle, heroContentBox } from "../../styles/GlobalStyles";
 import { getHomePosts, updateNewPostLoading } from "./postSlice";
 import { PostAlert } from "./Post Components/PostAlert";
 import { getUserBookmark } from "./userSlice";
+import { homeLoaderStyle } from "../../styles/PostFeedStyle";
 
 export const Home = () => {
   const {
@@ -58,11 +59,7 @@ export const Home = () => {
     <Flex sx={heroContentBox}>
       <UserSuggestion />
       {!postFetched && currentPage === 1 && !newPostLoading ? (
-        <VStack
-          w={{ base: "100%", lg: "auto" }}
-          alignItems={"center"}
-          minW={{ md: "468px" }}
-        >
+        <VStack {...homeLoaderStyle}>
           {new Array(6).fill(null)?.map((_, n) => (
             <PostBoxSkeleton key={n} />
           ))}
@@ -83,11 +80,7 @@ export const Home = () => {
           </Text>
         </Flex>
       ) : (
-        <VStack
-          w={{ base: "100%", lg: "auto" }}
-          alignItems={"center"}
-          minW={{ md: "468px" }}
-        >
+        <VStack {...homeLoaderStyle}>
           {posts?.map((post, index) => {
             return (
               <React.Fragment key={post?._id}>
@@ -100,11 +93,7 @@ export const Home = () => {
           })}
           {currentPage === totalPages ||
             (newPostLoading && (
-              <VStack
-                w={{ base: "100%", lg: "auto" }}
-                alignItems={"center"}
-                minW={{ md: "468px" }}
-              >
+              <VStack {...homeLoaderStyle}>
                 {new Array(6).fill(null)?.map((_, n) => (
                   <PostBoxSkeleton key={n} />
                 ))}

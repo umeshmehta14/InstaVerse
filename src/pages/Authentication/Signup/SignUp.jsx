@@ -3,18 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Flex, Link, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  authBox,
-  mainAuthContainer,
-} from "../../../styles/AuthenticationStyles.jsx";
 import { SignupForm } from "./Signup components/SignupForm.jsx";
 import {
   sendOtpToEmail,
   updateConfirmationCode,
   updateSignupForm,
 } from "../authenticationSlice.js";
-import "../auth.css";
 import { SignupConfirmation } from "./Signup components/SignupConfirmation.jsx";
+import {
+  authBox,
+  mainAuthContainer,
+} from "../../../styles/AuthenticationStyles.js";
+import "../auth.css";
 
 export const SignUp = () => {
   document.title = "InstaVerse | SignUp";

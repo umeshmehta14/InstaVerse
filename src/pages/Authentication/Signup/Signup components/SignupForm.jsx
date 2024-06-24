@@ -29,7 +29,7 @@ import {
   authBox,
   signUpFormSmText,
   signupHeadingStyle,
-} from "../../../../styles/AuthenticationStyles.jsx";
+} from "../../../../styles/AuthenticationStyles.js";
 
 export const SignupForm = ({ handleSignup, click, setClick }) => {
   const { colorMode } = useColorMode();

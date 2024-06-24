@@ -6,6 +6,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { getExplorePosts, updateNewPostLoading } from "./postSlice";
 import _ from "lodash";
 import { PostAlert } from "./Post Components/PostAlert";
+import { exploreContainer } from "../../styles/PostFeedStyle";
 
 export const Explore = () => {
   const {
@@ -56,14 +57,7 @@ export const Explore = () => {
   }, [dispatch]);
 
   return (
-    <Box
-      minH={"100vh"}
-      w={"100%"}
-      p={{ base: 0, md: "1rem" }}
-      maxW={"975px"}
-      margin={"0 auto"}
-      mb={{ base: "4.2rem", md: "0.4rem" }}
-    >
+    <Box {...exploreContainer}>
       {!postFetched && currentPage === 1 && !newPostLoading ? (
         <ExploreSkeleton />
       ) : (
