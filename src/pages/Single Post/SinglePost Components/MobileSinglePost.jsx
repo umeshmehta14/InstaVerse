@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Box, HStack, Text, VStack, useColorMode } from "@chakra-ui/react";
 
@@ -15,6 +14,7 @@ export const MobileSinglePost = () => {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   const location = useLocation();
+
   const {
     singlePost: { post, postLoading },
   } = useSelector((state) => state.post);

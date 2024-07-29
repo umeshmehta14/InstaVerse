@@ -1,25 +1,27 @@
-import { Box, Button, Flex, Input, useColorMode } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Box, Button, Flex, Input, useColorMode } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { debounce, handleInputChange } from "../../../utils/Utils";
-import {
-  commentLoaderStyle,
-  editInputStyle,
-} from "../../../styles/SinglePostStyle";
 import {
   EmojiPopover,
   RotatingLoader,
   UserMentionList,
 } from "../../../components";
-import { useDispatch, useSelector } from "react-redux";
 import { getSearchedUsers } from "../../Post Feed/userSlice";
 import { editCommentToPost } from "../commentSlice";
+import {
+  commentLoaderStyle,
+  editInputStyle,
+} from "../../../styles/SinglePostStyle";
 
 export const EditComment = ({ setCommentEdit, commentEdit }) => {
   const { colorMode } = useColorMode();
-  const inputRef = useRef(null);
-  const dispatch = useDispatch();
-  const { commentLoader } = useSelector((state) => state.comment);
 
+  const { commentLoader } = useSelector((state) => state.comment);
+  const dispatch = useDispatch();
+
+  const inputRef = useRef(null);
   const [showTagBox, setShowTagBox] = useState(false);
   const [matchIndex, setMatchIndex] = useState(null);
   const [commentValue, setCommentValue] = useState(commentEdit?.commentText);

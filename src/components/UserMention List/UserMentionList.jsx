@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Box,
@@ -17,7 +18,6 @@ import {
   userMentionUsers,
 } from "../../styles/GlobalStyles";
 import { handleUserClick } from "../../utils/Utils";
-import React from "react";
 
 export const UserMentionList = ({
   matchIndex,

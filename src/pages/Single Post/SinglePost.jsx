@@ -48,7 +48,7 @@ export const SinglePost = () => {
         redirectLocation?.includes("/profile")) &&
       post?.url ? (
         <MobileSinglePost />
-      ) : !postLoading ? (
+      ) : postLoading ? (
         <SinglePostSkeleton
           redirectLocation={redirectLocation}
           onClose={onClose}

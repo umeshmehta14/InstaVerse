@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Divider,
@@ -10,19 +11,17 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import { displayCommentMainBox } from "../../../styles/SinglePostStyle";
-
-import { hideScrollbar, simpleButton } from "../../../styles/GlobalStyles";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 import { deleteCommentToPost, deleteReplyFromComment } from "../commentSlice";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
+import { displayCommentMainBox } from "../../../styles/SinglePostStyle";
+import { hideScrollbar, simpleButton } from "../../../styles/GlobalStyles";
 import { CommentItem } from "./CommentItem";
-import toast from "react-hot-toast";
 
 export const CommentList = ({ comments, ownerId }) => {
   const { colorMode } = useColorMode();
+  const commentDeleteDisclosure = useDisclosure();
 
   const [commentEdit, setCommentEdit] = useState({
     commentId: "",
@@ -32,13 +31,10 @@ export const CommentList = ({ comments, ownerId }) => {
     replyId: "",
   });
 
-  const { commentId, commentUsername } = commentEdit;
-
-  const commentDeleteDisclosure = useDisclosure();
-
+  const { currentUser } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
 
-  const { currentUser } = useSelector((state) => state.authentication);
+  const { commentId, commentUsername } = commentEdit;
 
   const handleCommentDelete = () => {
     if (currentUser?.guest) {

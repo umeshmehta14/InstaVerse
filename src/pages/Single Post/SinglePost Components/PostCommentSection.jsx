@@ -8,6 +8,7 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   getRelativeTime,
@@ -17,7 +18,6 @@ import { InfoPopup, RotatingLoader } from "../../../components/index";
 import { postNavStyles, postThreeDot } from "../../../styles/PostBoxStyles";
 import { BsDot, BsThreeDots } from "../../../utils/Icons";
 import { userNameStyle } from "../../../styles/GlobalStyles";
-import { useDispatch, useSelector } from "react-redux";
 import { handleFollowUnfollowUser } from "../../Post Feed/userSlice";
 import { CommentList } from "./CommentList";
 
@@ -33,14 +33,13 @@ export const PostCommentSection = ({ post, location }) => {
   } = post;
 
   const { username, avatar, _id: ownerId } = owner;
+  const infoPopupDisclosure = useDisclosure();
 
   const navigate = useNavigate();
 
-  const infoPopupDisclosure = useDisclosure();
-  const dispatch = useDispatch();
-
   const { currentUser } = useSelector((state) => state.authentication);
   const { loadingUsers } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const postFollow = currentUser?.following?.find(
     (user) => user?.username === username

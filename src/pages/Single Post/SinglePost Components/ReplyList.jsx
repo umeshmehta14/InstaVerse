@@ -1,4 +1,16 @@
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Text,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
+import toast from "react-hot-toast";
+
 import { REPLY_LIKE } from "../../../utils/Constants";
 import {
   getRelativeTime,
@@ -10,7 +22,6 @@ import {
   commentTextStyle,
 } from "../../../styles/SinglePostStyle";
 import { likeHeartStyle, userNameStyle } from "../../../styles/GlobalStyles";
-import { useDispatch, useSelector } from "react-redux";
 import { AiFillHeart, AiOutlineHeart, BsThreeDots } from "../../../utils/Icons";
 import { IconHoverStyle } from "../../../styles/PostBoxStyles";
 import {
@@ -18,17 +29,7 @@ import {
   handleReplyCommentLike,
   updateReplyComment,
 } from "../commentSlice";
-import { useRef, useState } from "react";
-import {
-  Avatar,
-  Box,
-  Flex,
-  Text,
-  useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
 import { UserListModal } from "../../../components";
-import toast from "react-hot-toast";
 
 export const ReplyList = ({
   reply,
@@ -37,15 +38,15 @@ export const ReplyList = ({
   commentEdit,
   _id,
 }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const lastTapRef = useRef(null);
-
   const [doubleTap, setDoubleTap] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const navigate = useNavigate();
+
   const { currentUser } = useSelector((state) => state.authentication);
+  const dispatch = useDispatch();
 
   const {
     owner: { username: replyUsername, _id: replyOwnerId, avatar: replyAvatar },

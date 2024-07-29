@@ -1,9 +1,4 @@
 import { useRef, useState } from "react";
-import {
-  getRelativeTime,
-  handleDoubleTap,
-  renderCaptionWithMentionsAndHashtags,
-} from "../../../utils/Utils";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -13,14 +8,17 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+
 import { COMMENT_LIKE } from "../../../utils/Constants";
-import { likeHeartStyle, userNameStyle } from "../../../styles/GlobalStyles";
 import {
   commentHeartStyle,
   commentTextStyle,
   showReplyStyle,
 } from "../../../styles/SinglePostStyle";
 import { IconHoverStyle } from "../../../styles/PostBoxStyles";
+import { likeHeartStyle, userNameStyle } from "../../../styles/GlobalStyles";
 import {
   AiFillHeart,
   AiOutlineHeart,
@@ -32,11 +30,14 @@ import {
   handleCommentLike,
   updateReplyComment,
 } from "../commentSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { EditComment } from "./EditComment";
 import { ReplyList } from "./ReplyList";
+import {
+  getRelativeTime,
+  handleDoubleTap,
+  renderCaptionWithMentionsAndHashtags,
+} from "../../../utils/Utils";
 import { UserListModal } from "../../../components";
-import toast from "react-hot-toast";
 
 export const CommentItem = ({
   comment,

@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Avatar,
   Box,
@@ -17,26 +17,15 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-import { commentInput } from "../../../styles/GlobalStyles";
 import {
   EmojiPopover,
   HeartPopup,
   RotatingLoader,
   UserMentionList,
 } from "../../../components";
-import { useLocation, useNavigate } from "react-router-dom";
-import {
-  addCommentMainBox,
-  commentLoaderStyle,
-  commentSectionMain,
-  mediaPostBox,
-  mobileCommentHeading,
-  mobileFooterStyle,
-  modalContentStyle,
-  replyPopup,
-  singlePostModalClose,
-} from "../../../styles/SinglePostStyle";
 import { AiOutlineArrowLeft, RxCross2 } from "../../../utils/Icons";
 import { PostCommentSection } from "./PostCommentSection";
 import { CommentFooter } from "./CommentFooter";
@@ -51,15 +40,25 @@ import {
   handleDoubleTap,
   handleInputChange,
 } from "../../../utils/Utils";
+import { commentBtnMain, commentInput } from "../../../styles/GlobalStyles";
+import {
+  addCommentMainBox,
+  commentLoaderStyle,
+  commentSectionMain,
+  mediaPostBox,
+  mobileCommentHeading,
+  mobileFooterStyle,
+  modalContentStyle,
+  replyPopup,
+  singlePostModalClose,
+} from "../../../styles/SinglePostStyle";
 import { LIKE } from "../../../utils/Constants";
-import toast from "react-hot-toast";
 
 export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { colorMode } = useColorMode();
-  const dispatch = useDispatch();
+  const location = useLocation();
 
+  const navigate = useNavigate();
   const [commentValue, setCommentValue] = useState("");
   const [doubleTap, setDoubleTap] = useState(false);
   const [showTagBox, setShowTagBox] = useState(false);
@@ -71,6 +70,7 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
   const { commentLoader, repliedComment } = useSelector(
     (state) => state.comment
   );
+  const dispatch = useDispatch();
 
   const { commentId, repliedUsername, replyAvatar } = repliedComment;
 
@@ -273,15 +273,12 @@ export const SinglePostModal = ({ onClose, redirectLocation, post }) => {
               )}
             </Box>
             <Button
-              fontSize={"1rem"}
-              variant={"link-button"}
-              size="sm"
+              {...commentBtnMain}
               onClick={() =>
                 commentValue.trim() !== "" ? handleCommentPost() : ""
               }
               color={commentValue.trim() === "" ? "gray" : null}
               disabled={commentLoader || commentValue.trim() === ""}
-              _disabled={{ color: "gray.400", cursor: "default" }}
               _hover={
                 commentLoader || commentValue.trim() === ""
                   ? { color: "gray", cursor: "default" }

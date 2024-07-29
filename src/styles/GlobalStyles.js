@@ -1,5 +1,3 @@
-import { color } from "framer-motion";
-
 export const heroContentBox = {
   gap: "1rem",
   w: "100%",
@@ -19,6 +17,7 @@ export const emptyMessageStyle = {
   gap: "0.5rem",
   p: "1rem",
   minW: { md: "468px" },
+  h: { base: "80vh" },
 };
 
 export const followedByUser = {
