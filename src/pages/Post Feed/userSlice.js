@@ -532,7 +532,6 @@ const userSlice = createSlice({
     });
 
     builder.addCase(getUserBookmark.rejected, (state, action) => {
-      toast.error("Something went wrong");
       console.error(action.error);
       state.isLoading = false;
     });
@@ -565,7 +564,6 @@ const userSlice = createSlice({
     });
 
     builder.addCase(getUserLikedPosts.rejected, (state, action) => {
-      toast.error("Something went wrong");
       console.error(action.error);
       state.isLoading = false;
     });

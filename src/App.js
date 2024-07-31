@@ -1,4 +1,3 @@
-import "./App.css";
 import { useEffect } from "react";
 import {
   Box,
@@ -10,6 +9,7 @@ import {
 import { Route, Routes } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
 import {
@@ -23,26 +23,27 @@ import {
   LoginConfirmation,
   ResetPassword,
 } from "./pages";
-import { useDispatch, useSelector } from "react-redux";
 import {
   getGuestUsers,
   getUserBookmark,
   handleGetSuggestedUsers,
 } from "./pages/Post Feed/userSlice";
 import { refreshTokens } from "./pages/Authentication/authenticationSlice";
+import "./App.css";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.900");
   const { colorMode } = useColorMode();
+
   const { guestUsers } = useSelector((state) => state.user);
   const { progress, token } = useSelector((state) => state.authentication);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (token) {
-    //   dispatch(refreshTokens());
-    // }
+    if (token) {
+      dispatch(refreshTokens());
+    }
     dispatch(getGuestUsers());
   }, []);
 
