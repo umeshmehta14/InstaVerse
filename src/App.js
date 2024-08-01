@@ -1,4 +1,4 @@
-import "./App.css";
+import { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -9,17 +9,50 @@ import {
 import { Route, Routes } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useAuth, usePost } from "./contexts";
 import { NavBar, PrivateRoute, RotatingLoader } from "./components";
-import { PostFeed, Login, Profile, SignUp, SinglePost, Error } from "./pages";
+import {
+  Home,
+  Login,
+  Profile,
+  SignUp,
+  SinglePost,
+  Error,
+  Explore,
+  LoginConfirmation,
+  ResetPassword,
+} from "./pages";
+import {
+  getGuestUsers,
+  getUserBookmark,
+  handleGetSuggestedUsers,
+} from "./pages/Post Feed/userSlice";
+import { refreshTokens } from "./pages/Authentication/authenticationSlice";
+import "./App.css";
 
 function App() {
   const color = useColorModeValue("black.900", "white.900");
   const bg = useColorModeValue("white.500", "black.900");
   const { colorMode } = useColorMode();
-  const { loading } = usePost();
-  const { progress } = useAuth();
+
+  const { guestUsers } = useSelector((state) => state.user);
+  const { progress, token } = useSelector((state) => state.authentication);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token) {
+      dispatch(refreshTokens());
+    }
+    dispatch(getGuestUsers());
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(handleGetSuggestedUsers());
+      dispatch(getUserBookmark());
+    }
+  }, [token]);
 
   return (
     <Box color={color} bg={bg} className="App">
@@ -36,20 +69,20 @@ function App() {
               : { backgroundColor: "#fff", color: "#000" },
         }}
       />
-      {loading ? (
+      {guestUsers?.length === 0 ? (
         <VStack h="100vh" w="100vw" justify={"center"}>
-          <RotatingLoader w="50" sw="6" />
+          <RotatingLoader w="50" sw="5" />
         </VStack>
       ) : (
         <Flex flexDir={{ base: "column", md: "row" }}>
           <NavBar />
-          <LoadingBar height={2} color="yellow" progress={progress} />
+          <LoadingBar height={2} color={"#ef2bae"} progress={progress} />
           <Routes>
             <Route
               path={"/"}
               element={
                 <PrivateRoute>
-                  <PostFeed />
+                  <Home />
                 </PrivateRoute>
               }
             />
@@ -57,7 +90,7 @@ function App() {
               path={"/explore"}
               element={
                 <PrivateRoute>
-                  <PostFeed />
+                  <Explore />
                 </PrivateRoute>
               }
             />
@@ -84,6 +117,14 @@ function App() {
             <Route path={"/error"} element={<Login />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/signup"} element={<SignUp />} />
+            <Route
+              path={"/accounts/password/emailConfirmation/"}
+              element={<LoginConfirmation />}
+            />
+            <Route
+              path={"/accounts/password/reset/confirm/"}
+              element={<ResetPassword />}
+            />
           </Routes>
         </Flex>
       )}

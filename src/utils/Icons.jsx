@@ -29,22 +29,23 @@ import {
   RxHamburgerMenu,
   RxCrossCircled,
 } from "react-icons/rx";
-import { TbSquareRoundedPlus } from "react-icons/tb";
+import { TbSquareRoundedPlus, TbMailHeart } from "react-icons/tb";
 import {
   FaInstalod,
   FaRegComment,
   FaRegBookmark,
   FaBookmark,
   FaComment,
+  FaHeart,
 } from "react-icons/fa";
 import { FcAddImage } from "react-icons/fc";
-import { IoPaperPlaneOutline } from "react-icons/io5";
+import { IoPaperPlaneOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import { BiChevronDown } from "react-icons/bi";
-import { VscPassFilled } from "react-icons/vsc";
+import { VscPassFilled, VscLock } from "react-icons/vsc";
 import { LuFilter } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { SlTrash } from "react-icons/sl";
-import { CiCamera } from "react-icons/ci";
+import { CiCamera, CiLocationOn, CiCalendarDate } from "react-icons/ci";
 
 export {
   AiOutlineHeart,
@@ -62,6 +63,7 @@ export {
   RxHamburgerMenu,
   BsFillHeartbreakFill,
   FcAddImage,
+  FaHeart,
   MdHome,
   FaInstalod,
   BsMoon,
@@ -70,9 +72,11 @@ export {
   MdSearch,
   RxAvatar,
   TbSquareRoundedPlus,
+  TbMailHeart,
   BsFillSunFill,
   RxCross2,
   BiChevronDown,
+  VscLock,
   VscPassFilled,
   RxCrossCircled,
   LuFilter,
@@ -83,5 +87,8 @@ export {
   SlTrash,
   FaComment,
   CiCamera,
+  CiLocationOn,
+  CiCalendarDate,
   BsBookmarkX,
+  IoCheckmarkCircleOutline,
 };

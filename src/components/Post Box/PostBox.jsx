@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -12,79 +12,62 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useAuth, usePost, useUser } from "../../contexts";
-import { UserListModal } from "../index";
+import { HeartPopup, RotatingLoader, UserListModal } from "../index";
 import {
   bookmarkPopup,
   postThreeDot,
   mainPostBoxStyles,
   postNavStyles,
+  postImageStyle,
 } from "../../styles/PostBoxStyles";
-import { BsThreeDots } from "../../utils/Icons";
+import { BsDot, BsThreeDots } from "../../utils/Icons";
 import PostDetailSection from "./PostBox Components/PostDetailSection";
-import { SET_DEFAULT_TAB, fallBackImg } from "../../utils/Constants";
 import { InfoPopup } from "../index";
-import HeartPopup from "./PostBox Components/HeartPopup";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleFollowUnfollowUser,
+  updateTab,
+} from "../../pages/Post Feed/userSlice";
+import { getRelativeTime, handleDoubleTap } from "../../utils/Utils";
+import { userNameStyle } from "../../styles/GlobalStyles";
+import { LIKE } from "../../utils/Constants";
 
-export const PostBox = ({ post }) => {
+export const PostBox = ({ post, singlePost }) => {
   const navigate = useNavigate();
+
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const infoPopupDisclosure = useDisclosure();
+  const dispatch = useDispatch();
 
-  const {
-    userState: { userBookmarks },
-    userDispatch,
-    handleFollow,
-  } = useUser();
-
-  const { currentUser } = useAuth();
-
-  const { handlePostLike } = usePost();
+  const { currentUser } = useSelector((state) => state.authentication);
+  const { loadingUsers, bookmarks } = useSelector((state) => state.user);
 
   const [showSavedPostBox, setShowSavedPostBox] = useState(false);
   const [clicked, setClicked] = useState(false);
 
   const {
     _id,
-    username,
-    mediaUrl,
-    avatarURL,
-    likes: { likedBy },
+    owner: { _id: userId, username, avatar },
+    url,
+    likes,
+    createdAt,
   } = post;
 
-  const bookmarked = userBookmarks?.includes(_id);
+  const bookmarked = bookmarks?.find((post) => post?._id === _id);
 
   const postFollow = currentUser.following.find(
     (user) => user.username === username
   );
 
-  const userLike = likedBy.find(
+  const userLike = likes.find(
     ({ username }) => username === currentUser.username
   );
 
+  const isLoading = loadingUsers.includes(userId);
+
   const [doubleTap, setDoubleTap] = useState(false);
   const lastTapRef = useRef(0);
-
-  const handleDoubleTap = () => {
-    const now = Date.now();
-    const DOUBLE_TAP_THRESHOLD = 300;
-
-    if (now - lastTapRef.current < DOUBLE_TAP_THRESHOLD) {
-      setDoubleTap(true);
-      if (userLike) {
-      } else {
-        handlePostLike(_id);
-      }
-      setTimeout(() => {
-        setDoubleTap(false);
-      }, 800);
-    } else {
-      setDoubleTap(false);
-    }
-
-    lastTapRef.current = now;
-  };
 
   const handleBookmarkClick = () => {
     if (bookmarked && clicked) {
@@ -98,36 +81,51 @@ export const PostBox = ({ post }) => {
 
   useEffect(() => {
     handleBookmarkClick();
-  }, [bookmarked, userBookmarks]);
+  }, [bookmarked, bookmarks]);
 
   return (
     <Box
       {...mainPostBoxStyles}
       bg={colorMode === "light" ? "white.500" : "black.900"}
-      boxShadow={colorMode === "light" ? "1px 1px 8px #8080805e" : ""}
     >
       <Flex {...postNavStyles}>
-        <Flex alignItems={"center"} gap={2}>
-          <Flex
-            alignItems={"center"}
-            cursor={"pointer"}
-            title={username}
-            onClick={() => navigate(`/profile/${username}`)}
-          >
-            <Avatar size="sm" src={avatarURL} />
-            <Text ml="2" fontWeight="medium">
-              {username}
-            </Text>
-          </Flex>
-          {!postFollow && !(currentUser.username === username) && (
-            <Button
-              alignItems={"center"}
-              variant={"link-button"}
-              justifyContent="flex-start"
-              onClick={() => handleFollow(username)}
-            >
-              Follow
-            </Button>
+        <Flex
+          alignItems={"center"}
+          cursor={"pointer"}
+          title={username}
+          onClick={() => navigate(`/profile/${username}`)}
+        >
+          <Avatar size="sm" src={avatar?.url} />
+          <Text ml="3" {...userNameStyle}>
+            {username}
+          </Text>
+          <Box as={BsDot} color={"#717171e0"} fontSize={"1.5rem"} />
+          <Text fontSize="sm" color={"#717171e0"}>
+            {getRelativeTime(createdAt)}
+          </Text>
+          {!postFollow && !(currentUser?.username === username) && (
+            <>
+              <Box as={BsDot} color={"#717171e0"} fontSize={"1.5rem"} />
+              <Button
+                variant={"link-button"}
+                size="sm"
+                p={0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dispatch(
+                    handleFollowUnfollowUser({
+                      _id: userId,
+                      follow: true,
+                      singlePost: _id,
+                      noPostLoading: true,
+                      notSelectedUser: true,
+                    })
+                  );
+                }}
+              >
+                {isLoading ? <RotatingLoader w="20" sw={"7"} /> : "Follow"}
+              </Button>
+            </>
           )}
         </Flex>
         <Button {...postThreeDot} onClick={infoPopupDisclosure.onOpen}>
@@ -146,14 +144,19 @@ export const PostBox = ({ post }) => {
 
       <Box pos={"relative"}>
         <Image
-          src={mediaUrl}
-          fallbackSrc={fallBackImg}
-          w={"100%"}
-          maxH={"585px"}
-          minH={"400px"}
-          border={{ base: "none", md: "0.5px solid #838383" }}
-          borderRadius={{ base: "0", md: "6px" }}
-          onClick={() => handleDoubleTap()}
+          src={url}
+          {...postImageStyle}
+          onClick={() =>
+            handleDoubleTap(
+              lastTapRef,
+              userLike,
+              setDoubleTap,
+              dispatch,
+              _id,
+              LIKE,
+              singlePost
+            )
+          }
         />
         {doubleTap && <HeartPopup />}
         {showSavedPostBox && (
@@ -168,7 +171,7 @@ export const PostBox = ({ post }) => {
                 fontSize={"0.8rem"}
                 p="0"
                 onClick={() => {
-                  userDispatch({ type: SET_DEFAULT_TAB, payload: 2 });
+                  dispatch(updateTab(2));
                   navigate(`/profile/${currentUser.username}`);
                 }}
               >
@@ -186,15 +189,11 @@ export const PostBox = ({ post }) => {
         setClicked={setClicked}
         clicked={clicked}
         userLike={userLike}
+        singlePost={singlePost}
       />
 
       {isOpen && (
-        <UserListModal
-          onClose={onClose}
-          isOpen={isOpen}
-          users={likedBy}
-          heading={"Liked By"}
-        />
+        <UserListModal onClose={onClose} isOpen={isOpen} heading={"Liked By"} />
       )}
     </Box>
   );

@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useRef } from "react";
 import {
   Box,
   Input,
@@ -15,30 +16,71 @@ import {
   Avatar,
   Text,
   VStack,
+  Button,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
-
-import { RxCrossCircled, BsDot } from "../../../utils/Icons";
-import { useAuth, useUser } from "../../../contexts";
-import { SET_SEARCH_VALUE } from "../../../utils/Constants";
 import { useNavigate } from "react-router-dom";
-import { getMutualFollowers } from "../../../utils/Utils";
+import { useDispatch, useSelector } from "react-redux";
 
-const SearchBox = ({ isOpen, onClose }) => {
+import { debounce, getMutualFollowers } from "../../../utils/Utils";
+import {
+  addUserToSearchList,
+  getSearchedUsers,
+  removeUserFromSearchList,
+  updateSearchedUsers,
+  updateSearchValue,
+} from "../../../pages/Post Feed/userSlice";
+import { SearchSkeleton } from "../../index";
+import { RxCrossCircled, BsDot, RxCross2 } from "../../../utils/Icons";
+import { ClearRecentModal } from "./ClearRecentModal";
+import {
+  mutualUserStyle,
+  recentCrossStyle,
+  searchBoxUsersStyle,
+  searchRecentStyle,
+} from "../../../styles/NavbarStyles";
+import { userViewBoxStyle } from "../../../styles/GlobalStyles";
+
+export const SearchBox = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
-  const {
-    userState: { searchValue, searchedUsers },
-    userDispatch,
-  } = useUser();
+  const clearRecentDisclosure = useDisclosure();
+
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const searchRef = useRef(null);
+
+  const { currentUser } = useSelector((state) => state.authentication);
+  const {
+    searchedUsers,
+    searchValue,
+    isLoading,
+    searchList,
+    isSearchUserFetched,
+  } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (searchValue?.length === 0) {
+      dispatch(updateSearchedUsers());
+    }
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (isOpen) {
+      searchRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
 
   return (
     <Box>
       <Drawer
         isOpen={isOpen}
         onClose={() => {
-          userDispatch({ type: SET_SEARCH_VALUE, payload: "" });
+          dispatch(updateSearchValue(""));
+          dispatch(updateSearchedUsers());
           onClose();
         }}
         placement="left"
@@ -54,13 +96,11 @@ const SearchBox = ({ isOpen, onClose }) => {
             <InputGroup mb={"1rem"}>
               <Input
                 placeholder="Search User..."
-                onChange={(e) =>
-                  userDispatch({
-                    type: SET_SEARCH_VALUE,
-                    payload: e.target.value,
-                    currentUser,
-                  })
-                }
+                onChange={(e) => {
+                  dispatch(updateSearchValue(e.target.value));
+                  debouncedFetchData();
+                }}
+                ref={searchRef}
                 value={searchValue}
               />
               {searchValue && (
@@ -68,9 +108,10 @@ const SearchBox = ({ isOpen, onClose }) => {
                   <Box
                     as={RxCrossCircled}
                     cursor={"pointer"}
-                    onClick={() =>
-                      userDispatch({ type: SET_SEARCH_VALUE, payload: "" })
-                    }
+                    onClick={() => {
+                      dispatch(updateSearchValue(""));
+                      dispatch(updateSearchedUsers());
+                    }}
                     title="Clear"
                   />
                 </InputRightElement>
@@ -79,74 +120,133 @@ const SearchBox = ({ isOpen, onClose }) => {
             <Divider />
 
             {searchValue &&
-              searchedUsers?.map((user) => {
-                const {
-                  _id,
-                  avatarURL,
-                  username,
-                  firstName,
-                  lastName,
-                  followers,
-                } = user;
-                const mutualFollower = getMutualFollowers(
-                  followers,
-                  currentUser
-                );
-                return (
-                  <Flex
-                    key={_id}
-                    gap={"2"}
-                    my={"4"}
-                    cursor={"pointer"}
-                    _hover={{ bg: "#1f1f1f6a" }}
-                    title={username}
-                    onClick={() => {
-                      navigate(`/profile/${username}`);
-                      onClose();
-                    }}
-                  >
-                    <Flex alignItems={"center"} gap={"2"}>
-                      <Avatar size="md" name={firstName} src={avatarURL} />
-                    </Flex>
-                    <VStack
-                      align={"flex-start"}
-                      gap={"0"}
-                      whiteSpace={"nowrap"}
-                    >
-                      <Text>{username}</Text>
-                      <Flex fontSize={"0.8rem"} color={"gray"}>
-                        <Text>
-                          {firstName} {lastName}
-                        </Text>
-                        {mutualFollower.length > 0 && (
-                          <Flex alignItems={"center"}>
-                            <BsDot />
-                            <Text
-                              whiteSpace="nowrap"
-                              overflow="hidden"
-                              textOverflow="ellipsis"
-                              w="150px"
-                            >
-                              Followed By {mutualFollower[0].username}{" "}
-                              {mutualFollower.length > 1 && (
-                                <>+{mutualFollower.length - 1} more</>
-                              )}
-                            </Text>
+              (isLoading ? (
+                <SearchSkeleton />
+              ) : (
+                <VStack {...searchBoxUsersStyle}>
+                  {searchedUsers?.map((user) => {
+                    const { _id, avatar, username, fullName, follower } = user;
+                    const mutualFollower = getMutualFollowers(
+                      follower,
+                      currentUser
+                    );
+                    return (
+                      <Flex
+                        key={_id}
+                        {...userViewBoxStyle}
+                        title={username}
+                        onClick={() => {
+                          navigate(`/profile/${username}`);
+                          dispatch(addUserToSearchList({ _id }));
+                          onClose();
+                        }}
+                      >
+                        <Flex alignItems={"center"} gap={"2"}>
+                          <Avatar size="md" src={avatar?.url} />
+                        </Flex>
+                        <VStack
+                          align={"flex-start"}
+                          gap={"0"}
+                          whiteSpace={"nowrap"}
+                        >
+                          <Text>{username}</Text>
+                          <Flex fontSize={"0.8rem"} color={"gray"}>
+                            <Text>{fullName}</Text>
+                            {mutualFollower?.length > 0 && (
+                              <Flex alignItems={"center"}>
+                                <BsDot />
+                                <Text {...mutualUserStyle}>
+                                  Followed By {mutualFollower[0]?.username}{" "}
+                                  {mutualFollower?.length > 1 && (
+                                    <>+{mutualFollower?.length - 1} more</>
+                                  )}
+                                </Text>
+                              </Flex>
+                            )}
                           </Flex>
-                        )}
+                        </VStack>
                       </Flex>
-                    </VStack>
+                    );
+                  })}
+                </VStack>
+              ))}
+            {searchValue?.length > 0 &&
+              !isLoading &&
+              searchedUsers?.length === 0 &&
+              isSearchUserFetched && (
+                <Flex align="center" justify="center" w="100%" py="3rem">
+                  No Results Found
+                </Flex>
+              )}
+            <Box>
+              {searchValue?.length === 0 &&
+              searchedUsers?.length === 0 &&
+              searchList?.length > 0 ? (
+                <Box>
+                  <Flex
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    py={"1rem"}
+                  >
+                    <Text>Recent</Text>
+                    <Button
+                      variant={"link-button"}
+                      onClick={() => clearRecentDisclosure.onOpen()}
+                    >
+                      Clear All
+                    </Button>
                   </Flex>
-                );
-              })}
-            <Flex align={"center"} w={"100%"} justify={"center"} py={"3rem"}>
-              {searchValue && searchedUsers.length === 0 && "No Results Found"}
-            </Flex>
+                  <VStack {...searchBoxUsersStyle}>
+                    {searchList?.map(({ _id, avatar, username, fullName }) => (
+                      <Flex
+                        key={_id}
+                        {...searchRecentStyle}
+                        title={username}
+                        onClick={() => {
+                          navigate(`/profile/${username}`);
+                          onClose();
+                        }}
+                      >
+                        <Flex gap={"3"} alignItems={"center"}>
+                          <Avatar size="md" src={avatar?.url} />
+                          <VStack align={"flex-start"} gap={"0"}>
+                            <Text>{username}</Text>
+                            <Text fontSize={"0.8rem"} color={"gray"}>
+                              {fullName}
+                            </Text>
+                          </VStack>
+                        </Flex>
+                        <Box
+                          as={RxCross2}
+                          {...recentCrossStyle}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            dispatch(removeUserFromSearchList({ _id }));
+                          }}
+                        />
+                      </Flex>
+                    ))}
+                  </VStack>
+                </Box>
+              ) : isLoading ? (
+                <SearchSkeleton />
+              ) : (
+                searchValue?.length === 0 && (
+                  <Flex align="center" justify="center" w="100%" py="3rem">
+                    No recent searches.
+                  </Flex>
+                )
+              )}
+            </Box>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+      {clearRecentDisclosure.isOpen && (
+        <ClearRecentModal
+          isOpen={clearRecentDisclosure.isOpen}
+          onClose={clearRecentDisclosure.onClose}
+        />
+      )}
     </Box>
   );
 };
-
-export default SearchBox;

@@ -13,18 +13,23 @@ import {
   ModalOverlay,
   useColorMode,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { userList } from "../../styles/SuggestionBoxStyle";
-import { useAuth, useUser } from "../../contexts";
 import { VscPassFilled } from "../../utils/Icons";
+import {
+  loginHandler,
+  logoutHandler,
+} from "../../pages/Authentication/authenticationSlice";
+import { GUEST_USER_PASSWORD } from "../../utils/Constants";
+import TailSpinLoader from "../Loader/TailSpinLoader";
 
 export const SwitchAccountModal = ({ onClose, isOpen }) => {
-  const { logoutHandler, handleGuestLogin, currentUser } = useAuth();
   const { colorMode } = useColorMode();
 
-  const {
-    userState: { users },
-  } = useUser();
+  const { currentUser } = useSelector((state) => state.authentication);
+  const { guestUsers, isLoading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   return (
     <Modal onClose={onClose} size={"sm"} isOpen={isOpen}>
@@ -35,36 +40,53 @@ export const SwitchAccountModal = ({ onClose, isOpen }) => {
         </ModalHeader>
         <ModalCloseButton _hover={{ bg: "red", color: "white" }} />
         <ModalBody>
-          {users?.map((user) => {
-            const { _id, firstName, username, avatarURL } = user;
-            return (
-              <Flex
-                key={_id}
-                {...userList}
-                onClick={() => {
-                  handleGuestLogin(user);
-                  onClose();
-                }}
-              >
-                <Flex alignItems={"center"} gap={"2"}>
-                  <Avatar size="sm" name={firstName} src={avatarURL} />
-                  <Text>{username}</Text>
+          {isLoading ? (
+            <TailSpinLoader />
+          ) : (
+            guestUsers?.map((user) => {
+              const {
+                _id,
+                fullName,
+                username,
+                avatar: { url },
+              } = user;
+              return (
+                <Flex
+                  key={_id}
+                  {...userList}
+                  onClick={() => {
+                    currentUser?.username === username
+                      ? null
+                      : dispatch(logoutHandler());
+                    dispatch(
+                      loginHandler({
+                        identifier: username,
+                        password: GUEST_USER_PASSWORD,
+                      })
+                    );
+                    onClose();
+                  }}
+                >
+                  <Flex alignItems={"center"} gap={"2"}>
+                    <Avatar size="sm" name={fullName} src={url} />
+                    <Text>{username}</Text>
+                  </Flex>
+                  {currentUser?.username === username ? (
+                    <Box
+                      as={VscPassFilled}
+                      fontSize={"1.4rem"}
+                      color="blue.500"
+                    />
+                  ) : null}
                 </Flex>
-                {currentUser?.username === username ? (
-                  <Box
-                    as={VscPassFilled}
-                    fontSize={"1.4rem"}
-                    color="blue.500"
-                  />
-                ) : null}
-              </Flex>
-            );
-          })}
+              );
+            })
+          )}
           <Button
             variant={"link-button"}
             w="100%"
             p="1rem"
-            onClick={logoutHandler}
+            onClick={() => dispatch(logoutHandler())}
           >
             Log In to an Existing Account
           </Button>

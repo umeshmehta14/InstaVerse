@@ -8,10 +8,10 @@ import {
   Button,
   useDisclosure,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import { mobileNavbarStyle } from "../../styles/NavbarStyles";
-import SearchBox from "./Navbar Components/SearchBox";
 import SideBar from "./Navbar Components/SideBar";
 import {
   MdSearch,
@@ -19,36 +19,45 @@ import {
   BsMoon,
   AiOutlineDown,
 } from "../../utils/Icons";
-import { useAuth, useUser } from "../../contexts";
-import { SwitchAccountModal } from "../index";
+import { SwitchAccountModal, SearchBox } from "../index";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserSearchList } from "../../pages/Post Feed/userSlice";
 
 export const NavBar = () => {
   const { toggleColorMode, colorMode } = useColorMode();
-  const location = useLocation();
   const searchDrawerDisclosure = useDisclosure();
   const switchUserDisclosure = useDisclosure();
+
+  const location = useLocation();
   const navigate = useNavigate();
 
-  const {
-    userState: { selectedUser },
-  } = useUser();
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.authentication);
+  const { selectedUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  if (location?.pathname === "/login" || location?.pathname === "/signup") {
+  if (
+    location?.pathname === "/login" ||
+    location?.pathname === "/signup" ||
+    location?.pathname === "/accounts/password/emailConfirmation/" ||
+    location?.pathname === "/accounts/password/reset/confirm/"
+  ) {
     return null;
   }
 
   return (
     <>
       <Flex
-        bg={colorMode === "light" ? "white.900" : "black.900"}
+        bg={useColorModeValue("white.900", "black.900")}
         {...mobileNavbarStyle}
       >
         <Text
           fontFamily={"Pacifico, cursive"}
           fontSize={"1.2rem"}
           title="Instaverse | Home"
-          onClick={() => navigate("/")}
+          onClick={() => {
+            window.location.reload();
+            navigate("/");
+          }}
         >
           InstaVerse
         </Text>
@@ -81,7 +90,10 @@ export const NavBar = () => {
               variant={"link-button"}
               fontSize={"2rem"}
               color={colorMode === "light" ? "black" : "blue.900"}
-              onClick={searchDrawerDisclosure.onOpen}
+              onClick={() => {
+                dispatch(getUserSearchList());
+                searchDrawerDisclosure.onOpen();
+              }}
               title="Search"
             >
               <MdSearch />

@@ -18,31 +18,26 @@ import { FaComment, AiFillHeart } from "../../../utils/Icons";
 export const GridBox = ({ showingPost }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   return (
     <Grid
       templateColumns="repeat(3, minmax(104px, 1fr))"
       width={"100%"}
       gap={"1"}
     >
-      {showingPost?.map((post) => {
-        const {
-          mediaUrl,
-          _id,
-          comments,
-          username,
-          likes: { likedBy },
-        } = post;
-        const [isHovered, setIsHovered] = useState(false);
-
+      {showingPost?.map((post, index) => {
+        const { url, _id, comments, likes } = post;
+        const isHovered = hoveredIndex === index;
         return (
           <GridItem
             key={_id}
             pos={"relative"}
             onMouseEnter={() => {
-              setIsHovered(true);
+              setHoveredIndex(index);
             }}
             onMouseLeave={() => {
-              setIsHovered(false);
+              setHoveredIndex(null);
             }}
             cursor={"pointer"}
             onClick={() =>
@@ -50,7 +45,7 @@ export const GridBox = ({ showingPost }) => {
             }
           >
             <AspectRatio ratio={1}>
-              <Image src={mediaUrl} alt={username} {...profileImageStyle} />
+              <Image src={url} {...profileImageStyle} />
             </AspectRatio>
             <Flex display={isHovered ? "flex" : "none"} {...profileHoverStyle}>
               <Flex align={"center"} gap={"2"}>
@@ -59,7 +54,7 @@ export const GridBox = ({ showingPost }) => {
               </Flex>
               <Flex align={"center"} gap={"2"}>
                 <Box as={AiFillHeart} fontSize={"1.5rem"} />
-                {likedBy?.length}
+                {likes?.length}
               </Flex>
             </Flex>
           </GridItem>

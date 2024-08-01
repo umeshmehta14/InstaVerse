@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Avatar,
   Box,
@@ -12,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-import { useAuth, useUser } from "../../../contexts";
 import {
+  InfoPopup,
   RotatingLoader,
   UnfollowModal,
   UserListModal,
@@ -31,64 +30,78 @@ import {
   userPostLengthStyle,
 } from "../../../styles/ProfileStyles";
 import { followedByUser } from "../../../styles/GlobalStyles";
-import { FiLogOut } from "../../../utils/Icons";
-import { SET_USER_LIST } from "../../../utils/Constants";
+import { BsThreeDots, FiLogOut } from "../../../utils/Icons";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutHandler } from "../../Authentication/authenticationSlice";
+import {
+  handleFollowUnfollowUser,
+  handleGetFollower,
+  updateTab,
+} from "../../Post Feed/userSlice";
+import { useEffect, useState } from "react";
 
-export const ProfileDetail = ({
-  selectedUser,
-  currentUserCheck,
-  userAllPost,
-}) => {
+export const ProfileDetail = ({ selectedUser, currentUserCheck }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const editModalDisclosure = useDisclosure();
   const unfollowModalDisclosure = useDisclosure();
+  const infoPopupDisclosure = useDisclosure();
   const { colorMode } = useColorMode();
 
-  const { logoutHandler, currentUser } = useAuth();
-  const {
-    userState: { loadingUsers, userList },
-    handleFollowUser,
-    userDispatch,
-  } = useUser();
+  const { currentUser } = useSelector((state) => state.authentication);
+  const { loadingUsers } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [heading, setHeading] = useState("");
 
   const {
+    _id,
     username,
-    firstName,
-    lastName,
-    avatarURL,
+    fullName,
+    avatar,
     bio,
+    posts,
     following,
-    followers,
+    follower,
     portfolio,
-  } = selectedUser;
+    createdAt,
+  } = selectedUser || {};
 
   const mutualFollowers =
-    !currentUserCheck && getMutualFollowers(followers, currentUser);
+    !currentUserCheck && getMutualFollowers(follower, currentUser);
 
   const isFollowing =
     !currentUserCheck &&
-    currentUser.following.find((user) => user.username === username);
+    currentUser.following?.some((user) => user?._id === _id);
 
-  const checkFollowing = currentUser.followers.find(
-    (user) => user.username === username
+  const checkFollowing = currentUser?.follower?.some(
+    (user) => user?._id === _id
   );
 
-  const isLoading = loadingUsers.includes(username);
+  const isLoading = loadingUsers.includes(_id);
+
+  useEffect(() => {
+    !currentUser && dispatch(updateTab(0));
+  }, [currentUser, selectedUser]);
 
   return (
     <>
       <Flex {...profileDetailMain}>
-        <Avatar size={{ base: "xl", md: "2xl" }} src={avatarURL} />
+        <Avatar size={{ base: "xl", md: "2xl" }} src={avatar?.url} />
         <Flex {...profileButtonMain}>
           <Flex {...profileUsernameStyle}>
             <Text>{username}</Text>
-            {currentUserCheck && (
+            {currentUserCheck ? (
               <Box
                 as={FiLogOut}
                 fontSize={"1.4rem"}
                 cursor={"pointer"}
-                onClick={logoutHandler}
+                onClick={() => dispatch(logoutHandler())}
                 title="Logout"
+              />
+            ) : (
+              <Box
+                as={BsThreeDots}
+                cursor={"pointer"}
+                onClick={infoPopupDisclosure.onOpen}
               />
             )}
           </Flex>
@@ -106,7 +119,11 @@ export const ProfileDetail = ({
                 <Button
                   variant={"follow-button"}
                   title="Follow"
-                  onClick={() => handleFollowUser(username)}
+                  onClick={() =>
+                    dispatch(
+                      handleFollowUnfollowUser({ _id, follow: true, username })
+                    )
+                  }
                 >
                   {isLoading ? (
                     <RotatingLoader w="20" sw={"7"} />
@@ -118,43 +135,43 @@ export const ProfileDetail = ({
                 </Button>
               ))}
             {currentUserCheck && (
-              <>
-                <Button
-                  variant="following-button"
-                  mr={2}
-                  w="100%"
-                  title="Edit Profile"
-                  onClick={editModalDisclosure.onOpen}
-                >
-                  Edit Profile
-                </Button>
-              </>
+              <Button
+                variant="following-button"
+                mr={2}
+                w="100%"
+                title="Edit Profile"
+                onClick={editModalDisclosure.onOpen}
+              >
+                Edit Profile
+              </Button>
             )}
           </Flex>
           <Flex flexDir={"column"} display={{ base: "none", md: "flex" }}>
             <HStack {...userPostLengthStyle}>
-              <Text>{userAllPost?.length} posts</Text>
+              <Text>{posts?.length} posts</Text>
               <Text
                 cursor={"pointer"}
                 onClick={() => {
                   onOpen();
-                  userDispatch({ type: SET_USER_LIST, payload: "followers" });
+                  setHeading("Followers");
+                  dispatch(handleGetFollower({ _id, type: "follower" }));
                 }}
               >
-                {followers?.length} follower
+                {follower?.length} follower
               </Text>
               <Text
                 cursor={"pointer"}
                 onClick={() => {
                   onOpen();
-                  userDispatch({ type: SET_USER_LIST, payload: "following" });
+                  setHeading("Following");
+                  dispatch(handleGetFollower({ _id, type: "following" }));
                 }}
               >
                 {following?.length} following
               </Text>
             </HStack>
             <Flex {...pcBioStyle}>
-              <Text>{` ${firstName} ${lastName}`}</Text>
+              <Text>{` ${fullName}`}</Text>
               <Text>{bio}</Text>
               <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
                 <Link to={portfolio}>{portfolio}</Link>
@@ -171,10 +188,8 @@ export const ProfileDetail = ({
                     p="0"
                     onClick={() => {
                       onOpen();
-                      userDispatch({
-                        type: SET_USER_LIST,
-                        payload: "followers",
-                      });
+                      setHeading("Followers");
+                      dispatch(handleGetFollower({ _id, type: "follower" }));
                     }}
                   >
                     Followed by{" "}
@@ -194,7 +209,7 @@ export const ProfileDetail = ({
       </Flex>
 
       <Flex {...mobileBioStyle}>
-        <Text>{` ${firstName} ${lastName}`}</Text>
+        <Text>{` ${fullName}`}</Text>
         <Text>{bio}</Text>
         <Text color={colorMode === "dark" ? "blue.200" : "blue.500"}>
           <Link to={portfolio}>{portfolio}</Link>
@@ -211,7 +226,8 @@ export const ProfileDetail = ({
             <Text
               onClick={() => {
                 onOpen();
-                userDispatch({ type: SET_USER_LIST, payload: "followers" });
+                setHeading("Followers");
+                dispatch(handleGetFollower({ _id, type: "follower" }));
               }}
             >
               Followed by{" "}
@@ -229,33 +245,30 @@ export const ProfileDetail = ({
 
       <Divider />
       <HStack {...mobileUserLength}>
-        <Text>{userAllPost?.length} posts</Text>
+        <Text>{posts?.length} posts</Text>
         <Text
           cursor={"pointer"}
           onClick={() => {
             onOpen();
-            userDispatch({ type: SET_USER_LIST, payload: "followers" });
+            setHeading("Followers");
+            dispatch(handleGetFollower({ _id, type: "follower" }));
           }}
         >
-          {followers?.length} follower
+          {follower?.length} follower
         </Text>
         <Text
           cursor={"pointer"}
           onClick={() => {
             onOpen();
-            userDispatch({ type: SET_USER_LIST, payload: "following" });
+            setHeading("Following");
+            dispatch(handleGetFollower({ _id, type: "following" }));
           }}
         >
           {following?.length} following
         </Text>
       </HStack>
       {isOpen && (
-        <UserListModal
-          onClose={onClose}
-          isOpen={isOpen}
-          users={userList === "followers" ? followers : following}
-          heading={userList === "followers" ? "Followers" : "Following"}
-        />
+        <UserListModal onClose={onClose} isOpen={isOpen} heading={heading} />
       )}
       {editModalDisclosure.isOpen && (
         <EditProfileModal
@@ -268,7 +281,14 @@ export const ProfileDetail = ({
           isOpen={unfollowModalDisclosure.isOpen}
           onClose={unfollowModalDisclosure.onClose}
           {...selectedUser}
-          handleFollowUser={handleFollowUser}
+        />
+      )}
+      {infoPopupDisclosure.isOpen && (
+        <InfoPopup
+          isOpen={infoPopupDisclosure.isOpen}
+          onClose={infoPopupDisclosure.onClose}
+          fromProfile={true}
+          post={{ _id: "", owner: { _id, username, avatar, createdAt } }}
         />
       )}
     </>

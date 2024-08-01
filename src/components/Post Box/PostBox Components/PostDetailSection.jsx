@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -7,29 +7,26 @@ import {
   Flex,
   HStack,
   Input,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
-import { useAuth, usePost, useUser } from "../../../contexts";
-import { getRelativeTime } from "../../../utils/Utils";
 import {
   commentInput,
-  emojiPickerButtonNew,
+  likeHeartStyle,
+  userNameStyle,
+  commentBtnMain,
 } from "../../../styles/GlobalStyles";
 import {
   IconHoverStyle,
   friendLikeUserStyle,
   iconPostStyles,
-  postContent,
   postIconStyle,
   userBoldStyle,
+  captionToggleBtn,
+  postBoxFooterMain,
 } from "../../../styles/PostBoxStyles";
 import {
   AiOutlineHeart,
@@ -38,8 +35,26 @@ import {
   IoPaperPlaneOutline,
   FaBookmark,
   FaRegBookmark,
-  BsEmojiSunglasses,
 } from "../../../utils/Icons";
+import { handleLikes } from "../../../pages/Post Feed/postSlice";
+import {
+  addUserBookmark,
+  getPostLikeUsers,
+  getSearchedUsers,
+  removeUserBookmark,
+} from "../../../pages/Post Feed/userSlice";
+import {
+  debounce,
+  handleInputChange,
+  handleShare,
+  renderCaptionWithMentionsAndHashtags,
+  truncateTextWithHTML,
+} from "../../../utils/Utils";
+import { commentLoaderStyle } from "../../../styles/SinglePostStyle";
+import { RotatingLoader } from "../../Loader/RotatingLoader";
+import { addCommentToPost } from "../../../pages/Single Post/commentSlice";
+import { UserMentionList } from "../../UserMention List/UserMentionList";
+import { EmojiPopover } from "../../EmojiPopover/EmojiPopover";
 
 const PostDetailSection = ({
   onOpen,
@@ -48,46 +63,66 @@ const PostDetailSection = ({
   setClicked,
   clicked,
   userLike,
+  singlePost,
 }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { colorMode } = useColorMode();
 
-  const { handlePostLike, handlePostUnLike, handleCreateComment, handleShare } =
-    usePost();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [commentValue, setCommentValue] = useState("");
+  const [showTagBox, setShowTagBox] = useState(false);
+  const [matchIndex, setMatchIndex] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
+  const inputRef = useRef(null);
 
-  const { currentUser } = useAuth();
-  const { handleBookmark, handleRemoveBookmark } = useUser();
+  const { currentUser } = useSelector((state) => state.authentication);
+  const { commentLoader } = useSelector((state) => state.comment);
+  const dispatch = useDispatch();
 
   const {
     _id,
-    username,
-    comments,
-    content,
-    createdAt,
-    likes: { likedBy },
+    owner: { username },
+    totalComments,
+    caption,
+    likes,
   } = post;
 
   const friendLike = currentUser.following.find(({ username }) =>
-    likedBy.some((likeUser) => likeUser.username === username)
+    likes.some((likeUser) => likeUser?.username === username)
   );
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const handleCommentPost = () => {
-    handleCreateComment(commentValue, _id);
-    setCommentValue("");
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && commentValue !== "") {
+      handleCommentPost();
+    }
   };
 
-  const [isLiked, setIsLiked] = useState(false);
+  const handleCommentPost = () => {
+    if (currentUser?.guest) {
+      toast.error("Guest users cannot post comment");
+      setCommentValue("");
+      return;
+    }
+    if (!commentLoader) {
+      dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
+        setCommentValue("")
+      );
+    }
+  };
+
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
 
   const handleLike = () => {
     setIsLiked(true);
-    handlePostLike(post._id);
+    dispatch(handleLikes({ _id, singlePost }));
     setTimeout(() => {
       setIsLiked(false);
     }, 1000);
@@ -105,10 +140,11 @@ const PostDetailSection = ({
             {userLike ? (
               <Box
                 as={AiFillHeart}
-                cursor="pointer"
-                color={"red"}
+                {...likeHeartStyle}
                 title="Unlike"
-                onClick={() => handlePostUnLike(_id)}
+                onClick={() => {
+                  dispatch(handleLikes({ _id, unlike: true, singlePost }));
+                }}
               />
             ) : (
               <Box
@@ -130,7 +166,7 @@ const PostDetailSection = ({
             <Box
               as={IoPaperPlaneOutline}
               sx={IconHoverStyle}
-              onClick={() => handleShare(_id)}
+              onClick={() => handleShare(_id, "post")}
               title="Share"
             />
           </HStack>
@@ -140,7 +176,7 @@ const PostDetailSection = ({
                 as={FaBookmark}
                 sx={postIconStyle}
                 title="Remove"
-                onClick={() => handleRemoveBookmark(_id)}
+                onClick={() => dispatch(removeUserBookmark({ _id }))}
               />
             ) : (
               <Box
@@ -148,7 +184,7 @@ const PostDetailSection = ({
                 sx={postIconStyle}
                 title="Save"
                 onClick={() => {
-                  handleBookmark(_id);
+                  dispatch(addUserBookmark({ _id }));
                   setClicked(!clicked);
                 }}
               />
@@ -162,55 +198,80 @@ const PostDetailSection = ({
               sx={friendLikeUserStyle}
               onClick={() => navigate(`/profile/${friendLike.username}`)}
               align={"center"}
+              {...userNameStyle}
             >
               <Avatar
                 size="2xs"
                 title={friendLike?.username}
-                src={friendLike?.avatarURL}
+                src={friendLike?.avatar?.url}
               />
               {friendLike?.username}
             </Flex>
-            <Text mx={"1"}>and</Text>
-            <Text sx={userBoldStyle} onClick={onOpen}>
-              {likedBy?.length - 1} others
-            </Text>
+            {likes?.length !== 1 && (
+              <>
+                <Text mx={"1"}>and</Text>
+                <Text
+                  sx={userBoldStyle}
+                  onClick={() => {
+                    dispatch(getPostLikeUsers({ _id }));
+                    onOpen();
+                  }}
+                >
+                  {likes?.length - 1} others
+                </Text>
+              </>
+            )}
           </Flex>
         ) : (
-          likedBy?.length !== 0 && (
-            <Text onClick={onOpen} cursor={"pointer"}>
-              {likedBy?.length} likes
+          likes?.length !== 0 && (
+            <Text
+              onClick={() => {
+                dispatch(getPostLikeUsers({ _id }));
+                onOpen();
+              }}
+              cursor={"pointer"}
+            >
+              {likes?.length} likes
             </Text>
           )
         )}
 
-        <Flex fontSize={"sm"} flexWrap="wrap">
-          <Flex gap={1} w="100%">
+        {caption?.length !== 0 && (
+          <Box
+            fontSize={"sm"}
+            w={"100%"}
+            overflow={isExpanded ? "visible" : "hidden"}
+            whiteSpace="break-spaces"
+          >
             <Text
-              {...userBoldStyle}
+              as="span"
+              {...userNameStyle}
               onClick={() => navigate(`/profile/${username}`)}
+              mr={"0.3rem"}
             >
               {username}
             </Text>
             <Text
-              {...postContent}
-              overflow={isExpanded ? "unset" : "hidden"}
-              whiteSpace={isExpanded ? "unset" : "nowrap"}
+              as="span"
+              fontWeight={100}
+              fontSize={"0.95rem"}
+              display="inline"
+              whiteSpace={isExpanded ? "break-spaces" : "normal"}
             >
-              {content}
+              {isExpanded
+                ? renderCaptionWithMentionsAndHashtags(caption, navigate)
+                : renderCaptionWithMentionsAndHashtags(
+                    truncateTextWithHTML(caption),
+                    navigate
+                  )}
             </Text>
-          </Flex>
-          {content?.length > 56 && (
-            <Button
-              variant={"link-button"}
-              fontSize={"0.8rem"}
-              p="0"
-              color={"gray"}
-              onClick={toggleExpanded}
-            >
-              {isExpanded ? "Show less" : "Show more"}
-            </Button>
-          )}
-        </Flex>
+            {caption?.length > 50 && (
+              <Button {...captionToggleBtn} onClick={toggleExpanded}>
+                {isExpanded ? "Show less" : "more"}
+              </Button>
+            )}
+          </Box>
+        )}
 
         <Text
           fontSize={"sm"}
@@ -220,52 +281,69 @@ const PostDetailSection = ({
             navigate(`/post/${_id}`, { state: { from: location } })
           }
         >
-          {comments?.length > 0 &&
-            `View ${comments?.length > 1 ? "all" : ""} ${
-              comments?.length
-            }  comment${comments?.length > 1 ? "s" : ""}`}
-        </Text>
-        <Text fontSize="xs" color={"#717171e0"}>
-          {getRelativeTime(createdAt)}
+          {totalComments > 0 &&
+            `View ${totalComments > 1 ? "all" : ""} ${totalComments}  comment${
+              totalComments > 1 ? "s" : ""
+            }`}
         </Text>
       </Flex>
 
-      <Flex p={{ base: "0 12px", md: 0 }} alignItems={"center"}>
-        <Popover>
-          <PopoverTrigger>
-            <Button {...emojiPickerButtonNew}>
-              <BsEmojiSunglasses />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent bg={"transparent"}>
-            <PopoverBody p={0}>
-              <Picker
-                data={data}
-                onEmojiSelect={(emoji) =>
-                  setCommentValue(commentValue + emoji.native)
-                }
-                theme={colorMode}
-                title="Pick an Emoji"
-              />
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+      <Flex {...postBoxFooterMain}>
+        {showTagBox && (
+          <UserMentionList
+            matchIndex={matchIndex}
+            commentValue={commentValue}
+            setCommentValue={setCommentValue}
+            setShowTagBox={setShowTagBox}
+            setMatchIndex={setMatchIndex}
+          />
+        )}
 
-        <Input
-          placeholder="Add a comment..."
-          value={commentValue}
-          onChange={(e) => setCommentValue(e.target.value)}
-          {...commentInput}
-        />
+        <Box pos={"relative"} width={"100%"}>
+          <Input
+            placeholder="Add a comment..."
+            value={commentValue}
+            onChange={(e) =>
+              handleInputChange(
+                e,
+                setCommentValue,
+                setMatchIndex,
+                setShowTagBox,
+                debouncedFetchData,
+                dispatch
+              )
+            }
+            onKeyDown={handleKeyPress}
+            disabled={commentLoader}
+            {...commentInput}
+            ref={inputRef}
+            px={0}
+          />
+          {commentLoader && commentValue && (
+            <Box {...commentLoaderStyle}>
+              <RotatingLoader w={"40"} sw={"3"} />
+            </Box>
+          )}
+        </Box>
         <Button
-          fontSize={"0.8rem"}
-          variant={"link-button"}
-          size="sm"
+          {...commentBtnMain}
           onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
+          color={commentValue === "" ? "gray" : null}
+          disabled={commentLoader || commentValue === ""}
+          _hover={
+            commentLoader || commentValue === ""
+              ? { color: "gray", cursor: "default" }
+              : {}
+          }
           visibility={commentValue.length === 0 ? "hidden" : "visible"}
         >
           Post
         </Button>
+        <EmojiPopover
+          setCommentValue={setCommentValue}
+          commentValue={commentValue}
+          inputRef={inputRef}
+        />
       </Flex>
     </>
   );

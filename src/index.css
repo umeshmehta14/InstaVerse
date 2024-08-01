@@ -14,3 +14,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('./utils/fonts/Segoe\ UI.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MyCustomFontBold';
+  src: url('./utils/fonts/Segoe\ UI\ Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}

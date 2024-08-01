@@ -29,8 +29,6 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-
-import { useAuth, useUser } from "../../../contexts";
 import { AvatarModal } from "../../index";
 import {
   inputLengthReader,
@@ -39,25 +37,38 @@ import {
   editFormLabel,
 } from "../../../styles/GlobalStyles";
 import { AiOutlinePicture, SlTrash, RxAvatar } from "../../../utils/Icons";
+import { useDispatch, useSelector } from "react-redux";
+import { editUserProfile } from "../../Post Feed/userSlice";
+import toast from "react-hot-toast";
 
 export const EditProfileModal = ({ isOpen, onClose }) => {
-  const { currentUser } = useAuth();
-  const { handleEditUser } = useUser();
+  const { currentUser } = useSelector((state) => state.authentication);
   const { colorMode } = useColorMode();
   const fileInputRef = useRef(null);
   const cancelRef = useRef();
+  const dispatch = useDispatch();
 
   const discardDisclosure = useDisclosure();
   const avatarDisclosure = useDisclosure();
 
-  const [updateProfile, setUpdateProfile] = useState(currentUser);
-  const { avatarURL, firstName, lastName, bio, portfolio } = updateProfile;
+  const initialEditData = {
+    username: currentUser?.username,
+    avatar: currentUser?.avatar.url,
+    fullName: currentUser?.fullName,
+    portfolio: currentUser?.portfolio,
+    bio: currentUser?.bio,
+    picture: "",
+  };
 
-  const handleBioChange = (e) => {
-    const { value } = e.target;
-    if (value?.length <= 150) {
-      setUpdateProfile({ ...updateProfile, bio: value });
-    }
+  const [updateProfile, setUpdateProfile] = useState(initialEditData);
+  const [selectedPicture, setSelectedPicture] = useState("");
+
+  const { avatar, fullName, bio, portfolio, username, picture } = updateProfile;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "bio" && value.length > 150) return;
+    setUpdateProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileSelect = () => {
@@ -66,26 +77,56 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
 
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
-    setUpdateProfile({
-      ...updateProfile,
-      avatarURL: URL.createObjectURL(file),
-    });
+    setUpdateProfile((prev) => ({
+      ...prev,
+      picture: file,
+      avatar: "",
+    }));
+    setSelectedPicture(URL.createObjectURL(file));
   };
 
   const handleCartoonAvatar = (url) => {
-    setUpdateProfile({
-      ...updateProfile,
-      avatarURL: url,
-    });
+    setUpdateProfile((prev) => ({
+      ...prev,
+      avatar: url,
+      picture: "",
+    }));
   };
 
   const handleEditSubmission = () => {
-    handleEditUser(updateProfile);
+    if (currentUser.guest) {
+      toast.error("Guest user cannot edit profile");
+      onClose();
+      return;
+    }
+    if (
+      username === currentUser?.username &&
+      avatar === currentUser?.avatar.url &&
+      fullName === currentUser?.fullName &&
+      portfolio === currentUser?.portfolio &&
+      bio === currentUser?.bio &&
+      !picture
+    ) {
+      onClose();
+      return;
+    }
+
+    const data = new FormData();
+    data.append("bio", bio);
+    data.append("fullName", fullName);
+    data.append("portfolio", portfolio);
+    data.append("avatar", avatar);
+    data.append("picture", picture);
+    data.append("username", username);
+
+    dispatch(editUserProfile({ data }));
     onClose();
   };
 
   useEffect(() => {
-    setUpdateProfile(currentUser);
+    if (isOpen) {
+      setUpdateProfile(initialEditData);
+    }
   }, [isOpen]);
 
   return (
@@ -105,7 +146,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
           <ModalBody pb={6}>
             <VStack gap={"1rem"}>
               <VStack gap={"0.5rem"}>
-                <Avatar size={"lg"} src={avatarURL} />
+                <Avatar size={"lg"} src={avatar || selectedPicture} />
                 <Popover>
                   <PopoverTrigger>
                     <Button variant={"link-button"} fontSize={"1rem"}>
@@ -146,7 +187,7 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
                           handleCartoonAvatar={handleCartoonAvatar}
                         />
                       )}
-                      {avatarURL?.length > 0 && (
+                      {(avatar || selectedPicture) && (
                         <Button
                           w="100%"
                           justifyContent={"flex-start"}
@@ -155,7 +196,8 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
                           onClick={() =>
                             setUpdateProfile({
                               ...updateProfile,
-                              avatarURL: "",
+                              avatar: "",
+                              picture: "",
                             })
                           }
                         >
@@ -176,42 +218,34 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
               </VStack>
 
               <FormControl>
-                <FormLabel sx={editFormLabel}>First name</FormLabel>
+                <FormLabel sx={editFormLabel}>Username</FormLabel>
                 <Input
-                  placeholder="First name"
-                  value={firstName}
+                  name="username"
+                  placeholder="Username"
+                  value={username}
                   sx={editFormInput}
-                  maxLength={25}
-                  onChange={(e) =>
-                    setUpdateProfile({
-                      ...updateProfile,
-                      firstName: e.target.value,
-                    })
-                  }
+                  maxLength={20}
+                  onChange={handleChange}
                 />
               </FormControl>
-
               <FormControl>
-                <FormLabel sx={editFormLabel}>Last name</FormLabel>
+                <FormLabel sx={editFormLabel}>Full Name</FormLabel>
                 <Input
-                  placeholder="Last name"
-                  value={lastName}
+                  name="fullName"
+                  placeholder="Full Name"
+                  value={fullName}
                   sx={editFormInput}
-                  maxLength={25}
-                  onChange={(e) =>
-                    setUpdateProfile({
-                      ...updateProfile,
-                      lastName: e.target.value,
-                    })
-                  }
+                  maxLength={20}
+                  onChange={handleChange}
                 />
               </FormControl>
               <FormControl pos={"relative"}>
                 <FormLabel sx={editFormLabel}>Bio</FormLabel>
                 <Input
+                  name="bio"
                   placeholder="Bio..."
                   sx={editFormInput}
-                  onChange={handleBioChange}
+                  onChange={handleChange}
                   value={bio}
                 />
                 <Text
@@ -219,26 +253,20 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
                   color={bio?.length >= 145 ? "red" : ""}
                 >{`${bio?.length || 0}/150`}</Text>
               </FormControl>
-
               <FormControl>
                 <FormLabel sx={editFormLabel}>Add link</FormLabel>
                 <Input
+                  name="portfolio"
                   placeholder="Add link"
                   value={portfolio}
                   sx={editFormInput}
                   maxLength={50}
-                  onChange={(e) =>
-                    setUpdateProfile({
-                      ...updateProfile,
-                      portfolio: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                   color={colorMode === "dark" ? "blue.200" : "blue.500"}
                 />
               </FormControl>
             </VStack>
           </ModalBody>
-
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleEditSubmission}>
               Save
@@ -256,7 +284,6 @@ export const EditProfileModal = ({ isOpen, onClose }) => {
           isCentered
         >
           <AlertDialogOverlay />
-
           <AlertDialogContent
             bg={colorMode === "dark" ? "black.600" : "white.500"}
             w={"350px"}

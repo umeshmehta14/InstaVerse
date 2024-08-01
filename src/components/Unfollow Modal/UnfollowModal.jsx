@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Avatar,
   Button,
@@ -10,20 +9,44 @@ import {
   VStack,
   useColorMode,
 } from "@chakra-ui/react";
-
+import { useDispatch } from "react-redux";
+import { handleFollowUnfollowUser } from "../../pages/Post Feed/userSlice";
 import { simpleButton } from "../../styles/GlobalStyles";
-import { useUser } from "../../contexts";
 
 export const UnfollowModal = ({
   isOpen,
   onClose,
+  _id,
   username,
-  avatarURL,
-  handleFollowUser,
-  fromInfoPop,
+  avatar,
+  notSelectedUser,
+  fromLiked,
+  singlePost,
+  infoPopupOnclose,
 }) => {
   const { colorMode } = useColorMode();
-  const { handleUnfollow } = useUser();
+  const dispatch = useDispatch();
+
+  const handleUnfollow = () => {
+    const actionPayload = {
+      _id,
+      follow: false,
+      username,
+      notSelectedUser,
+      noPostLoading: true,
+    };
+
+    if (fromLiked) {
+      dispatch(handleFollowUnfollowUser(actionPayload));
+    } else if (singlePost) {
+      dispatch(handleFollowUnfollowUser({ ...actionPayload, singlePost }));
+    } else {
+      dispatch(handleFollowUnfollowUser({ ...actionPayload, unFollow: true }));
+    }
+
+    infoPopupOnclose ? infoPopupOnclose() : null;
+    onClose();
+  };
 
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
@@ -34,19 +57,10 @@ export const UnfollowModal = ({
         maxWidth={"390px"}
       >
         <VStack pt={"1.5rem"} pb={"0.5rem"}>
-          <Avatar size={"xl"} src={avatarURL} />
+          <Avatar size={"xl"} src={avatar?.url} />
           <Text m="0.5rem">unfollow @{username}?</Text>
           <Divider />
-          <Button
-            sx={simpleButton}
-            color={"red"}
-            onClick={() => {
-              fromInfoPop
-                ? handleUnfollow(username)
-                : handleFollowUser(username, true);
-              onClose();
-            }}
-          >
+          <Button sx={simpleButton} color={"red"} onClick={handleUnfollow}>
             Unfollow
           </Button>
           <Divider />

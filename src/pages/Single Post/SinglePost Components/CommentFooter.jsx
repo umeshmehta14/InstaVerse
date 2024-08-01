@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -8,25 +8,18 @@ import {
   Flex,
   HStack,
   Input,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 
-import { useAuth, usePost, useUser } from "../../../contexts";
 import {
   AiFillHeart,
   AiOutlineHeart,
-  BsEmojiSunglasses,
   FaBookmark,
   FaRegBookmark,
   IoPaperPlaneOutline,
+  RxCross2,
 } from "../../../utils/Icons";
 import {
   IconHoverStyle,
@@ -35,52 +28,146 @@ import {
   postIconStyle,
   userBoldStyle,
 } from "../../../styles/PostBoxStyles";
-import { UserListModal } from "../../../components";
 import {
-  commentInput,
-  emojiPickerButtonNew,
-} from "../../../styles/GlobalStyles";
-import { commentFooterInputMain } from "../../../styles/SinglePostStyle";
+  EmojiPopover,
+  RotatingLoader,
+  UserListModal,
+  UserMentionList,
+} from "../../../components";
+import { commentInput, userNameStyle } from "../../../styles/GlobalStyles";
+import {
+  commentFooterInputMain,
+  commentLoaderStyle,
+  replyPopup,
+} from "../../../styles/SinglePostStyle";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addUserBookmark,
+  getPostLikeUsers,
+  getSearchedUsers,
+  removeUserBookmark,
+} from "../../Post Feed/userSlice";
+import { handleLikes } from "../../Post Feed/postSlice";
+import { debounce, handleInputChange, handleShare } from "../../../utils/Utils";
+import {
+  addReplyToComment,
+  addCommentToPost,
+  updateReplyComment,
+} from "../commentSlice";
+import toast from "react-hot-toast";
 
-export const CommentFooter = ({ post }) => {
+export const CommentFooter = ({ post, userLike }) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const {
-    _id,
-    likes: { likedBy },
-  } = post;
+  const { _id, likes } = post;
 
-  const { handlePostLike, handlePostUnLike, handleCreateComment, handleShare } =
-    usePost();
-  const { currentUser } = useAuth();
-  const {
-    handleBookmark,
-    handleRemoveBookmark,
-    userState: { userBookmarks },
-  } = useUser();
+  const { currentUser } = useSelector((state) => state.authentication);
+  const { bookmarks } = useSelector((state) => state.user);
+  const { commentLoader, repliedComment } = useSelector(
+    (state) => state.comment
+  );
 
+  const { commentId, repliedUsername, replyAvatar } = repliedComment;
+
+  const [isLiked, setIsLiked] = useState(false);
   const [commentValue, setCommentValue] = useState("");
+  const [showTagBox, setShowTagBox] = useState(false);
+  const [matchIndex, setMatchIndex] = useState(null);
+  const inputRef = useRef(null);
 
-  const bookmarked = userBookmarks?.includes(_id);
-  const userLike = likedBy?.find(
-    ({ username }) => username === currentUser?.username
+  const bookmarked = bookmarks?.find((post) => post?._id === _id);
+
+  const friendLike = currentUser.following.find(({ username }) =>
+    likes.some((likeUser) => likeUser?.username === username)
   );
 
-  const friendLike = currentUser?.following?.find(({ username }) =>
-    likedBy?.some((likeUser) => likeUser?.username === username)
-  );
+  const debouncedFetchData = useCallback(debounce(dispatch), [
+    getSearchedUsers,
+  ]);
+
+  const handleLike = () => {
+    setIsLiked(true);
+    dispatch(handleLikes({ _id, singlePost: true }));
+    setTimeout(() => {
+      setIsLiked(false);
+    }, 1000);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && commentValue.trim() !== "") {
+      handleCommentPost();
+    }
+  };
 
   const handleCommentPost = () => {
-    handleCreateComment(commentValue, _id);
-    setCommentValue("");
+    if (currentUser?.guest) {
+      toast.error("Guest users cannot post comment");
+      setCommentValue("");
+      return;
+    }
+    if (!commentLoader) {
+      if (commentId) {
+        dispatch(addReplyToComment({ commentId, text: commentValue })).then(
+          () => {
+            setCommentValue("");
+            dispatch(
+              updateReplyComment({
+                commentId: "",
+                repliedUsername: "",
+                replyAvatar: "",
+              })
+            );
+          }
+        );
+        return;
+      }
+      dispatch(addCommentToPost({ _id, text: commentValue })).then(() =>
+        setCommentValue("")
+      );
+    }
   };
+
+  useEffect(() => {
+    if (commentId) {
+      setCommentValue(`@${repliedUsername} `);
+      inputRef.current?.focus();
+    }
+  }, [repliedComment]);
+
   return (
-    <>
+    <Box pos={"relative"}>
+      {commentId && (
+        <Flex sx={replyPopup}>
+          <Flex gap={"0.5rem"} alignItems={"center"}>
+            <Avatar size={"sm"} src={replyAvatar} title={repliedUsername} />
+            <Text>Replying to {repliedUsername}</Text>
+          </Flex>
+          <Text
+            as={RxCross2}
+            onClick={() => {
+              setCommentValue("");
+              dispatch(
+                updateReplyComment({
+                  commentId: "",
+                  repliedUsername: "",
+                  replyAvatar: "",
+                })
+              );
+              setShowTagBox(false);
+            }}
+          />
+        </Flex>
+      )}
       <Divider display={{ base: "none", md: "flex" }} />
-      <Flex {...iconPostStyles} display={{ base: "none", md: "flex" }}>
+      <Flex
+        {...iconPostStyles}
+        pb={"6px !important"}
+        display={{ base: "none", md: "flex" }}
+      >
         <Flex
           fontSize={"1.7rem"}
           color={colorMode === "light" ? "black" : "white"}
@@ -93,20 +180,23 @@ export const CommentFooter = ({ post }) => {
                 cursor="pointer"
                 color={"red"}
                 title="Unlike"
-                onClick={() => handlePostUnLike(_id)}
+                onClick={() =>
+                  dispatch(handleLikes({ _id, unlike: true, singlePost: true }))
+                }
               />
             ) : (
               <Box
                 as={AiOutlineHeart}
                 {...IconHoverStyle}
                 title="Like"
-                onClick={() => handlePostLike(_id)}
+                onClick={() => handleLike()}
+                className={isLiked ? "like-animation" : ""}
               />
             )}
             <Box
               as={IoPaperPlaneOutline}
               sx={IconHoverStyle}
-              onClick={() => handleShare(_id)}
+              onClick={() => handleShare(_id, "post")}
               title="Share"
             />
           </HStack>
@@ -116,16 +206,14 @@ export const CommentFooter = ({ post }) => {
                 as={FaBookmark}
                 sx={postIconStyle}
                 title="Remove"
-                onClick={() => handleRemoveBookmark(_id)}
+                onClick={() => dispatch(removeUserBookmark({ _id }))}
               />
             ) : (
               <Box
                 as={FaRegBookmark}
                 sx={postIconStyle}
                 title="Save"
-                onClick={() => {
-                  handleBookmark(_id);
-                }}
+                onClick={() => dispatch(addUserBookmark({ _id }))}
               />
             )}
           </HStack>
@@ -137,23 +225,40 @@ export const CommentFooter = ({ post }) => {
               sx={friendLikeUserStyle}
               onClick={() => navigate(`/profile/${friendLike?.username}`)}
               align={"center"}
+              {...userNameStyle}
             >
               <Avatar
                 size="2xs"
                 title={friendLike?.username}
-                src={friendLike?.avatarURL}
+                src={friendLike?.avatar?.url}
               />
               {friendLike?.username}
             </Flex>
-            <Text mx={"1"}>and</Text>
-            <Text sx={userBoldStyle} onClick={onOpen}>
-              {likedBy?.length - 1} others
-            </Text>
+            {likes?.length !== 1 && (
+              <>
+                <Text mx={"1"}>and</Text>
+                <Text
+                  sx={userBoldStyle}
+                  onClick={() => {
+                    dispatch(getPostLikeUsers({ _id }));
+                    onOpen();
+                  }}
+                >
+                  {likes?.length - 1} others
+                </Text>
+              </>
+            )}
           </Flex>
         ) : (
-          likedBy?.length !== 0 && (
-            <Text onClick={onOpen} cursor={"pointer"}>
-              {likedBy?.length} likes
+          likes?.length !== 0 && (
+            <Text
+              onClick={() => {
+                dispatch(getPostLikeUsers({ _id }));
+                onOpen();
+              }}
+              cursor={"pointer"}
+            >
+              {likes?.length} likes
             </Text>
           )
         )}
@@ -162,54 +267,68 @@ export const CommentFooter = ({ post }) => {
         bg={colorMode === "dark" ? "black.900" : "white.500"}
         {...commentFooterInputMain}
       >
-        <Popover>
-          <PopoverTrigger>
-            <Box
-              as={BsEmojiSunglasses}
-              {...emojiPickerButtonNew}
-              title="Emoji"
-            />
-          </PopoverTrigger>
-          <PopoverContent bottom={"27rem"} bg={"transparent"}>
-            <PopoverBody p={0}>
-              <Picker
-                data={data}
-                onEmojiSelect={(emoji) =>
-                  setCommentValue(commentValue + emoji.native)
-                }
-                theme={colorMode}
-                title="Pick an Emoji"
-                emoji=""
-              />
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
-
-        <Input
-          placeholder="Add a comment..."
-          value={commentValue}
-          onChange={(e) => setCommentValue(e.target.value)}
-          {...commentInput}
-          px={"2"}
+        {showTagBox && (
+          <UserMentionList
+            matchIndex={matchIndex}
+            commentValue={commentValue}
+            setCommentValue={setCommentValue}
+            setShowTagBox={setShowTagBox}
+            setMatchIndex={setMatchIndex}
+          />
+        )}
+        <EmojiPopover
+          setCommentValue={setCommentValue}
+          commentValue={commentValue}
+          inputRef={inputRef}
+          singlePost={true}
         />
+        <Box pos={"relative"} width={"100%"}>
+          <Input
+            placeholder="Add a comment..."
+            value={commentValue}
+            onChange={(e) =>
+              handleInputChange(
+                e,
+                setCommentValue,
+                setMatchIndex,
+                setShowTagBox,
+                debouncedFetchData,
+                dispatch
+              )
+            }
+            onKeyDown={handleKeyPress}
+            disabled={commentLoader && commentValue}
+            {...commentInput}
+            ref={inputRef}
+          />
+          {commentLoader && commentValue && (
+            <Box {...commentLoaderStyle}>
+              <RotatingLoader w={"40"} sw={"3"} />
+            </Box>
+          )}
+        </Box>
         <Button
           fontSize={"1rem"}
           variant={"link-button"}
           size="sm"
-          onClick={() => (commentValue !== "" ? handleCommentPost() : "")}
-          color={commentValue === "" ? "gray" : null}
+          onClick={() =>
+            commentValue.trim() !== "" ? handleCommentPost() : ""
+          }
+          color={commentValue.trim() === "" ? "gray" : null}
+          disabled={commentLoader || commentValue.trim() === ""}
+          _disabled={{ color: "gray.400", cursor: "default" }}
+          _hover={
+            commentLoader || commentValue.trim() === ""
+              ? { color: "gray", cursor: "default" }
+              : {}
+          }
         >
           Post
         </Button>
       </Flex>
       {isOpen && (
-        <UserListModal
-          onClose={onClose}
-          isOpen={isOpen}
-          users={likedBy}
-          heading={"Liked By"}
-        />
+        <UserListModal onClose={onClose} isOpen={isOpen} heading={"Liked By"} />
       )}
-    </>
+    </Box>
   );
 };
