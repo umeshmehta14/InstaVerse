@@ -382,7 +382,6 @@ const postSlice = createSlice({
     });
 
     builder.addCase(getUserNotifications.rejected, (state, action) => {
-      toast.error("Something went wrong");
       console.error(action.error);
       state.notificationLoader = false;
     });

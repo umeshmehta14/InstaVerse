@@ -85,6 +85,19 @@ export const Notifications = ({ isOpen, onClose }) => {
           <DrawerBody>
             {notificationLoader ? (
               <SearchSkeleton />
+            ) : notifications?.length === 0 ? (
+              <VStack
+                w={"80%"}
+                textAlign={"center"}
+                gap={"1.5rem"}
+                m={"2rem auto"}
+              >
+                <Text>Activity On Your Posts</Text>
+                <Text>
+                  When someone likes or comments on one of your posts, you'll
+                  see it here.
+                </Text>
+              </VStack>
             ) : (
               <VStack maxW="100%">{notificationItems}</VStack>
             )}
