@@ -35,7 +35,7 @@ export const PostDeleteModal = ({
     } else {
       dispatch(handleDeletePost({ _id }));
       if (fromSinglePost) {
-        navigate(location);
+        navigate(location || `/profile/${currentUser?.username}`);
       }
     }
     infoPopupOnclose();

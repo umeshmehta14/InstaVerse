@@ -84,10 +84,13 @@ const PostDetailSection = ({
   const {
     _id,
     owner: { username },
-    totalComments,
+    comments,
+    totalComments: tComments,
     caption,
     likes,
   } = post;
+
+  const totalComments = comments?.length || tComments;
 
   const friendLike = currentUser.following.find(({ username }) =>
     likes.some((likeUser) => likeUser?.username === username)

@@ -137,6 +137,7 @@ export const PostBox = ({ post, singlePost }) => {
               isOpen={infoPopupDisclosure.isOpen}
               onClose={infoPopupDisclosure.onClose}
               post={post}
+              fromSinglePost={singlePost}
             />
           )}
         </Button>
