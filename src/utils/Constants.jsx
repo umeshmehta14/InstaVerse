@@ -1,5 +1,6 @@
-export const API_URL = "https://instaverse-backend.up.railway.app/api/v1";
-// export const API_URL = "https://instaverse-backend.onrender.com/api/v1";
+// export const API_URL = "https://instaverse-backend.up.railway.app/api/v1";
+export const API_URL = "https://instaverse-backend-1.onrender.com/api/v1";
+
 export const GUEST_USER_PASSWORD = "12345678";
 export const COMMENT_LIKE = "commentLike";
 export const REPLY_LIKE = "replyLike";
